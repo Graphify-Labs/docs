@@ -186,8 +186,7 @@
   },
   "logo": {
     "light": "https://graphify.com/assets/brand/graphify-logo-ink.svg",
-    "dark": "https://graphify.com/assets/brand/graphify-logo-white.svg",
-    "href": "https://graphify.com"
+    "dark": "https://graphify.com/assets/brand/graphify-logo-white.svg"
   },
   "navbar": {
     "links": [

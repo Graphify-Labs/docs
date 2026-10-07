@@ -173,7 +173,15 @@
           }
         ]
       }
-    ]
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Help on Discord",
+          "href": "https://discord.gg/XPPYrdw3Yp"
+        }
+      ]
+    }
   },
   "logo": {
     "light": "https://graphify.com/assets/brand/graphify-logo-ink.svg",

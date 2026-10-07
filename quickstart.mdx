@@ -5,17 +5,15 @@ hideFooterPagination: true
 ---
 
 <div className="not-prose xl:hidden" style={{ marginBottom: 24 }}>
-  <details style={{ border: "1px solid #c7dbd0", borderRadius: 8, background: "#ffffff", color: "#062314" }}>
-    <summary className="cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ minHeight: 44, padding: "12px 16px", fontSize: 14, fontWeight: 600 }}>On this page</summary>
-
-    <nav aria-label="On this page" style={{ padding: "0 8px 8px" }}>
+  <Accordion title="On this page" id="quickstart-mobile-outline" className="bg-white">
+    <div role="navigation" aria-label="On this page">
       <a href="#install-the-cli" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Install the CLI</a>
       <a href="#connect-your-assistant" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Connect your assistant</a>
       <a href="#map-a-repository" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Map a repository</a>
       <a href="#inspect-the-output" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Inspect the output</a>
       <a href="#ask-a-question" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Ask a question</a>
-    </nav>
-  </details>
+    </div>
+  </Accordion>
 </div>
 
 Graphify turns a repository into a graph of its functions, classes, imports, and relationships. Your assistant can query that graph instead of repeatedly scanning the same files.

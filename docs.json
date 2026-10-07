@@ -25,13 +25,13 @@
           {
             "group": "Get started",
             "pages": [
+              "index",
               "quickstart",
               "installation",
               "troubleshooting",
               "changelog",
               "for-agents"
-            ],
-            "root": "index"
+            ]
           },
           {
             "group": "Concepts",

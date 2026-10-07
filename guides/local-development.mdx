@@ -1,0 +1,47 @@
+---
+title: "Run Graphify locally"
+description: "Choose a code-only workflow or add local semantic inference."
+hideFooterPagination: true
+---
+
+The open-source engine stores its graph on your filesystem. It does not require a Graphify account.
+
+## Code-only workflow
+
+```bash
+uv tool install graphifyy
+graphify extract . --code-only
+graphify cluster-only . --no-label
+graphify export html
+graphify query "entry points"
+```
+
+`--code-only` is an `extract` flag. It skips semantic document and media extraction. It is not a flag you need to pass to the assistant skill.
+
+## Include documents with a local model
+
+Install the Ollama extra and run an Ollama model suitable for your content. Select an installed model in `OLLAMA_MODEL`, then:
+
+```bash
+uv tool install "graphifyy[ollama]"
+graphify extract ./docs --backend ollama
+```
+
+Graphify defaults to the local Ollama endpoint. If you override the endpoint to a remote host, that changes where the content is sent. Large documents may need a smaller `--token-budget` or lower `--max-concurrency`.
+
+## Understand the boundaries
+
+- Local structural parsing does not send code to a model.
+- A cloud coding assistant still controls where its own prompts and context go.
+- A headless semantic backend receives the documents or media you ask it to process.
+- PR commands contact GitHub, and model-assisted CLI triage can call your configured provider.
+- Query logging is off by default in the current implementation; [configuration](/reference/configuration) describes the opt-in controls.
+
+The generated graph can contain source text, labels, paths, and document concepts. Keep it in a location appropriate for that source material.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/guides/querying" rel="prev" aria-label="Previous: Ask better graph questions" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Ask better graph questions</span></a>
+  <a href="/guides/incremental-updates" rel="next" aria-label="Next: Keep the graph current" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Keep the graph current</span></a>
+</div>

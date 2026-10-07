@@ -1,0 +1,116 @@
+---
+title: "Graphify MCP for VS Code"
+description: "Connect VS Code agents to your indexed repositories through Graphify's hosted MCP server."
+hideFooterPagination: true
+---
+
+The **Graphify MCP** extension registers Graphify's hosted MCP server in VS Code. Your agent can then search the repositories you have indexed in [Graphify Cloud](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
+
+VS Code handles the sign-in, the server trust prompt, and every tool approval. There is no API key to paste and no local process to run.
+
+## Before you start
+
+- VS Code 1.102 or later.
+- An agent chat model available in VS Code. The extension does not include one.
+- A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
+
+## 1. Add the MCP server
+
+<Tabs>
+  <Tab title="Install the extension">
+    Install [Graphify MCP](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp) from the Visual Studio Marketplace, or search for **Graphify MCP** by **Graphify Labs** in the Extensions view.
+
+    The extension registers `https://api.graphify.com/mcp` over Streamable HTTP. It does not read or upload your local files, and it stores no credentials of its own.
+  </Tab>
+
+  <Tab title="Add the endpoint by hand">
+    Open the Command Palette (`Ctrl + Shift + P`, or `Cmd + Shift + P` on macOS) and run **MCP: Open User Configuration**. Add the server to `mcp.json`:
+
+    ```json theme={null}
+    {
+      "servers": {
+        "graphify": {
+          "type": "http",
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+
+    Use one path or the other. If you keep this entry and also install the extension, the same tools appear twice.
+  </Tab>
+</Tabs>
+
+## 2. Start the server and sign in
+
+<Steps>
+  <Step title="Start it">
+    Run **MCP: List Servers** from the Command Palette and select **Graphify**, then start the server.
+  </Step>
+  <Step title="Authorize">
+    Your browser opens so you can sign in to Graphify and grant access. Choose the workspace that holds the repository you want to query.
+  </Step>
+  <Step title="Confirm the tools loaded">
+    Return to **MCP: List Servers** and check that Graphify is running. Open an agent chat and enable Graphify's tools.
+  </Step>
+</Steps>
+
+## 3. Ask a question
+
+Start by confirming what the connection can see:
+
+```text theme={null}
+List the repositories I can query with Graphify.
+```
+
+Then pick a repository from the answer and ask about its code:
+
+- `Who calls the function that validates a session token?`
+- `Show me how a request reaches the database in this repository.`
+- `What does this change affect?`
+- `Which tests cover the billing module?`
+- `Remember that the retry limit lives in the queue worker.`
+
+Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it.
+
+Some tools write workspace memory or switch the selected workspace. Read each tool request and approve it only when that is what you meant.
+
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| **Graphify: Open Dashboard** | Opens your workspace in the browser. |
+| **Graphify: Open MCP Documentation** | Opens the setup instructions and tool reference. |
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| Graphify is not in **MCP: List Servers** | Check that VS Code is 1.102 or later, then reload the window. |
+| The tools return nothing for a repository | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories). |
+| The agent reports an authorization problem | Stop the server in **MCP: List Servers**, start it again, and complete the browser sign-in. |
+| Every Graphify tool appears twice | You have both the extension and a manual `mcp.json` entry. Remove one. |
+| No tools appear in chat | No agent model is available, or Graphify's tools are switched off for that chat. |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Agents and integrations" icon="plug" href="/platform/connections">
+    Connect other clients from the Cloud workspace and manage its integrations.
+  </Card>
+
+  <Card title="Graphify MCP for JetBrains" icon="plug" href="/integrations/jetbrains">
+    Connect JetBrains AI Assistant to the same hosted server.
+  </Card>
+
+  <Card title="Connect the graph MCP server" icon="terminal" href="/mcp/overview">
+    Run a local MCP server against a graph on your own machine instead.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/copilot" rel="prev" aria-label="Previous: Graphify with GitHub Copilot" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify with GitHub Copilot</span></a>
+  <a href="/integrations/jetbrains" rel="next" aria-label="Next: Graphify MCP for JetBrains" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify MCP for JetBrains</span></a>
+</div>

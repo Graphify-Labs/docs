@@ -1,0 +1,59 @@
+---
+title: "Profile"
+description: "Achievements, the last seven days of Performance, and how Power Ranking is scored."
+hideFooterPagination: true
+sidebarTitle: "Profile"
+---
+
+**Profile** is your personal page in [Graphify Cloud](https://app.graphify.com). Open it from the account menu. The older Activity address redirects here. Your personal stats come first. Workspace coverage and run history for the whole workspace follow below them.
+
+## Achievements
+
+Achievements are lifetime. They do not reset each week. A badge you have not earned stays hidden.
+
+| Badge | What earns it | Tiers |
+| --- | --- | --- |
+| First Graph | You built a Cloud graph from a connected repository | 1 |
+| Review Complete | Graphify reviewed pull requests you authored | 1, 50, 100 |
+| Pair Extraordinaire | Graphify reviewed pull requests that you then merged | 1, 50, 100 |
+| Merge Ready | You merged reviewed pull requests that had no unresolved high-risk findings | 1, 50, 100 |
+| Proof Companion | You completed formal verification on your pull requests. Every completed verdict counts | 1, 25, 50 |
+| Assistant Linked | Your assistant successfully queried your Cloud graph over MCP | 1, 100, 500 |
+
+Open a badge, choose **Share this milestone**, then **Download image**. The card includes your name, profile picture, badge, and tier. It does not include your email, workspace, or repository names.
+
+Profile also holds a display name, a bio of up to 50 characters, links for GitHub, LinkedIn, X, and a website, and an avatar you choose or upload.
+
+## Performance
+
+Performance is your own counts for the **last 7 UTC days**: today, plus the six dates before it. It is not a Monday reset, and it is not a rolling 168 hours.
+
+| Count | What it includes |
+| --- | --- |
+| Graphs indexed | Successful Cloud graph builds counted for you |
+| PR reviews | Completed Graphify reviews of pull requests you authored |
+| MCP calls | Successful hosted queries of your Cloud graph over MCP |
+| Verifications | Completed verification verdicts counted for you |
+
+**Unavailable** means that count is not known yet. **0** means it was measured and is zero.
+
+A **Top N%** label on Performance appears only beside **Graphs indexed**. On Power Ranking, the same kind of label is your place among active Cloud users. A value of 92 means Top 8%.
+
+## Power Ranking
+
+Power Ranking turns the same seven days into a score from 0 to 10, shown to one decimal place.
+
+| Signal | Weight | Most it can add |
+| --- | --- | --- |
+| Completed PR reviews | 30% | 3 points |
+| Successful hosted MCP calls | 30% | 3 points |
+| Days active | 20% | 2 points |
+| Successful Cloud graph builds | 20% | 2 points |
+
+Reviews, MCP calls, and builds are compared with active Cloud users over the same seven days, you included. A very large MCP count still adds at most 3 points. An active day is a UTC day with at least one completed PR review, successful graph build, or successful hosted MCP call. Each active day adds one seventh of those 2 points. A verification by itself does not make a day active, and verifications do not change the score.
+
+The ranking updates hourly. It stays **Unavailable** when you had no qualifying activity in the window, when fewer than two people are in the comparison, when your account is not eligible for it, or when a ranking snapshot is not ready.
+
+<Card title="Read a review and a verdict" icon="scale" href="/platform/read-a-result">
+  How a review finding differs from a verification verdict.
+</Card>

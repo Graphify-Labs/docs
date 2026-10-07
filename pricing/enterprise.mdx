@@ -1,0 +1,194 @@
+---
+title: "Graphify Enterprise"
+sidebarTitle: "Enterprise"
+description: "An enterprise buyer's guide to Graphify: capabilities, self-hosting, security, identity, licensing, support, and evaluation."
+hideFooterPagination: true
+---
+
+Graphify Enterprise gives engineering organizations a shared knowledge graph of their software, with graph-aware pull request review and formal verification running in infrastructure they control. It is for teams that need to understand dependencies across repositories, give coding agents grounded context, and meet enterprise deployment and procurement requirements.
+
+<Note>
+  Enterprise is in **early access**. Deployment, enabled capabilities, capacity, and commercial terms are scoped with your account team before rollout.
+</Note>
+
+## At a glance
+
+| Area | Enterprise offering |
+| --- | --- |
+| Deployment | Self-hosted on your infrastructure; discuss BYOC, VPC, on-premises, or air-gapped requirements. |
+| Licensing | Per developer seat, with a custom quote and renewal terms. |
+| Identity | SSO/SAML; identity-provider setup is part of deployment planning. |
+| Code host | GitHub Enterprise support. |
+| Core workflows | Repository knowledge graphs, graph-aware PR review, and function-level formal verification. |
+| Support | Dedicated Slack support channel. |
+| Procurement | Custom invoicing and payment terms, DPA, and terms of service. |
+
+<CardGroup cols={2}>
+  <Card title="Discuss your deployment" icon="building-2" href="https://graphify.com/enterprise">
+    Share your team size, infrastructure, and workflows with the enterprise team.
+  </Card>
+  <Card title="Compare all plans" icon="layers" href="/pricing/overview">
+    Compare Enterprise with the hosted Free, Pro, and Teams plans.
+  </Card>
+</CardGroup>
+
+## What your team can do
+
+### Understand the codebase as a graph
+
+Graphify connects code symbols, dependencies, and repositories so a developer or agent can follow relationships instead of reconstructing them from isolated search results. Use the graph to investigate a call path, understand the reach of a change, and navigate shared code across services.
+
+The graph foundation is shared with the open-source engine. Enterprise adds the deployment and organizational capabilities around that foundation. See [how Graphify works](/concepts/architecture) and [graph provenance](/concepts/provenance).
+
+### Review changes with dependency context
+
+Graph-aware PR review looks beyond the changed lines to the code that calls, depends on, or overlaps with them. Teams can inspect findings alongside the affected code and use that context in their existing review workflow.
+
+Review findings are advisory analysis. They should be assessed alongside tests, code review, and the evidence attached to each result. See [pull request reviews](/platform/reviews).
+
+### Verify behavior changes
+
+Formal verification compares changed functions with their earlier implementations. Results can include a proof within the supported model, a distinguishing input that demonstrates different behavior, or an explicit unsupported or failed outcome.
+
+A completed run is not a blanket proof that an application is correct. Inspect analysis bounds, per-function verdicts, and whether a reported witness was reproduced. See [formal verification](/platform/verification) for the result types and their meaning.
+
+### Give people and agents shared context
+
+The Graphify product also includes the following workflows. Review the required feature set with your account team for your Enterprise deployment, especially when planning a restricted-network environment.
+
+| Workflow | What it provides |
+| --- | --- |
+| [Repository graphs](/platform/graphs) | Explore symbols, dependencies, communities, and relationships across repositories. |
+| [Wiki](/platform/wiki) | Browse and search documentation generated from an indexed repository, and ask grounded questions. |
+| [Learning](/platform/learning) | Use trusted review feedback to reduce repetitive advisory findings. Learning does not change formal proof verdicts or hide verifier witnesses. |
+| [Agent memory](/platform/memory) | Retain useful facts with grounding and provenance for later agent work. |
+| [Coding-agent connections](/platform/connections) | Make graph context available to assistants through MCP. |
+| [Buildkite test selection](/integrations/buildkite) | Use changed-code context to select affected tests in enabled workspaces, with full-suite fallback. |
+
+These product guides describe the Cloud workflow. Your deployment's configuration determines which integrations and UI flows are enabled.
+
+## Deployment and infrastructure
+
+### Self-hosting and network boundaries
+
+Enterprise is the commercial offering for running Graphify on your own infrastructure. The [enterprise offering](https://graphify.com/enterprise) includes BYOC and air-gapped VPC deployment discussions; on-premises and VPC requirements can be included in the access request.
+
+In a self-hosted deployment, ingested code and graph data stay in your infrastructure. Plan the complete data path, including code hosts, identity providers, model endpoints, connected assistants, and CI systems. An external coding assistant remains subject to its own configuration and provider terms.
+
+For an air-gapped deployment, agree the supported feature set, local dependencies, update process, and integration paths before rollout. A hosted connector recipe alone is not an air-gap deployment guide.
+
+### Capacity and operations
+
+Sizing depends on the repositories you index, graph size, change volume, review and verification concurrency, and enabled features. Bring those requirements to deployment planning rather than treating the hosted plan allowances as Enterprise capacity guarantees.
+
+Define responsibility for infrastructure, upgrades, backups, recovery, and monitoring during scoping. Any required availability target, recovery objective, or maintenance window should be part of that discussion.
+
+### Enterprise, Cloud, and the open-source engine
+
+| Option | Use it when |
+| --- | --- |
+| **Graphify Enterprise** | You need the enterprise product and commercial support in an agreed self-hosted environment. |
+| **Graphify Cloud** | You want Graphify to host your workspace on Free, Pro, or Teams. |
+| **Open-source engine** | You want the Apache 2.0 CLI and local graph workflow without an account or paid license. |
+
+Running the open-source engine locally does not require an Enterprise license. See the [local setup guide](/guides/local-development).
+
+## Security, privacy, and identity
+
+### Data ownership and model training
+
+You own the code and content you ingest, and the graphs built from them. Graphify treats ingested content as confidential and does **not train models on your code**. See the [Terms of Service](https://graphify.com/terms) and [Privacy Policy](https://graphify.com/privacy).
+
+The hosted service uses subprocessors, including OpenAI and Anthropic for inference under their API terms. Self-hosted data handling is distinct from the hosted service; review the [subprocessor list](https://graphify.com/subprocessors) and agree the model and network configuration for your deployment. Independently connected assistants can send prompts or retrieved context to their own providers.
+
+### SSO and access
+
+Enterprise includes **SSO/SAML** and **GitHub Enterprise support**. During setup, identify your identity provider, code-host installation, workspace administrators, and the repositories users should access. Validate the intended access boundaries with representative users before expanding the rollout.
+
+Workspace membership and administrative actions are permissioned. The Graphify workspace provides **Members**, **Settings**, and **Billing** controls where available; repository and integration setup may require an owner or administrator. Confirm your provisioning and offboarding requirements during evaluation.
+
+### Compliance and audit evidence
+
+Graphify's **SOC 2 Type II engagement has started; no report is available yet**. Exportable audit logs are also described as part of the Enterprise early-access track. Review the current [Security page](https://graphify.com/security) and [Trust Center](https://trust.graphify.com) for updates and available evidence.
+
+Bring required encryption standards, audit exports, certifications, and security questionnaires to the evaluation. Confirm the controls and evidence for the proposed deployment instead of assuming that an in-progress control is already delivered.
+
+### Retention, export, and deletion
+
+On self-hosted deployments, retention is governed by your own infrastructure. Agree how graph storage, backups, logs, and deletion should work with your internal policy. The [Privacy Policy](https://graphify.com/privacy) documents hosted retention separately and explains how to request export or deletion. A **DPA is available**, with custom terms supported for Enterprise.
+
+## Licensing and commercial terms
+
+Enterprise is licensed **per developer seat** with custom pricing. The quote is scoped with your account team, rather than purchased through the self-service checkout.
+
+The enterprise offering supports:
+
+- Custom invoicing and payment terms.
+- A custom DPA and terms of service.
+- Deployment and capacity scoped to your organization.
+- License renewal and seat arrangements agreed with your account team.
+
+Include your expected developer count and growth, deployment footprint, required capabilities, and procurement timeline when requesting a quote. Confirm seat definitions, minimum commitments, capacity, renewal, and any third-party or infrastructure costs in the proposal. There is no public fixed Enterprise price or universal hardware specification.
+
+## Support and rollout
+
+Both Teams and Enterprise include a **dedicated Slack support channel**. If you require specific response times, coverage hours, an escalation process, onboarding services, or an availability SLA, agree them during procurement. The public plan does not specify a universal SLA.
+
+Use the following evaluation sequence to align engineering, security, and procurement:
+
+<Steps>
+  <Step title="Scope the deployment">
+    Share team size, repository hosts, infrastructure, network restrictions, and the workflows you want to evaluate. Identify engineering and security owners.
+  </Step>
+  <Step title="Agree the evaluation">
+    Choose representative repositories and define success measures, such as graph coverage, review usefulness, verification outcomes, or agent access. Confirm available features and capacity.
+  </Step>
+  <Step title="Validate with a pilot team">
+    Connect the agreed repositories and identity configuration. Exercise indexing, review, verification, and agent access. Check unsupported outcomes and access boundaries as well as successful results.
+  </Step>
+  <Step title="Complete procurement and plan expansion">
+    Resolve the security review, DPA, license, support expectations, and operating responsibilities. Agree the rollout sequence and ownership before adding more teams.
+  </Step>
+</Steps>
+
+## Prepare for an enterprise discussion
+
+| Bring | Why it helps |
+| --- | --- |
+| Developer count and expected growth | Scopes seats and rollout phases. |
+| Code hosts, repository count, languages, and approximate sizes | Establishes integration and indexing requirements. |
+| PR volume and verification or CI workflows | Helps plan workload and concurrent capacity. |
+| Cloud provider or on-premises environment, regions, and network restrictions | Defines deployment, connectivity, and data-residency requirements. |
+| Identity provider and access requirements | Scopes SSO, administration, and offboarding. |
+| Security questionnaire, audit needs, retention policy, and DPA requirements | Gives your reviewers a concrete list of controls and evidence to assess. |
+| Target timeline, budget process, and support requirements | Aligns the evaluation and commercial proposal. |
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="Do we need Enterprise to use formal verification?">
+    No. Hosted Graphify plans also include formal verification with plan-specific allowances. Enterprise is the option for an agreed self-hosted deployment, enterprise identity, support, and commercial terms. See [plans and pricing](/pricing/overview).
+  </Accordion>
+  <Accordion title="Can we use our existing coding assistants?">
+    Graphify connects through MCP to clients including Claude Code, Cursor, Codex, and GitHub Copilot. Your assistant and model-provider policies still apply. Confirm the client, identity flow, and network path for your deployment. See [agent integrations](/integrations/overview).
+  </Accordion>
+  <Accordion title="Is GitHub Enterprise supported?">
+    Yes. Include your GitHub Enterprise deployment and connectivity requirements when scoping Enterprise. For other code hosts and integrations, confirm the required workflow with the account team.
+  </Accordion>
+  <Accordion title="Is an Enterprise trial the same as the two-week hosted trial?">
+    No automatic Enterprise trial terms are published. Pro and Teams offer a two-week hosted trial; an Enterprise evaluation is arranged with the account team.
+  </Accordion>
+  <Accordion title="Can we complete a security review before signing?">
+    Share your questionnaire and required evidence with the team during evaluation. The [Security page](https://graphify.com/security), [Privacy Policy](https://graphify.com/privacy), [subprocessors](https://graphify.com/subprocessors), and [Trust Center](https://trust.graphify.com) are the starting points. SOC 2 Type II remains in progress.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Talk to Graphify about Enterprise" icon="arrow-up-right" href="https://graphify.com/enterprise">
+  Start an enterprise access request with your team size and requirements. You can also reach the team through graphify.com/contact.
+</Card>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/pricing/overview" rel="prev" aria-label="Previous: Plans and pricing" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Previous</span><span className="text-[15px] font-semibold leading-6">Plans and pricing</span></a>
+</div>

@@ -1,0 +1,110 @@
+---
+title: "Graphify for ChatGPT"
+description: "Connect ChatGPT, Codex, and Dots to your indexed repositories through Graphify's hosted MCP server."
+hideFooterPagination: true
+---
+
+The **Graphify** plugin is one listing in OpenAI's plugin directory. ChatGPT and Codex share that directory, and a [Dot](https://openai.com/index/introducing-dots/) uses the plugins you have already connected. You install it once. The permissions you approve apply in ChatGPT, ChatGPT Work, Codex, and Dots.
+
+MCP is the connection, at `https://api.graphify.com/mcp`. The plugin is the package that sets that connection up. There is no API key to paste and no graph to build on your computer. This is the same hosted server as [Graphify MCP for VS Code](/integrations/vscode) and [Graphify MCP for JetBrains](/integrations/jetbrains). The [Codex skill](/integrations/codex) is a separate install: it teaches Codex how to build a graph on your machine.
+
+Once connected, ChatGPT, Codex, and a Dot can search the repositories you have indexed in [Graphify Cloud](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
+
+## Before you start
+
+- ChatGPT on the web, the desktop app, or mobile. Codex in the ChatGPT desktop app, or Codex CLI. Or a Dot, created in the desktop app or on chatgpt.com in a desktop browser. Plugins are not available in the Codex IDE extension.
+- On a work workspace, an admin may need to allow the plugin before you can connect it.
+- A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
+
+## 1. Install the plugin
+
+[Open in ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)
+
+Or go to **Settings → Plugins** and select **Graphify** by **Graphify Labs**. The sidebar also has a **Plugins** entry.
+
+Select **Install plugin** if ChatGPT shows it, then **Connect**. Your browser opens so you can sign in to Graphify and choose the workspace that holds the repository you want to query. Review the access ChatGPT asks for before you approve it.
+
+Installing the plugin does not sign you in by itself. The connection is ready only after that Graphify sign-in finishes.
+
+Codex and a Dot use this same install.
+
+**Codex.** In the ChatGPT desktop app, switch to Codex, open **Plugins**, and install Graphify if it is not already installed. Connect and sign in the same way, then start a new chat. In Codex CLI, enter `/plugins`, install Graphify, and start a new session.
+
+**Dots.** Open **Settings → Customize → Plugins** and choose Graphify. Decide which actions the Dot may run on its own, and which ones it has to ask you about. While a Dot is researching in the background, OpenAI keeps connected apps read-only, so it will not save a note or switch workspace until you ask and you approve that request.
+
+## 2. Ask a question
+
+In ChatGPT, mention Graphify, or select **\+**, then **More**, and choose Graphify before you send the message. In Codex, and when you talk to a Dot, mention Graphify the same way in a new chat after the plugin is connected.
+
+```text
+@Graphify Show my indexed repositories and help me choose one to explore.
+```
+
+Then pick a repository from the answer:
+
+- `@Graphify Explain how authentication works in my selected repository, with supporting code locations.`
+- `@Graphify Help me assess the likely impact of a code change and find linked tests in my selected repository.`
+
+Results come from the repositories indexed in your workspace. Open the source an answer cites before you rely on it.
+
+## 3. Tools
+
+The plugin exposes these 24 tools.
+
+| Tool | What it does |
+| --- | --- |
+| `graph_stats` | Node and edge counts, and languages, for the indexed graph. |
+| `graphify_callees` | What a symbol calls, from directed call edges. |
+| `graphify_callers` | What calls a symbol, from directed call edges. |
+| `graphify_expand` | Turn node handles from another tool into full definition bodies. |
+| `graphify_file_neighbors` | A file's imports, and the files that import it. |
+| `graphify_find` | Indexed symbols whose name contains a fragment. |
+| `graphify_find_seeds` | The top seed nodes for a question, without their definition bodies. |
+| `graphify_impact` | The code directly connected to a symbol. A first pass at what a change reaches. |
+| `graphify_imports_exports` | A file's import and export edges. |
+| `graphify_node` | A symbol's definition and its immediate neighbors. |
+| `graphify_rank_files` | The source files most relevant to a question in plain English. |
+| `graphify_references` | References to a symbol that are not calls. |
+| `graphify_render_subgraph` | A bounded neighborhood of nodes and links around seed handles. |
+| `graphify_tests_for` | Tests linked to a symbol or a file. |
+| `graphify_trace` | Directed call paths from one symbol to another. |
+| `impact_and_risk` | Files ranked by how widely a change fans out, and whether tests cover them. |
+| `list_repositories` | Repositories this connection can query, with index status. |
+| `list_workspaces` | Workspaces this agent can target, and which one is active. |
+| `memories_about` | Durable notes tied to a file or a symbol. |
+| `query_graph` | A question in plain English, answered with the matching definitions. |
+| `recall` | Published workspace knowledge for a query. |
+| `remember` | Save a durable note about a repository. It may need review before recall shows it. |
+| `set_workspace` | Point this session at a workspace by its handle. It can also replace the default for later sessions. |
+| `shortest_path` | The most confident path between two symbols. |
+
+These tools read the indexed graph. They do not edit source files. An empty callers or callees result describes that indexed graph. A node lookup or a trace can return a semantic suggestion, so check the labels and resolution fields on the result. When trail capture is enabled, `query_graph`, `graphify_trace`, `graphify_find`, and `graphify_rank_files` can save what you asked, and an empty `recall` can save that nothing matched. `remember` and `set_workspace` change stored state. Approve those only when that is what you meant.
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| Graphify is not listed | Open **Settings → Plugins**. If it is still missing, the plugin is not available on this plan, region, or workspace. An admin turns it on under **Workspace settings → Plugins**. |
+| **Connect** is unavailable, or it says disabled by an admin | Ask a workspace admin to enable Graphify for your role, then connect again. |
+| Codex shows Graphify, but no tools | Connect it from ChatGPT in the browser, then start a new Codex chat. A directory change can take up to six hours to show up in Codex. |
+| No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories), then ask Graphify to list repositories again. |
+| ChatGPT never asked you to sign in | Open **Settings → Plugins**, select Graphify, and choose **Connect**. Finish the Graphify sign-in in the browser. |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Graphify MCP for VS Code" icon="plug" href="/integrations/vscode">
+    Connect VS Code agents to the same hosted server.
+  </Card>
+
+  <Card title="Graphify MCP for JetBrains" icon="plug" href="/integrations/jetbrains">
+    Connect JetBrains AI Assistant to the same hosted server.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/jetbrains" rel="prev" aria-label="Previous: Graphify MCP for JetBrains" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify MCP for JetBrains</span></a>
+  <a href="/integrations/other-assistants" rel="next" aria-label="Next: Other coding assistants" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify MCP for OpenClaw</span></a>
+</div>

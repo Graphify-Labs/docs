@@ -1,0 +1,36 @@
+---
+title: "Read a review and a verdict"
+description: "Tell a review finding from a verification verdict, and what each one is allowed to mean."
+hideFooterPagination: true
+sidebarTitle: "Read a review and a verdict"
+---
+
+A review and a verification answer different questions. Read both before you treat a pull request as safe.
+
+## What a review is telling you
+
+Open **Reviews**, choose the repository, and select the run. Check the commit. The findings on that run describe that revision.
+
+A finding is advisory. It is a concern to investigate, with the code the change can affect. It is not proof that every changed function still behaves the same way.
+
+When the repository settings are on, the run can also include **Risky patterns (advisory)** and **Docs that may be stale (advisory)**.
+
+## What a verdict is telling you
+
+Open **Formal Verification** and expand the run. The run status tells you whether processing finished. The per-function result tells you what was established:
+
+| Result | What it means |
+| --- | --- |
+| Proved equivalent (bounded) | The proof method established equivalence within its supported bounds. |
+| Behavior change | An input distinguishes the old and new implementations. Check whether that witness was reproduced or remains unconfirmed. |
+| No divergence sampled (not proven) | The inputs that ran showed no difference. This is empirical evidence, not a proof. |
+| Abstained | The method could not analyze the function within its supported domain or budget. |
+| Errored | Verification failed to produce a valid result for the function. |
+
+**Completed** describes the run's lifecycle. It does not mean every function was proved equivalent. A finished run can contain a mixture of these results.
+
+Use the [formal verification guide](/platform/verification) before you act on a verdict.
+
+<Card title="Review settings" icon="settings" href="/platform/reviews">
+  Turn risky patterns and stale docs on or off for a repository.
+</Card>

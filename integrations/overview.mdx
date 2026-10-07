@@ -1,0 +1,45 @@
+---
+title: "Choose your coding assistant"
+description: "Install the Graphify skill in your editor, terminal agent, or shared agent environment."
+hideFooterPagination: true
+---
+
+Graphify offers two ways to give an assistant context: a **skill** that guides the build and query workflow, and an **MCP server** that exposes the saved graph as tools. You can use either or both.
+
+<div className="not-prose my-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <a href="/integrations/claude-code" className="flex flex-col gap-5 rounded-2xl border border-[#d6e5dc] !border-b-[#d6e5dc] bg-white p-6 text-[#062314] no-underline transition-colors hover:border-[#118d4f] hover:!border-b-[#118d4f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/claude-code.svg" alt="Claude Code" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Claude Code</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60]">Skill and project instructions.</p></div></a>
+  <a href="/integrations/cursor" className="flex flex-col gap-5 rounded-2xl border border-[#d6e5dc] !border-b-[#d6e5dc] bg-white p-6 text-[#062314] no-underline transition-colors hover:border-[#118d4f] hover:!border-b-[#118d4f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/cursor.svg" alt="Cursor" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Cursor</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60]">Skill and editor rules.</p></div></a>
+  <a href="/integrations/codex" className="flex flex-col gap-5 rounded-2xl border border-[#d6e5dc] !border-b-[#d6e5dc] bg-white p-6 text-[#062314] no-underline transition-colors hover:border-[#118d4f] hover:!border-b-[#118d4f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/codex.svg" alt="Codex" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Codex</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60]">Skill and AGENTS.md integration.</p></div></a>
+  <a href="/integrations/gemini-cli" className="flex flex-col gap-5 rounded-2xl border border-[#d6e5dc] !border-b-[#d6e5dc] bg-white p-6 text-[#062314] no-underline transition-colors hover:border-[#118d4f] hover:!border-b-[#118d4f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/gemini-cli.svg" alt="Gemini CLI" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Gemini CLI</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60]">Skill and Gemini instructions.</p></div></a>
+  <a href="/integrations/copilot" className="flex flex-col gap-5 rounded-2xl border border-[#d6e5dc] !border-b-[#d6e5dc] bg-white p-6 text-[#062314] no-underline transition-colors hover:border-[#118d4f] hover:!border-b-[#118d4f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/github-copilot.svg" alt="GitHub Copilot" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">GitHub Copilot</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60]">Copilot CLI and VS Code setup.</p></div></a>
+  <a href="/integrations/other-assistants" className="flex flex-col gap-5 rounded-2xl border border-[#d6e5dc] !border-b-[#d6e5dc] bg-white p-6 text-[#062314] no-underline transition-colors hover:border-[#118d4f] hover:!border-b-[#118d4f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/opencode.svg" alt="opencode" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/assets/assistants/kilo.svg" alt="kilo" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/assets/assistants/kiro.svg" alt="kiro" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Other assistants</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60]">OpenCode, Kilo, Kiro, and more.</p></div></a>
+</div>
+
+## The common workflow
+
+```bash
+uv tool install graphifyy
+graphify install --platform cursor
+```
+
+Replace `cursor` with the installer platform for your assistant. Restart or refresh the assistant if it does not discover the new skill immediately, then ask it to map the current repository with Graphify.
+
+Skill invocation differs by client. Slash commands are common; Codex also exposes skills through the `$` picker. If a client does not show slash commands, explicitly ask it to use the installed Graphify skill.
+
+## Project or personal installation
+
+The default registration is personal. Add `--project` for repository-local registration where supported. This makes the instructions reviewable in version control and lets a team share the setup.
+
+The installer adds platform-specific files and may install hooks or instructions that suggest querying the graph before reading source. It does not grant your assistant new permissions.
+
+## Prefer tools instead?
+
+[Connect the graph MCP server](/mcp/overview). It provides ten tools for graph exploration and PR context, independently of whether you installed the skill.
+
+In VS Code, the [Graphify MCP extension](/integrations/vscode) connects the hosted server, and the [JetBrains plugin](/integrations/jetbrains) does the same. ChatGPT, Codex, and Dots share one [Graphify plugin](/integrations/chatgpt) for that same hosted server. OpenClaw's Cloud connection is [Graphify MCP for OpenClaw](/integrations/openclaw). The Codex card above, and `graphify install --platform claw` on Other coding assistants, install the local skill.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/claude-code" rel="next" aria-label="Next: Graphify with Claude Code" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify with Claude Code</span></a>
+</div>

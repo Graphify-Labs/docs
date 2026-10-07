@@ -1,0 +1,57 @@
+---
+title: "CLI reference"
+description: "Find the command for building, exploring, exporting, and maintaining a graph."
+hideFooterPagination: true
+---
+
+The package is `graphifyy`; the CLI is `graphify`. Run commands from your project root unless you provide an explicit graph path.
+
+## Core commands
+
+| Command | Purpose |
+| --- | --- |
+| `graphify install` | Register the assistant skill. |
+| [`graphify extract`](/reference/extract) | Run the extraction pipeline. |
+| [`graphify query`](/reference/query) | Retrieve context around a question. |
+| [`graphify path`](/reference/path) | Follow a path between concepts. |
+| [`graphify explain`](/reference/explain) | Inspect one node. |
+| `graphify affected "<node>"` | Inspect dependent impact using selected relations and depth. |
+| `graphify god-nodes` | Find highly connected nodes. |
+| `graphify diagnose` | Inspect graph quality and diagnostics. |
+| `graphify tree` | View graph-related project structure. |
+
+## Maintenance and exports
+
+| Command | Guide |
+| --- | --- |
+| `graphify update .`, `graphify watch .`, `graphify check-update .` | [Incremental updates](/guides/incremental-updates) |
+| `graphify hook install`, `graphify hook status`, `graphify hook uninstall` | [Team workflows](/guides/team-workflows) |
+| `graphify cluster-only .`, `graphify label .` | [Architecture](/concepts/architecture) |
+| `graphify export <format>` | [Exports](/guides/exports) |
+| `graphify prs` | [Pull requests](/guides/pull-requests) |
+| `graphify save-result`, `graphify reflect` | [Work memory](/guides/work-memory) |
+
+## Multiple graphs
+
+```bash
+graphify merge-graphs first.json second.json --out combined.json
+graphify global add graphify-out/graph.json --as my-project
+graphify global list
+graphify global path
+```
+
+Choose a unique project name when registering a graph globally. `graphify global remove my-project` removes that registration.
+
+## Skill syntax is different
+
+`/graphify .` is an instruction to your coding assistant. `graphify extract . --code-only` is a shell command. Use the [integration guide](/integrations/overview) for your client’s skill invocation.
+
+## Version scope
+
+This reference was checked against source version **0.9.62** on the repository’s `v8` branch. Check your installed version with `graphify --version`; flags and coverage can differ across releases. [Current source](https://github.com/Graphify-Labs/graphify).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/reference/query" rel="next" aria-label="Next: graphify query" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">graphify query</span></a>
+</div>

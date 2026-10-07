@@ -1,0 +1,52 @@
+---
+title: "Export and reuse your graph"
+description: "Create interactive maps, wikis, graph files, and database import scripts."
+hideFooterPagination: true
+---
+
+Build a graph first, then export the same saved relationships into the format you need.
+
+| Command | Output |
+| --- | --- |
+| `graphify export html` | Interactive graph visualization. |
+| `graphify export callflow-html` | Architecture and call-flow HTML. |
+| `graphify export wiki` | Markdown wiki organized around graph communities. |
+| `graphify export obsidian` | Obsidian-compatible notes and links. |
+| `graphify export svg` | Static SVG graph; requires the `svg` extra. |
+| `graphify export graphml` | GraphML for tools such as Gephi or yEd. |
+| `graphify export neo4j` | Cypher for Neo4j. |
+| `graphify export falkordb` | Cypher for FalkorDB. |
+
+## Generate a call-flow view
+
+```bash
+graphify export callflow-html --max-sections 8
+graphify export callflow-html --output docs/architecture.html
+```
+
+The exporter reads the graph and associated report/labels. Explicit output paths make it easier to include the result in an internal documentation workflow.
+
+## Export another graph
+
+```bash
+graphify export graphml --graph ./shared/graph.json
+```
+
+## Write to an existing Obsidian vault
+
+```bash
+graphify export obsidian --dir /absolute/path/to/vault
+```
+
+Review generated content before syncing it to a shared vault. The exporter is designed to preserve your own notes and `.obsidian` configuration.
+
+## Push to a graph database
+
+Neo4j and FalkorDB exports support optional push connections. Install the matching extra, use the appropriate connection URL, and supply passwords through `NEO4J_PASSWORD` or `FALKORDB_PASSWORD` rather than putting secrets on the command line.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/guides/headless-extraction" rel="prev" aria-label="Previous: Extract without an IDE" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Extract without an IDE</span></a>
+  <a href="/guides/work-memory" rel="next" aria-label="Next: Record useful findings" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Record useful findings</span></a>
+</div>

@@ -1,0 +1,135 @@
+---
+title: "Plans and pricing"
+sidebarTitle: "Plans and pricing"
+description: "Compare Free, Pro, Teams, and Enterprise, including pricing, usage allowances, billing, and deployment options."
+hideFooterPagination: true
+---
+
+Graphify offers hosted plans for individual developers and teams, and a separately scoped Enterprise offering for organizations that need their own deployment and commercial terms.
+
+<Note>
+  Prices and hosted allowances below match the current [pricing plans](https://graphify.com/pricing), updated September 29, 2026. Check your workspace's **Billing** page and checkout for the plan and offer available to you. Enterprise pricing and capacity are agreed with your account team.
+</Note>
+
+## Choose a plan
+
+| Plan | Best fit | Where it runs |
+| --- | --- | --- |
+| **Free** | One developer getting started, with no card required. | Graphify Cloud |
+| **Pro** | One developer who needs uncapped graphs, push builds, reviews, and verification. | Graphify Cloud |
+| **Teams** | A team sharing repository graphs, central billing, and a dedicated Slack support channel. Minimum 2 seats. | Graphify Cloud |
+| **Enterprise** | An organization requiring self-hosting, enterprise identity, GitHub Enterprise, and negotiated terms. | Your infrastructure; deployment scoped with Graphify |
+
+The [open-source CLI](/quickstart) is a separate, free Apache 2.0 tool. It runs locally without a Graphify account. A hosted subscription is not required to use it.
+
+## Subscription prices
+
+All prices below are in USD. Annual prices are monthly equivalents; the annual amount is charged once per year.
+
+| Plan | Monthly billing | Annual billing |
+| --- | --- | --- |
+| **Free** | $0 | $0 |
+| **Pro** | \$15/month | \$10/month equivalent (\$120/year) |
+| **Teams (first 100 teams offer)** | \$29/seat/month | \$20/seat/month equivalent (\$240/seat/year) |
+| **Teams (standard price)** | \$40/seat/month | \$28/seat/month equivalent (\$336/seat/year) |
+| **Enterprise** | Custom quote | Custom quote |
+
+Teams requires at least **2 seats**. At the introductory annual rate, that is \$480/year for two seats; at the standard annual rate, it is \$672/year. Availability of the first-100-teams offer is confirmed at checkout.
+
+Pro and Teams include a **two-week trial**, with a card required to start. Free has no card requirement.
+
+## Hosted plan allowances
+
+Usage is counted at the scope shown in each row. Workspace allowances are shared across the workspace; the pricing page does not describe them as a separate allowance for every purchased seat.
+
+| Allowance | Free | Pro | Teams |
+| --- | --- | --- | --- |
+| Repositories | Unlimited | Unlimited | Unlimited shared |
+| Graph nodes per repository | 25,000 | Uncapped | Uncapped |
+| Push-triggered graph builds per repository | 10 per UTC day | Uncapped | Uncapped |
+| PR reviews per workspace/month | 15 | Uncapped | Uncapped |
+| Formal verification runs per workspace/month | 15 | Uncapped | Uncapped |
+| Concurrent formal verification runs | 1 | 2 | 2 |
+
+**Uncapped** means there is no plan cap on graph size, daily push builds, monthly PR reviews, or monthly formal verification runs on Pro and Teams. It does not remove the concurrency, memory, or request limits below.
+
+Pro also includes deep reading of your documents. Teams adds shared graphs, centralized billing, and a **dedicated Slack support channel**. See the [Cloud overview](/platform/overview) for graphs, Wiki, reviews, formal verification, Learning, and agent memory.
+
+### Build concurrency
+
+All hosted plans allow **1 index build at a time per repository** and **10 across a workspace**. Formal verification runs have the plan-specific concurrency limits shown above.
+
+### Shared operational limits
+
+The published hosted plans also have the following limits:
+
+| Operation | Limit |
+| --- | --- |
+| Memory ingestion | 2,000 ingests/day |
+| Stored memory | 10,000 turns/repository |
+| Memory consolidation | 1 concurrent job/workspace |
+| Ask requests | 30/minute |
+| Query requests | 120/minute |
+| MCP requests | 240/minute |
+
+If an operation reaches a limit, follow the message in the console. For higher capacity or a different deployment model, [discuss Enterprise](https://graphify.com/enterprise) with the team.
+
+## Enterprise
+
+Enterprise combines the graph workflow with **self-hosting, SSO/SAML, GitHub Enterprise support, formal verification, graph-aware PR review, and a dedicated Slack support channel**. It also supports custom invoicing, payment terms, a DPA, and terms of service.
+
+Licensing is **per developer seat**. Deployment, capacity, and pricing are scoped with your account team. Enterprise is currently in **early access**.
+
+<Card title="Graphify Enterprise" icon="building-2" href="/pricing/enterprise">
+  A guide for engineering, security, and procurement teams: capabilities, deployment, data handling, licensing, and evaluation.
+</Card>
+
+## Dedicated Slack support
+
+Both **Teams** and **Enterprise** include a **dedicated Slack support channel**.
+
+| Plan | Included support |
+| --- | --- |
+| **Teams** | Dedicated Slack support channel. |
+| **Enterprise** | Dedicated Slack support channel; any additional support commitments are agreed with your account team. |
+
+## Billing and subscription management
+
+Open **Billing** in your [Graphify Cloud workspace](https://app.graphify.com) to review the current plan, seats, billing interval, and renewal information. Use its billing portal for payment details, invoices, and cancellation. Billing actions depend on your workspace permissions.
+
+Paid subscriptions renew until cancelled. Under the standard [Terms of Service](https://graphify.com/terms), cancellation takes effect at the end of the current billing period, and paid fees are non-refundable except where required by law. Review the confirmation shown when changing a plan or seat count. Enterprise invoicing and changes follow the agreement with your account team.
+
+## Open-source and startup programs
+
+<CardGroup cols={2}>
+  <Card title="Open-source projects" icon="github" href="https://graphify.com/oss">
+    Qualified non-commercial projects with MIT or Apache licenses can apply for free Graphify access.
+  </Card>
+  <Card title="Early-stage startups" icon="rocket" href="https://graphify.com/startups">
+    Pre-Seed and Seed startups with under $1M in revenue over the past 12 months can apply for 50% off Teams for up to 6 months.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+### Do I need Enterprise for formal verification?
+
+No. Formal verification is also part of Graphify Cloud, with the hosted allowances listed above. Enterprise adds the deployment, identity, support, and commercial arrangements described in the [enterprise guide](/pricing/enterprise).
+
+### Should we choose Teams or Enterprise?
+
+Choose Teams for a hosted workspace with shared graphs, central billing, and a dedicated Slack support channel. Discuss Enterprise if you need your own infrastructure, SSO/SAML, GitHub Enterprise support, or negotiated procurement terms.
+
+### Does buying more seats increase every usage limit?
+
+The listed allowances have repository, workspace, and request scopes. Do not multiply workspace limits by seat count. Confirm any additional capacity with Graphify before planning a larger rollout.
+
+### Where do we start?
+
+Create a [Cloud account](https://app.graphify.com) to start Free or a paid trial. For self-hosting and enterprise requirements, [contact the enterprise team](https://graphify.com/enterprise).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/pricing/enterprise" rel="next" aria-label="Next: Graphify Enterprise" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next</span><span className="text-[15px] font-semibold leading-6">Graphify Enterprise</span></a>
+</div>

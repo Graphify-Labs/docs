@@ -1,0 +1,48 @@
+---
+title: "Repositories and builds"
+description: "Connect repositories, configure analysis, and track or retry indexing builds."
+hideFooterPagination: true
+---
+
+**Repositories** controls which codebases Graphify indexes. **Builds** shows the indexing runs that produce their graphs and wiki content.
+
+## Connect a repository
+
+Open **Repositories** in [Graphify Cloud](https://app.graphify.com). Use **Connect GitHub** or **Connect GitLab**, then complete the provider's repository-access flow.
+
+Return to the repository list to check indexing status. Provider and status filters help narrow a large workspace.
+
+| Status | Meaning |
+| --- | --- |
+| **Indexed** | A graph has been built and is available. |
+| **Building** | Indexing is running. |
+| **Queued** | The repository is waiting to build. |
+| **Failed** | The latest attempt did not finish successfully. |
+| **Paused** | Indexing is disabled for the repository. |
+
+## Repository controls
+
+Open a repository's options to inspect available controls for **PR reviews**, **Fix suggestions**, **Formal verification**, and **Indexing**. Available actions depend on the workspace's configuration and access.
+
+The Indexing control pauses or enables indexing. Review and verification controls are separate; do not use an indexing toggle as a substitute for review configuration.
+
+## Follow a build
+
+Open **Builds** and filter by repository or status. A build row identifies the repository, run state, and available timing or graph information.
+
+- For a queued or running build, use the available cancel control if you need to stop that attempt.
+- For a failed build, **Retry** starts indexing the repository's current head. It does not replay the historical failed commit.
+- If no rows match, clear the filters before concluding that the repository has never built.
+
+The first completed index makes code context available in [Graphs](/platform/graphs). [Wiki](/platform/wiki) is generated alongside the code graph when available for the workspace.
+
+## Usage and access
+
+Respect the limit or provisioning message shown by the console. Build concurrency and operational limits can apply even when a plan has no monthly or daily plan cap. See [plans and pricing](/pricing/overview) for hosted allowances, and the workspace's **Billing** view for its plan.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/platform/contributors" rel="prev" aria-label="Previous: Contributors" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Contributors</span></a>
+<a href="/platform/connections" rel="next" aria-label="Next: Agents and integrations" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Agents and integrations</span></a>
+</div>

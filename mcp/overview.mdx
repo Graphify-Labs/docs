@@ -1,0 +1,84 @@
+---
+title: "Connect the graph MCP server"
+description: "Let your assistant query your repository through ten structured graph tools."
+hideFooterPagination: true
+---
+
+The graph MCP server reads a Graphify graph and exposes exploration tools to compatible clients. Start by building `graphify-out/graph.json` using the [quickstart](/quickstart).
+
+## Install the MCP extra
+
+```bash
+uv tool install "graphifyy[mcp]"
+```
+
+This installs the `graphify-mcp` executable into the same tool environment as Graphify. If uv reports an existing installation without the extra, reinstall with `uv tool install --reinstall "graphifyy[mcp]"`.
+
+## Configure a local client
+
+Use an **absolute path** to the graph. GUI apps often start with a different working directory from your terminal.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport stdio graphify -- graphify-mcp /absolute/path/to/repo/graphify-out/graph.json
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    Add a server entry to your user or project MCP configuration:
+
+    ```json
+    {
+      "mcpServers": {
+        "graphify": {
+          "command": "graphify-mcp",
+          "args": ["/absolute/path/to/repo/graphify-out/graph.json"]
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex mcp add graphify -- graphify-mcp /absolute/path/to/repo/graphify-out/graph.json
+    ```
+
+    Or configure the equivalent server in Codex’s MCP settings.
+  </Tab>
+  <Tab title="Other clients">
+    Choose the stdio transport, set the command to `graphify-mcp`, and pass the absolute graph path as the first argument. If the client cannot find the executable, replace it with the absolute path to `graphify-mcp` in your installed tool environment.
+
+    For client-specific setup, visit the [Graphify MCP connection guide](https://graphify.com/mcp). Choose your client there for its configuration instructions. That page also covers the hosted Graphify Cloud endpoint; the stdio setup above connects to a graph on your own machine.
+  </Tab>
+</Tabs>
+
+## Check the connection
+
+Refresh your client’s MCP connections. Ask it to call `graph_stats` first, then `query_graph` with a question about the repository. The [tool reference](/reference/mcp-tools) lists the current schemas.
+
+```json
+{"question": "authentication flow", "token_budget": 1500}
+```
+
+## Python environment alternative
+
+If you installed Graphify into a virtual environment, activate that environment first, then run:
+
+```bash
+python -m graphify.serve /absolute/path/to/repo/graphify-out/graph.json
+```
+
+Use the interpreter where the MCP extra is installed. In a GUI client, set the command to that interpreter’s absolute path. Your shell’s Python can differ from uv’s tool environment.
+
+## Scope of the tools
+
+Graph exploration tools retrieve the saved graph. The PR tools additionally read GitHub context through `gh`; they are not an entirely offline workflow. MCP `triage_prs` returns data for the calling assistant to reason over.
+
+To share a graph through a URL, use the [HTTP server guide](/mcp/shared-http). To search Graphify’s documentation instead of your code graph, use the [docs search MCP](/mcp/docs-search).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/buildkite" rel="prev" aria-label="Previous: Buildkite (Test Impact)" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Buildkite (Test Impact)</span></a>
+  <a href="/mcp/shared-http" rel="next" aria-label="Next: Serve a graph over HTTP" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Serve a graph over HTTP</span></a>
+</div>

@@ -1,0 +1,44 @@
+---
+title: "Agents and integrations"
+description: "Connect coding agents to your Cloud workspace and manage its integrations."
+hideFooterPagination: true
+---
+
+Connect your coding assistant to the hosted workspace from **MCP** in [Graphify Cloud](https://app.graphify.com). This lets the assistant use your Cloud context while you work in its editor or terminal.
+
+## Connect a coding assistant
+
+1. Open the workspace's **MCP** page or choose **Connect agent** from Overview.
+2. Choose your client and follow its setup instructions.
+3. Complete the Graphify sign-in and select the intended workspace when prompted.
+4. Return to the assistant and confirm that its Graphify connection is available.
+
+The website's [MCP client guide](https://graphify.com/mcp) includes instructions for Claude Code, Codex, Cursor, GitHub Copilot, and other clients.
+
+## Hosted and local MCP
+
+The hosted connection uses your Cloud identity and workspace access. A local `graphify-mcp` process reads a graph on your machine. Follow [Connect the graph MCP server](/mcp/overview) when you want that local workflow.
+
+To search this documentation from an assistant, use the separate [docs search MCP](/mcp/docs-search).
+
+## Other workspace integrations
+
+**Integrations** lists the connections available to the workspace. The console currently labels that area **Early access**; follow the status and setup flow displayed for each provider.
+
+Repository-provider connections begin in [Repositories](/platform/repositories). Account and organization controls live in the user menu, including **Settings**, **Billing**, and **Members** where available.
+
+## Buildkite test selection
+
+Connect **BuildKite (Test Impact)** from Integrations to run tests affected by a pull request. A workspace owner or admin creates a CI token; your Buildkite pipeline sends the commit range and uploads the returned test steps.
+
+Follow the [Buildkite integration guide](/integrations/buildkite) for token setup, a working pipeline example, full-suite fallback, and troubleshooting. The optional **Show test selection on pull requests** switch adds advisory review context; it does not run or gate tests.
+
+## Connection troubleshooting
+
+Check that you signed in to the intended workspace and that the repository has finished indexing. If the assistant reports an authorization problem, refresh its Graphify sign-in. For client-specific configuration, return to the [MCP guide](https://graphify.com/mcp).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/platform/repositories" rel="prev" aria-label="Previous: Repositories and builds" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Repositories and builds</span></a>
+</div>

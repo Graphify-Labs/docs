@@ -1,0 +1,74 @@
+---
+title: "Ask your agent one question"
+description: "Install Graphify, map the repository, and check the files a successful run writes."
+hideFooterPagination: true
+sidebarTitle: "Ask your agent one question"
+---
+
+This is the shortest path from an empty checkout to one real question. It uses the open-source engine on your machine. You need Python 3.10 or later and a supported coding assistant.
+
+<Steps>
+  <Step title="Install and check the version">
+    ```bash
+    uv tool install graphifyy
+    graphify --version
+    ```
+
+    `graphify --version` prints the version you installed. The latest release is on [PyPI](https://pypi.org/project/graphifyy/) and in the [changelog](/changelog). The package is `graphifyy`, with two y's. The command is `graphify`.
+  </Step>
+  <Step title="Install the skill for your assistant">
+    ```bash
+    graphify install --platform cursor
+    ```
+
+    Use `claude`, `codex`, `gemini`, or `copilot` in place of `cursor` when that is the assistant. `graphify install` with no flag uses the assistant it detects. Copilot in VS Code uses `graphify vscode install`. See [all integrations](/integrations/overview).
+  </Step>
+  <Step title="Map the repository">
+    In the assistant chat, at the repository root:
+
+    ```text
+    /graphify .
+    ```
+
+    In Codex, select the Graphify skill with `$graphify` and ask it to map the current repository. This is an assistant instruction, not a shell command.
+  </Step>
+  <Step title="Check the files">
+    A finished map writes `graphify-out/` at the repository root:
+
+    ```text
+    graphify-out/
+    ├── graph.html        Interactive graph
+    ├── GRAPH_REPORT.md   Concepts, communities, and suggested questions
+    └── graph.json        The graph used by CLI and MCP queries
+    ```
+  </Step>
+  <Step title="Ask one question">
+    ```bash
+    graphify query "how does authentication reach the database?"
+    ```
+
+    The first line names the graph and the nodes the search started from. Each `NODE` line is a concept with its source file and line. Each `EDGE` line is a relationship and where it happens in the code. If the output says `TRUNCATED`, raise `--budget` or ask about a narrower name.
+
+    This is graph context from the files Graphify analyzed, not a verified answer. Open the source lines it cites before you rely on it.
+  </Step>
+</Steps>
+
+## If a step fails
+
+| What you see | What to do |
+| --- | --- |
+| The shell cannot find `graphify` | Run `uv tool update-shell`, then open a new terminal. See [Troubleshooting](/troubleshooting). |
+| No `graphify-out/` after `/graphify .` | Run it in the assistant chat at the repository root, not in a shell. See [When something fails](/platform/when-stuck). |
+| The query returns nothing useful | Ask about a function, class, or file in this repository. If the code changed since the map, run `graphify update .` first. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Trace who calls this" icon="route" href="/platform/trace">
+    Find the callers of a symbol and check whether two names connect.
+  </Card>
+
+  <Card title="Query reference" icon="terminal" href="/reference/query">
+    Every flag `graphify query` accepts.
+  </Card>
+</Columns>

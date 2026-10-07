@@ -1,0 +1,176 @@
+---
+title: "Buildkite test selection"
+sidebarTitle: "Buildkite (Test Impact)"
+description: "Connect Buildkite to Graphify Cloud to select affected tests, upload a dynamic pipeline, and fall back to the full suite."
+hideFooterPagination: true
+---
+
+<div className="not-prose mb-6 flex items-center gap-3 text-sm font-medium text-[#586b60]">
+  <svg width="48" height="32" viewBox="0 0 480 320" fill="none" role="img" aria-label="Buildkite">
+    <path fill="#14CC80" d="M320 160v160l160-80V80l-160 80Z" />
+    <path fill="#30F2A2" d="M320 0v160l160-80L320 0Z" />
+    <path fill="#14CC80" d="M160 80v160l160-80V0L160 80Z" />
+    <path fill="#30F2A2" d="M0 0v160l160 80V80L0 0Z" />
+  </svg>
+  <span>Graphify Cloud × Buildkite</span>
+</div>
+
+Run the tests affected by a pull request. Graphify uses your repository graph to map changed code to tests, then returns a dynamic pipeline that Buildkite executes.
+
+<Note>
+  This integration is available in enabled Graphify Cloud workspaces. Open **Integrations → BuildKite (Test Impact)** in [the console](https://app.graphify.com). If the tile says **Coming soon**, contact your workspace owner about availability.
+</Note>
+
+## Before you start
+
+- Connect and index a **GitHub repository** in Graphify Cloud. The commit-range endpoint used here requires a GitHub connection.
+- Have a workspace **owner or admin** create the CI token.
+- Configure a Buildkite pipeline with repository checkout, Git history sufficient to find the PR merge base, and an agent with **Bash, Git, curl, jq, and buildkite-agent**.
+- Ensure uploaded test steps run on agents with your test dependencies installed. The example uses **pytest**; configure the default queue and environment for your project.
+
+## 1. Create the CI token
+
+1. In Graphify Cloud, open **Integrations → BuildKite (Test Impact)**.
+2. Under **Generate a token**, enter a name such as `buildkite-main` and select **Generate token**.
+3. Copy the token immediately. It is shown only once.
+4. Store it as a [Buildkite secret](https://buildkite.com/docs/pipelines/security/secrets/buildkite-secrets) named `GRAPHIFY_CI_TOKEN`, with access granted to this pipeline. The script below retrieves it at job runtime. If you use another secret manager, inject the same environment variable through your agent's secret hook instead.
+5. Set `GRAPHIFY_REPO_ID` to the repository's **Graphify ID** in the same workspace. This is not the GitHub repository name or numeric GitHub ID.
+
+There is one active token for this integration per workspace. **Replace token** revokes the previous token; update every pipeline using it. Members can read the setup instructions but need an owner or admin to manage tokens.
+
+## 2. Add the pipeline step
+
+Add this step to `.buildkite/pipeline.yml`, replacing the placeholder repository ID:
+
+```yaml .buildkite/pipeline.yml
+steps:
+  - label: ":buildkite: Graphify test selection"
+    key: "graphify-test-selection"
+    env:
+      GRAPHIFY_REPO_ID: "YOUR_GRAPHIFY_REPOSITORY_ID"
+    command: "bash .buildkite/graphify-select-tests.sh"
+```
+
+Then commit the following script as `.buildkite/graphify-select-tests.sh`:
+
+```bash .buildkite/graphify-select-tests.sh
+#!/usr/bin/env bash
+set +x
+set -euo pipefail
+
+full_suite() {
+  printf '%s\n' '{"steps":[{"label":":test_tube: full test suite","command":"pytest"}]}' \
+    | buildkite-agent pipeline upload
+}
+
+# Branch builds keep running the full suite.
+if [[ "${BUILDKITE_PULL_REQUEST:-false}" == "false" ]]; then
+  full_suite
+  exit 0
+fi
+
+: "${GRAPHIFY_REPO_ID:?Set your Graphify repository ID}"
+: "${BUILDKITE_PULL_REQUEST_BASE_BRANCH:?Missing pull request base branch}"
+GRAPHIFY_CI_TOKEN="${GRAPHIFY_CI_TOKEN:-$(buildkite-agent secret get GRAPHIFY_CI_TOKEN)}"
+: "${GRAPHIFY_CI_TOKEN:?Provide a Graphify CI token}"
+
+head_sha="$(git rev-parse "${BUILDKITE_COMMIT:-HEAD}^{commit}")"
+git fetch --no-tags origin "$BUILDKITE_PULL_REQUEST_BASE_BRANCH"
+base_sha="$(git merge-base "$head_sha" FETCH_HEAD)"
+
+payload="$(jq -n --arg base "$base_sha" --arg head "$head_sha" \
+  '{baseSha: $base, headSha: $head, format: "buildkite", command: "pytest"}')"
+response="$(mktemp)"
+trap 'rm -f "$response"' EXIT
+
+if ! status="$(curl --silent --show-error --connect-timeout 10 --max-time 180 \
+  --output "$response" --write-out '%{http_code}' \
+  --request POST \
+  --header "Authorization: Bearer $GRAPHIFY_CI_TOKEN" \
+  --header "Content-Type: application/json" \
+  --data "$payload" \
+  "https://api.graphify.com/v1/repos/$GRAPHIFY_REPO_ID/test-impact")"; then
+  echo "Graphify could not be reached; running the full suite."
+  full_suite
+  exit 0
+fi
+
+case "$status" in
+  200)
+    jq -e '.steps | type == "array" and length > 0' "$response" > /dev/null
+    buildkite-agent pipeline upload --no-interpolation "$response"
+    ;;
+  429|5??)
+    echo "Graphify returned HTTP $status; running the full suite."
+    full_suite
+    ;;
+  *)
+    echo "Graphify returned HTTP $status. Check the CI token, repository ID, and commit range." >&2
+    exit 1
+    ;;
+esac
+```
+
+Keep the token reference in the script. Buildkite expands variables in uploaded YAML before jobs run; a checked-in script reads them at runtime without embedding the token in pipeline configuration. See [Buildkite's secret handling guidance](https://buildkite.com/docs/pipelines/security/secrets/risk-considerations).
+
+The script resolves the PR's base commit with `git merge-base` and uses `BUILDKITE_COMMIT` for its head. Buildkite provides `BUILDKITE_PULL_REQUEST_BASE_BRANCH`; **`BUILDKITE_PULL_REQUEST_BASE_SHA` is not a built-in variable**. See [Buildkite environment variables](https://buildkite.com/docs/pipelines/configure/environment-variables).
+
+### Adapt it to your test runner
+
+Change `pytest` in **both** the request's `command` and `full_suite()` if your project uses another runner. The command must run the full suite with no appended paths and support selected test-file paths appended as arguments. Confirm that behavior before replacing your existing test step.
+
+The generated steps need the same dependencies, queue, and environment as your normal tests. Job-specific plugins or container configuration from your old test step are not added by this example. Preserve those requirements in your agent setup or adapt the generated steps before upload.
+
+When trialing the integration, keep your existing full-suite job and compare its results with the selected run. If later jobs must wait for dynamically uploaded tests, configure Buildkite dependencies or a wait step accordingly; see [dynamic pipelines](https://buildkite.com/docs/pipelines/configure/dynamic-pipelines).
+
+## What the request does
+
+`POST https://api.graphify.com/v1/repos/{GRAPHIFY_REPO_ID}/test-impact`
+
+| Field | Purpose |
+| --- | --- |
+| `Authorization: Bearer …` | Workspace CI token with the `test-impact` scope. |
+| `baseSha`, `headSha` | Immutable commit SHAs for the comparison. Graphify derives the changed files through GitHub. |
+| `format: "buildkite"` | Return a pipeline object containing `steps`, ready for `buildkite-agent pipeline upload`. |
+| `command` | Test command used for selected paths and full-suite runs. Defaults to `pytest`. |
+
+The response contains the pipeline directly, without a `data` or `success` wrapper. Buildkite accepts the returned JSON as well as YAML. The script uses `--no-interpolation` when uploading that response so Buildkite does not expand variables inside the generated commands at upload time. See [pipeline upload](https://buildkite.com/docs/agent/cli/reference/pipeline).
+
+## Full-suite fallback
+
+Graphify requests a full run when it cannot confidently map a change to tests, including deleted tests, uncertain rename mappings, and non-code changes that require escalation. Explicitly configured non-code ignore rules can produce a no-op for an entirely ignored change.
+
+The sample adds a separate full-suite fallback for network failures, rate limits, and server errors. Authentication or invalid-request errors fail the selection step so you can fix the configuration. A malformed successful response or failed pipeline upload also fails the step. A failed request never counts as a successful test run.
+
+## Show test selection on pull requests
+
+The modal's **Show test selection on pull requests** switch adds an advisory section to Graphify reviews. An owner or admin manages it, and repository reviews must be enabled for the advisory workflow.
+
+The switch does **not** run, skip, or gate tests. Test execution is controlled by the Buildkite pipeline you configure above. Read [pull request reviews](/platform/reviews) for the review workflow.
+
+## Verify the connection
+
+Open a pull request against the connected GitHub repository. In Buildkite, confirm that:
+
+1. **Graphify test selection** completes and uploads a test step.
+2. The uploaded step runs selected tests or identifies a full-suite run.
+3. The test command executes successfully with your project's environment and dependencies.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Token controls are unavailable | Ask a workspace owner or admin. If the integration says **Coming soon**, it is not enabled for that workspace. |
+| Secret retrieval fails | Grant the pipeline access to `GRAPHIFY_CI_TOKEN`, or inject it through your configured secret manager. |
+| Authentication or scope error | Use the active Graphify CI token for this workspace, with `test-impact` scope. Replacing a token revokes the old one. |
+| Repository not found | Use the Graphify repository ID belonging to the token's workspace. |
+| HTTP 422 | Confirm both SHAs are real commits and the repository has a GitHub connection. Do not combine a commit range with a manually supplied changed-file list. |
+| Git cannot resolve the base | Fetch the PR's target branch and enough history to compute its merge base. The script stops if it cannot establish the range. |
+| Every run uses the full suite | Inspect the uploaded step's label and selection-step logs. Check graph indexing, unmapped changes, non-code changes, and service errors before changing your test configuration. |
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/other-assistants" rel="prev" aria-label="Previous: Other coding assistants" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Other coding assistants</span></a>
+  <a href="/mcp/overview" rel="next" aria-label="Next: Connect the graph MCP server" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Connect the graph MCP server</span></a>
+</div>

@@ -1,0 +1,252 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Graphify",
+  "colors": {
+    "primary": "#118D4F",
+    "light": "#4DEA9C",
+    "dark": "#118D4F"
+  },
+  "favicon": "https://graphify.com/icon.svg",
+  "navigation": {
+    "pages": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart"
+        ]
+      }
+    ],
+    "tabs": [
+      {
+        "tab": "Get started",
+        "pages": [
+          {
+            "group": "Get started",
+            "pages": [
+              "index",
+              "quickstart",
+              "installation",
+              "troubleshooting",
+              "changelog",
+              "for-agents"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "concepts/architecture",
+              "concepts/provenance",
+              "concepts/outputs",
+              "concepts/supported-inputs"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Graphify Cloud",
+        "groups": [
+          {
+            "group": "Graphify Cloud",
+            "pages": [
+              "platform/overview",
+              "platform/console"
+            ]
+          },
+          {
+            "group": "Core features",
+            "pages": [
+              "platform/graphs",
+              "platform/wiki",
+              "platform/reviews",
+              "platform/verification",
+              "platform/learning",
+              "platform/memory",
+              "platform/contributors",
+              "platform/profile",
+              "platform/trace",
+              "platform/read-a-result",
+              "platform/when-stuck"
+            ]
+          },
+          {
+            "group": "Workspace",
+            "pages": [
+              "platform/repositories",
+              "platform/connections"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/first-graph",
+              "guides/querying",
+              "guides/local-development",
+              "guides/incremental-updates",
+              "guides/headless-extraction",
+              "guides/exports",
+              "guides/work-memory",
+              "guides/ask-your-agent"
+            ]
+          },
+          {
+            "group": "Team workflows",
+            "pages": [
+              "guides/team-workflows",
+              "guides/pull-requests"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Integrations & MCP",
+        "groups": [
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/overview",
+              "integrations/claude-code",
+              "integrations/cursor",
+              "integrations/codex",
+              "integrations/gemini-cli",
+              "integrations/copilot",
+              "integrations/vscode",
+              "integrations/jetbrains",
+              "integrations/chatgpt",
+              "integrations/openclaw",
+              "integrations/other-assistants"
+            ]
+          },
+          {
+            "group": "CI integrations",
+            "pages": [
+              "integrations/buildkite"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "mcp/overview",
+              "mcp/shared-http",
+              "mcp/docs-search"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "CLI",
+            "pages": [
+              "reference/overview",
+              "reference/query",
+              "reference/path",
+              "reference/explain",
+              "reference/extract",
+              "reference/configuration"
+            ]
+          },
+          {
+            "group": "MCP reference",
+            "pages": [
+              "reference/mcp-tools"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Pricing",
+        "groups": [
+          {
+            "group": "Plans and billing",
+            "pages": [
+              "pricing/overview",
+              "pricing/enterprise"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "https://graphify.com/assets/brand/graphify-logo-ink.svg",
+    "dark": "https://graphify.com/assets/brand/graphify-logo-white.svg",
+    "href": "https://graphify.com"
+  },
+  "navbar": {
+    "links": [
+      {
+        "href": "https://github.com/Graphify-Labs/graphify",
+        "label": "GitHub"
+      },
+      {
+        "label": "Support",
+        "href": "https://discord.gg/XPPYrdw3Yp"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Open Graphify",
+      "href": "https://app.graphify.com"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/graphify",
+      "github": "https://github.com/Graphify-Labs/graphify",
+      "linkedin": "https://www.linkedin.com/company/graphify-labs",
+      "discord": "https://discord.gg/XPPYrdw3Yp"
+    }
+  },
+  "description": "Documentation for Graphify: turn code and documents into a knowledge graph your AI agent can query, trace, and explain.",
+  "appearance": {
+    "default": "light",
+    "strict": true
+  },
+  "background": {
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#FFFFFF"
+    },
+    "image": "https://graphify.com/assets/features-bg.webp"
+  },
+  "search": {
+    "prompt": "Search Graphify docs..."
+  },
+  "fonts": {
+    "family": "Geist"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "markdown": {
+    "instructions": [
+      "The PyPI package is graphifyy, with two y's. The command is graphify.",
+      "/graphify . is typed in an assistant chat, not in a shell.",
+      "Use only commands, flags, and endpoints shown on these pages. Do not invent one.",
+      "Check the current version on PyPI (https://pypi.org/project/graphifyy/) or in https://docs.graphify.com/changelog.md before you describe what shipped.",
+      "The official site is https://graphify.com. These docs are https://docs.graphify.com.",
+      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The VS Code, JetBrains, ChatGPT, and OpenClaw pages use the hosted server, not the ten-tool list.",
+      "Read https://docs.graphify.com/llms.txt, then open one page's .md link. Use https://docs.graphify.com/llms-full.txt only when one page is not enough."
+    ]
+  }
+}

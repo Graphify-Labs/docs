@@ -1,0 +1,98 @@
+---
+title: "Installation"
+description: "Install, upgrade, and register the Graphify skill on macOS, Linux, and Windows."
+hideFooterPagination: true
+---
+
+## Prerequisites
+
+| Requirement | Check |
+| --- | --- |
+| Python 3.10 or later | `python3 --version` or `python --version` |
+| uv or pipx | `uv --version` or `pipx --version` |
+| A coding assistant, for the skill workflow | [Choose an integration](/integrations/overview) |
+
+The standalone CLI works without an assistant. Code-only extraction does not require an API key.
+
+## Install the package
+
+<CodeGroup>
+```bash uv
+uv tool install graphifyy
+```
+```bash pipx
+pipx install graphifyy
+```
+```bash Python environment
+python3 -m venv .venv
+.venv/bin/python -m pip install graphifyy
+```
+</CodeGroup>
+
+On Windows, a virtual environment’s executable is `.venv\Scripts\python.exe`. uv and pipx manage the environment for you.
+
+<Note>The official PyPI package is `graphifyy`. Other similarly named packages are not the Graphify Labs package.</Note>
+
+## Register the skill
+
+```bash
+graphify install
+graphify install --platform codex
+```
+
+The first command detects an assistant; the second targets one explicitly. Run the specific command for each assistant you use. Use `--project` when you want the registration committed with a repository:
+
+```bash
+graphify install --project --platform codex
+```
+
+Read the installer’s list of files before committing them. Project and user registrations live in different locations.
+
+## Optional capabilities
+
+Install only the extras your workflow needs. Quote bracketed names in zsh.
+
+| Capability | uv installation |
+| --- | --- |
+| MCP server | `uv tool install "graphifyy[mcp]"` |
+| File watching | `uv tool install "graphifyy[watch]"` |
+| PDFs | `uv tool install "graphifyy[pdf]"` |
+| SQL parsing | `uv tool install "graphifyy[sql]"` |
+| Terraform | `uv tool install "graphifyy[terraform]"` |
+| Office documents | `uv tool install "graphifyy[office]"` |
+| Local Ollama backend | `uv tool install "graphifyy[ollama]"` |
+| Leiden clustering | `uv tool install "graphifyy[leiden]"` |
+
+Combine extras, for example `uv tool install "graphifyy[mcp,watch]"`. If uv reports an existing installation, use its `--reinstall` option to replace that tool environment with the requested extras.
+
+## Upgrade
+
+```bash
+uv tool upgrade graphifyy
+graphify install --platform codex
+```
+
+Re-run registration for the assistants you use so their skill files match the package. If you installed git hooks, run `graphify hook install` again after moving or reinstalling the Python environment.
+
+## Command not found
+
+```bash
+uv tool update-shell
+```
+
+Then open a new terminal. With pipx, run `pipx ensurepath`. If an MCP client cannot find Graphify, use an absolute executable path in its configuration.
+
+## Remove a registration
+
+```bash
+graphify uninstall --project --platform codex
+```
+
+`graphify uninstall` removes user registrations across platforms. The optional `--purge` flag also deletes `graphify-out/`; omit it to preserve your graph.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/quickstart" rel="prev" aria-label="Previous: Your first knowledge graph" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Your first knowledge graph</span></a>
+  <a href="/troubleshooting" rel="next" aria-label="Next: Troubleshooting" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Troubleshooting</span></a>
+</div>

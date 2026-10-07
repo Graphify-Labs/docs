@@ -1,0 +1,60 @@
+---
+title: "Graphify with Gemini CLI"
+description: "Install the local Graphify skill in Gemini CLI."
+hideFooterPagination: true
+---
+
+## Install and register
+
+```bash
+uv tool install graphifyy
+graphify install --platform gemini
+```
+
+The integration uses GEMINI.md instructions and a BeforeTool hook to suggest graph queries. Exact destinations depend on whether you use a personal or project installation; the installer reports the files it writes.
+
+For a repository-local setup, run this from the project root:
+
+```bash
+graphify install --project --platform gemini
+```
+
+## Build the graph
+
+Open your project in Gemini CLI. Select the Graphify skill and enter:
+
+```text
+/graphify .
+```
+
+The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
+
+## Ask with context
+
+After the graph is built, ask:
+
+> Use Graphify to explain the authentication flow. Cite the source files and distinguish explicit relationships from inferred ones.
+
+You can also query from a terminal:
+
+```bash
+graphify query "authentication flow"
+```
+
+## Keep the integration current
+
+```bash
+uv tool upgrade graphifyy
+graphify install --platform gemini
+```
+
+If the skill is missing, refresh the assistant and confirm that the registration was installed in the intended user or project scope. See [troubleshooting](/troubleshooting).
+
+<Card title="Connect native MCP tools" icon="plug" href="/mcp/overview">Use the same graph through structured tool calls.</Card>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/codex" rel="prev" aria-label="Previous: Graphify with Codex" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify with Codex</span></a>
+  <a href="/integrations/copilot" rel="next" aria-label="Next: Graphify with GitHub Copilot" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify with GitHub Copilot</span></a>
+</div>

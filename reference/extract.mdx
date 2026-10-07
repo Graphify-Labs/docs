@@ -1,0 +1,51 @@
+---
+title: "graphify extract"
+description: "Run local structural extraction and optional semantic processing."
+hideFooterPagination: true
+---
+
+```bash
+graphify extract <path> [options]
+```
+
+## Common options
+
+| Option | Purpose |
+| --- | --- |
+| `--code-only` | Skip semantic document and media extraction; no model key needed. |
+| `--backend <name>` | Select a headless semantic backend. |
+| `--model <name>` | Override the model for that backend. |
+| `--mode deep` | Request richer semantic extraction. |
+| `--out <dir>` / `--output <dir>` | Choose an output root. |
+| `--no-cluster` | Skip clustering. |
+| `--no-gitignore` | Ignore Git’s exclusions while still honoring `.graphifyignore`. |
+| `--max-workers <n>` | Structural extraction parallelism. |
+| `--token-budget <n>` | Semantic chunk budget. |
+| `--max-concurrency <n>` | Concurrent model requests. |
+| `--api-timeout <seconds>` | Request timeout. |
+| `--force` | Permit replacement with a smaller graph after intentional changes. |
+| `--timing` | Print stage timings. |
+| `--google-workspace` | Explicitly enable Google Workspace shortcut export. |
+| `--cargo` | Include Cargo workspace dependency information. |
+| `--postgres <DSN>` | Read a PostgreSQL schema with the relevant extra and credentials. |
+
+## Examples
+
+```bash
+graphify extract . --code-only
+graphify extract ./docs --backend ollama --max-concurrency 2
+graphify extract ./src --code-only --timing
+```
+
+## Outputs and failures
+
+Inspect the console summary and generated report before using the graph. Missing grammars, unsupported files, model errors, partial results, and the smaller-graph guard can affect what was written. `--force` is an explicit override, not a routine remedy for an unexplained failure.
+
+See [headless extraction](/guides/headless-extraction) for provider setup and [outputs](/concepts/outputs) for the saved files.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/reference/explain" rel="prev" aria-label="Previous: graphify explain" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">graphify explain</span></a>
+  <a href="/reference/configuration" rel="next" aria-label="Next: Configuration" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Configuration</span></a>
+</div>

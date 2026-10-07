@@ -1,0 +1,122 @@
+---
+title: "Graphify MCP for OpenClaw"
+sidebarTitle: "Graphify MCP for OpenClaw"
+description: "Connect OpenClaw to your indexed repositories through Graphify's hosted MCP server."
+hideFooterPagination: true
+---
+
+The **Graphify MCP** plugin connects OpenClaw to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. MCP is the connection. The plugin is the package OpenClaw installs from [ClawHub](https://clawhub.ai/graphify-labs/plugins/graphify-mcp).
+
+Once connected, OpenClaw can search the repositories you have indexed in [Graphify Cloud](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches. There is no API key to paste and no graph to build on your computer. This is the same hosted server as [Graphify MCP for VS Code](/integrations/vscode), [Graphify MCP for JetBrains](/integrations/jetbrains), and [Graphify for ChatGPT](/integrations/chatgpt).
+
+Graphify Labs publishes the package. OpenClaw has not marked it as an official OpenClaw plugin.
+
+`graphify install --platform claw` on [Other coding assistants](/integrations/other-assistants) installs the local skill for a graph on your machine. This page connects OpenClaw to Graphify Cloud.
+
+## Before you start
+
+- OpenClaw with remote MCP, OAuth, and Claude-format bundle support. The package was prepared for OpenClaw **2026.9.8**. Older releases may differ. See [OpenClaw's plugin install guide](https://docs.openclaw.ai/cli/plugins/install).
+- A model enabled in OpenClaw, with permission to call tools. That access is separate from your Graphify plan.
+- A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
+
+## 1. Install the plugin
+
+[Open Graphify MCP on ClawHub](https://clawhub.ai/graphify-labs/plugins/graphify-mcp)
+
+Install the published package, then confirm OpenClaw sees it:
+
+```bash
+openclaw plugins install clawhub:@graphify-labs/graphify-mcp
+openclaw plugins inspect graphify-mcp
+```
+
+If you already cloned [graphify-mcp](https://github.com/Graphify-Labs/graphify-mcp), the same bundle is in `integrations/openclaw`:
+
+```bash
+openclaw plugins install ./integrations/openclaw
+openclaw plugins inspect graphify-mcp
+```
+
+Installing the plugin does not sign you in by itself.
+
+## 2. Sign in
+
+Register the hosted server, then complete Graphify sign-in in the browser:
+
+```bash
+openclaw mcp set graphify '{"url":"https://api.graphify.com/mcp","transport":"streamable-http","auth":"oauth"}'
+openclaw mcp login graphify
+openclaw mcp doctor graphify --probe
+```
+
+If a server named `graphify` already exists, run `openclaw mcp show graphify` first and keep any settings you meant to keep.
+
+The same connection, merged into your OpenClaw configuration:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "graphify": {
+        "url": "https://api.graphify.com/mcp",
+        "transport": "streamable-http",
+        "auth": "oauth"
+      }
+    }
+  }
+}
+```
+
+Use one connection named `graphify`. A second name for the same URL shows the tools twice.
+
+Do not put a password or token in the configuration. OpenClaw stores the OAuth credentials.
+
+Start a new agent session after this. If OpenClaw prints a restart instruction, follow that instruction.
+
+## 3. Ask a question
+
+Ask OpenClaw to list what the connection can see:
+
+```text
+List my Graphify workspaces and repositories.
+```
+
+Pick a repository from the answer, then ask:
+
+- `In my selected repository, find the function that handles authentication.`
+- `Show its callers and the linked tests, with file paths as evidence.`
+
+A connection check includes a repository lookup. Tool discovery alone does not show that the index is reachable.
+
+Results come from the repositories indexed in your workspace. Open the source an answer cites before you rely on it. Static results do not run the code or the tests.
+
+Some tools save repository notes or change the selected workspace. Read each tool request and approve it only when that is what you meant.
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| The install stops and asks you to accept capabilities | Review the Graphify MCP server on that screen and accept it. On a noninteractive install, run the same install command again with `--accept-capabilities`. |
+| Graphify tools are hidden | Check that the plugin is enabled and that your tool policy allows it. A `bundle-mcp` denial hides these tools. |
+| Sign-in fails | Run `openclaw mcp doctor graphify --probe`, then `openclaw mcp login graphify` again. |
+| No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories), then ask OpenClaw to list repositories again. |
+| Two copies of the Graphify tools | Keep a single server named `graphify`. Remove the extra connection to the same URL. |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Graphify for ChatGPT" icon="plug" href="/integrations/chatgpt">
+    Connect ChatGPT, Codex, and Dots to the same hosted server.
+  </Card>
+
+  <Card title="Graphify MCP for VS Code" icon="plug" href="/integrations/vscode">
+    Connect VS Code agents to the same hosted server.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/chatgpt" rel="prev" aria-label="Previous: Graphify for ChatGPT" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify for ChatGPT</span></a>
+  <a href="/integrations/other-assistants" rel="next" aria-label="Next: Other coding assistants" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Other coding assistants</span></a>
+</div>

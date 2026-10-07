@@ -1,0 +1,50 @@
+---
+title: "Pull request reviews"
+description: "Investigate review findings and understand the reach of a change."
+hideFooterPagination: true
+---
+
+**Reviews** brings pull requests, findings, and code-graph context together in [Graphify Cloud](https://app.graphify.com). Use it to understand a change and the code it can affect.
+
+## Review a change
+
+1. Open **Reviews** and choose the repository.
+2. Select the relevant pull request and review run. Check the commit so you know which revision was analyzed.
+3. Inspect the findings, source context, and affected code. Follow the pull request or commit link to investigate further.
+4. Compare advisory findings with the run's verification evidence, where present.
+
+<img src="https://graphify.com/assets/shots/reviews.webp" alt="Graphify Cloud Reviews with pull request runs, findings, and affected code" width="1704" height="910" className="block h-auto w-full" />
+
+Graph context helps you look beyond the diff: callers, dependencies, and relationships can explain why a small edit has wider effects.
+
+## Review and verification
+
+Advisory review findings and formal verification results answer different questions. A review can surface a concern to investigate. Verification compares supported changed functions. Read each label in [Formal verification](/platform/verification): proved equivalent, a behavior change, no divergence sampled, an abstention, or an error.
+
+Use the [Formal Verification](/platform/verification) view for the run history and per-function verdicts. Do not interpret a completed review as proof that all changed functions preserve behavior.
+
+## Improve future reviews
+
+Give feedback on the pull request with `@graphify wrong <finding>`, `@graphify good <finding>`, or `@graphify suppress <rule>`. Use exact finding names from the review.
+
+The [Learn](/platform/learning) view shows learned dismissals, suppressed patterns, and feedback history. This adjusts advisory surfacing without changing verification verdicts.
+
+## Repository review settings
+
+On **Repositories**, open **Options** for a repository. These two switches are on unless you turn them off. Neither blocks a merge.
+
+- **Risky patterns** lists risky patterns on lines the pull request adds. The review can then include **Risky patterns (advisory)**.
+- **Stale docs** lists docs that mention code the pull request changed. The review can then include **Docs that may be stale (advisory)**.
+
+Expand the repository row to see **Unreferenced code (heuristic)**. It is not a switch. The card appears when indexing is on and the graph has nodes. It lists private functions, methods, and classes that nothing in that repository's graph references, and that a text search of the source finds no other use of. A symbol is listed only after it has stayed unreferenced for the number of days the card states, across at least two indexed builds. Code reached through reflection, a string lookup, or another repository can still appear, so check it before you remove it.
+
+## Missing or outdated results
+
+Check the selected repository and commit, the settings above, and any plan-limit or access message. A result for an older commit describes that earlier revision. [Repositories and builds](/platform/repositories) explains where to check indexing and repository controls.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/platform/wiki" rel="prev" aria-label="Previous: Wiki" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Wiki</span></a>
+<a href="/platform/verification" rel="next" aria-label="Next: Formal verification" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Formal verification</span></a>
+</div>

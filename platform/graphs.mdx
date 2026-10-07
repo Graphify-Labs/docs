@@ -1,0 +1,41 @@
+---
+title: "Repository graphs"
+description: "Explore code relationships within a repository and across your connected workspace."
+hideFooterPagination: true
+---
+
+Use **Graphs** in [Graphify Cloud](https://app.graphify.com) to explore code relationships within a repository or across your workspace.
+
+## Choose your scope
+
+Expand **Graphs** in the sidebar:
+
+- **Single Repository** focuses on one indexed codebase.
+- **Cross-Repository** follows relationships that cross repository or service boundaries.
+
+Choose the repository context you need before interpreting a node or connection. A missing connection can reflect the selected scope or the indexed source rather than the absence of a runtime dependency.
+
+## Explore the map
+
+Search for a node, inspect its neighbors, and use community filters to narrow the canvas. Node and edge totals help describe the current graph; provenance categories explain how its connections were obtained.
+
+<img src="https://graphify.com/assets/shots/graph.webp" alt="Graphify Cloud cross-repository graph with community filters, node search, and provenance counts" width="1704" height="910" className="block h-auto w-full" />
+
+The graph is useful for tracing a call path, finding dependent code, and identifying boundaries between services. Follow source references when you need to inspect the implementation behind a relationship.
+
+## Read provenance
+
+Graphify distinguishes extracted relationships from inferred or ambiguous ones. Keep those labels visible when using graph context to assess a change. A traversable connection provides evidence to investigate; it is not a formal proof of application behavior.
+
+See [Edges and provenance](/concepts/provenance) for the evidence labels and [Formal verification](/platform/verification) for behavior comparisons.
+
+## Keep the graph current
+
+The canvas reflects an indexed build. Check **Repositories** and **Builds** when recent code is missing. [Wiki](/platform/wiki) provides a written view of the same indexed repository, while [MCP](/platform/connections) makes workspace context available to your coding assistant.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/platform/console" rel="prev" aria-label="Previous: Console tour" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Console tour</span></a>
+<a href="/platform/wiki" rel="next" aria-label="Next: Wiki" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Wiki</span></a>
+</div>

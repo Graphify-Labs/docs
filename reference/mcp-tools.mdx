@@ -1,0 +1,121 @@
+---
+title: "MCP tool reference"
+description: "Inputs for all ten Graphify graph and pull request tools."
+hideFooterPagination: true
+---
+
+The current graph MCP server exposes ten tools. Connect it with the [MCP setup guide](/mcp/overview).
+
+Every tool also accepts an optional `project_path`: an absolute path to a project directory containing `graphify-out/graph.json`. Omit it to use the graph selected when the server started. Access is subject to the server’s path controls.
+
+These schemas were extracted from the audited `graphify/serve.py` source. Graph exploration returns saved evidence. PR tools additionally use GitHub context; MCP triage returns data for your assistant to reason over.
+
+## query_graph
+
+Search the knowledge graph using BFS or DFS. Returns relevant nodes and edges as text context.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `question` | `string` | Yes | Natural language question or keyword search |
+| `mode` | `string` | No | Default: `"bfs"`. bfs=broad context, dfs=trace a specific path Values: `bfs`, `dfs`. |
+| `depth` | `integer` | No | Default: `3`. Traversal depth (1-6) |
+| `token_budget` | `integer` | No | Default: `2000`. Max output tokens |
+| `context_filter` | `array` | No | Optional explicit edge-context filter, e.g. ['call', 'field'] |
+
+## get_node
+
+Get full details for a specific node by label or ID.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `label` | `string` | Yes | Node label or ID to look up |
+
+## get_neighbors
+
+Get all direct neighbors of a node with edge details.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `label` | `string` | Yes | Optional. |
+| `relation_filter` | `string` | No | Optional: filter by relation type |
+| `token_budget` | `integer` | No | Default: `2000`. Max output tokens |
+
+## get_community
+
+Get all nodes in a community by community ID.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `community_id` | `integer` | Yes | Community ID (0-indexed by size) |
+| `token_budget` | `integer` | No | Default: `2000`. Max output tokens |
+
+## god_nodes
+
+Return the most connected nodes - the core abstractions of the knowledge graph.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `top_n` | `integer` | No | Default: `10`.  |
+| `exclude_hubs_percentile` | `number` | No | Suppress nodes whose degree exceeds this percentile (0-100) of the degree distribution, matching cluster()'s hub exclusion |
+
+## graph_stats
+
+Return summary statistics: node count, edge count, communities, confidence breakdown.
+
+No required inputs. Call with `{}` for the default graph.
+
+## shortest_path
+
+Find the shortest path between two concepts in the knowledge graph. Follows stored edge direction by default; set undirected=true to ignore it.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `source` | `string` | Yes | Source concept label or keyword |
+| `target` | `string` | Yes | Target concept label or keyword |
+| `max_hops` | `integer` | No | Default: `8`. Maximum hops to consider |
+| `undirected` | `boolean` | No | Default: `false`. Ignore stored edge direction when searching |
+
+## list_prs
+
+List open GitHub PRs with CI status, review state, and graph impact (which communities each PR touches, blast radius). Use this before starting work to check if a PR already covers the area you're about to change.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `base` | `string` | No | Base branch to filter PRs by (auto-detected if omitted) |
+| `repo` | `string` | No | GitHub repo (owner/repo). Defaults to current repo. |
+
+## get_pr_impact
+
+Get detailed graph impact for a specific PR: which files it changes, which knowledge-graph communities are affected, and how many nodes are touched. Use this to assess merge risk or check for overlap with your current work.
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `pr_number` | `integer` | Yes | PR number to analyse |
+| `repo` | `string` | No | GitHub repo (owner/repo). Defaults to current repo. |
+
+## triage_prs
+
+Return all actionable open PRs (correct base, not stale) with full graph impact data so you can reason about review priority, merge order, and conflict risk. Call this when the user asks 'what PRs should I review?' or 'what's ready to merge?'
+
+| Input | Type | Required | Default / description |
+| --- | --- | --- | --- |
+| `base` | `string` | No | Base branch to filter PRs by (auto-detected if omitted) |
+| `repo` | `string` | No | GitHub repo (owner/repo). Defaults to current repo. |
+
+## Example calls
+
+```json query_graph
+{"question": "request validation", "mode": "bfs", "token_budget": 1500}
+```
+
+```json shortest_path
+{"source": "login", "target": "normalize_email", "max_hops": 8}
+```
+
+The second example uses the [tutorial project](/guides/first-graph). Replace labels with nodes from your graph. A returned path is source-level context, not proof of runtime execution.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/reference/configuration" rel="prev" aria-label="Previous: Configuration" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Configuration</span></a>
+</div>

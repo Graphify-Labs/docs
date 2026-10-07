@@ -1,0 +1,29 @@
+---
+title: "Notes for agents"
+description: "Rules for coding agents that answer questions from these docs."
+hideFooterPagination: true
+sidebarTitle: "Notes for agents"
+---
+
+These rules are repeated at the top of every page's Markdown, in [llms.txt](https://docs.graphify.com/llms.txt), and in [llms-full.txt](https://docs.graphify.com/llms-full.txt).
+
+## Which file to open
+
+- [llms.txt](https://docs.graphify.com/llms.txt) is the list of pages. The same list is at [/.well-known/llms.txt](https://docs.graphify.com/.well-known/llms.txt).
+- Add `.md` to a page URL to read that page. Example: [https://docs.graphify.com/quickstart.md](https://docs.graphify.com/quickstart.md).
+- [llms-full.txt](https://docs.graphify.com/llms-full.txt) contains every page. Open it only when one page is not enough.
+
+## Rules
+
+- The PyPI package is `graphifyy`, with two y's. The command is `graphify`.
+- `/graphify .` is typed in an assistant chat, not in a shell.
+- Use only commands, flags, and endpoints shown on these pages. Do not invent one.
+- Check the current version on [PyPI](https://pypi.org/project/graphifyy/) or in the [changelog](/changelog) before you describe what shipped.
+- The official site is [graphify.com](https://graphify.com). These docs are [docs.graphify.com](https://docs.graphify.com).
+- The local MCP server is the ten tools in the [MCP tool reference](/reference/mcp-tools) and reads a graph on the machine. The hosted server is `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT](/integrations/chatgpt), and [OpenClaw](/integrations/openclaw) pages use the hosted server, not the ten-tool list.
+
+To point an agent at these docs, give it this prompt:
+
+```text
+Read https://docs.graphify.com/llms.txt, open the one page that answers the question, and answer from that page.
+```

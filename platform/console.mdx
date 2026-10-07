@@ -1,0 +1,65 @@
+---
+title: "Console tour"
+description: "Tour the Cloud workspace, from repository graphs and Wiki to reviews, verification, Learning, and memory."
+hideFooterPagination: true
+---
+
+Open [Graphify Cloud](https://app.graphify.com) to explore your workspace. This tour shows the product screens and the context available in each view.
+
+## Overview
+
+**Overview** brings your repository graphs and workspace activity together. The graph cards show indexing status and repository context; workspace statistics and recent builds help you see what has been processed. **Connect agent** opens the path to using that context from your coding assistant.
+
+<img src="https://graphify.com/assets/shots/overview.webp" alt="Graphify Cloud Overview with repository graph cards, workspace statistics, and recent builds" width="1704" height="910" className="block h-auto w-full" />
+
+## Cross-repository graph
+
+Use **Graphs → Cross-Repository** to explore relationships spanning multiple repositories. The view combines the graph canvas with node and edge counts, provenance categories, community filters, and node search. This helps you follow connections that cross a service or repository boundary.
+
+<img src="https://graphify.com/assets/shots/graph.webp" alt="Graphify cross-repository graph with community filters, node search, and provenance counts" width="1704" height="910" className="block h-auto w-full" />
+
+See [how Graphify works](/concepts/architecture) for graph structure and [edges and provenance](/concepts/provenance) for the meaning of the evidence labels.
+
+## Pull request reviews
+
+**Reviews** lists review runs for a selected repository. Each entry connects a pull request to its review status, findings, and affected code. Use that context to understand the reach of a change before investigating individual findings.
+
+<img src="https://graphify.com/assets/shots/reviews.webp" alt="Graphify Reviews showing pull requests, review status, findings, and blast-radius information" width="1704" height="910" className="block h-auto w-full" />
+
+For the meaning and limits of verification verdicts, see [formal verification](/platform/verification). To investigate pull requests using the local CLI, see the [pull request guide](/guides/pull-requests).
+
+## Agent memory
+
+**Memory** organizes remembered facts around the entities they describe. Select a repository, search for a fact or entity, and inspect the stored context alongside its provenance. The view also shows memory coverage and grounding information, helping you distinguish recorded facts from facts anchored to a graph node.
+
+<img src="https://graphify.com/assets/shots/memory.webp" alt="Graphify Memory showing remembered facts, entities, grounding metrics, and source context" width="1704" height="910" className="block h-auto w-full" />
+
+Use **Connect an agent** to bring your coding assistant into the workspace, or follow the [MCP client setup guide](https://graphify.com/mcp).
+
+## Formal verification
+
+**Formal Verification** lists runs for your repositories and pull requests. Expand a run to inspect changed functions, verdicts, and available inputs or outputs that explain a behavioral difference. The run status tells you whether processing finished; the per-function verdict tells you what was established. Read the [formal verification guide](/platform/verification) before interpreting a result.
+
+## Wiki
+
+**Wiki** turns an indexed repository graph into navigable documentation. Choose a repository, browse its articles and table of contents, search the article text, or ask a question grounded in the wiki. See [Wiki](/platform/wiki) for indexing requirements and empty states.
+
+## Learning
+
+Open **Learn** to see how trusted review feedback shapes advisory findings. The **Learning** view shows learned dismissals, suppressions, and recent feedback. It is a read-only view of that history; feedback is submitted on pull requests. Learning does not alter formal verification verdicts. See [Learning](/platform/learning) for the feedback commands and their scope.
+
+## Workspace operations
+
+- [Profile](/platform/profile): achievements, the last 7 days of Performance, and Power Ranking.
+- [Repositories and builds](/platform/repositories): connect GitHub or GitLab repositories, configure analysis, and inspect indexing runs.
+- [Contributors](/platform/contributors): explore authorship and graph reach where the contributor overlay is available.
+- [Agents and integrations](/platform/connections): connect your coding assistant through MCP and find workspace connection controls.
+
+Some views depend on workspace access or a completed repository index. Their guides explain what to check when a view is unavailable or empty.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/platform/overview" rel="prev" aria-label="Previous: Graphify Cloud" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify Cloud</span></a>
+  <a href="/platform/graphs" rel="next" aria-label="Next: Repository graphs" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Repository graphs</span></a>
+</div>

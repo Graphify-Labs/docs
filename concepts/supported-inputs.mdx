@@ -1,0 +1,42 @@
+---
+title: "Supported inputs"
+description: "Map code, schemas, documents, and media with the right extractor and extras."
+hideFooterPagination: true
+---
+
+Graphify supports a growing set of languages and input formats. Parser coverage varies by construct, and specialized extractors may require an optional package. The [package manifest](https://github.com/Graphify-Labs/graphify/blob/v8/pyproject.toml) lists the current dependencies.
+
+## Code and configuration
+
+| Input | Examples | Notes |
+| --- | --- | --- |
+| General-purpose code | Python, JavaScript, TypeScript, Go, Rust, Java, C, C++, Ruby, C#, Kotlin, Scala, PHP, Swift, Lua, Zig | Local structural extraction; framework and dynamic-language coverage varies. |
+| Additional code | Elixir, Julia, Groovy, PowerShell, Fortran, Verilog, Bash | See the repository’s input table for extensions. |
+| Web component files | Vue, Svelte, Astro, JSX, TSX | Extraction depends on the file and supported embedded syntax. |
+| SQL | Tables, views, foreign keys, joins | Install the `sql` extra. |
+| Terraform / HCL | `.tf`, `.tfvars`, `.hcl` | Install `terraform`; the graph describes source configuration, not a Terraform plan. |
+| OCaml / Common Lisp | `.ml`, `.mli`, `.lisp`, `.cl` | Install `ocaml` or `commonlisp`. |
+| Robot Framework | `.robot`, `.resource` | Install `robot`; uses the official Robot parser. |
+| Salesforce Apex | `.cls`, `.trigger` | Regex-based extraction. |
+| Package and MCP manifests | `pyproject.toml`, `go.mod`, `pom.xml`, MCP JSON files | Packages, dependency edges, and server configuration context. |
+
+## Documents and media
+
+| Input | Setup |
+| --- | --- |
+| Markdown, MDX, text, HTML, reStructuredText | A semantic backend for rich concept extraction. |
+| PDFs | `pdf` extra. |
+| Word and Excel | `office` extra. |
+| Google Workspace shortcuts | Authenticated `gws` CLI and explicit `--google-workspace`; `google` extra for Sheets. |
+| Images | A backend with the required image capability. |
+| Video and audio | `video` extra; transcription and semantic processing are separate steps. |
+
+## Keep the first scan focused
+
+Start with a repository or one documentation folder. Exclude build outputs and dependencies using [ignore rules](/guides/incremental-updates). Add media only when it contributes useful context; transcription and semantic extraction have different resource requirements from a code-only scan.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/concepts/outputs" rel="prev" aria-label="Previous: Graph files and outputs" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graph files and outputs</span></a>
+</div>

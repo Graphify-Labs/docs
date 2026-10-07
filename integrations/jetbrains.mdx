@@ -1,0 +1,132 @@
+---
+title: "Graphify MCP for JetBrains"
+description: "Connect JetBrains AI Assistant to your indexed repositories through Graphify's hosted MCP server."
+hideFooterPagination: true
+---
+
+The **Graphify MCP** plugin adds a tool window to your JetBrains IDE. From that window you copy a connection, paste it into JetBrains AI Assistant, and the assistant can search the repositories you have indexed in [Graphify Cloud](https://app.graphify.com).
+
+The plugin does not read or upload your project files, and it stores no credentials of its own. There is no API key to paste. AI Assistant is a separate JetBrains product: this plugin does not include a chat model.
+
+## Before you start
+
+- A JetBrains IDE on the **2025.3** release. The published plugin declares platform build `253` through `253.*`, so it does not install on 2025.2 or on later releases.
+- JetBrains AI Assistant, with access to MCP. Assistant access and your Graphify plan are separate.
+- A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
+- Node.js and npm on the IDE's PATH, if you use the OAuth bridge below. The direct connection does not need them.
+
+## 1. Install the plugin
+
+Install [Graphify MCP](https://plugins.jetbrains.com/plugin/34740-graphify-mcp) from the JetBrains Marketplace, or search for **Graphify MCP** by **Graphify Labs** in **Plugins**. The plugin id is `com.graphify.graphify-mcp`. Restart the IDE if it asks you to.
+
+Open **View → Tool Windows → Graphify**.
+
+## 2. Copy a configuration
+
+In the tool window, choose a connection method and click **Copy configuration**.
+
+<Tabs>
+  <Tab title="OAuth bridge (STDIO)">
+    Use this when AI Assistant cannot sign in to a remote MCP server on its own. The copied configuration runs the pinned `mcp-remote` package, which opens a browser for Graphify sign-in and stores those credentials on your machine.
+
+    Node.js and npm must be on the IDE's PATH. Enabling the configuration is what downloads and runs the bridge.
+
+    ```json
+    {
+      "mcpServers": {
+        "graphify": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "mcp-remote@0.14.3",
+            "https://api.graphify.com/mcp",
+            "--transport",
+            "http-only"
+          ]
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Direct remote HTTP">
+    Use this when your client can complete Graphify's sign-in itself. If sign-in is unavailable, switch to the OAuth bridge.
+
+    ```json
+    {
+      "mcpServers": {
+        "graphify": {
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+The tool window shows the same JSON. Copy it from there if a later plugin release changes the text.
+
+## 3. Add it to AI Assistant
+
+Open **Settings → Tools → AI Assistant → Model Context Protocol (MCP)**. On macOS the menu is **Settings** or **Preferences**, then the same path. **Open Settings** in the tool window opens the IDE settings dialog; it does not jump straight to the MCP page.
+
+Click **Add**, paste the copied JSON, and set the level to this project or to every project. Click **OK**, then **Apply**.
+
+**Settings → Tools → MCP Server** is a different page. That one lets other applications use the IDE. It is not where this configuration goes.
+
+## 4. Sign in and ask
+
+Complete the Graphify sign-in in your browser when it opens. In the MCP settings, the server's status should show a connection. Then ask:
+
+```text
+List my Graphify repositories.
+```
+
+Pick a repository from the answer and ask about its code:
+
+- `Find the implementation of this function.`
+- `What calls this symbol, and which tests are linked to it?`
+- `Find this function and show its callers.`
+
+Results come from the repositories indexed in your workspace. Open the source an answer cites before you rely on it.
+
+Some tools save repository notes or change the selected workspace. Read each tool request and approve it only when that is what you meant.
+
+## Tool window
+
+| Control | What it does |
+| --- | --- |
+| **Copy configuration** | Copies the JSON for the method you selected. |
+| **Open Settings** | Opens the IDE settings dialog. |
+| **Graphify workspace** | Opens your workspace in the browser. |
+| **Setup documentation** | Opens the Graphify MCP setup guide. |
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| The plugin will not install | The IDE is not on the 2025.3 release. The published plugin only accepts platform build 253. |
+| `npx` or Node.js was not found | Install Node.js and npm, and make them available on the IDE's PATH. Restart the IDE after you do. |
+| Direct HTTP cannot sign in | Switch the tool window to **OAuth bridge (STDIO)**, copy that configuration, and replace the server entry. |
+| No repositories, or empty answers | The repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories). |
+| The MCP page is missing | Check that AI Assistant is installed and that your JetBrains account can use it. |
+| You cannot find where to paste | You are on **Settings → Tools → MCP Server**. Use **Settings → Tools → AI Assistant → Model Context Protocol (MCP)** instead. |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Graphify MCP for VS Code" icon="plug" href="/integrations/vscode">
+    Connect VS Code agents to the same hosted server.
+  </Card>
+
+  <Card title="Connect the graph MCP server" icon="terminal" href="/mcp/overview">
+    Run a local MCP server against a graph on your own machine instead.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/vscode" rel="prev" aria-label="Previous: Graphify MCP for VS Code" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify MCP for VS Code</span></a>
+  <a href="/integrations/chatgpt" rel="next" aria-label="Next: Graphify for ChatGPT" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify for ChatGPT</span></a>
+</div>

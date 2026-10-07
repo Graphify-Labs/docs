@@ -1,0 +1,59 @@
+---
+title: "Serve a graph over HTTP"
+description: "Run a shared MCP endpoint with explicit network and authentication settings."
+hideFooterPagination: true
+---
+
+The same ten tools can run over MCP Streamable HTTP. A local HTTP server is useful when a client connects by URL instead of launching a stdio process.
+
+## Start on localhost
+
+```bash
+graphify-mcp /absolute/path/to/graphify-out/graph.json --transport http --port 8080
+```
+
+The endpoint is `http://127.0.0.1:8080/mcp`. The default host is loopback-only.
+
+## Share within your environment
+
+Set `GRAPHIFY_API_KEY` in the server environment using your secret manager. Then start with the intended bind address:
+
+```bash
+graphify-mcp /data/graph.json --transport http --host 0.0.0.0 --port 8080
+```
+
+Clients authenticate with `Authorization: Bearer <key>` or `X-API-Key`. Use a private network or an authenticated TLS proxy for traffic beyond the local machine. A graph can contain proprietary source context.
+
+## Server options
+
+| Option | Default | Purpose |
+| --- | --- | --- |
+| `--transport` | `stdio` | Select `stdio` or `http`. |
+| `--host` | `127.0.0.1` | HTTP bind address. |
+| `--port` | `8080` | HTTP port. |
+| `--path` | `/mcp` | HTTP endpoint path. |
+| `--api-key` | `GRAPHIFY_API_KEY` | Require a client key; prefer the environment variable to placing a secret in shell history. |
+| `--json-response` | Off | Use JSON responses rather than SSE streams. |
+| `--stateless` | Off | Disable per-session state. |
+| `--session-timeout` | `3600` | Idle session timeout in seconds; `0` disables reaping. |
+
+## Docker
+
+The source repository includes a Dockerfile. Build it from that checkout:
+
+```bash
+docker build -t graphify .
+docker run --rm -p 127.0.0.1:8080:8080 \
+  -v "$PWD/graphify-out:/data:ro" \
+  -e GRAPHIFY_API_KEY \
+  graphify /data/graph.json --transport http --host 0.0.0.0
+```
+
+This example publishes to localhost and mounts the graph read-only. Set `GRAPHIFY_API_KEY` before running it. Make deliberate network and authentication choices before exposing the endpoint to other hosts.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/mcp/overview" rel="prev" aria-label="Previous: Connect the graph MCP server" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Connect the graph MCP server</span></a>
+  <a href="/mcp/docs-search" rel="next" aria-label="Next: Search the docs from your agent" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Search the docs from your agent</span></a>
+</div>

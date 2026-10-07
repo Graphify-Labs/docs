@@ -1,0 +1,52 @@
+---
+title: "Learning"
+description: "Use review feedback to reduce noise while keeping formal verification independent."
+hideFooterPagination: true
+---
+
+Open **Learn** in [Graphify Cloud](https://app.graphify.com) to see how your team's pull request feedback shapes advisory reviews. Learning records dismissed findings, suppressed patterns, and the feedback behind them.
+
+## Teach Graphify on a pull request
+
+Give feedback in the pull request conversation using the exact finding name from the Graphify review:
+
+```text
+@graphify wrong <finding>
+@graphify good <finding>
+@graphify suppress <rule>
+```
+
+| Command | Effect |
+| --- | --- |
+| `wrong` | Dismiss a specific finding. Trusted dismissals contribute to learned muting. |
+| `good` | Confirm a finding. This can contest an existing mute. |
+| `suppress` | Mute a rule or category, optionally scoped to a path. |
+
+Feedback comes from trusted members. Fork activity is excluded. Graphify can also use a flagged line being changed before merge as a weaker, passive signal.
+
+## Read the Learning dashboard
+
+**Muted findings**, **Muted patterns**, and **Feedback last 30d** summarize the workspace. The detail panels explain those totals:
+
+- **Learned dismissals** identify individual findings. Inspect the repository, dismissal history, and any conflicting confirmation. Dismissals are weighted and decay over time.
+- **Suppressions** show muted rules and their path scope, with the actor and pull request that introduced them.
+- **Feedback activity** shows recent commands and the findings or categories they refer to.
+
+These panels are read-only. Give feedback on the pull request rather than looking for a dashboard switch to restore or edit a suppression.
+
+## What learning changes
+
+Learning adjusts what advisory review surfaces and what stays quiet. It does **not** change the formal verifier, proof verdicts, counterexamples, or witnesses. The **Verifier adjustments** counter remains zero by design.
+
+See [formal verification](/platform/verification) to interpret proof and behavior-change results.
+
+## Missing feedback
+
+If **Action needed** reports a pending GitHub Issues permission, an installation administrator must approve the requested permission before PR-conversation feedback can be processed. Learning data also depends on the feature being enabled for your workspace. An empty panel can simply mean no eligible feedback has been recorded yet.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/platform/verification" rel="prev" aria-label="Previous: Formal verification" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Formal verification</span></a>
+<a href="/platform/memory" rel="next" aria-label="Next: Agent memory" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Agent memory</span></a>
+</div>

@@ -1,0 +1,87 @@
+---
+title: "Your first knowledge graph"
+description: "Install Graphify, map your repository, and ask a question about your code."
+hideFooterPagination: true
+---
+
+Graphify turns a repository into a graph of its functions, classes, imports, and relationships. Your assistant can query that graph instead of repeatedly scanning the same files.
+
+This quickstart uses the **open-source engine** on your machine. You need Python 3.10 or later and a supported coding assistant. For the hosted product, see [Graphify Cloud](/platform/overview).
+
+<Steps>
+  <Step title="Install the CLI">
+    ```bash
+    uv tool install graphifyy
+    graphify --version
+    ```
+
+    `graphify --version` prints the version you installed. The latest release is on [PyPI](https://pypi.org/project/graphifyy/) and in the [changelog](/changelog). The package is **`graphifyy`**, with two y's. The command is `graphify`. You can also use `pipx install graphifyy`.
+  </Step>
+  <Step title="Connect your assistant">
+    ```bash
+    graphify install
+    ```
+
+    This installs the Graphify skill for a detected assistant. To choose one explicitly:
+
+    ```bash
+    graphify install --platform cursor
+    ```
+
+    See [all integrations](/integrations/overview) for your assistant’s setup.
+  </Step>
+  <Step title="Map a repository">
+    Open a repository in your assistant, then enter this in its chat:
+
+    ```text
+    /graphify .
+    ```
+
+    In Codex, select the Graphify skill with `$graphify` and ask it to map the current repository. This is an **assistant instruction**, not a shell command.
+
+    Code is parsed locally. If the repository includes documents or media, the skill can use your assistant’s model for semantic extraction. For an explicit code-only run, use the [local CLI workflow](/guides/local-development).
+  </Step>
+  <Step title="Inspect the output">
+    ```text
+    graphify-out/
+    ├── graph.html        Interactive graph
+    ├── GRAPH_REPORT.md   Concepts, communities, and suggested questions
+    └── graph.json        The graph used by CLI and MCP queries
+    ```
+
+    Open `graph.html` in your browser. Click a node to inspect its connections, or start with the report for a tour of the architecture.
+  </Step>
+  <Step title="Ask a question">
+    From a terminal at the repository root:
+
+    ```bash
+    graphify query "how does authentication reach the database?"
+    ```
+
+    Use names from **your graph** to investigate further:
+
+    ```bash
+    graphify explain "YourService"
+    graphify path "YourService" "YourRepository"
+    ```
+
+    The names above are placeholders. A path only exists if those nodes and connecting edges exist in your project.
+  </Step>
+</Steps>
+
+<Columns cols={2}>
+  <Card title="Take the full tutorial" icon="route" href="/guides/first-graph">
+    Build a small example and follow a real relationship.
+  </Card>
+
+  <Card title="Give your agent MCP tools" icon="plug" href="/mcp/overview">
+    Expose the graph as structured tools in your editor.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/" rel="prev" aria-label="Previous: Overview" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Overview</span></a>
+  <a href="/installation" rel="next" aria-label="Next: Installation" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Installation</span></a>
+</div>

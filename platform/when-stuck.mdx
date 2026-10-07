@@ -1,0 +1,56 @@
+---
+title: "When something fails"
+description: "What to check for an empty graph, a failed build, or a plan limit."
+hideFooterPagination: true
+sidebarTitle: "When something fails"
+---
+
+Match the message on screen, then open the page it points to.
+
+## The map did not write graphify-out
+
+`/graphify .` is an assistant instruction, not a shell command. Run it in the assistant chat at the repository root. A finished map writes `graphify-out/graph.html`, `GRAPH_REPORT.md`, and `graph.json`.
+
+If the folder is missing, confirm the install:
+
+```bash
+graphify --version
+graphify install --platform cursor
+```
+
+You should see a version line, then a skill install for that assistant. More install failures are in [Troubleshooting](/troubleshooting).
+
+## Cloud shows no graph
+
+Open **Repositories** and read the status.
+
+| Status | Meaning |
+| --- | --- |
+| Indexed | A graph has been built and is available. |
+| Building | Indexing is running. |
+| Queued | The repository is waiting to build. |
+| Failed | The latest attempt did not finish. |
+| Paused | Indexing is off. |
+
+[Repositories and builds](/platform/repositories) is where you connect the repository and turn indexing on.
+
+## A build failed
+
+Open **Builds**, filter to that repository, and choose **Retry** on its latest failed build. On **Repositories**, a failed repository's **Options** also offer **Retry indexing**. Both index the repository's current head, not the commit that failed.
+
+## You hit a plan limit
+
+The console names the limit:
+
+| Message | What it means |
+| --- | --- |
+| **Monthly indexing allowance used** | The workspace has used this month's indexing allowance. It resets at the start of next month. |
+| **Daily build limit reached** | This repository has used today's automatic builds. The limit resets at 00:00 UTC. |
+| **Repository too large for this plan** | The newest version was not published. The last published version still works. |
+| **Monthly reviews used** | The reviews included in the plan are used for this month. |
+
+Compare allowances on [Plans and pricing](/pricing/overview), and check the workspace **Billing** page for the plan in use. A limit message is not an empty repository.
+
+## Still stuck
+
+Ask in [Discord](https://discord.gg/XPPYrdw3Yp), or open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues) for the open-source engine. Include the installed version, operating system, exact command, and a sanitized error.

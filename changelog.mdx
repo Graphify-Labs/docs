@@ -1,0 +1,23 @@
+---
+title: "Changelog"
+description: "What shipped in graphifyy, newest release first."
+hideFooterPagination: true
+rss: true
+sidebarTitle: "Changelog"
+---
+
+Each entry summarizes a release of the open-source package, `graphifyy`. The linked release notes list every change. The full history is on [graphify.com/changelog](https://graphify.com/changelog) and in the [GitHub releases](https://github.com/Graphify-Labs/graphify/releases).
+
+<Update label="v0.9.72" description="September 29, 2026">
+
+## Installed skills refresh after an upgrade
+
+- After an upgrade, `graphify` refreshes a stale installed skill on the next command other than `graphify install`, so the version warning no longer needs a manual install. Set `GRAPHIFY_NO_AUTO_REFRESH=1` to turn that off. Local edits to `SKILL.md` are backed up. Marker-bounded sections in `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md` are left alone.
+- The Node Info panel in `graph.html` shows each node's type, source, and community. A community node shows how many members it holds.
+- A Kotlin property that is both annotated and inferred, such as `@Volatile var x = 0`, no longer drops the whole file during extraction.
+- SQL before a PostgreSQL `DO` block is extracted. Razor `@functions` blocks are read. A Blade view links to the layout it extends.
+- `graphify` and `graphify --help` show the logo and a link to [app.graphify.com](https://app.graphify.com).
+
+Import resolution, docx sidecars, wiki links, and the PDF extra warning are in the [full v0.9.72 release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.72).
+
+</Update>

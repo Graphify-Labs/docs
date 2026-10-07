@@ -1,0 +1,40 @@
+---
+title: "Agent memory"
+description: "Explore remembered facts, their entities, and the source evidence behind them."
+hideFooterPagination: true
+---
+
+**Memory** makes recorded agent context inspectable in [Graphify Cloud](https://app.graphify.com). Facts are organized around the entities they describe, with source and grounding information alongside them.
+
+## Explore remembered context
+
+1. Open **Memory** and select a repository.
+2. Search for a fact or entity, or choose an entity from the list.
+3. Read its remembered facts and inspect the available source references, provenance, and graph anchors.
+
+<img src="https://graphify.com/assets/shots/memory.webp" alt="Graphify Cloud Memory showing remembered facts, entities, and source grounding" width="1704" height="910" className="block h-auto w-full" />
+
+Use memory to recover context from earlier agent work, investigate why a fact was recorded, and connect it to the current code graph. Coverage and grounding metrics help explain how much recorded context has a corresponding graph anchor.
+
+## Grounding and provenance
+
+A remembered statement and an extracted code relationship are different kinds of evidence. Check where a fact came from and whether it is linked to a graph node. Source references and provenance are more useful than treating every stored fact as equally authoritative.
+
+For current implementation details, follow the graph anchor or open [Graphs](/platform/graphs). Read [provenance labels](/concepts/provenance) when evaluating an inferred connection.
+
+## Connect an agent
+
+Use **Connect an agent**, or open the workspace's **MCP** page, to connect your coding assistant. See [Connect agents and integrations](/platform/connections).
+
+An empty repository has no recorded memories yet. Connect an agent and use the workspace's memory capabilities before expecting facts to appear.
+
+## Memory and learning
+
+Memory stores contextual facts around entities. [Learning](/platform/learning) uses pull request feedback to adjust advisory reviews. Both are Cloud features, with separate purposes and controls.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+<a href="/platform/learning" rel="prev" aria-label="Previous: Learning" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Learning</span></a>
+<a href="/platform/contributors" rel="next" aria-label="Next: Contributors" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Contributors</span></a>
+</div>

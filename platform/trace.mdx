@@ -1,0 +1,59 @@
+---
+title: "Trace who calls this"
+description: "Find a symbol, who calls it, and whether two names connect."
+hideFooterPagination: true
+sidebarTitle: "Trace who calls this"
+---
+
+Use this when you know a name in the repository and want the code around it. Run the commands from the repository root after a map exists in `graphify-out/`, and replace `YourService` and `YourRepository` with names from your graph.
+
+## Who calls this
+
+```bash
+graphify query "what calls YourService?" --context call
+graphify explain "YourService"
+```
+
+`--context call` keeps call relationships. `explain` prints one concept, its source, and its connections.
+
+In the [small example project](/guides/first-graph), asking what calls `normalize_email` prints:
+
+```text
+Graph: graphify-out/graph.json (4 nodes) | Traversal: BFS depth=2 | Start: ['normalize_email()'] | Context: call (explicit) | 3 nodes found
+
+NODE normalize_email() [src=app.py loc=L1 community=0]
+NODE find_user() [src=app.py loc=L5 community=0]
+NODE login() [src=app.py loc=L9 community=0]
+EDGE find_user() --calls [EXTRACTED context=call]--> normalize_email() at=app.py:L6
+EDGE login() --calls [EXTRACTED context=call]--> find_user() at=app.py:L10
+```
+
+Each `EDGE` line is one call and where it happens: `find_user()` calls `normalize_email()` on line 6 of `app.py`. `EXTRACTED` means the relationship was read from the source rather than inferred; see [edges and provenance](/concepts/provenance). Exact formatting can vary by release.
+
+## Whether two names connect
+
+```bash
+graphify path "YourService" "YourRepository"
+```
+
+In the example project, `graphify path "login" "normalize_email"` prints:
+
+```text
+Shortest path (2 hops):
+  login() --calls [EXTRACTED]--> find_user() --calls [EXTRACTED]--> normalize_email()
+```
+
+A path needs both nodes and a chain of edges between them. No path is not proof that the two are independent. Add `--undirected` when you want connectivity rather than a directional path.
+
+## What a change can affect
+
+In [Graphify Cloud](https://app.graphify.com), open **Graphs**, search for the name, and inspect its neighbors. On a pull request, open **Reviews** and read the findings and the code the change can affect. A graph connection is evidence to investigate. It is not proof that behavior stayed the same.
+
+<Columns cols={2}>
+  <Card title="Ask better graph questions" icon="search" href="/guides/querying">
+    When to use query, path, and explain.
+  </Card>
+  <Card title="Query reference" icon="terminal" href="/reference/query">
+    Every flag `graphify query` accepts.
+  </Card>
+</Columns>

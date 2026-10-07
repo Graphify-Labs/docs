@@ -1,0 +1,44 @@
+---
+title: "Graph files and outputs"
+description: "Understand the files Graphify writes and the parts you can reuse."
+hideFooterPagination: true
+---
+
+The assistant skill produces a visualization, report, and graph under `graphify-out/`. Headless code-only extraction writes the graph and analysis first. Run `graphify cluster-only . --no-label` to generate the report and visualization without model-generated labels. Use `graphify export html` to regenerate the visualization separately.
+
+| File or directory | Purpose |
+| --- | --- |
+| `graph.json` | Machine-readable graph for CLI queries, MCP, and exports. |
+| `GRAPH_REPORT.md` | Human-readable summary of communities, central concepts, and connections. |
+| `graph.html` | Interactive browser visualization when generated. |
+| `manifest.json` | Fingerprints used to identify changed files. |
+| `cache/` | Cached extraction results. |
+| `converted/` | Converted document content where an input needs preprocessing. |
+| `cost.json` | Local extraction cost information when produced. |
+
+## Graph representation
+
+The JSON uses NetworkX node-link conventions. Nodes carry identifiers and labels, and usually source information such as `source_file` and `file_type`. Edges connect node IDs and carry relationship and confidence metadata. Fields vary by extractor and release; consume only fields your workflow needs.
+
+Current readers support graphs with a `links` array and compatibility inputs with an `edges` array. Group relationships can appear as graph metadata. Do not assume every node corresponds to a function or that every edge has a line number.
+
+## Move or share a graph
+
+You can point a query at a specific file:
+
+```bash
+graphify query "authentication" --graph ./shared/graph.json
+```
+
+The graph contains labels and source-derived context. Treat it with the same access controls as the source repository. See [team workflows](/guides/team-workflows) before committing generated artifacts.
+
+## Change the output location
+
+`GRAPHIFY_OUT` changes the output directory. Use a distinct directory when multiple worktrees need their own graph. See [configuration](/reference/configuration).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/concepts/provenance" rel="prev" aria-label="Previous: Edges and provenance" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Edges and provenance</span></a>
+  <a href="/concepts/supported-inputs" rel="next" aria-label="Next: Supported inputs" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Supported inputs</span></a>
+</div>

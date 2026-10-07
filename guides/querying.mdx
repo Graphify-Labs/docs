@@ -1,0 +1,50 @@
+---
+title: "Ask better graph questions"
+description: "Use query, path, and explain for different kinds of codebase questions."
+hideFooterPagination: true
+---
+
+Start with a specific subsystem or concept, then narrow your investigation. A compact query is usually more useful to an assistant than the whole architecture report.
+
+## Gather context with query
+
+```bash
+graphify query "authentication and session storage" --budget 1500
+```
+
+`query` finds relevant starting nodes and traverses their relationships. Breadth-first traversal gathers a broader neighborhood. `--dfs` follows a deeper chain:
+
+```bash
+graphify query "request validation" --dfs --budget 1500
+```
+
+## Inspect one concept with explain
+
+Take a label or node ID from the query results:
+
+```bash
+graphify explain "normalize_email"
+```
+
+Look at its source, community, and incoming and outgoing relationships. Inspect the source itself when a precise implementation detail matters.
+
+## Trace a relationship with path
+
+```bash
+graphify path "login" "normalize_email"
+```
+
+This uses the [tutorial’s example project](/guides/first-graph). In your project, replace the labels with real nodes. Stored direction is respected; add `--undirected` when you want connectivity rather than a directional path.
+
+## Ask the assistant to preserve uncertainty
+
+> Use Graphify to trace how a request reaches persistence. Show the path and source references. Flag inferred or ambiguous edges, and tell me if the graph is missing evidence.
+
+The tool supplies context, and the assistant interprets it. Ask for evidence and avoid treating an absent path as proof that two systems are independent.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/guides/first-graph" rel="prev" aria-label="Previous: Build and explore a small graph" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Build and explore a small graph</span></a>
+  <a href="/guides/local-development" rel="next" aria-label="Next: Run Graphify locally" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Run Graphify locally</span></a>
+</div>

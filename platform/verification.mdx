@@ -1,0 +1,59 @@
+---
+title: "Formal verification"
+description: "Compare changed functions, inspect behavioral differences, and understand each verification verdict."
+hideFooterPagination: true
+---
+
+Graphify Cloud includes **Formal Verification** as a core feature. It compares changed functions with their earlier implementations to determine whether behavior is preserved or whether a concrete input produces a different result.
+
+Open **Formal Verification** in [Graphify Cloud](https://app.graphify.com). Hosted plans include verification with different usage and concurrency allowances; see [plans and pricing](/pricing/overview).
+
+## Inspect a verification run
+
+<Steps>
+  <Step title="Choose the repository">
+    Use the **Repository** filter or select **All repositories** to see workspace runs.
+  </Step>
+  <Step title="Open a run">
+    Check the pull request and commit, then expand the run to inspect its outcome and per-function results. A finished run can contain a mixture of outcomes.
+  </Step>
+  <Step title="Follow the evidence">
+    Inspect the source file, function, and verdict. For a behavior change, the detail can include the distinguishing input and the old and new values. An abstention or failure includes its reason when available.
+  </Step>
+  <Step title="Return to the change">
+    Use **Open pull request** or the commit link to investigate the implementation. When a run has finished, **Re-run verification** can queue another attempt; queued and running attempts cannot be rerun simultaneously.
+  </Step>
+</Steps>
+
+## Understand the result
+
+| Result | What it means |
+| --- | --- |
+| **Proved equivalent (bounded)** / `equivalent` | The proof method established equivalence within its supported model or analysis bounds. |
+| **Behavior change** / `distinguished` | An input distinguishes the implementations. Inspect whether the witness was reproduced in the sandbox or remains unconfirmed. |
+| **No divergence sampled (not proven)** / `may_equivalent` | The exercised inputs showed no difference. This is empirical evidence, not a proof. |
+| **Abstained** / `unsupported` | The method could not analyze the function within its supported domain or budget. |
+| **Errored** / `error` | Verification failed to produce a valid result for the function. |
+
+**Completed** describes a run's lifecycle; it does not mean every function was proved equivalent. Queued, verifying, failed, cancelled, skipped, and expired runs also retain their own status. A run that verified no functions does not imply the change passed.
+
+## Configure and use verification
+
+Repository controls include a **Formal verification** setting for pull requests. Use [Repositories and builds](/platform/repositories) to check repository configuration and indexing before investigating missing runs.
+
+When Graphify supplies a distinguishing input, use it to reproduce the difference and create a regression test. Review whether the changed behavior was intentional before deciding what to change.
+
+[Learning](/platform/learning) tunes advisory review feedback only. It cannot change proof verdicts or hide a witness from the verifier.
+
+## Scope of a proof
+
+Verification is function-level and differential: the previous implementation is the reference. It does not establish that the application meets its intended requirements. Read bounds, unsupported cases, and reproduction status with the result.
+
+For the separately installed enterprise CLI, the website's [verification reference](https://graphify.com/docs/verification) documents `verify-edit` and gate configuration. Those commands are distinct from the hosted console workflow and the public open-source CLI.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/platform/reviews" rel="prev" aria-label="Previous: Pull request reviews" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Pull request reviews</span></a>
+  <a href="/platform/learning" rel="next" aria-label="Next: Learning" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Learning</span></a>
+</div>

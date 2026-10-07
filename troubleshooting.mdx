@@ -1,0 +1,49 @@
+---
+title: "Troubleshooting"
+description: "Resolve common installation, graph, and MCP connection problems."
+hideFooterPagination: true
+---
+
+<AccordionGroup>
+<Accordion title="The graphify command is not found">
+Run `uv tool update-shell` or `pipx ensurepath`, then open a new terminal. Verify that the package you installed was `graphifyy`. A GUI app may need an absolute executable path even when your terminal finds it.
+</Accordion>
+<Accordion title="Python cannot import graphify or mcp">
+Your command may be using a different Python environment. Install the `mcp` extra in the environment that launches the server, or use the `graphify-mcp` executable from the uv tool installation. See [MCP setup](/mcp/overview).
+</Accordion>
+<Accordion title="My assistant does not discover the skill">
+Register the exact platform with `graphify install --platform <name>`. Confirm whether you intended a user or project installation. Refresh the assistant’s skills or restart it. In Codex, use the skill picker; not every client has the same slash-command behavior.
+</Accordion>
+<Accordion title="graph.json does not exist">
+Run the build workflow before querying. For a local test, use `graphify extract . --code-only` at the project root. For another location, pass `--graph /absolute/path/to/graph.json` to queries and the absolute path to MCP.
+</Accordion>
+<Accordion title="The answer reflects old code">
+Run `graphify update .`, then query again. Git hooks run in the background, and pulls/merges require an explicit update. Refresh document context through the skill or semantic extraction if documents changed.
+</Accordion>
+<Accordion title="A refresh refuses to write a smaller graph">
+Inspect the warning and confirm the smaller result is intentional. Missing dependencies or failed semantic calls can produce incomplete output. After an intentional removal or refactor, use `graphify update . --force` to allow replacement.
+</Accordion>
+<Accordion title="A query returns no path">
+Check the node names and graph version. Paths respect stored direction by default; try `--undirected` only if you want general connectivity. Missing edges can reflect unresolved or unsupported code, not necessarily the absence of a relationship.
+</Accordion>
+<Accordion title="Local model extraction is slow or runs out of memory">
+Lower `--token-budget` and `--max-concurrency`. Check that the chosen model supports the input and output size. Adjust `GRAPHIFY_OLLAMA_NUM_CTX` only with the local model’s memory needs in mind.
+</Accordion>
+<Accordion title="The MCP server disconnects or shows no tools">
+Run its configured command manually and inspect stderr. Check the MCP extra, executable path, and graph path. Refresh the client after changes. For HTTP, verify the endpoint path, reachability, and authentication header.
+</Accordion>
+<Accordion title="PR commands fail">
+Confirm `gh` is installed and authenticated for the repository. Check the repo and base-branch options. CLI `--triage` additionally needs a configured model backend.
+</Accordion>
+</AccordionGroup>
+
+## Get help
+
+Open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues) or join [Discord](https://discord.gg/XPPYrdw3Yp). Include the installed version, operating system, exact command, and a sanitized error. A small reproducible example is more useful than a private repository dump.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/installation" rel="prev" aria-label="Previous: Installation" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Installation</span></a>
+  <a href="/concepts/architecture" rel="next" aria-label="Next: How Graphify works" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">How Graphify works</span></a>
+</div>

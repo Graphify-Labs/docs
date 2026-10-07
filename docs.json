@@ -25,22 +25,22 @@
           {
             "group": "Get started",
             "pages": [
-              "index",
               "quickstart",
               "installation",
               "troubleshooting",
               "changelog",
               "for-agents"
-            ]
+            ],
+            "root": "index"
           },
           {
             "group": "Concepts",
             "pages": [
-              "concepts/architecture",
               "concepts/provenance",
               "concepts/outputs",
               "concepts/supported-inputs"
-            ]
+            ],
+            "root": "concepts/architecture"
           }
         ]
       },
@@ -50,9 +50,9 @@
           {
             "group": "Graphify Cloud",
             "pages": [
-              "platform/overview",
               "platform/console"
-            ]
+            ],
+            "root": "platform/overview"
           },
           {
             "group": "Core features",
@@ -85,7 +85,6 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/first-graph",
               "guides/querying",
               "guides/local-development",
               "guides/incremental-updates",
@@ -93,14 +92,15 @@
               "guides/exports",
               "guides/work-memory",
               "guides/ask-your-agent"
-            ]
+            ],
+            "root": "guides/first-graph"
           },
           {
             "group": "Team workflows",
             "pages": [
-              "guides/team-workflows",
               "guides/pull-requests"
-            ]
+            ],
+            "root": "guides/team-workflows"
           }
         ]
       },
@@ -110,7 +110,6 @@
           {
             "group": "Integrations",
             "pages": [
-              "integrations/overview",
               "integrations/claude-code",
               "integrations/cursor",
               "integrations/codex",
@@ -121,7 +120,8 @@
               "integrations/chatgpt",
               "integrations/openclaw",
               "integrations/other-assistants"
-            ]
+            ],
+            "root": "integrations/overview"
           },
           {
             "group": "CI integrations",
@@ -132,10 +132,10 @@
           {
             "group": "MCP",
             "pages": [
-              "mcp/overview",
               "mcp/shared-http",
               "mcp/docs-search"
-            ]
+            ],
+            "root": "mcp/overview"
           }
         ]
       },
@@ -145,13 +145,13 @@
           {
             "group": "CLI",
             "pages": [
-              "reference/overview",
               "reference/query",
               "reference/path",
               "reference/explain",
               "reference/extract",
               "reference/configuration"
-            ]
+            ],
+            "root": "reference/overview"
           },
           {
             "group": "MCP reference",
@@ -167,9 +167,9 @@
           {
             "group": "Plans and billing",
             "pages": [
-              "pricing/overview",
               "pricing/enterprise"
-            ]
+            ],
+            "root": "pricing/overview"
           }
         ]
       }

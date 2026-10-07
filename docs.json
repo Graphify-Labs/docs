@@ -178,7 +178,8 @@
       "anchors": [
         {
           "anchor": "Help on Discord",
-          "href": "https://discord.gg/XPPYrdw3Yp"
+          "href": "https://discord.gg/XPPYrdw3Yp",
+          "icon": "message-circle"
         }
       ]
     }

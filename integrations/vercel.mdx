@@ -1,0 +1,165 @@
+---
+title: "Graphify on Vercel Connect"
+sidebarTitle: "Vercel"
+description: "Call Graphify's hosted MCP from a Vercel app through a third-party Connect connector."
+hideFooterPagination: true
+---
+
+[Vercel Connect](https://vercel.com/connect/graphify) lets a Vercel app or agent call Graphify's hosted MCP server at `https://api.graphify.com/mcp` as the person using that app.
+
+Graphify is a **third-party connector** in that catalog. The person authorizes the Graphify account they already have. Vercel does not create the account, and the Graphify plan stays the one on [app.graphify.com](https://app.graphify.com).
+
+This is the same hosted server as [Graphify MCP for VS Code](/integrations/vscode), [Graphify MCP for JetBrains](/integrations/jetbrains), [Graphify for ChatGPT](/integrations/chatgpt), and [Graphify MCP for OpenClaw](/integrations/openclaw). Connect's job is the login token. The app sends that token to Graphify.
+
+`acme-graphify` on this page is the example name from the [listing](https://vercel.com/connect/graphify). Pick your own. The token id is `graphify/` plus that name.
+
+## Before you start
+
+- A Vercel account and the [Vercel CLI](https://vercel.com/docs/cli). Connect is available on all Vercel plans. See [Vercel Connect](https://vercel.com/docs/connect).
+- A Vercel project. `vercel link` attaches this directory to it. The project can be empty. It exists so Vercel can issue a token to your code.
+- A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait until its status is **Indexed**. See [Repositories and builds](/platform/repositories).
+
+If a coding agent is writing this Vercel app, the listing's first command installs Vercel's Connect skill:
+
+```bash
+npx skills add vercel/vercel-plugin --skill vercel-connect
+```
+
+That skill is Vercel's. It is separate from `graphify install`.
+
+## 1. Create the connector
+
+[Open Graphify on Vercel Connect](https://vercel.com/connect/graphify) and choose **Create Connector**, or run this from the project directory:
+
+```bash
+vercel link
+vercel connect create graphify --name acme-graphify
+vercel env pull
+```
+
+`vercel env pull` writes a local `VERCEL_OIDC_TOKEN` so `getToken` can run on your machine. On a Vercel deployment, Vercel supplies that token. If a later call cannot authenticate, run `vercel env pull` again. The local token is short-lived. Details are in the [Connect quickstart](https://vercel.com/docs/connect/quickstart).
+
+Complete the Graphify authorization Vercel shows. The listing requests access for the person using the app, under that person's Graphify permissions.
+
+## 2. Ask Connect for a token
+
+`@vercel/connect` is the Connect SDK. Install it, then call `getToken` with the id of the person using your app. `user_123` below is a placeholder.
+
+```bash
+npm install @vercel/connect
+```
+
+```typescript
+import { getToken } from '@vercel/connect'
+
+const userId = 'user_123'
+
+const token = await getToken('graphify/acme-graphify', {
+  subject: { type: 'user', id: userId },
+})
+```
+
+Send `token` to `https://api.graphify.com/mcp` as `Authorization: Bearer <token>`. The eve and AI SDK sections below do that for you.
+
+## 3. Call Graphify
+
+Use one of the two stacks from the listing, or send the Bearer token from your own route.
+
+### eve
+
+eve is Vercel's agent project. You declare Graphify as a connection, and eve attaches the tools.
+
+```bash
+npx eve@latest init my-agent
+cd my-agent
+npm install @vercel/connect
+vercel link
+vercel connect create graphify --name acme-graphify
+vercel env pull
+```
+
+Add `agent/connections/graphify.ts`:
+
+```typescript
+import { defineMcpClientConnection } from 'eve/connections'
+import { connect } from '@vercel/connect/eve'
+
+export default defineMcpClientConnection({
+  url: 'https://api.graphify.com/mcp',
+  description: 'Graphify tools and data',
+  auth: connect('graphify/acme-graphify'),
+})
+```
+
+```bash
+npm run dev
+```
+
+### AI SDK
+
+The AI SDK is Vercel's library for calling a model from your code and handing it tools. This sample is the one on the listing, including the model id.
+
+```bash
+npm install ai @ai-sdk/mcp @vercel/connect
+vercel link
+vercel connect create graphify --name acme-graphify
+vercel env pull
+```
+
+```typescript
+import { getToken } from '@vercel/connect'
+import { createMCPClient } from '@ai-sdk/mcp'
+import { generateText, isStepCount } from 'ai'
+
+const userId = 'user_123'
+const token = await getToken('graphify/acme-graphify', {
+  subject: { type: 'user', id: userId },
+})
+
+const client = await createMCPClient({
+  transport: {
+    type: 'http',
+    url: 'https://api.graphify.com/mcp',
+    headers: { Authorization: `Bearer ${token}` },
+  },
+})
+
+try {
+  const { text } = await generateText({
+    model: 'openai/gpt-5.4',
+    tools: await client.tools(),
+    stopWhen: isStepCount(10),
+    prompt: 'Use Graphify to help with this request.',
+  })
+} finally {
+  await client.close()
+}
+```
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| `getToken` cannot authenticate | Run `vercel env pull` again from the linked project. The local OIDC token expires. A deployment on Vercel receives its own token. |
+| The token id is rejected | The id is `graphify/` plus the `--name` you passed to `vercel connect create`. `graphify/acme-graphify` matches the example name only. |
+| No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories). |
+| The tools are the ten local ones | This page uses the hosted server. The ten-tool list in the [MCP tool reference](/reference/mcp-tools) is the graph on the machine. |
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Graphify MCP for VS Code" icon="plug" href="/integrations/vscode">
+    Connect an editor to the same hosted server.
+  </Card>
+
+  <Card title="Vercel Connect" icon="arrow-up-right" href="https://vercel.com/docs/connect">
+    How Connect issues a token and how a project is allowed to ask for one.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000] [body:has(&)_#content-container>span[style*=features-bg]]:!opacity-0 [body:has(&)_button]:!rounded-[2px] [body:has(&)_.rounded-xl]:!rounded-[2px] [body:has(&)_.rounded-2xl]:!rounded-[2px] [body:has(&)_.rounded-lg]:!rounded-[2px]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-12 grid gap-4 sm:grid-cols-2">
+  <a href="/integrations/other-assistants" rel="prev" aria-label="Previous: Other coding assistants" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-start text-left"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Other coding assistants</span></a>
+  <a href="/integrations/buildkite" rel="next" aria-label="Next: Buildkite (Test Impact)" className="group flex min-h-[112px] flex-col justify-center gap-3 rounded-xl border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-6 py-5 text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] items-end text-right sm:col-start-2"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Buildkite (Test Impact)</span></a>
+</div>

@@ -1,0 +1,172 @@
+/* Styles only for the global community invitation. */
+.graphify-community-card {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  display: none;
+  width: 300px;
+  border: 1px solid #d7e1db;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #062314;
+  box-shadow: 0 8px 32px rgb(6 35 20 / 10%);
+  overflow: auto;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.graphify-community-card[hidden] {
+  display: none !important;
+}
+
+.graphify-community-card * {
+  box-sizing: border-box;
+}
+
+.graphify-community-artwork {
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f0f7f3;
+  border-bottom: 1px solid #d7e1db;
+}
+
+.graphify-community-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.graphify-community-logo {
+  display: block;
+  width: 160px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.graphify-community-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d7e1db;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #062314;
+  font: inherit;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.graphify-community-content {
+  padding: 16px;
+}
+
+.graphify-community-card h2 {
+  margin: 0 0 6px;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: normal;
+}
+
+.graphify-community-card p {
+  margin: 0 0 14px;
+  padding: 0;
+  color: #45594d;
+  font: inherit;
+  line-height: 21px;
+}
+
+.graphify-community-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.graphify-community-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 7px;
+  border: 1px solid #d7e1db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #062314;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.graphify-community-actions img {
+  display: block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.graphify-community-actions a:hover,
+.graphify-community-close:hover {
+  background: #f0f7f3;
+  border-color: #118d4f;
+}
+
+.graphify-community-actions a:focus-visible,
+.graphify-community-close:focus-visible {
+  outline: 3px solid #118d4f;
+  outline-offset: -4px;
+}
+
+#mobile-nav .graphify-community-card[data-placement="mobile"] {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+@media (min-width: 1024px) {
+  .graphify-community-card[data-placement="desktop"] {
+    display: block;
+    position: fixed;
+    z-index: 30;
+    right: max(24px, env(safe-area-inset-right));
+    bottom: max(24px, env(safe-area-inset-bottom));
+    max-height: calc(100dvh - 160px);
+  }
+}
+
+@media (forced-colors: active) {
+  .graphify-community-card {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+  .graphify-community-actions a:focus-visible,
+  .graphify-community-close:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+@media print {
+  .graphify-community-card {
+    display: none !important;
+  }
+}

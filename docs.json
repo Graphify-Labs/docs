@@ -36,11 +36,11 @@
           {
             "group": "Concepts",
             "pages": [
-              "concepts/architecture",
               "concepts/provenance",
               "concepts/outputs",
               "concepts/supported-inputs"
-            ]
+            ],
+            "root": "concepts/architecture"
           }
         ]
       },
@@ -50,9 +50,9 @@
           {
             "group": "Graphify Cloud",
             "pages": [
-              "platform/overview",
               "platform/console"
-            ]
+            ],
+            "root": "platform/overview"
           },
           {
             "group": "Core features",
@@ -85,7 +85,6 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/first-graph",
               "guides/querying",
               "guides/local-development",
               "guides/incremental-updates",
@@ -93,14 +92,15 @@
               "guides/exports",
               "guides/work-memory",
               "guides/ask-your-agent"
-            ]
+            ],
+            "root": "guides/first-graph"
           },
           {
             "group": "Team workflows",
             "pages": [
-              "guides/team-workflows",
               "guides/pull-requests"
-            ]
+            ],
+            "root": "guides/team-workflows"
           }
         ]
       },
@@ -110,7 +110,6 @@
           {
             "group": "Integrations",
             "pages": [
-              "integrations/overview",
               "integrations/claude-code",
               "integrations/cursor",
               "integrations/codex",
@@ -121,7 +120,8 @@
               "integrations/chatgpt",
               "integrations/openclaw",
               "integrations/other-assistants"
-            ]
+            ],
+            "root": "integrations/overview"
           },
           {
             "group": "CI integrations",
@@ -132,10 +132,10 @@
           {
             "group": "MCP",
             "pages": [
-              "mcp/overview",
               "mcp/shared-http",
               "mcp/docs-search"
-            ]
+            ],
+            "root": "mcp/overview"
           }
         ]
       },
@@ -145,13 +145,13 @@
           {
             "group": "CLI",
             "pages": [
-              "reference/overview",
               "reference/query",
               "reference/path",
               "reference/explain",
               "reference/extract",
               "reference/configuration"
-            ]
+            ],
+            "root": "reference/overview"
           },
           {
             "group": "MCP reference",
@@ -167,18 +167,26 @@
           {
             "group": "Plans and billing",
             "pages": [
-              "pricing/overview",
               "pricing/enterprise"
-            ]
+            ],
+            "root": "pricing/overview"
           }
         ]
       }
-    ]
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Help on Discord",
+          "href": "https://discord.gg/XPPYrdw3Yp",
+          "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/brands/discord.svg"
+        }
+      ]
+    }
   },
   "logo": {
     "light": "https://graphify.com/assets/brand/graphify-logo-ink.svg",
-    "dark": "https://graphify.com/assets/brand/graphify-logo-white.svg",
-    "href": "https://graphify.com"
+    "dark": "https://graphify.com/assets/brand/graphify-logo-white.svg"
   },
   "navbar": {
     "links": [
@@ -248,5 +256,8 @@
       "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The VS Code, JetBrains, ChatGPT, and OpenClaw pages use the hosted server, not the ten-tool list.",
       "Read https://docs.graphify.com/llms.txt, then open one page's .md link. Use https://docs.graphify.com/llms-full.txt only when one page is not enough."
     ]
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
   }
 }

@@ -4,12 +4,24 @@ description: "Install Graphify, map your repository, and ask a question about yo
 hideFooterPagination: true
 ---
 
+<div className="not-prose xl:hidden" style={{ marginBottom: 24 }}>
+  <Accordion title="On this page" id="quickstart-mobile-outline" className="bg-white">
+    <div role="navigation" aria-label="On this page">
+      <a href="#install-the-cli" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Install the CLI</a>
+      <a href="#connect-your-assistant" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Connect your assistant</a>
+      <a href="#map-a-repository" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Map a repository</a>
+      <a href="#inspect-the-output" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Inspect the output</a>
+      <a href="#ask-a-question" className="no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]" style={{ display: "block", minHeight: 44, padding: "10px 8px", fontSize: 14, lineHeight: "24px", color: "#062314", borderBottom: "none" }}>Ask a question</a>
+    </div>
+  </Accordion>
+</div>
+
 Graphify turns a repository into a graph of its functions, classes, imports, and relationships. Your assistant can query that graph instead of repeatedly scanning the same files.
 
 This quickstart uses the **open-source engine** on your machine. You need Python 3.10 or later and a supported coding assistant. For the hosted product, see [Graphify Cloud](/platform/overview).
 
 <Steps>
-  <Step title="Install the CLI">
+  <Step title="Install the CLI" titleSize="h2">
     ```bash
     uv tool install graphifyy
     graphify --version
@@ -17,7 +29,7 @@ This quickstart uses the **open-source engine** on your machine. You need Python
 
     `graphify --version` prints the version you installed. The latest release is on [PyPI](https://pypi.org/project/graphifyy/) and in the [changelog](/changelog). The package is **`graphifyy`**, with two y's. The command is `graphify`. You can also use `pipx install graphifyy`.
   </Step>
-  <Step title="Connect your assistant">
+  <Step title="Connect your assistant" titleSize="h2">
     ```bash
     graphify install
     ```
@@ -30,7 +42,7 @@ This quickstart uses the **open-source engine** on your machine. You need Python
 
     See [all integrations](/integrations/overview) for your assistant’s setup.
   </Step>
-  <Step title="Map a repository">
+  <Step title="Map a repository" titleSize="h2">
     Open a repository in your assistant, then enter this in its chat:
 
     ```text
@@ -41,7 +53,7 @@ This quickstart uses the **open-source engine** on your machine. You need Python
 
     Code is parsed locally. If the repository includes documents or media, the skill can use your assistant’s model for semantic extraction. For an explicit code-only run, use the [local CLI workflow](/guides/local-development).
   </Step>
-  <Step title="Inspect the output">
+  <Step title="Inspect the output" titleSize="h2">
     ```text
     graphify-out/
     ├── graph.html        Interactive graph
@@ -51,7 +63,7 @@ This quickstart uses the **open-source engine** on your machine. You need Python
 
     Open `graph.html` in your browser. Click a node to inspect its connections, or start with the report for a tour of the architecture.
   </Step>
-  <Step title="Ask a question">
+  <Step title="Ask a question" titleSize="h2">
     From a terminal at the repository root:
 
     ```bash

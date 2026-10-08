@@ -119,8 +119,8 @@
               "integrations/jetbrains",
               "integrations/chatgpt",
               "integrations/openclaw",
-              "integrations/other-assistants",
-              "integrations/vercel"
+              "integrations/vercel",
+              "integrations/other-assistants"
             ],
             "root": "integrations/overview"
           },

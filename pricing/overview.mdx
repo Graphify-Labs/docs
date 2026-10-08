@@ -8,7 +8,7 @@ hideFooterPagination: true
 Graphify offers hosted plans for individual developers and teams, and a separately scoped Enterprise offering for organizations that need their own deployment and commercial terms.
 
 <Note>
-  Prices and hosted allowances below match the current [pricing plans](https://graphify.com/pricing), updated September 29, 2026. Check your workspace's **Billing** page and checkout for the plan and offer available to you. Enterprise pricing and capacity are agreed with your account team.
+  Prices and hosted allowances below match the current [pricing plans](https://graphify.com/pricing), updated October 8, 2026. Check your workspace's **Billing** page and checkout for the plan and offer available to you. Enterprise pricing and capacity are agreed with your account team.
 </Note>
 
 ## Choose a plan
@@ -16,7 +16,7 @@ Graphify offers hosted plans for individual developers and teams, and a separate
 | Plan | Best fit | Where it runs |
 | --- | --- | --- |
 | **Free** | One developer getting started, with no card required. | Graphify Cloud |
-| **Pro** | One developer who needs uncapped graphs, push builds, reviews, and verification. | Graphify Cloud |
+| **Pro** | One developer who needs uncapped graphs and higher build, review, and verification limits. | Graphify Cloud |
 | **Teams** | A team sharing repository graphs, central billing, and a dedicated Slack support channel. Minimum 2 seats. | Graphify Cloud |
 | **Enterprise** | An organization requiring self-hosting, enterprise identity, GitHub Enterprise, and negotiated terms. | Your infrastructure; deployment scoped with Graphify |
 
@@ -44,20 +44,21 @@ Usage is counted at the scope shown in each row. Workspace allowances are shared
 
 | Allowance | Free | Pro | Teams |
 | --- | --- | --- | --- |
-| Repositories | Unlimited | Unlimited | Unlimited shared |
+| Repositories | 3 | Unlimited | Unlimited shared |
 | Graph nodes per repository | 25,000 | Uncapped | Uncapped |
-| Push-triggered graph builds per repository | 10 per UTC day | Uncapped | Uncapped |
-| PR reviews per workspace/month | 15 | Uncapped | Uncapped |
-| Formal verification runs per workspace/month | 15 | Uncapped | Uncapped |
+| Push-triggered graph builds per repository | 10/day | 100/day | 100/day |
+| PR reviews per workspace | 15/month | 400/day | 700/day |
+| Concurrent PR reviews | 2 | 10 | 20 |
+| Formal verification runs per workspace | 1/day | 400/day | 800/day |
 | Concurrent formal verification runs | 1 | 2 | 2 |
 
-**Uncapped** means there is no plan cap on graph size, daily push builds, monthly PR reviews, or monthly formal verification runs on Pro and Teams. It does not remove the concurrency, memory, or request limits below.
+**Uncapped** applies to graph size on Pro and Teams. Build, review, verification, and operational limits still apply.
 
 Pro also includes deep reading of your documents. Teams adds shared graphs, centralized billing, and a **dedicated Slack support channel**. See the [Cloud overview](/platform/overview) for graphs, Wiki, reviews, formal verification, Learning, and agent memory.
 
 ### Build concurrency
 
-All hosted plans allow **1 index build at a time per repository** and **10 across a workspace**. Formal verification runs have the plan-specific concurrency limits shown above.
+All hosted plans allow **1 index build at a time per repository** and **10 across a workspace**. PR reviews and formal verification runs have the plan-specific concurrency limits shown above.
 
 ### Shared operational limits
 
@@ -76,7 +77,7 @@ If an operation reaches a limit, follow the message in the console. For higher c
 
 ## Enterprise
 
-Enterprise combines the graph workflow with **self-hosting, SSO/SAML, GitHub Enterprise support, formal verification, graph-aware PR review, and a dedicated Slack support channel**. It also supports custom invoicing, payment terms, a DPA, and terms of service.
+Enterprise includes unlimited repositories and combines the graph workflow with **self-hosting, SSO/SAML, GitHub Enterprise support, formal verification, graph-aware PR review, and a dedicated Slack support channel**. It also supports custom invoicing, payment terms, a DPA, and terms of service.
 
 Licensing is **per developer seat**. Deployment, capacity, and pricing are scoped with your account team. Enterprise is currently in **early access**.
 

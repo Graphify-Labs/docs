@@ -26,7 +26,7 @@
 }
 
 .graphify-community-artwork {
-  height: 125px;
+  aspect-ratio: 2 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,21 +52,36 @@
 
 .graphify-community-close {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 4px;
+  right: 4px;
   width: 44px;
   height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #062314;
+  appearance: none;
+  cursor: pointer;
+}
+
+.graphify-community-close::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
   border: 1px solid #d7e1db;
   border-radius: 50%;
   background: #ffffff;
-  color: #062314;
-  font: inherit;
-  font-size: 25px;
-  line-height: 1;
-  cursor: pointer;
+}
+
+.graphify-community-close svg {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
 }
 
 .graphify-community-content {
@@ -102,9 +117,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 6px;
   min-height: 44px;
-  padding: 9px 7px;
+  padding: 10px 12px;
   border: 1px solid #d7e1db;
   border-radius: 8px;
   background: #ffffff;
@@ -113,6 +128,7 @@
   font-weight: 600;
   line-height: 20px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .graphify-community-actions img {
@@ -124,7 +140,7 @@
 }
 
 .graphify-community-actions a:hover,
-.graphify-community-close:hover {
+.graphify-community-close:hover::before {
   background: #f0f7f3;
   border-color: #118d4f;
 }

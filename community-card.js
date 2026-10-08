@@ -1,9 +1,9 @@
-/* Global Mintlify community card. Set ARTWORK_URL when the final PNG is ready. */
+/* Global Mintlify community card. */
 (() => {
   if (window.__graphifyCommunityCardInitialized) return;
   window.__graphifyCommunityCardInitialized = true;
 
-  const ARTWORK_URL = "";
+  const ARTWORK_URL = "/images/community-card.png";
   const LOGO_URL = "https://graphify.com/assets/brand/graphify-logo-ink.svg";
   const DISMISSAL_KEY = "graphify-community-dismissed-v1";
   const desktop = window.matchMedia("(min-width: 1024px)");
@@ -28,8 +28,8 @@
   image.src = ARTWORK_URL || LOGO_URL;
   image.alt = "";
   image.className = ARTWORK_URL ? "graphify-community-image" : "graphify-community-logo";
-  image.width = ARTWORK_URL ? 1024 : 160;
-  image.height = ARTWORK_URL ? 512 : 52;
+  image.width = ARTWORK_URL ? 2048 : 160;
+  image.height = ARTWORK_URL ? 1024 : 52;
   image.decoding = "async";
   artwork.append(image);
 
@@ -37,7 +37,20 @@
   close.type = "button";
   close.className = "graphify-community-close";
   close.setAttribute("aria-label", "Dismiss community invitation");
-  close.textContent = "\u00d7";
+  const closeIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  closeIcon.setAttribute("viewBox", "0 0 16 16");
+  closeIcon.setAttribute("width", "16");
+  closeIcon.setAttribute("height", "16");
+  closeIcon.setAttribute("fill", "none");
+  closeIcon.setAttribute("stroke", "currentColor");
+  closeIcon.setAttribute("stroke-width", "1.5");
+  closeIcon.setAttribute("stroke-linecap", "round");
+  closeIcon.setAttribute("aria-hidden", "true");
+  closeIcon.setAttribute("focusable", "false");
+  const closePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  closePath.setAttribute("d", "M3 3L13 13M13 3L3 13");
+  closeIcon.append(closePath);
+  close.append(closeIcon);
 
   const content = document.createElement("div");
   content.className = "graphify-community-content";
@@ -68,8 +81,8 @@
   }
 
   actions.append(
-    socialLink("https://discord.gg/XPPYrdw3Yp", "Join Discord", "Join Graphify on Discord", "discord"),
-    socialLink("https://x.com/graphify", "Follow on X", "Follow Graphify on X", "x-twitter")
+    socialLink("https://discord.gg/XPPYrdw3Yp", "Join", "Join Graphify on Discord", "discord"),
+    socialLink("https://x.com/graphify", "Follow", "Follow Graphify on X", "x-twitter")
   );
   content.append(title, description, actions);
   card.append(artwork, close, content);

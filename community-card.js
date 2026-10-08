@@ -86,6 +86,13 @@
     card.hidden = !parent;
     const host = parent || document.body;
     if (card.parentElement !== host) host.append(card);
+    if (!desktop.matches && parent) {
+      // The modal drawer may hide this card while it still lives outside its portal.
+      // Restore access after moving it inside the drawer; keep background content hidden.
+      card.removeAttribute("aria-hidden");
+      card.removeAttribute("data-base-ui-inert");
+      card.removeAttribute("inert");
+    }
   }
 
   let frame = 0;
@@ -99,6 +106,10 @@
 
   const observer = new MutationObserver(schedulePlacement);
   observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(card, {
+    attributes: true,
+    attributeFilter: ["aria-hidden", "data-base-ui-inert", "inert"]
+  });
   desktop.addEventListener("change", schedulePlacement);
 
   close.addEventListener("click", () => {

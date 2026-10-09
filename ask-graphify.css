@@ -16,9 +16,9 @@
   bottom: max(20px, env(safe-area-inset-bottom));
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   min-height: 44px;
-  padding: 0 16px 0 12px;
+  padding: 6px 14px 6px 6px;
   border: 1px solid var(--ask-line);
   border-radius: 12px;
   background: #ffffff;
@@ -33,11 +33,28 @@ body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .grap
   right: calc(324px + env(safe-area-inset-right));
 }
 
-.graphify-ask-mark {
-  width: 8px;
-  height: 8px;
-  border-radius: 99px;
-  background: var(--ask-green);
+.graphify-ask-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border: 1px solid var(--ask-line);
+  border-radius: 50%;
+  background: var(--ask-mint);
+}
+
+.graphify-ask-avatar img {
+  width: 16px;
+  height: 18px;
+  display: block;
+}
+
+.graphify-ask-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
 
 .graphify-ask-launcher:hover {

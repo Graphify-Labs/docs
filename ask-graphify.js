@@ -6,6 +6,7 @@
   window.__graphifyAskInitialized = true;
 
   const ENDPOINT = "https://graphify.com/api/assistant";
+  const LOGO_URL = "https://graphify.com/assets/logo-icon.svg";
   const MAX_CHARS = 2000;
   const STARTERS = [
     "How do I install Graphify?",
@@ -16,15 +17,26 @@
   const root = document.createElement("div");
   root.className = "graphify-ask";
 
+  function logoAvatar() {
+    const avatar = document.createElement("span");
+    avatar.className = "graphify-ask-avatar";
+    avatar.setAttribute("aria-hidden", "true");
+    const logo = document.createElement("img");
+    logo.src = LOGO_URL;
+    logo.alt = "";
+    logo.width = 16;
+    logo.height = 18;
+    logo.decoding = "async";
+    avatar.append(logo);
+    return avatar;
+  }
+
   const launcher = document.createElement("button");
   launcher.type = "button";
   launcher.className = "graphify-ask-launcher";
-  const mark = document.createElement("span");
-  mark.className = "graphify-ask-mark";
-  mark.setAttribute("aria-hidden", "true");
   const launcherLabel = document.createElement("span");
   launcherLabel.textContent = "Ask Graphify";
-  launcher.append(mark, launcherLabel);
+  launcher.append(logoAvatar(), launcherLabel);
 
   const panel = document.createElement("section");
   panel.className = "graphify-ask-panel";
@@ -43,6 +55,9 @@
   title.id = "graphify-ask-title";
   title.textContent = "Ask Graphify";
   heading.append(eyebrow, title);
+  const brand = document.createElement("div");
+  brand.className = "graphify-ask-brand";
+  brand.append(logoAvatar(), heading);
   const close = document.createElement("button");
   close.type = "button";
   close.className = "graphify-ask-close";
@@ -50,7 +65,7 @@
   const bar = document.createElement("span");
   bar.className = "graphify-ask-bar";
   bar.setAttribute("aria-hidden", "true");
-  head.append(heading, close, bar);
+  head.append(brand, close, bar);
 
   const log = document.createElement("div");
   log.className = "graphify-ask-log";

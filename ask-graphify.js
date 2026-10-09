@@ -124,6 +124,58 @@
   root.append(launcher, panel);
   document.body.append(root);
 
+  const LIFT_GAP = 12;
+  let liftFrame = 0;
+  let watchedCard = null;
+  let cardResize = null;
+
+  function communityCard() {
+    const card = document.getElementById("graphify-community-card");
+    if (!card || card.hidden || card.dataset.placement !== "desktop") return null;
+    const style = getComputedStyle(card);
+    if (style.display === "none" || style.position !== "fixed") return null;
+    return card;
+  }
+
+  function placeLauncher() {
+    const card = communityCard();
+    if (!card) {
+      launcher.style.transform = "";
+      return;
+    }
+    const top = card.getBoundingClientRect().top;
+    const rest = parseFloat(getComputedStyle(launcher).bottom) || 0;
+    const lift = window.innerHeight - top + LIFT_GAP - rest;
+    launcher.style.transform = lift > 1 ? "translateY(" + Math.round(-lift) + "px)" : "";
+  }
+
+  function scheduleLift() {
+    if (liftFrame) return;
+    liftFrame = requestAnimationFrame(() => {
+      liftFrame = 0;
+      const card = document.getElementById("graphify-community-card");
+      if (card !== watchedCard) {
+        if (cardResize) cardResize.disconnect();
+        cardResize = null;
+        watchedCard = card;
+        if (card && typeof ResizeObserver === "function") {
+          cardResize = new ResizeObserver(scheduleLift);
+          cardResize.observe(card);
+        }
+      }
+      placeLauncher();
+    });
+  }
+
+  scheduleLift();
+  window.addEventListener("resize", scheduleLift);
+  new MutationObserver(scheduleLift).observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["hidden", "data-placement"],
+  });
+
   let sessionId = "";
   let inflight = null;
   let lastFocus = null;

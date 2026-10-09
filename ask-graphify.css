@@ -12,8 +12,8 @@
 .graphify-ask-launcher {
   position: fixed;
   z-index: 35;
-  right: max(20px, env(safe-area-inset-right));
-  bottom: max(20px, env(safe-area-inset-bottom));
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -29,8 +29,9 @@
   cursor: pointer;
 }
 
+/* Card is 300px wide and 24px off the corner. 20px keeps the button off its edge. */
 body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .graphify-ask-launcher {
-  right: calc(324px + env(safe-area-inset-right));
+  right: calc(320px + max(24px, env(safe-area-inset-right)));
 }
 
 .graphify-ask-avatar {
@@ -65,7 +66,6 @@ body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .grap
 .graphify-ask-close:focus-visible,
 .graphify-ask-form button:focus-visible,
 .graphify-ask-starters button:focus-visible,
-.graphify-ask-form textarea:focus-visible,
 .graphify-ask-sources a:focus-visible {
   outline: 2px solid var(--ask-focus);
   outline-offset: 3px;
@@ -74,8 +74,8 @@ body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .grap
 .graphify-ask-panel {
   position: fixed;
   z-index: 40;
-  right: max(20px, env(safe-area-inset-right));
-  bottom: max(20px, env(safe-area-inset-bottom));
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   width: min(400px, calc(100vw - 24px));
@@ -181,10 +181,27 @@ body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .grap
 
 .graphify-ask-turn-assistant {
   align-self: stretch;
+  padding-right: 8px;
+}
+
+.graphify-ask-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.graphify-ask-row .graphify-ask-avatar {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+}
+
+.graphify-ask-copy {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-right: 8px;
+  min-width: 0;
+  flex: 1;
 }
 
 .graphify-ask-who {
@@ -266,10 +283,26 @@ body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .grap
 
 .graphify-ask-form {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 12px 14px;
+  border-top: 1px solid var(--ask-line);
+}
+
+.graphify-ask-composer {
+  display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 12px 12px 12px 14px;
-  border-top: 1px solid var(--ask-line);
+  padding: 4px 4px 4px 12px;
+  border: 1px solid var(--ask-line);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.graphify-ask-composer:focus-within {
+  border-color: #b7d4c4;
+  outline: 2px solid var(--ask-focus);
+  outline-offset: 2px;
 }
 
 .graphify-ask-form textarea {
@@ -277,25 +310,62 @@ body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .grap
   min-height: 44px;
   max-height: 120px;
   resize: none;
-  border: 1px solid var(--ask-line);
-  border-radius: 12px;
-  padding: 11px 12px;
+  border: 0;
+  padding: 10px 0;
   color: var(--ask-ink);
   font-size: 14px;
-  line-height: 1.4;
-  background: #ffffff;
+  line-height: 1.45;
+  background: transparent;
+}
+
+.graphify-ask-form textarea:focus,
+.graphify-ask-form textarea:focus-visible {
+  outline: none;
 }
 
 .graphify-ask-form button {
-  min-height: 44px;
+  height: 36px;
+  min-width: 72px;
+  margin-bottom: 4px;
   padding: 0 14px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--ask-green);
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.graphify-ask-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  color: var(--ask-quiet);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.graphify-ask-keys kbd {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  padding: 0 5px;
+  border: 1px solid var(--ask-line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--ask-ink);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.graphify-ask-keys-dot {
+  margin: 0 2px;
 }
 
 .graphify-ask-form button:disabled,

@@ -145,3 +145,125 @@
 
   placeCard();
 })();
+
+/* Phone outline, built from the headings on the page. */
+(() => {
+  if (window.__graphifyMobileOutline) return;
+  window.__graphifyMobileOutline = true;
+
+  const desktop = window.matchMedia("(min-width: 1280px)");
+
+  function pageSkipsOutline() {
+    const mode = document.documentElement.getAttribute("data-page-mode");
+    return mode === "frame" || mode === "custom";
+  }
+
+  function headingText(heading) {
+    const copy = heading.cloneNode(true);
+    copy.querySelectorAll("a, svg, button").forEach((node) => node.remove());
+    return (copy.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  function slug(text) {
+    const base = text
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    if (!base) return "";
+    let id = base;
+    let n = 2;
+    while (document.getElementById(id)) {
+      id = base + "-" + n;
+      n += 1;
+    }
+    return id;
+  }
+
+  function headings() {
+    const content = document.getElementById("content");
+    if (!content) return [];
+    const found = [];
+    for (const heading of content.querySelectorAll("h2")) {
+      if (heading.closest(".graphify-mobile-outline")) continue;
+      // Card titles are headings too, and their ids are not page sections.
+      if (heading.classList.contains("not-prose")) continue;
+      const text = headingText(heading);
+      if (!text) continue;
+      let id = heading.id;
+      if (!id || id.startsWith("_R")) {
+        id = slug(text);
+        if (!id) continue;
+        heading.id = id;
+      }
+      found.push({ id, text });
+    }
+    return found;
+  }
+
+  function railVisible() {
+    const rail = document.getElementById("table-of-contents-layout");
+    if (!rail) return desktop.matches;
+    return getComputedStyle(rail).display !== "none";
+  }
+
+  function sync(box) {
+    if (!box) return;
+    const hide = pageSkipsOutline() || railVisible();
+    box.classList.toggle("is-suppressed", hide);
+    if (hide) box.open = false;
+  }
+
+  let builtFrom = "";
+
+  function build(items) {
+    const content = document.getElementById("content");
+    if (!content) return;
+    document.querySelector(".graphify-mobile-outline")?.remove();
+    const box = document.createElement("details");
+    box.className = "graphify-mobile-outline";
+    const summary = document.createElement("summary");
+    summary.textContent = "On this page";
+    const nav = document.createElement("nav");
+    nav.setAttribute("aria-label", "On this page");
+    for (const item of items) {
+      const link = document.createElement("a");
+      link.setAttribute("href", "#" + item.id);
+      link.textContent = item.text;
+      nav.append(link);
+    }
+    box.append(summary, nav);
+    content.prepend(box);
+    builtFrom = items.map((item) => item.id).join("|");
+    sync(box);
+  }
+
+  let frame = 0;
+  function schedule() {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      const existing = document.querySelector(".graphify-mobile-outline");
+      if (pageSkipsOutline()) {
+        if (existing) existing.remove();
+        builtFrom = "";
+        return;
+      }
+      const items = headings();
+      const signature = items.map((item) => item.id).join("|");
+      if (items.length < 2) {
+        if (existing) existing.remove();
+        builtFrom = "";
+        return;
+      }
+      if (!existing || signature !== builtFrom) build(items);
+      else sync(existing);
+    });
+  }
+
+  desktop.addEventListener("change", schedule);
+  window.addEventListener("resize", schedule);
+  const observer = new MutationObserver(schedule);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  schedule();
+})();

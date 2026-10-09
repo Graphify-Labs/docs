@@ -9,15 +9,6 @@
   },
   "favicon": "https://graphify.com/icon.svg",
   "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
     "tabs": [
       {
         "tab": "Get started",

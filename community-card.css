@@ -186,3 +186,82 @@
     display: none !important;
   }
 }
+
+/* Phone outline. Hidden whenever the right-hand outline is on screen. */
+.graphify-mobile-outline {
+  margin: 0 0 24px;
+  border: 1px solid #c7dbd0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #062314;
+}
+
+.graphify-mobile-outline summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  list-style: none;
+}
+
+.graphify-mobile-outline summary::-webkit-details-marker {
+  display: none;
+}
+
+.graphify-mobile-outline summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 6px solid currentColor;
+}
+
+.graphify-mobile-outline[open] summary::before {
+  border-top: 6px solid currentColor;
+  border-right: 5px solid transparent;
+  border-bottom: 0;
+  border-left: 5px solid transparent;
+}
+
+.graphify-mobile-outline nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px 8px 32px;
+  color: inherit;
+  font-size: 14px;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+.graphify-mobile-outline nav a:hover {
+  background: #edf6f0;
+}
+
+.graphify-mobile-outline summary:focus-visible,
+.graphify-mobile-outline nav a:focus-visible {
+  outline: 2px solid #4dea9c;
+  outline-offset: -2px;
+}
+
+.graphify-mobile-outline.is-suppressed {
+  display: none !important;
+}
+
+@media (min-width: 1280px) {
+  .graphify-mobile-outline {
+    display: none !important;
+  }
+}
+
+@media print {
+  .graphify-mobile-outline {
+    display: none !important;
+  }
+}

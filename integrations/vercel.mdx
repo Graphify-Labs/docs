@@ -44,9 +44,7 @@ The integration adds two variables to each chosen project:
 
 Redeploy the selected projects so the new variables are available at runtime. For local development, pull project environment variables with the Vercel workflow you already use.
 
-<Note>
-  **TODO before publishing:** confirm with Graphify engineering that Marketplace project tokens are sent as `Authorization: Bearer <GRAPHIFY_MCP_TOKEN>` and that `GRAPHIFY_MCP_URL` always contains the full MCP endpoint. The code samples below assume that shape because eve's static-token auth sends Bearer tokens, and the AI SDK MCP HTTP transport accepts headers.
-</Note>
+Server-side code sends `GRAPHIFY_MCP_TOKEN` to the Graphify MCP server as a Bearer token. Use the `GRAPHIFY_MCP_URL` value from the project environment instead of hard-coding the endpoint.
 
 ### 2. Call Graphify from eve
 
@@ -253,7 +251,7 @@ try {
 | What you see | What to do |
 | --- | --- |
 | Marketplace variables are missing | Confirm the project was selected during install, redeploy the project, and pull environment variables for local development. |
-| The Marketplace token is rejected | Confirm the TODO above with Graphify engineering before publishing. Then check that the code reads `GRAPHIFY_MCP_TOKEN` from server-side environment variables. |
+| The Marketplace token is rejected | Check that the project is still connected in Vercel, the app was redeployed after install, and server-side code sends `GRAPHIFY_MCP_TOKEN` as the Bearer token. |
 | `getToken` cannot authenticate | Run `vercel env pull` again from the linked project. The local OIDC token expires. A deployment on Vercel receives its own token. |
 | The Connect token id is rejected | The id is `graphify/` plus the `--name` you passed to `vercel connect create`. `graphify/acme-graphify` matches the example name only. |
 | No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories). |

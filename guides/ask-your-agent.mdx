@@ -8,7 +8,7 @@ sidebarTitle: "Ask your agent one question"
 This is the shortest path from an empty checkout to one real question. It uses the open-source engine on your machine. You need Python 3.10 or later and a supported coding assistant.
 
 <Steps>
-  <Step title="Install and check the version">
+  <Step titleSize="h2" title="Install and check the version">
     ```bash
     uv tool install graphifyy
     graphify --version
@@ -16,14 +16,14 @@ This is the shortest path from an empty checkout to one real question. It uses t
 
     `graphify --version` prints the version you installed. The latest release is on [PyPI](https://pypi.org/project/graphifyy/) and in the [changelog](/changelog). The package is `graphifyy`, with two y's. The command is `graphify`.
   </Step>
-  <Step title="Install the skill for your assistant">
+  <Step titleSize="h2" title="Install the skill for your assistant">
     ```bash
     graphify install --platform cursor
     ```
 
     Use `claude`, `codex`, `gemini`, or `copilot` in place of `cursor` when that is the assistant. `graphify install` with no flag uses the assistant it detects. Copilot in VS Code uses `graphify vscode install`. See [all integrations](/integrations/overview).
   </Step>
-  <Step title="Map the repository">
+  <Step titleSize="h2" title="Map the repository">
     In the assistant chat, at the repository root:
 
     ```text
@@ -32,7 +32,7 @@ This is the shortest path from an empty checkout to one real question. It uses t
 
     In Codex, select the Graphify skill with `$graphify` and ask it to map the current repository. This is an assistant instruction, not a shell command.
   </Step>
-  <Step title="Check the files">
+  <Step titleSize="h2" title="Check the files">
     A finished map writes `graphify-out/` at the repository root:
 
     ```text
@@ -42,7 +42,7 @@ This is the shortest path from an empty checkout to one real question. It uses t
     └── graph.json        The graph used by CLI and MCP queries
     ```
   </Step>
-  <Step title="Ask one question">
+  <Step titleSize="h2" title="Ask one question">
     ```bash
     graphify query "how does authentication reach the database?"
     ```

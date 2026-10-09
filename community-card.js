@@ -164,16 +164,41 @@
     return (copy.textContent || "").replace(/\s+/g, " ").trim();
   }
 
+  function slug(text) {
+    const base = text
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    if (!base) return "";
+    let id = base;
+    let n = 2;
+    while (document.getElementById(id)) {
+      id = base + "-" + n;
+      n += 1;
+    }
+    return id;
+  }
+
   function headings() {
     const content = document.getElementById("content");
     if (!content) return [];
-    return [...content.querySelectorAll("h2[id]")]
-      .filter((heading) => !heading.closest(".graphify-mobile-outline"))
-      .map((heading) => {
-        const text = headingText(heading);
-        return text ? { id: heading.id, text } : null;
-      })
-      .filter(Boolean);
+    const found = [];
+    for (const heading of content.querySelectorAll("h2")) {
+      if (heading.closest(".graphify-mobile-outline")) continue;
+      // Card titles are headings too, and their ids are not page sections.
+      if (heading.classList.contains("not-prose")) continue;
+      const text = headingText(heading);
+      if (!text) continue;
+      let id = heading.id;
+      if (!id || id.startsWith("_R")) {
+        id = slug(text);
+        if (!id) continue;
+        heading.id = id;
+      }
+      found.push({ id, text });
+    }
+    return found;
   }
 
   function railVisible() {
@@ -189,14 +214,12 @@
     if (hide) box.open = false;
   }
 
-  function build() {
-    if (pageSkipsOutline()) return;
-    if (document.querySelector(".graphify-mobile-outline")) return;
-    const items = headings();
-    if (items.length < 2) return;
+  let builtFrom = "";
+
+  function build(items) {
     const content = document.getElementById("content");
     if (!content) return;
-
+    document.querySelector(".graphify-mobile-outline")?.remove();
     const box = document.createElement("details");
     box.className = "graphify-mobile-outline";
     const summary = document.createElement("summary");
@@ -211,6 +234,7 @@
     }
     box.append(summary, nav);
     content.prepend(box);
+    builtFrom = items.map((item) => item.id).join("|");
     sync(box);
   }
 
@@ -222,9 +246,17 @@
       const existing = document.querySelector(".graphify-mobile-outline");
       if (pageSkipsOutline()) {
         if (existing) existing.remove();
+        builtFrom = "";
         return;
       }
-      if (!existing) build();
+      const items = headings();
+      const signature = items.map((item) => item.id).join("|");
+      if (items.length < 2) {
+        if (existing) existing.remove();
+        builtFrom = "";
+        return;
+      }
+      if (!existing || signature !== builtFrom) build(items);
       else sync(existing);
     });
   }

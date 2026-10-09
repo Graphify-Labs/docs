@@ -1,10 +1,135 @@
 ---
 title: "Graphify with Claude Code"
-description: "Install the local Graphify skill in Claude Code."
+description: "Connect Claude Code to Graphify Cloud's hosted MCP server, or install the local Graphify skill."
 hideFooterPagination: true
 ---
 
-## Install and register
+You can use Graphify from Claude Code in two ways:
+
+- **Graphify Cloud (hosted).** Claude Code connects to `https://api.graphify.com/mcp` and queries the repositories indexed in your [Graphify Cloud](https://app.graphify.com) workspace. Nothing runs on your machine.
+- **Local skill (open source).** Claude Code builds a graph of the current folder on your machine and reads it from `graphify-out/`.
+
+## Graphify Cloud (hosted)
+
+### Before you start
+
+- Claude Code installed, with the `claude` command available in your terminal.
+- A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
+
+The **MCP** page in Graphify Cloud shows the same command and steps for your workspace.
+
+### 1. Add the server
+
+Run this in any terminal:
+
+```bash
+claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+```
+
+The command adds Graphify for your user (user scope), so it works in every project. To keep it to one folder, run the command in that folder without `--scope user` (local scope).
+
+To share the server with your team instead, commit a `.mcp.json` file at the repository root. Claude Code asks each person to approve a project server before it loads it.
+
+```json .mcp.json
+{
+  "mcpServers": {
+    "graphify": {
+      "type": "http",
+      "url": "https://api.graphify.com/mcp"
+    }
+  }
+}
+```
+
+### 2. Sign in with `/mcp`
+
+Adding the server does not sign you in. Until you authenticate, Claude Code cannot load Graphify's tools.
+
+<Steps>
+  <Step title="Open the MCP menu">
+    Start Claude Code, then run `/mcp`. If you added the server with local scope, start Claude Code in that folder.
+  </Step>
+  <Step title="Authenticate">
+    Select **graphify**, then choose **Authenticate**. Your browser opens so you can sign in to Graphify and grant access. Choose the workspace that holds the repository you want to query.
+  </Step>
+  <Step title="Confirm the connection">
+    Return to Claude Code and run `/mcp` again. Check that **graphify** shows as connected.
+  </Step>
+</Steps>
+
+### 3. Run a first prompt
+
+Confirm what the connection can see:
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+```
+
+Then pick a repository from the answer and ask about its code:
+
+- `Who calls the function that validates a session token?`
+- `Show me how a request reaches the database in this repository.`
+- `What does this change affect?`
+
+Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it.
+
+### Use an API token for CI and headless runs
+
+Browser sign-in (OAuth) is the recommended path for a person at a terminal. Sign-in expires on its own, and usage is attributed to you. Use a workspace API token only where Claude Code cannot open a browser, such as a CI runner or a container.
+
+API tokens are available only when they are enabled for your workspace. When they are, the **Authentication** section of the **MCP** page shows **Use an API token**. A workspace owner or admin can create a token there.
+
+<Steps>
+  <Step title="Create a token">
+    On the **MCP** page, choose **Use an API token**, name the token for the machine that will use it (for example `ci-runner`), and select **Create token**. Copy the token now. Graphify shows it only once.
+  </Step>
+  <Step title="Store it as a secret">
+    Put the token in an environment variable such as `GRAPHIFY_MCP_TOKEN` or in your CI provider's secret store. Do not commit it.
+  </Step>
+  <Step title="Add the server with the token">
+    Token connections use the `/v1/mcp` endpoint and send the token in an `Authorization` header. No `/mcp` sign-in is needed.
+
+    ```bash
+    claude mcp add --transport http graphify https://api.graphify.com/v1/mcp \
+      --header "Authorization: Bearer $GRAPHIFY_MCP_TOKEN"
+    ```
+
+    This command writes the expanded token into your Claude Code configuration. To keep it out of the file, use `.mcp.json` with a variable reference. Claude Code reads the value from the environment when it loads the server.
+
+    ```json .mcp.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "type": "http",
+          "url": "https://api.graphify.com/v1/mcp",
+          "headers": { "Authorization": "Bearer ${GRAPHIFY_MCP_TOKEN}" }
+        }
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+A token reads every enabled repository in its workspace, with member access. It stays valid until it is revoked. Create one token per machine, and revoke a token from the same dialog when you no longer need it.
+
+### If something fails
+
+| What you see | What to do |
+| --- | --- |
+| `claude mcp add` reports that `graphify` already exists | The server is already added. Run `/mcp` and authenticate it instead. To change its scope or endpoint, run `claude mcp remove graphify` and add it again. |
+| `/mcp` lists graphify, but its tools are missing | You have not signed in yet. Run `/mcp`, select **graphify**, and choose **Authenticate**. |
+| `/mcp` does not list graphify | You added it with local scope in a different folder. Local scope applies to one folder. Run `claude mcp list` to check, or run `claude mcp remove graphify` and add it again with `--scope user`. |
+| The browser sign-in finished, but Claude Code is not connected | Return to Claude Code and run `/mcp` again. If graphify still needs authentication, choose **Authenticate** once more. |
+| No repositories, or empty answers | The repository is not indexed yet, or it belongs to a different workspace. Check its status in [Repositories and builds](/platform/repositories). Sign in again to choose another workspace. |
+| A token connection returns `401` | The token is mistyped, revoked, or sent to the wrong endpoint. Token connections use `https://api.graphify.com/v1/mcp`. Browser sign-in uses `https://api.graphify.com/mcp`. |
+| A token connection returns `402` | The workspace's subscription is canceled, unpaid, or its trial has expired. A workspace owner can resolve it in **Billing**. |
+| **Use an API token** is not shown | API tokens are not enabled for this workspace. Use browser sign-in. |
+
+## Local skill (open source)
+
+Install the open-source skill to build and query a graph of the current folder on your machine. This path does not use your Graphify Cloud workspace.
+
+### Install and register
 
 ```bash
 uv tool install graphifyy
@@ -19,7 +144,7 @@ For a repository-local setup, run this from the project root:
 graphify install --project --platform claude
 ```
 
-## Build the graph
+### Build the graph
 
 Open your project in Claude Code. Select the Graphify skill and enter:
 
@@ -29,7 +154,7 @@ Open your project in Claude Code. Select the Graphify skill and enter:
 
 The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
 
-## Ask with context
+### Ask with context
 
 After the graph is built, ask:
 
@@ -41,7 +166,7 @@ You can also query from a terminal:
 graphify query "authentication flow"
 ```
 
-## Keep the integration current
+### Keep the integration current
 
 ```bash
 uv tool upgrade graphifyy
@@ -50,7 +175,7 @@ graphify install --platform claude
 
 If the skill is missing, refresh the assistant and confirm that the registration was installed in the intended user or project scope. See [troubleshooting](/troubleshooting).
 
-<Card title="Connect native MCP tools" icon="plug" href="/mcp/overview">Use the same graph through structured tool calls.</Card>
+<Card title="Connect native MCP tools" icon="plug" href="/mcp/overview">Serve that local graph to Claude Code through structured tool calls.</Card>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#content-container>span[style*=features-bg]]:!bg-cover [body:has(&)_#content-container>span[style*=features-bg]]:!bg-bottom [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000] [body:has(&)_#content-container>span[style*=features-bg]]:!opacity-0 [body:has(&)_button]:!rounded-[2px] [body:has(&)_.rounded-xl]:!rounded-[2px] [body:has(&)_.rounded-2xl]:!rounded-[2px] [body:has(&)_.rounded-lg]:!rounded-[2px]" />
 

@@ -82,19 +82,43 @@
     starters.append(button);
   }
 
+  const apple = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
   const form = document.createElement("form");
   form.className = "graphify-ask-form";
+  const composer = document.createElement("div");
+  composer.className = "graphify-ask-composer";
   const input = document.createElement("textarea");
   input.name = "question";
   input.maxLength = MAX_CHARS;
-  input.rows = 2;
+  input.rows = 1;
   input.required = true;
+  input.autocomplete = "off";
+  input.enterKeyHint = coarse ? "enter" : "send";
   input.setAttribute("aria-label", "Question for Ask Graphify");
   input.placeholder = "Ask about these docs";
   const submit = document.createElement("button");
   submit.type = "submit";
   submit.textContent = "Send";
-  form.append(input, submit);
+  composer.append(input, submit);
+  const keys = document.createElement("p");
+  keys.className = "graphify-ask-keys";
+  function keycap(label) {
+    const cap = document.createElement("kbd");
+    cap.textContent = label;
+    return cap;
+  }
+  keys.append(keycap("Enter"));
+  keys.append(document.createTextNode(" or "));
+  keys.append(keycap(apple ? "⌘" : "Ctrl"));
+  keys.append(keycap("Enter"));
+  keys.append(document.createTextNode(" to send"));
+  const keysDot = document.createElement("span");
+  keysDot.className = "graphify-ask-keys-dot";
+  keysDot.setAttribute("aria-hidden", "true");
+  keysDot.textContent = "·";
+  keys.append(keysDot, keycap("Shift"), keycap("Enter"), document.createTextNode(" for a new line"));
+  form.append(composer, keys);
 
   panel.append(head, log, starters, form);
   root.append(launcher, panel);
@@ -125,16 +149,24 @@
     const item = document.createElement("article");
     item.className = "graphify-ask-turn graphify-ask-turn-" + role;
     item.setAttribute("aria-label", role === "user" ? "You" : "Ask Graphify");
+    const copy = document.createElement("div");
+    copy.className = "graphify-ask-copy";
     if (role === "assistant") {
       const who = document.createElement("p");
       who.className = "graphify-ask-who";
       who.textContent = "Graphify";
-      item.append(who);
+      copy.append(who);
+      const row = document.createElement("div");
+      row.className = "graphify-ask-row";
+      row.append(logoAvatar(), copy);
+      item.append(row);
+    } else {
+      item.append(copy);
     }
     const body = document.createElement("p");
     body.className = "graphify-ask-text";
     body.textContent = text;
-    item.append(body);
+    copy.append(body);
     log.append(item);
     log.scrollTop = log.scrollHeight;
     return body;
@@ -196,11 +228,26 @@
     if (event.key === "Escape" && !panel.hidden) closePanel();
   });
 
+  function fitInput() {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 120) + "px";
+  }
+
+  input.addEventListener("input", fitInput);
+  input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || event.shiftKey || event.altKey || event.isComposing || event.keyCode === 229) return;
+    const command = event.metaKey || event.ctrlKey;
+    if (coarse && !command) return;
+    event.preventDefault();
+    if (typeof form.requestSubmit === "function") form.requestSubmit();
+  });
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const question = input.value.trim();
-    if (!question) return;
+    if (!question || inflight) return;
     input.value = "";
+    fitInput();
     send(question);
   });
 

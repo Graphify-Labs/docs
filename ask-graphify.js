@@ -6,6 +6,7 @@
   window.__graphifyAskInitialized = true;
 
   const ENDPOINT = "https://graphify.com/api/assistant";
+  const LOGO_URL = "https://graphify.com/assets/logo-icon.svg";
   const MAX_CHARS = 2000;
   const STARTERS = [
     "How do I install Graphify?",
@@ -16,10 +17,26 @@
   const root = document.createElement("div");
   root.className = "graphify-ask";
 
+  function logoAvatar() {
+    const avatar = document.createElement("span");
+    avatar.className = "graphify-ask-avatar";
+    avatar.setAttribute("aria-hidden", "true");
+    const logo = document.createElement("img");
+    logo.src = LOGO_URL;
+    logo.alt = "";
+    logo.width = 16;
+    logo.height = 18;
+    logo.decoding = "async";
+    avatar.append(logo);
+    return avatar;
+  }
+
   const launcher = document.createElement("button");
   launcher.type = "button";
   launcher.className = "graphify-ask-launcher";
-  launcher.textContent = "Ask Graphify";
+  const launcherLabel = document.createElement("span");
+  launcherLabel.textContent = "Ask Graphify";
+  launcher.append(logoAvatar(), launcherLabel);
 
   const panel = document.createElement("section");
   panel.className = "graphify-ask-panel";
@@ -30,15 +47,25 @@
 
   const head = document.createElement("div");
   head.className = "graphify-ask-head";
+  const heading = document.createElement("div");
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "graphify-ask-eyebrow";
+  eyebrow.textContent = "Docs";
   const title = document.createElement("h2");
   title.id = "graphify-ask-title";
   title.textContent = "Ask Graphify";
+  heading.append(eyebrow, title);
+  const brand = document.createElement("div");
+  brand.className = "graphify-ask-brand";
+  brand.append(logoAvatar(), heading);
   const close = document.createElement("button");
   close.type = "button";
   close.className = "graphify-ask-close";
   close.setAttribute("aria-label", "Close Ask Graphify");
-  close.textContent = "Close";
-  head.append(title, close);
+  const bar = document.createElement("span");
+  bar.className = "graphify-ask-bar";
+  bar.setAttribute("aria-hidden", "true");
+  head.append(brand, close, bar);
 
   const log = document.createElement("div");
   log.className = "graphify-ask-log";
@@ -96,14 +123,18 @@
 
   function addMessage(role, text) {
     const item = document.createElement("article");
-    item.className = "graphify-ask-msg graphify-ask-msg-" + role;
-    const who = document.createElement("p");
-    who.className = "graphify-ask-who";
-    who.textContent = role === "user" ? "You" : "Ask Graphify";
+    item.className = "graphify-ask-turn graphify-ask-turn-" + role;
+    item.setAttribute("aria-label", role === "user" ? "You" : "Ask Graphify");
+    if (role === "assistant") {
+      const who = document.createElement("p");
+      who.className = "graphify-ask-who";
+      who.textContent = "Graphify";
+      item.append(who);
+    }
     const body = document.createElement("p");
     body.className = "graphify-ask-text";
     body.textContent = text;
-    item.append(who, body);
+    item.append(body);
     log.append(item);
     log.scrollTop = log.scrollHeight;
     return body;
@@ -125,12 +156,18 @@
       li.append(link);
       list.append(li);
     }
-    if (list.childElementCount) parent.append(list);
+    if (!list.childElementCount) return;
+    const label = document.createElement("p");
+    label.className = "graphify-ask-sources-label";
+    label.textContent = "Sources";
+    parent.append(label, list);
+    log.scrollTop = log.scrollHeight;
   }
 
   function setBusy(busy) {
     input.disabled = busy;
     submit.disabled = busy;
+    panel.classList.toggle("is-busy", busy);
     starters.querySelectorAll("button").forEach((button) => {
       button.disabled = busy;
     });
@@ -141,10 +178,12 @@
     lastFocus = document.activeElement;
     panel.hidden = false;
     launcher.hidden = true;
+    requestAnimationFrame(() => panel.classList.add("is-open"));
     input.focus();
   }
 
   function closePanel() {
+    panel.classList.remove("is-open");
     panel.hidden = true;
     launcher.hidden = false;
     if (inflight) inflight.abort();
@@ -233,6 +272,7 @@
     }
     if (event.type === "text-delta" && typeof event.delta === "string") {
       answer.textContent += event.delta;
+      log.scrollTop = log.scrollHeight;
     } else if (event.type === "error") {
       answer.textContent = "Ask Graphify could not answer that.";
     } else if (event.type === "source-url" && typeof event.url === "string") {

@@ -16,7 +16,7 @@ You can use Graphify from Claude Code in two ways:
 - Claude Code installed, with the `claude` command available in your terminal.
 - A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
 
-The **MCP** page in Graphify Cloud shows the same command and steps for your workspace.
+The **MCP** page in Graphify Cloud also shows how to connect Claude Code to your workspace.
 
 ### 1. Add the server
 
@@ -94,9 +94,9 @@ API tokens are available only when they are enabled for your workspace. When the
       --header "Authorization: Bearer $GRAPHIFY_MCP_TOKEN"
     ```
 
-    This command writes the expanded token into your Claude Code configuration. To keep it out of the file, use `.mcp.json` with a variable reference. Claude Code reads the value from the environment when it loads the server.
+    This command writes the expanded token into your Claude Code configuration. To keep it out of the file, put a variable reference in a config file. Claude Code reads the value from the environment when it loads the server.
 
-    ```json .mcp.json
+    ```json graphify-mcp.json
     {
       "mcpServers": {
         "graphify": {
@@ -107,6 +107,14 @@ API tokens are available only when they are enabled for your workspace. When the
       }
     }
     ```
+
+    In CI, pass the file to Claude Code explicitly:
+
+    ```bash
+    claude -p --mcp-config graphify-mcp.json "Use Graphify's list_repositories tool and list the repositories."
+    ```
+
+    A server loaded with `--mcp-config` does not need approval. If you put the same server in a project `.mcp.json` instead, Claude Code waits for someone to approve it, and a CI run has no one to answer. Pre-approve project servers in that case, for example with `"enableAllProjectMcpServers": true` in the project's `.claude/settings.json`.
   </Step>
 </Steps>
 
@@ -121,8 +129,9 @@ A token reads every enabled repository in its workspace, with member access. It 
 | `/mcp` does not list graphify | You added it with local scope in a different folder. Local scope applies to one folder. Run `claude mcp list` to check, or run `claude mcp remove graphify` and add it again with `--scope user`. |
 | The browser sign-in finished, but Claude Code is not connected | Return to Claude Code and run `/mcp` again. If graphify still needs authentication, choose **Authenticate** once more. |
 | No repositories, or empty answers | The repository is not indexed yet, or it belongs to a different workspace. Check its status in [Repositories and builds](/platform/repositories). Sign in again to choose another workspace. |
-| A token connection returns `401` | The token is mistyped, revoked, or sent to the wrong endpoint. Token connections use `https://api.graphify.com/v1/mcp`. Browser sign-in uses `https://api.graphify.com/mcp`. |
+| A token connection returns `401` | The token is mistyped, revoked, or not authorized for MCP, or API tokens have been turned off for the workspace. Graphify gives the same `401` for all of these. Check the `Authorization` header value, then create a new token on the **MCP** page if needed. |
 | A token connection returns `402` | The workspace's subscription is canceled, unpaid, or its trial has expired. A workspace owner can resolve it in **Billing**. |
+| Graphify tools are missing in a CI run | The server was not loaded. A project `.mcp.json` server waits for approval that a CI run cannot give. Pass the config with `claude --mcp-config <file>`, or pre-approve project servers with `enableAllProjectMcpServers`. Run `claude mcp list` in the job to check. |
 | **Use an API token** is not shown | API tokens are not enabled for this workspace. Use browser sign-in. |
 
 ## Local skill (open source)

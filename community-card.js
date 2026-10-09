@@ -145,3 +145,93 @@
 
   placeCard();
 })();
+
+/* Phone outline, built from the headings on the page. */
+(() => {
+  if (window.__graphifyMobileOutline) return;
+  window.__graphifyMobileOutline = true;
+
+  const desktop = window.matchMedia("(min-width: 1280px)");
+
+  function pageSkipsOutline() {
+    const mode = document.documentElement.getAttribute("data-page-mode");
+    return mode === "frame" || mode === "custom";
+  }
+
+  function headingText(heading) {
+    const copy = heading.cloneNode(true);
+    copy.querySelectorAll("a, svg, button").forEach((node) => node.remove());
+    return (copy.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  function headings() {
+    const content = document.getElementById("content");
+    if (!content) return [];
+    return [...content.querySelectorAll("h2[id]")]
+      .filter((heading) => !heading.closest(".graphify-mobile-outline"))
+      .map((heading) => {
+        const text = headingText(heading);
+        return text ? { id: heading.id, text } : null;
+      })
+      .filter(Boolean);
+  }
+
+  function railVisible() {
+    const rail = document.getElementById("table-of-contents-layout");
+    if (!rail) return desktop.matches;
+    return getComputedStyle(rail).display !== "none";
+  }
+
+  function sync(box) {
+    if (!box) return;
+    const hide = pageSkipsOutline() || railVisible();
+    box.classList.toggle("is-suppressed", hide);
+    if (hide) box.open = false;
+  }
+
+  function build() {
+    if (pageSkipsOutline()) return;
+    if (document.querySelector(".graphify-mobile-outline")) return;
+    const items = headings();
+    if (items.length < 2) return;
+    const content = document.getElementById("content");
+    if (!content) return;
+
+    const box = document.createElement("details");
+    box.className = "graphify-mobile-outline";
+    const summary = document.createElement("summary");
+    summary.textContent = "On this page";
+    const nav = document.createElement("nav");
+    nav.setAttribute("aria-label", "On this page");
+    for (const item of items) {
+      const link = document.createElement("a");
+      link.setAttribute("href", "#" + item.id);
+      link.textContent = item.text;
+      nav.append(link);
+    }
+    box.append(summary, nav);
+    content.prepend(box);
+    sync(box);
+  }
+
+  let frame = 0;
+  function schedule() {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      const existing = document.querySelector(".graphify-mobile-outline");
+      if (pageSkipsOutline()) {
+        if (existing) existing.remove();
+        return;
+      }
+      if (!existing) build();
+      else sync(existing);
+    });
+  }
+
+  desktop.addEventListener("change", schedule);
+  window.addEventListener("resize", schedule);
+  const observer = new MutationObserver(schedule);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  schedule();
+})();

@@ -99,21 +99,27 @@
         "tab": "Integrations & MCP",
         "groups": [
           {
-            "group": "Integrations",
+            "group": "Local skill",
             "pages": [
               "integrations/claude-code",
               "integrations/cursor",
               "integrations/codex",
               "integrations/gemini-cli",
               "integrations/copilot",
+              "integrations/other-assistants"
+            ],
+            "root": "integrations/overview"
+          },
+          {
+            "group": "Graphify Cloud",
+            "root": "integrations/cloud",
+            "pages": [
               "integrations/vscode",
               "integrations/jetbrains",
               "integrations/chatgpt",
               "integrations/openclaw",
-              "integrations/vercel",
-              "integrations/other-assistants"
-            ],
-            "root": "integrations/overview"
+              "integrations/vercel"
+            ]
           },
           {
             "group": "CI integrations",
@@ -249,7 +255,7 @@
       "Use only commands, flags, and endpoints shown on these pages. Do not invent one.",
       "Check the current version on PyPI (https://pypi.org/project/graphifyy/) or in https://docs.graphify.com/changelog.md before you describe what shipped.",
       "The official site is https://graphify.com. These docs are https://docs.graphify.com.",
-      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The VS Code, JetBrains, ChatGPT, OpenClaw, and Vercel Connect pages use the hosted server, not the ten-tool list.",
+      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The VS Code, JetBrains, OpenClaw, and Vercel pages, and the page ChatGPT, Codex, and Dots, use the hosted server, not the ten-tool list. The page titled Graphify with Codex is the local skill.",
       "Read https://docs.graphify.com/llms.txt, then open one page's .md link. Use https://docs.graphify.com/llms-full.txt only when one page is not enough."
     ]
   },

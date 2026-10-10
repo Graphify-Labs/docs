@@ -112,6 +112,7 @@
           },
           {
             "group": "Graphify Cloud",
+            "root": "integrations/cloud",
             "pages": [
               "integrations/vscode",
               "integrations/jetbrains",

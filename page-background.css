@@ -1,0 +1,10 @@
+/* The page wash is a fixed image, painted at its natural size with
+   background-attachment: fixed. On a phone that image ends in a hard line
+   as you scroll. Fill the screen instead, and let the image scroll with
+   the fixed layer so iOS does not clip it. */
+#content-container > span[style*="features-bg"] {
+  background-attachment: scroll !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center bottom !important;
+}

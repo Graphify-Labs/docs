@@ -58,7 +58,7 @@
 }
 
 .graphify-ask-launcher:focus-visible,
-.graphify-ask-close:focus-visible,
+.graphify-ask-icon:focus-visible,
 .graphify-ask-form button:focus-visible,
 .graphify-ask-starters button:focus-visible,
 .graphify-ask-md a:focus-visible,
@@ -77,12 +77,16 @@
 .graphify-ask-panel {
   position: fixed;
   z-index: 40;
+  box-sizing: border-box;
   right: max(16px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  width: min(420px, calc(100% - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
-  max-height: min(640px, calc(100dvh - 32px));
+  width: min(420px, calc(100vw - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
+  max-width: min(420px, calc(100vw - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
+  height: min(640px, calc(100dvh - max(16px, env(safe-area-inset-top)) - max(16px, env(safe-area-inset-bottom))));
+  max-height: min(640px, calc(100dvh - max(16px, env(safe-area-inset-top)) - max(16px, env(safe-area-inset-bottom))));
+  min-width: 0;
   overflow: hidden;
   border: 1px solid var(--ask-line);
   border-radius: 12px;
@@ -90,7 +94,35 @@
   box-shadow: 0 16px 40px rgb(6 35 20 / 8%);
 }
 
-.graphify-ask-panel[hidden] {
+.graphify-ask-panel.is-full {
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  left: max(12px, env(safe-area-inset-left));
+  width: auto;
+  max-width: none;
+  height: auto;
+  max-height: none;
+}
+
+.graphify-ask-panel.is-min {
+  height: auto;
+  max-height: none;
+}
+
+.graphify-ask-panel.is-min .graphify-ask-log,
+.graphify-ask-panel.is-min .graphify-ask-starters,
+.graphify-ask-panel.is-min .graphify-ask-form {
+  display: none;
+}
+
+.graphify-ask-panel.is-min .graphify-ask-head {
+  border-bottom: 0;
+}
+
+.graphify-ask-panel[hidden],
+.graphify-ask-launcher[hidden],
+.graphify-ask-starters[hidden] {
   display: none;
 }
 
@@ -99,9 +131,52 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 12px 14px 16px;
+  gap: 8px;
+  padding: 10px 8px 10px 14px;
   border-bottom: 1px solid var(--ask-line);
+}
+
+.graphify-ask-tools {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+.graphify-ask-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ask-ink);
+  cursor: pointer;
+}
+
+.graphify-ask-icon svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.graphify-ask-icon:hover {
+  background: var(--ask-mint);
+}
+
+.graphify-ask-icon[aria-pressed="true"] {
+  background: var(--ask-mint);
+}
+
+.graphify-ask-icon:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.graphify-ask-icon:disabled:hover {
+  background: transparent;
 }
 
 .graphify-ask-eyebrow {
@@ -116,19 +191,15 @@
 
 .graphify-ask-head h2 {
   margin: 2px 0 0;
+  overflow: hidden;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .graphify-ask-close {
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--ask-ink);
-  cursor: pointer;
   position: relative;
 }
 
@@ -136,9 +207,9 @@
 .graphify-ask-close::after {
   content: "";
   position: absolute;
-  left: 14px;
-  right: 14px;
-  top: 21px;
+  left: 10px;
+  right: 10px;
+  top: 17px;
   height: 1.5px;
   background: currentColor;
 }
@@ -149,10 +220,6 @@
 
 .graphify-ask-close::after {
   transform: rotate(-45deg);
-}
-
-.graphify-ask-close:hover {
-  background: var(--ask-mint);
 }
 
 .graphify-ask-bar {
@@ -168,11 +235,24 @@
 
 .graphify-ask-log {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 22px;
+  min-height: 0;
+  min-width: 0;
   overflow: auto;
+  overflow-x: hidden;
   padding: 18px 16px 8px;
   overscroll-behavior: contain;
+}
+
+.graphify-ask-turn,
+.graphify-ask-md,
+.graphify-ask-code,
+.graphify-ask-table,
+.graphify-ask-sources {
+  max-width: 100%;
+  min-width: 0;
 }
 
 .graphify-ask-log,
@@ -602,7 +682,7 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
 .graphify-ask-actions {
   display: flex;
   gap: 4px;
-  margin: 8px 0 0 -10px;
+  margin: 4px 0 0;
 }
 
 .graphify-ask-starters {

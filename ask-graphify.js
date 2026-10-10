@@ -60,12 +60,20 @@
   brand.append(logoAvatar(), heading);
   const close = document.createElement("button");
   close.type = "button";
-  close.className = "graphify-ask-close";
+  close.className = "graphify-ask-icon graphify-ask-close";
   close.setAttribute("aria-label", "Close Ask Graphify");
+  close.title = "Close";
+  const clearChatButton = iconButton("clear", "Clear chat");
+  const downloadButton = iconButton("download", "Download chat");
+  const fullButton = iconButton("full", "Full screen");
+  const minButton = iconButton("min", "Minimize");
+  const tools = document.createElement("div");
+  tools.className = "graphify-ask-tools";
+  tools.append(clearChatButton, downloadButton, fullButton, minButton, close);
   const bar = document.createElement("span");
   bar.className = "graphify-ask-bar";
   bar.setAttribute("aria-hidden", "true");
-  head.append(brand, close, bar);
+  head.append(brand, tools, bar);
 
   const log = document.createElement("div");
   log.className = "graphify-ask-log";
@@ -332,6 +340,42 @@
     return card;
   }
 
+  function icon(name) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("aria-hidden", "true");
+    const shapes = {
+      copy: ["M5.5 5.5h6.5V13H5.5z", "M3.5 10.5V3.5H10"],
+      check: ["M3.5 8.2 6.4 11.2 12.5 4.8"],
+      download: ["M8 2.5v6.5", "M5.2 6.6 8 9.4l2.8-2.8", "M3 12.5h10"],
+      clear: ["M3.5 4.5h9", "M6.2 4.5V3.2h3.6v1.3", "M4.8 4.5l.5 8.3h5.4l.5-8.3"],
+      full: ["M3 6V3h3", "M10 3h3v3", "M13 10v3h-3", "M6 13H3v-3"],
+      dock: ["M6 3.5V6H3.5", "M10 3.5V6h2.5", "M12.5 10H10v2.5", "M3.5 10H6v2.5"],
+      min: ["M3.5 8h9"],
+      window: ["M3.5 4h9v8h-9z"],
+    };
+    for (const d of shapes[name]) {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "currentColor");
+      path.setAttribute("stroke-width", "1.5");
+      path.setAttribute("stroke-linecap", "round");
+      path.setAttribute("stroke-linejoin", "round");
+      svg.append(path);
+    }
+    return svg;
+  }
+
+  function iconButton(glyph, label) {
+    const button = el("button", "graphify-ask-icon");
+    button.type = "button";
+    button.append(icon(glyph));
+    button.setAttribute("aria-label", label);
+    button.title = label;
+    return button;
+  }
+
   function copyButton(read, label, text) {
     const idle = text || "Copy";
     const button = el("button", "graphify-ask-copy-button");
@@ -349,6 +393,32 @@
       clearTimeout(reset);
       reset = setTimeout(() => {
         button.textContent = idle;
+      }, 1600);
+    });
+    return button;
+  }
+
+  function copyIconButton(read, label) {
+    const button = iconButton("copy", label);
+    let reset = 0;
+    button.addEventListener("click", async () => {
+      let glyph = "copy";
+      let next = label;
+      try {
+        await navigator.clipboard.writeText(read());
+        glyph = "check";
+        next = "Copied";
+      } catch {
+        next = "Copy failed";
+      }
+      button.replaceChildren(icon(glyph));
+      button.setAttribute("aria-label", next);
+      button.title = next;
+      clearTimeout(reset);
+      reset = setTimeout(() => {
+        button.replaceChildren(icon("copy"));
+        button.setAttribute("aria-label", label);
+        button.title = label;
       }, 1600);
     });
     return button;
@@ -775,6 +845,7 @@
     item.append(body);
     log.append(item);
     log.scrollTop = log.scrollHeight;
+    refreshTools();
   }
 
   function addAssistantTurn() {
@@ -791,7 +862,9 @@
     item.append(who, status, body);
     log.append(item);
     log.scrollTop = log.scrollHeight;
-    return { item, status, body, raw: "", sources: [], index: null, frame: 0 };
+    const turn = { item, status, body, raw: "", sources: [], index: null, frame: 0 };
+    item._turn = turn;
+    return turn;
   }
 
   function nearBottom() {
@@ -882,8 +955,9 @@
       turn.item.append(block);
     }
     const actions = el("div", "graphify-ask-actions");
-    actions.append(copyButton(() => plainAnswer(turn), "Copy answer", "Copy answer"));
+    actions.append(copyIconButton(() => plainAnswer(turn), "Copy answer"));
     turn.item.append(actions);
+    refreshTools();
     if (stick) log.scrollTop = log.scrollHeight;
   }
 
@@ -897,15 +971,86 @@
     submit.textContent = busy ? "Sending" : "Send";
   }
 
+  let mode = "dock";
+  let restoreMode = "dock";
+
+  function labelIcon(button, glyph, label) {
+    button.replaceChildren(icon(glyph));
+    button.setAttribute("aria-label", label);
+    button.title = label;
+  }
+
+  function setMode(next) {
+    if (next === "min" && mode !== "min") restoreMode = mode;
+    mode = next;
+    panel.classList.toggle("is-full", mode === "full");
+    panel.classList.toggle("is-min", mode === "min");
+    labelIcon(fullButton, mode === "full" ? "dock" : "full", mode === "full" ? "Exit full screen" : "Full screen");
+    fullButton.setAttribute("aria-pressed", mode === "full" ? "true" : "false");
+    labelIcon(minButton, mode === "min" ? "window" : "min", mode === "min" ? "Restore" : "Minimize");
+    minButton.setAttribute("aria-pressed", mode === "min" ? "true" : "false");
+  }
+
+  function refreshTools() {
+    const hasChat = Boolean(log.querySelector(".graphify-ask-turn"));
+    clearChatButton.disabled = !hasChat;
+    downloadButton.disabled = !hasChat;
+  }
+
+  function chatMarkdown() {
+    const blocks = [];
+    for (const article of log.children) {
+      if (!article.classList || !article.classList.contains("graphify-ask-turn")) continue;
+      if (article.classList.contains("graphify-ask-turn-user")) {
+        const text = article.querySelector(".graphify-ask-text");
+        blocks.push("## You\n\n" + (text ? text.textContent : ""));
+        continue;
+      }
+      const turn = article._turn;
+      let body = "";
+      if (turn && turn.index && turn.raw.trim()) body = plainAnswer(turn);
+      else if (turn && turn.raw.trim()) body = turn.raw.trim();
+      else body = (article.querySelector(".graphify-ask-md") || {}).textContent || "";
+      body = body.trim();
+      if (body) blocks.push("## Graphify\n\n" + body);
+    }
+    return blocks.join("\n\n");
+  }
+
+  function downloadChat() {
+    const text = chatMarkdown();
+    if (!text) return;
+    const blob = new Blob([text], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "ask-graphify.md";
+    link.rel = "noopener";
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function clearChat() {
+    if (inflight) inflight.abort();
+    log.replaceChildren();
+    starters.hidden = false;
+    newSession();
+    refreshTools();
+    if (!panel.hidden) input.focus();
+  }
+
   function openPanel() {
     lastFocus = document.activeElement;
     panel.hidden = false;
     launcher.hidden = true;
     requestAnimationFrame(() => panel.classList.add("is-open"));
-    input.focus();
+    if (mode !== "min") input.focus();
   }
 
   function closePanel() {
+    setMode("dock");
     panel.classList.remove("is-open");
     panel.hidden = true;
     launcher.hidden = false;
@@ -913,10 +1058,20 @@
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   }
 
+  refreshTools();
   launcher.addEventListener("click", openPanel);
   close.addEventListener("click", closePanel);
+  clearChatButton.addEventListener("click", clearChat);
+  downloadButton.addEventListener("click", downloadChat);
+  fullButton.addEventListener("click", () => setMode(mode === "full" ? "dock" : "full"));
+  minButton.addEventListener("click", () => setMode(mode === "min" ? restoreMode : "min"));
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !panel.hidden) closePanel();
+    if (event.key !== "Escape" || panel.hidden) return;
+    if (mode === "full" || mode === "min") {
+      setMode("dock");
+      return;
+    }
+    closePanel();
   });
 
   function fitInput() {

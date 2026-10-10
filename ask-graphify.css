@@ -61,9 +61,17 @@
 .graphify-ask-close:focus-visible,
 .graphify-ask-form button:focus-visible,
 .graphify-ask-starters button:focus-visible,
-.graphify-ask-sources a:focus-visible {
+.graphify-ask-md a:focus-visible,
+.graphify-ask-source:focus-visible,
+.graphify-ask-copy-button:focus-visible {
   outline: 2px solid var(--ask-focus);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+.graphify-ask-code pre:focus-visible,
+.graphify-ask-table:focus-visible {
+  outline: 2px solid var(--ask-focus);
+  outline-offset: -2px;
 }
 
 .graphify-ask-panel {
@@ -73,7 +81,7 @@
   bottom: max(16px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  width: min(400px, calc(100% - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
+  width: min(420px, calc(100% - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
   max-height: min(640px, calc(100dvh - 32px));
   overflow: hidden;
   border: 1px solid var(--ask-line);
@@ -164,6 +172,14 @@
   gap: 22px;
   overflow: auto;
   padding: 18px 16px 8px;
+  overscroll-behavior: contain;
+}
+
+.graphify-ask-log,
+.graphify-ask-code pre,
+.graphify-ask-table {
+  scrollbar-width: thin;
+  scrollbar-color: #cfe3d7 transparent;
 }
 
 .graphify-ask-turn-user {
@@ -176,31 +192,14 @@
 
 .graphify-ask-turn-assistant {
   align-self: stretch;
-  padding-right: 8px;
-}
-
-.graphify-ask-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.graphify-ask-row .graphify-ask-avatar {
-  width: 28px;
-  height: 28px;
-  flex-basis: 28px;
-}
-
-.graphify-ask-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   min-width: 0;
-  flex: 1;
 }
 
 .graphify-ask-who {
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 11px;
   font-weight: 500;
@@ -209,42 +208,401 @@
   color: var(--ask-quiet);
 }
 
+.graphify-ask-who .graphify-ask-avatar {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
+}
+
+.graphify-ask-who .graphify-ask-avatar img {
+  width: 12px;
+  height: 14px;
+}
+
 .graphify-ask-text {
   margin: 0;
   white-space: pre-wrap;
-  font-size: 14.5px;
+  overflow-wrap: anywhere;
+  font-size: 14px;
   line-height: 1.55;
-  letter-spacing: -0.011em;
+  letter-spacing: -0.006em;
+}
+
+.graphify-ask-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ask-quiet);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.graphify-ask-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: var(--ask-green);
+}
+
+.graphify-ask-notice {
+  margin: 0;
+  color: var(--ask-quiet);
+}
+
+.graphify-ask-md {
+  min-width: 0;
+  color: var(--ask-ink);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: -0.006em;
+  overflow-wrap: anywhere;
+}
+
+.graphify-ask-md > :first-child {
+  margin-top: 0;
+}
+
+.graphify-ask-md > :last-child {
+  margin-bottom: 0;
+}
+
+.graphify-ask-md p {
+  margin: 0 0 10px;
+}
+
+.graphify-ask-md h3,
+.graphify-ask-md h4 {
+  margin: 18px 0 6px;
+  color: var(--ask-ink);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+.graphify-ask-md h3 {
+  font-size: 15px;
+}
+
+.graphify-ask-md h4 {
+  font-size: 14px;
+}
+
+.graphify-ask-md strong {
+  color: var(--ask-ink);
+  font-weight: 600;
+}
+
+.graphify-ask-md em {
+  font-style: italic;
+}
+
+.graphify-ask-md del {
+  color: var(--ask-quiet);
+}
+
+.graphify-ask-md a:not(.graphify-ask-cite) {
+  color: var(--ask-green);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgb(17 141 79 / 35%);
+  text-underline-offset: 3px;
+}
+
+.graphify-ask-md a:not(.graphify-ask-cite):hover {
+  text-decoration-color: currentColor;
+}
+
+.graphify-ask-md ul,
+.graphify-ask-md ol {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+.graphify-ask-md ul {
+  list-style: disc;
+}
+
+.graphify-ask-md ul ul {
+  list-style: circle;
+}
+
+.graphify-ask-md ol {
+  list-style: decimal;
+}
+
+.graphify-ask-md li {
+  padding-left: 2px;
+}
+
+.graphify-ask-md li + li {
+  margin-top: 4px;
+}
+
+.graphify-ask-md li::marker {
+  color: var(--ask-quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+.graphify-ask-md li > p {
+  margin: 0;
+}
+
+.graphify-ask-md li > * + * {
+  margin-top: 6px;
+}
+
+.graphify-ask-md li > :last-child {
+  margin-bottom: 0;
+}
+
+.graphify-ask-md code {
+  padding: 1px 5px;
+  border: 1px solid var(--ask-line);
+  border-radius: 5px;
+  background: #f6faf7;
+  color: var(--ask-ink);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.86em;
+}
+
+.graphify-ask-md blockquote {
+  margin: 0 0 10px;
+  padding: 2px 0 2px 12px;
+  border-left: 2px solid var(--ask-line);
+  color: var(--ask-quiet);
+}
+
+.graphify-ask-md hr {
+  margin: 14px 0;
+  border: 0;
+  border-top: 1px solid var(--ask-line);
+}
+
+.graphify-ask-cite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin: 0 1px;
+  padding: 0 4px;
+  border: 1px solid #cfe3d7;
+  border-radius: 5px;
+  background: var(--ask-mint);
+  color: var(--ask-ink);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  vertical-align: 0.1em;
+}
+
+a.graphify-ask-cite:hover {
+  border-color: var(--ask-green);
+  background: var(--ask-green);
+  color: #ffffff;
+}
+
+.graphify-ask-cite.is-pending {
+  border-color: var(--ask-line);
+  background: #f5f8f6;
+  color: var(--ask-quiet);
+}
+
+.graphify-ask-code {
+  margin: 4px 0 12px;
+  overflow: hidden;
+  border: 1px solid var(--ask-line);
+  border-radius: 10px;
+  background: #f7faf8;
+}
+
+.graphify-ask-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 3px 3px 12px;
+  border-bottom: 1px solid #e3ece6;
+  color: var(--ask-quiet);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.graphify-ask-code pre {
+  margin: 0;
+  padding: 10px 12px 12px;
+  overflow-x: auto;
+  background: transparent;
+}
+
+.graphify-ask-code pre code {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-wrap: normal;
+  tab-size: 2;
+}
+
+.graphify-ask-copy-button {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ask-quiet);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.graphify-ask-copy-button:hover {
+  background: var(--ask-mint);
+  color: var(--ask-ink);
+}
+
+.graphify-ask-table {
+  margin: 4px 0 12px;
+  overflow-x: auto;
+  border: 1px solid var(--ask-line);
+  border-radius: 10px;
+}
+
+.graphify-ask-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.graphify-ask-table th,
+.graphify-ask-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #e3ece6;
+  text-align: left;
+  vertical-align: top;
+}
+
+.graphify-ask-table th {
+  background: #f7faf8;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.graphify-ask-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.graphify-ask-sources {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e5efe9;
 }
 
 .graphify-ask-sources-label {
-  margin: 6px 0 0;
+  margin: 0 0 8px;
+  color: var(--ask-quiet);
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ask-quiet);
 }
 
-.graphify-ask-sources {
+.graphify-ask-sources ol {
+  display: grid;
+  gap: 6px;
   margin: 0;
-  padding: 8px 0 0;
-  border-top: 1px solid #e5efe9;
+  padding: 0;
   list-style: none;
+}
+
+.graphify-ask-source {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 7px 12px 7px 8px;
+  border: 1px solid var(--ask-line);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--ask-ink);
+  text-decoration: none;
+}
+
+a.graphify-ask-source:hover {
+  border-color: #c4dccd;
+  background: var(--ask-mint);
+}
+
+.graphify-ask-source-n {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #cfe3d7;
+  border-radius: 6px;
+  background: var(--ask-mint);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.graphify-ask-source-text {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 1px;
+  min-width: 0;
 }
 
-.graphify-ask-sources a {
-  color: var(--ask-green);
+.graphify-ask-source-name,
+.graphify-ask-source-host {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.graphify-ask-source-name {
   font-size: 13px;
-  line-height: 1.4;
-  text-underline-offset: 3px;
+  font-weight: 500;
+  line-height: 1.35;
 }
 
-.graphify-ask-sources a:hover {
-  text-decoration: underline;
+.graphify-ask-source-host {
+  color: var(--ask-quiet);
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 11px;
+}
+
+.graphify-ask-source-arrow {
+  color: var(--ask-quiet);
+  font-size: 13px;
+}
+
+a.graphify-ask-source:hover .graphify-ask-source-arrow {
+  color: var(--ask-green);
+}
+
+.graphify-ask-actions {
+  display: flex;
+  gap: 4px;
+  margin: 8px 0 0 -10px;
 }
 
 .graphify-ask-starters {
@@ -384,6 +742,42 @@
 
   .graphify-ask-panel.is-busy .graphify-ask-bar {
     animation: graphify-ask-bar 1.15s ease-in-out infinite;
+  }
+
+  .graphify-ask-status::before {
+    animation: graphify-ask-pulse 900ms ease-in-out infinite alternate;
+  }
+
+  .graphify-ask-cite,
+  .graphify-ask-source,
+  .graphify-ask-copy-button {
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+}
+
+@media (pointer: coarse) {
+  .graphify-ask-keys {
+    display: none;
+  }
+
+  .graphify-ask-copy-button {
+    height: 40px;
+  }
+
+  .graphify-ask-cite {
+    min-width: 22px;
+    height: 22px;
+  }
+}
+
+@keyframes graphify-ask-pulse {
+  from {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

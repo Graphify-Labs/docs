@@ -7,16 +7,28 @@ hideFooterPagination: true
 
 [Graphify for Vercel](https://vercel.com/marketplace/graphify) connects Vercel projects to Graphify's hosted MCP server. Your app or agent can query indexed repositories for definitions, callers, dependencies, change impact, and repository knowledge with source references.
 
-There are two Vercel paths:
+## Choose a Vercel path
 
-- **Marketplace integration:** a Graphify workspace owner or admin connects an existing workspace to selected Vercel projects. Each selected project receives `GRAPHIFY_MCP_URL` and a sensitive `GRAPHIFY_MCP_TOKEN`. Use this when one Vercel project should call Graphify as that workspace.
-- **Vercel Connect connector:** each person using your app authorizes their own Graphify account. Your app asks `@vercel/connect` for a token for that person. Use this when the app should call Graphify as the signed-in user.
+Graphify supports two Vercel paths. They call the same hosted MCP server, but the token is issued differently.
+
+| Path | Use it when | What Vercel gives your app |
+| --- | --- | --- |
+| [Marketplace integration](#marketplace-integration) | A workspace owner or admin wants selected Vercel projects to call Graphify as one Graphify workspace. | `GRAPHIFY_MCP_URL` and a sensitive `GRAPHIFY_MCP_TOKEN` on each selected project. |
+| [Vercel Connect connector](#vercel-connect-connector) | Each person using your app should authorize their own Graphify account. | A runtime token from `@vercel/connect` for that signed-in user. |
 
 Both paths call the same hosted server used by [Graphify MCP for VS Code](/integrations/vscode), [Graphify MCP for JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), and [Graphify MCP for OpenClaw](/integrations/openclaw).
 
 ## Marketplace integration
 
 Use the Marketplace integration when a Vercel project needs a project-scoped MCP token managed from Vercel.
+
+When you connect Graphify from the Vercel Marketplace:
+
+- You authorize an existing Graphify workspace.
+- You choose the Vercel projects and deployment environments that should receive Graphify MCP access.
+- Each selected project gets its own MCP token.
+- The integration adds `GRAPHIFY_MCP_URL` and a sensitive `GRAPHIFY_MCP_TOKEN` to each selected project.
+- Your Graphify plan, usage limits, and billing stay with Graphify.
 
 ### Before you start
 
@@ -25,7 +37,7 @@ Use the Marketplace integration when a Vercel project needs a project-scoped MCP
 - You can select the Vercel projects and deployment environments that should receive Graphify MCP credentials.
 - You will keep the credentials in server-side code. Do not expose `GRAPHIFY_MCP_TOKEN` to browser code.
 
-Your Graphify plan, usage limits, and billing stay with Graphify. See [pricing](https://graphify.com/pricing).
+See [pricing](https://graphify.com/pricing) for Graphify plans.
 
 ### 1. Install from Vercel Marketplace
 
@@ -35,6 +47,10 @@ Your Graphify plan, usage limits, and billing stay with Graphify. See [pricing](
 4. Select the Vercel projects that should receive Graphify MCP access.
 5. Choose deployment environments. Production is selected by default; preview access is optional.
 
+After install, redeploy the selected projects so the new variables are available at runtime. For local development, pull project environment variables with the Vercel workflow you already use.
+
+### 2. Check the environment variables
+
 The integration adds two variables to each chosen project:
 
 | Variable | Purpose |
@@ -42,11 +58,9 @@ The integration adds two variables to each chosen project:
 | `GRAPHIFY_MCP_URL` | The hosted Graphify MCP endpoint for the project. |
 | `GRAPHIFY_MCP_TOKEN` | A sensitive project token for that Vercel project. |
 
-Redeploy the selected projects so the new variables are available at runtime. For local development, pull project environment variables with the Vercel workflow you already use.
-
 Server-side code sends `GRAPHIFY_MCP_TOKEN` to the Graphify MCP server as a Bearer token. Use the `GRAPHIFY_MCP_URL` value from the project environment instead of hard-coding the endpoint.
 
-### 2. Call Graphify from eve
+### 3. Call Graphify from eve
 
 eve is Vercel's agent project. Put the connection in `agent/connections/graphify.ts`:
 
@@ -72,7 +86,7 @@ export default defineMcpClientConnection({
 
 eve keeps the credential out of the model. Its static-token auth sends the token as a Bearer token when it connects to the MCP server.
 
-### 3. Call Graphify from the AI SDK
+### 4. Call Graphify from the AI SDK
 
 The AI SDK can load tools from Graphify's MCP server and pass them to a model. This sample reads the Marketplace variables from server-side code:
 
@@ -109,19 +123,27 @@ try {
 
 The model id above is the Vercel listing's sample. Graphify does not choose the model for your app.
 
-### 4. Manage the integration
+### 5. Manage or remove the integration
 
 Use **Configure** in Vercel to manage the Graphify connection.
 
 - Disconnecting a project revokes that project's token.
 - Removing the integration revokes every token from that installation.
 - Your Graphify account and subscription stay intact after removal.
+- Repository indexing and agent access are managed in Graphify.
 
 ## Vercel Connect connector
 
 Use Vercel Connect when each person using the app should authorize their own Graphify account. Connect gives your app a token for that person. The app sends that token to Graphify.
 
 `acme-graphify` below is the example name from the [Connect listing](https://vercel.com/connect/graphify). Pick your own. The token id is `graphify/` plus that name.
+
+When you create a Graphify connector:
+
+- Vercel records the connection under your linked project.
+- The person using your app completes Graphify authorization.
+- Your app calls `getToken` at runtime for the current subject.
+- Graphify receives a Bearer token for that person, not the Marketplace project token.
 
 ### Before you start
 
@@ -250,8 +272,8 @@ try {
 
 | What you see | What to do |
 | --- | --- |
-| Marketplace variables are missing | Confirm the project was selected during install, redeploy the project, and pull environment variables for local development. |
-| The Marketplace token is rejected | Check that the project is still connected in Vercel, the app was redeployed after install, and server-side code sends `GRAPHIFY_MCP_TOKEN` as the Bearer token. |
+| Marketplace variables are missing | In Vercel, confirm the project was selected during install, then redeploy the project. For local development, pull the project environment variables again. |
+| The Marketplace token is rejected | Check that the project is still connected in Vercel, the app was redeployed after install, and server-side code sends `GRAPHIFY_MCP_TOKEN` as `Authorization: Bearer <token>`. |
 | `getToken` cannot authenticate | Run `vercel env pull` again from the linked project. The local OIDC token expires. A deployment on Vercel receives its own token. |
 | The Connect token id is rejected | The id is `graphify/` plus the `--name` you passed to `vercel connect create`. `graphify/acme-graphify` matches the example name only. |
 | No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories). |

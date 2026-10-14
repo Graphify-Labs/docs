@@ -34,7 +34,9 @@
   const launcher = document.createElement("button");
   launcher.type = "button";
   launcher.className = "graphify-ask-launcher";
+  launcher.setAttribute("aria-label", "Ask Graphify");
   const launcherLabel = document.createElement("span");
+  launcherLabel.className = "graphify-ask-label";
   launcherLabel.textContent = "Ask Graphify";
   launcher.append(logoAvatar(), launcherLabel);
 

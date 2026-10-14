@@ -46,19 +46,34 @@
             "root": "platform/overview"
           },
           {
-            "group": "Core features",
+            "group": "Tasks",
             "pages": [
-              "platform/graphs",
-              "platform/wiki",
-              "platform/reviews",
-              "platform/verification",
-              "platform/learning",
-              "platform/memory",
-              "platform/contributors",
-              "platform/profile",
               "platform/trace",
               "platform/read-a-result",
               "platform/when-stuck"
+            ]
+          },
+          {
+            "group": "Explore",
+            "pages": [
+              "platform/graphs",
+              "platform/wiki",
+              "platform/memory"
+            ]
+          },
+          {
+            "group": "Review",
+            "pages": [
+              "platform/reviews",
+              "platform/verification",
+              "platform/learning"
+            ]
+          },
+          {
+            "group": "People",
+            "pages": [
+              "platform/contributors",
+              "platform/profile"
             ]
           },
           {

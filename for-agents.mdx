@@ -1,11 +1,19 @@
 ---
 title: "Notes for agents"
-description: "Rules for coding agents that answer questions from these docs."
+description: "[Both] Rules for coding agents that answer questions from these docs."
 hideFooterPagination: true
 sidebarTitle: "Notes for agents"
 ---
 
 These rules are repeated at the top of every page's Markdown, in [llms.txt](https://docs.graphify.com/llms.txt), and in [llms-full.txt](https://docs.graphify.com/llms-full.txt).
+
+## Which surface
+
+- `[Local]` is the `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server.
+- `[Cloud]` is the hosted workspace and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key).
+- `[Both]` applies to either surface.
+- Buildkite is the CI integration.
+- Each page line in [llms.txt](https://docs.graphify.com/llms.txt) starts with one of those tags.
 
 ## Which file to open
 
@@ -18,7 +26,7 @@ These rules are repeated at the top of every page's Markdown, in [llms.txt](http
 - The PyPI package is `graphifyy`, with two y's. The command is `graphify`.
 - `/graphify .` is typed in an assistant chat, not in a shell.
 - Use only commands, flags, and endpoints shown on these pages. Do not invent one.
-- Check the current version on [PyPI](https://pypi.org/project/graphifyy/) or in the [changelog](/changelog) before you describe what shipped.
+- The [changelog](/changelog) on this site summarizes selected `graphifyy` releases. The current package version is on [PyPI](https://pypi.org/project/graphifyy/). The full history is on [graphify.com/changelog](https://graphify.com/changelog).
 - The official site is [graphify.com](https://graphify.com). These docs are [docs.graphify.com](https://docs.graphify.com).
 - The local MCP server is the ten tools in the [MCP tool reference](/reference/mcp-tools) and reads a graph on the machine. The hosted server is `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [Other coding agents](/integrations/other-agents) pages use the hosted server, not the ten-tool list. [Other coding assistants](/integrations/other-assistants) is the local skill for clients without their own page. [Graphify with Codex](/integrations/codex) is the local skill.
 

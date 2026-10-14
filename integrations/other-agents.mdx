@@ -1,0 +1,86 @@
+---
+title: "Other coding agents"
+sidebarTitle: "Other coding agents"
+description: "Connect any MCP client to Graphify Cloud's hosted server."
+hideFooterPagination: true
+---
+
+The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), and [Vercel](/integrations/vercel) pages are install packages for one product. They are not the only way to use Graphify Cloud.
+
+Any coding assistant or IDE that can add a remote MCP server can use the same hosted server. That includes Antigravity, Windsurf, Cline, Continue, Zed, and clients that are not listed yet.
+
+The server is `https://api.graphify.com/mcp`. It uses Streamable HTTP. The first connection signs you in with OAuth. There is no API key to paste.
+
+## Copy a setup prompt
+
+The **Copy setup prompt** button on [graphify.com](https://graphify.com) copies this same text. Paste it into the assistant you want to connect. The assistant reads the current guide, keeps your existing MCP servers, and stops so you can sign in yourself.
+
+```text
+Help me connect Graphify (https://graphify.com) to this assistant so you can answer questions using my codebase's knowledge graph.
+
+Read the current setup guide at https://docs.graphify.com/integrations/cloud first. Use the instructions for this client and preserve any existing MCP servers or configuration.
+
+For Graphify Cloud, the Streamable HTTP MCP endpoint is https://api.graphify.com/mcp. Guide me through adding Graphify and completing its OAuth sign-in. I need a Graphify account, access to a workspace, and an indexed repository; if those are missing, help me get started at https://app.graphify.com. Let me complete sign-in and authorization myself.
+
+If this client cannot configure a connection directly, show me the manual steps and any plan or workspace-admin requirements. If I want a local graph instead, follow https://docs.graphify.com/mcp/overview. Do not claim the connection succeeded until it has been verified.
+
+After connecting, list my available workspaces and indexed repositories, ask which repository to use, and answer one architecture question using graph evidence and source locations.
+```
+
+## Before you start
+
+- A Graphify account, access to a workspace, and a repository whose status is **Indexed**. Start at [app.graphify.com](https://app.graphify.com). See [Repositories and builds](/platform/repositories).
+- An assistant that can add an HTTP or Streamable HTTP MCP server.
+
+## Add the server
+
+Name the server `graphify` and set the URL to `https://api.graphify.com/mcp`. Leave every other MCP server in place.
+
+If the assistant can add the server, let it. If it cannot, open its MCP settings and add the URL by hand. The file or command for a named client is on the [Graphify MCP connection guide](https://graphify.com/mcp).
+
+Use the dedicated page when the client already has one:
+
+- [Graphify MCP for VS Code](/integrations/vscode)
+- [Graphify MCP for JetBrains](/integrations/jetbrains)
+- [ChatGPT, Codex, and Dots](/integrations/chatgpt)
+- [Graphify MCP for OpenClaw](/integrations/openclaw)
+- [Graphify MCP for Vercel](/integrations/vercel)
+
+## Sign in
+
+Start the server. Your browser opens so you can sign in to Graphify and grant access. Choose the workspace that holds the repository you want to query. Complete that sign-in yourself.
+
+The connection is working when the assistant lists Graphify's tools. Until then, it is not connected.
+
+## Ask a question
+
+Ask the assistant to list your workspaces and indexed repositories, then name the repository to use. Ask one question about how the code is structured.
+
+Answers are graph evidence from the files Graphify indexed, with source locations. Open those lines before you rely on the answer.
+
+Some tools can save repository memory or change the selected workspace. Approve a tool only when that is what you meant.
+
+## A graph on your machine
+
+This page uses the hosted server. To query a graph file on your computer, follow [Connect the graph MCP server](/mcp/overview). The local skill for assistants without their own page is [Other coding assistants](/integrations/other-assistants).
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| The repository is missing | It is not indexed yet, or it is in another workspace. Check its status in [Repositories and builds](/platform/repositories). |
+| The assistant asks for an API key | This server uses OAuth. The URL is `https://api.graphify.com/mcp`. |
+| The tools are the ten local ones | That connection reads a graph on your machine. This page uses the hosted server. See the [MCP tool reference](/reference/mcp-tools). |
+| The same tools appear twice | A dedicated plugin and a manual server are both configured. Keep one. |
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div className="not-prose mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#586b60]">
+  <a href="https://github.com/Graphify-Labs/docs/edit/main/integrations/other-agents.mdx" className="no-underline hover:text-[#118d4f]">Suggest edits</a>
+  <a href="https://github.com/Graphify-Labs/docs/issues/new?title=Issue%20on%20docs&body=Path%3A%20%2Fintegrations%2Fother-agents" className="no-underline hover:text-[#118d4f]">Raise issue</a>
+</div>
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/integrations/vercel" rel="prev" aria-label="Previous: Graphify MCP for Vercel" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify MCP for Vercel</span></a>
+  <a href="/integrations/buildkite" rel="next" aria-label="Next: Buildkite (Test Impact)" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Buildkite (Test Impact)</span></a>
+</div>

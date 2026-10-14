@@ -20,7 +20,6 @@
               "quickstart",
               "installation",
               "troubleshooting",
-              "changelog",
               "for-agents"
             ]
           },
@@ -32,6 +31,12 @@
               "concepts/supported-inputs"
             ],
             "root": "concepts/architecture"
+          },
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog"
+            ]
           }
         ]
       },

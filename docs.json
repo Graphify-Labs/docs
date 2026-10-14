@@ -134,18 +134,6 @@
         "tab": "Integrations & MCP",
         "groups": [
           {
-            "group": "Local skill",
-            "pages": [
-              "integrations/claude-code",
-              "integrations/cursor",
-              "integrations/codex",
-              "integrations/gemini-cli",
-              "integrations/copilot",
-              "integrations/other-assistants"
-            ],
-            "root": "integrations/overview"
-          },
-          {
             "group": "Graphify Cloud",
             "root": "integrations/cloud",
             "pages": [
@@ -156,6 +144,18 @@
               "integrations/vercel",
               "integrations/other-agents"
             ]
+          },
+          {
+            "group": "Local skill",
+            "pages": [
+              "integrations/claude-code",
+              "integrations/cursor",
+              "integrations/codex",
+              "integrations/gemini-cli",
+              "integrations/copilot",
+              "integrations/other-assistants"
+            ],
+            "root": "integrations/overview"
           },
           {
             "group": "CI integrations",

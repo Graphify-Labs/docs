@@ -74,20 +74,35 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Guides",
+            "group": "Build a graph",
             "pages": [
-              "guides/querying",
               "guides/local-development",
-              "guides/incremental-updates",
-              "guides/headless-extraction",
-              "guides/exports",
-              "guides/work-memory",
-              "guides/ask-your-agent"
+              "guides/headless-extraction"
             ],
             "root": "guides/first-graph"
           },
           {
-            "group": "Team workflows",
+            "group": "Ask",
+            "pages": [
+              "guides/ask-your-agent",
+              "guides/querying"
+            ]
+          },
+          {
+            "group": "Keep it current",
+            "pages": [
+              "guides/incremental-updates",
+              "guides/work-memory"
+            ]
+          },
+          {
+            "group": "Export",
+            "pages": [
+              "guides/exports"
+            ]
+          },
+          {
+            "group": "Team",
             "pages": [
               "guides/pull-requests"
             ],

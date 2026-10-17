@@ -15,6 +15,20 @@ Expand **Graphs** in the sidebar:
 
 Choose the repository context you need before interpreting a node or connection. A missing connection can reflect the selected scope or the indexed source rather than the absence of a runtime dependency.
 
+## Structure and reusable patterns
+
+Where enabled in Cloud, the existing Graphs page offers **Structure**, **Graph**, and **Patterns**. Existing graph links continue to open the detailed explorer.
+
+- **Structure** shows declared package boundaries, directory groupings, repository dependencies, consumers, and declared external libraries. A directory grouping is not a declared architectural boundary.
+- **Graph** keeps the detailed node and relationship explorer.
+- **Patterns** shows resolved implementations and source-derived conventions from the indexed revision. Search for a component, utility, or static style token, then select **View examples**.
+
+An **Inferred convention** needs at least three distinct production consumer files in a coherent scope. Tests, stories, generated code, and vendored dependencies do not count. Dynamic or unresolved evidence is omitted. Repetition is evidence of usage, not correctness or a universal preference.
+
+The evidence drawer shows sources, scope, indexed revision, coverage, and available snapshot/control history. **Correct** saves an attributed decision through Memory and ignores the inferred convention. **Ignore this convention** persists across reindexing; enable **Include ignored conventions** to restore it. These controls apply to repository guidance and require write access.
+
+Catalogs are optional. Older indexes and unsupported coverage remain usable in the Graph view. Opening this page does not trigger reindexing. Snapshot history starts with available catalogs; Graphify does not reconstruct earlier personal design choices.
+
 ## Explore the map
 
 Search for a node, inspect its neighbors, and use community filters to narrow the canvas. Node and edge totals help describe the current graph; provenance categories explain how its connections were obtained.

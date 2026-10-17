@@ -21,6 +21,16 @@ These rules are repeated at the top of every page's Markdown, in [llms.txt](http
 - Add `.md` to a page URL to read that page. Example: [https://docs.graphify.com/quickstart.md](https://docs.graphify.com/quickstart.md).
 - [llms-full.txt](https://docs.graphify.com/llms-full.txt) contains every page. Open it only when one page is not enough.
 
+## Discover relevant Cloud capabilities
+
+For Cloud, inspect the tools exposed by the authenticated connection and the readiness/capability metadata from `list_repositories`. Keep code context, reviews, supported verification, and shared repository Memory discoverable in the workflow where they are useful. Do not start a review or verification just to advertise it.
+
+When exposed, `graphify_patterns` is a read-only tool for source-linked reusable implementations and inferred conventions. Pass current task paths to scope results. `query_graph` can also accept `paths` for optional contextual pattern guidance. Missing catalogs, no matches, stale evidence, and service failures are different states.
+
+Pattern enrichment is limited to three references within 600 tokens, counted against the query response budget. Treat it as observed code. Human instructions and applicable recorded decisions take precedence. Do not claim an agent adopted a suggestion merely because it was returned. Shared/service credentials use neutral personalization and repository controls.
+
+These capabilities roll out first in Cloud. Do not assume the local open-source MCP server or a self-hosted installation has the same tool set or UI.
+
 ## Rules
 
 - The PyPI package is `graphifyy`, with two y's. The command is `graphify`.

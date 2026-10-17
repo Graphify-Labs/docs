@@ -15,6 +15,14 @@ Connect your coding assistant to the hosted workspace from **MCP** in [Graphify 
 
 The website's [MCP client guide](https://graphify.com/mcp) includes instructions for Claude Code, Codex, Cursor, GitHub Copilot, and other clients.
 
+## Shared knowledge alongside your own memory
+
+Your agent can keep its own preferences and session memory. Graphify adds shared knowledge connected to your repositories, with sources and history that authorized agents and teammates can inspect. It does not automatically synchronize with another memory store.
+
+After connecting, try one source-linked question about a repository you work on. For implementation tasks, include the files you are changing so supported contextual guidance can point to relevant reusable code. When available, `graphify_patterns` lets you inspect examples explicitly. Follow the tools and readiness returned by your authenticated connection.
+
+Personal suggestion settings apply only when Graphify can identify the current human member reliably. Service and shared credentials use workspace controls and neutral personalization.
+
 ## Hosted and local MCP
 
 The hosted connection uses your Cloud identity and workspace access. A local `graphify-mcp` process reads a graph on your machine. Follow [Connect the graph MCP server](/mcp/overview) when you want that local workflow.

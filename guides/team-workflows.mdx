@@ -11,7 +11,7 @@ You can share generated graph files in the repository, build them in each clone,
 1. Register the assistant skill in project scope if your team wants shared instructions.
 2. Build and inspect the graph.
 3. Decide which generated artifacts belong in version control.
-4. Install `graphify hook install` once in each clone.
+4. Install `graphify hook install` once in each clone, or the [pre-commit hook](#commit-the-graph-with-the-code-that-changed-it) if you commit the graph.
 5. Run `graphify update .` after pulls and merges.
 
 The upstream project recommends committing `graphify-out/` to share a starting map. Review generated files first; they contain source-derived information. Keep local cost reports out of version control:
@@ -21,6 +21,64 @@ graphify-out/cost.json
 ```
 
 You can also exclude `graphify-out/cache/` to reduce repository size, at the cost of less cache reuse. The portable manifest uses relative paths and is re-anchored on load.
+
+## Commit the graph with the code that changed it
+
+`graphify hook install` rebuilds the graph in the background after each commit. If you commit `graphify-out/graph.json`, every commit that changes code then leaves the rebuilt graph behind as an uncommitted change. A `pre-commit` hook avoids that: it rebuilds the graph before the commit and stages it, so each commit carries the graph of its own code.
+
+Track only the graph, so the hook stages exactly what it rebuilt. Each clone rebuilds the other files in `graphify-out/` locally. Replace any existing `graphify-out/` ignore line with these two lines:
+
+```gitignore
+graphify-out/*
+!graphify-out/graph.json
+```
+
+If you already track other files in `graphify-out/`, untrack them once with `git rm -r --cached graphify-out` and then run `git add graphify-out/graph.json`. Otherwise each rebuild leaves them modified.
+
+Mark the graph as generated output in `.gitattributes`:
+
+```gitattributes
+graphify-out/graph.json merge=graphify linguist-generated=true -diff
+```
+
+- `linguist-generated=true` collapses the file in GitHub pull requests.
+- `-diff` makes `git diff`, `git log -p`, and `git show` print `Binary files differ` instead of the graph. A patch saved from `git diff` then can't be applied; `git format-patch` still includes the graph.
+- `merge=graphify` merges the graph with graphify's union merge driver instead of as text.
+
+Since graphify 0.9.86, `graph.json` is one line of compact JSON, so GitHub counts a rebuilt graph as one changed line (+1 −1) in a pull request.
+
+`graphify hook install` registers the merge driver. With the pre-commit hook instead, register it once in each clone:
+
+```bash
+git config merge.graphify.name "graphify graph.json union merge"
+git config merge.graphify.driver "graphify merge-driver %O %A %B"
+```
+
+Without the driver, a merge, rebase, or cherry-pick that changed the graph on both sides stops with a conflict in `graph.json`. Rebuild it with `rm graphify-out/graph.json && graphify update . && git add graphify-out/graph.json`, then continue.
+
+If you use a hook manager such as Husky, pre-commit, or lefthook, add the lines below to its pre-commit step. Otherwise put them where `graphify hook install` puts its post-commit hook: the `pre-commit` file in git's hooks directory, which `git rev-parse --git-path hooks` prints. That is `.git/hooks` unless `core.hooksPath` names another directory. If the file already exists, add the lines before any final `exit` or `exec` line, so they run and your other checks keep running:
+
+```sh
+# graphify: rebuild graphify-out/graph.json and commit it with the code that changed it.
+if [ "${GRAPHIFY_SKIP_HOOK:-0}" != 1 ] && [ -f graphify-out/graph.json ] &&
+	! git diff --cached --quiet -- . ':!graphify-out/graph.json'; then
+	{ graphify update . && git add graphify-out/graph.json; } || exit 1
+fi
+```
+
+A new file needs `#!/bin/sh` as its first line and must be executable (`chmod +x`). The hook only refreshes an existing graph, so build and commit the first one yourself.
+
+`.git/hooks` is not committed, so each clone adds the hook itself. To share it through the repository, commit it in a directory such as `.githooks/` and run `git config core.hooksPath .githooks` in each clone. Git then runs only the hooks in that directory and ignores `.git/hooks`, so move any hooks you still use from `.git/hooks` into it. If your CI commits to the repository, install graphify there too, or set `GRAPHIFY_SKIP_HOOK=1` for those commits.
+
+Use this hook in place of `graphify hook install`, whose post-commit hook would rebuild the graph a second time after each commit.
+
+Keep these points in mind:
+
+- A commit fails when the rebuild fails or `graphify` is not on `PATH`. Set `GRAPHIFY_SKIP_HOOK=1` or pass `--no-verify` to commit without the rebuild; the committed graph is then stale.
+- The rebuild reads your working tree, not the staged files, so unstaged and untracked code ends up in the committed graph. To commit part of your changes, stage them, run `git stash --keep-index --include-untracked`, run a plain `git commit`, and then `git stash pop`. Avoid `git commit <path>`: the hook stages the graph into git's temporary index, so your index keeps the old graph.
+- Git runs no pre-commit hook for a merge it completes without conflicts, or for the commits that `rebase`, `cherry-pick`, and `revert` create. Those commits carry the graph git merged from their parents, not a rebuild, and the merged graph can keep symbols that one side deleted. Run `graphify update .` afterward and commit the graph, or merge with `git merge --no-commit` and then run `git commit` so the hook runs.
+- Everyone should run the same graphify release. The graph records the version that built it, and releases can build different graphs from the same code.
+- Each commit waits for a full rebuild, which takes from seconds to minutes depending on the code. One 2,800-file repository takes about a minute.
 
 ## One graph per worktree
 

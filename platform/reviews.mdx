@@ -6,6 +6,16 @@ hideFooterPagination: true
 
 **Reviews** brings pull requests, findings, and code-graph context together in [Graphify Cloud](https://app.graphify.com). Use it to understand a change and the code it can affect.
 
+## When a review runs
+
+Graphify reviews a pull request when it is opened, reopened, or marked ready for review. A draft is skipped until it is marked ready. A later push to the pull request does not start another review.
+
+To review the current head after new commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. The review uses the indexed default-branch graph plus that pull request's diff. It does not index the head branch. [Repositories and builds](/platform/repositories) explains which branch the graph follows.
+
+## Turn reviews off
+
+On **Repositories**, open **Options** for the repository and switch **PR reviews** off. Automatic reviews stop, and `@graphify review` does not start one. Indexing stays on. Formal verification stays on until its own switch is turned off.
+
 ## Review a change
 
 1. Open **Reviews** and choose the repository.
@@ -31,7 +41,7 @@ The [Learn](/platform/learning) view shows learned dismissals, suppressed patter
 
 ## Repository review settings
 
-On **Repositories**, open **Options** for a repository. These two switches are on unless you turn them off. Neither blocks a merge.
+On **Repositories**, open **Options** for a repository. **PR reviews** turns the review bot on or off, as described above. These two switches are on unless you turn them off. Neither blocks a merge.
 
 - **Risky patterns** lists risky patterns on lines the pull request adds. The review can then include **Risky patterns (advisory)**.
 - **Stale docs** lists docs that mention code the pull request changed. The review can then include **Docs that may be stale (advisory)**.

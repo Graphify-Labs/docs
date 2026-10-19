@@ -26,6 +26,16 @@ Open a repository's options to inspect available controls for **PR reviews**, **
 
 The Indexing control pauses or enables indexing. Review and verification controls are separate; do not use an indexing toggle as a substitute for review configuration.
 
+## When a repository is indexed
+
+A push to the repository's default branch starts an index of that commit. On GitHub and GitLab, the default branch is the branch the provider marks as default, often `main`.
+
+A push to any other branch does not update the graph. Branches named `dev` or `uat` are not indexed unless one of them is the default branch. A pull request does not build a second graph. Graphify keeps one graph per repository, and that graph is the default branch. A pull request is reviewed against that graph and the pull request's diff. See [Pull request reviews](/platform/reviews).
+
+There is no setting to index every branch, or to index on every pull request. To index a different line of development, make that branch the default branch on GitHub or GitLab. **Retry** on a failed build indexes the current head of the default branch.
+
+One index of a repository runs at a time. A later push to the default branch waits, or joins the build already queued. Hosted plans can also limit how many push-triggered indexes a repository finishes in a UTC day. A manual reindex does not use that allowance. The allowances are on [plans and pricing](/pricing/overview). The repository row can show **Out of date** when the newest default-branch commit is not the commit the graph is serving, and no build for that commit is running.
+
 ## Follow a build
 
 Open **Builds** and filter by repository or status. A build row identifies the repository, run state, and available timing or graph information.

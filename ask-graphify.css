@@ -1,3 +1,11 @@
+/* Mintlify's own assistant sits in the top bar. Ask Graphify is the button
+   on this site, so the top bar button is removed and the search field
+   takes its place. The ids are Mintlify's documented hooks. */
+#assistant-entry,
+#assistant-entry-mobile {
+  display: none !important;
+}
+
 .graphify-ask {
   --ask-ink: #062314;
   --ask-quiet: #586b60;

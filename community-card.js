@@ -81,7 +81,7 @@
   }
 
   actions.append(
-    socialLink("https://discord.gg/XPPYrdw3Yp", "Join", "Join Graphify on Discord", "discord"),
+    socialLink("https://discord.gg/graphify", "Join", "Join Graphify on Discord", "discord"),
     socialLink("https://x.com/graphify", "Follow", "Follow Graphify on X", "x-twitter")
   );
   content.append(title, description, actions);

@@ -212,7 +212,7 @@
       "anchors": [
         {
           "anchor": "Help on Discord",
-          "href": "https://discord.gg/XPPYrdw3Yp",
+          "href": "https://discord.gg/graphify",
           "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/brands/discord.svg"
         }
       ]
@@ -234,7 +234,7 @@
       },
       {
         "label": "Support",
-        "href": "https://discord.gg/XPPYrdw3Yp"
+        "href": "https://discord.gg/graphify"
       }
     ],
     "primary": {
@@ -260,7 +260,7 @@
       "x": "https://x.com/graphify",
       "github": "https://github.com/Graphify-Labs/graphify",
       "linkedin": "https://www.linkedin.com/company/graphify-labs",
-      "discord": "https://discord.gg/XPPYrdw3Yp"
+      "discord": "https://discord.gg/graphify"
     }
   },
   "description": "Documentation for Graphify: turn code and documents into a knowledge graph your AI agent can query, trace, and explain.",

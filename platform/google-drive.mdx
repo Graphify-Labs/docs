@@ -1,0 +1,97 @@
+---
+title: "Connect Google Drive"
+description: "[Cloud] Add a Google Drive folder so the workspace can search its documents."
+hideFooterPagination: true
+---
+
+The **Google Workspace** tile on **Connectors** connects Google Drive. A folder you add becomes a repository the workspace can search.
+
+Read-only access. Graphify never edits your files.
+
+## Before you start
+
+- The workspace is on a paid plan. On the Free plan, **Google Workspace** offers **View plans**.
+- You are a workspace owner or admin. Anyone else sees **Ask a workspace owner or admin to connect Google Drive.**
+- The Google account can open the folder, including a folder on a shared drive.
+
+## Connect the account
+
+1. Open **Connectors** in [Graphify Cloud](https://app.graphify.com).
+2. Under **Knowledge**, choose **Google Workspace**.
+3. Choose **Connect Google Drive** and finish the Google sign-in.
+
+The dialog then shows the connected account and **Connected · Syncs automatically**.
+
+One Google account serves the workspace. The person who signed in is the person who can add folders.
+
+## Add a folder
+
+1. Choose **Google Workspace**, then **Choose folder**. If the Google window does not open, allow pop-ups for Graphify and try again.
+2. Pick a folder. The picker is titled **Choose a folder to index**, and it includes shared drives.
+3. Confirm that everyone in the workspace can search this folder and read answers from it, including people without access to the files in Google Drive.
+4. Select **I understand everyone in this workspace can read this folder's contents.**
+5. Choose **Add folder**.
+
+The confirmation says the folder was added and is **Waiting to sync**. Open **Repositories** and choose **Drive** to see it.
+
+A folder with no readable files is refused. Choose another folder.
+
+## Read the folder
+
+The row shows how many files Graphify could read, and **Checked** with the time of the last listing. Expand the row for **Last synced**, **Graph nodes**, and **Updates**.
+
+**Checked** is the last time Graphify listed the folder. **Last synced** is the last finished graph build. The row can say **Up to date** while **Last synced** is older, when the latest listing matches the graph already being served.
+
+| Status | Meaning |
+| --- | --- |
+| **Waiting to sync** | A build is queued. |
+| **Reading** | Graphify is building the graph. |
+| **Up to date** | The latest listing matches the graph being served. |
+| **Changes found** | The listing has changed, and the served graph is behind it. |
+| **Sync failed** | The latest build did not finish. |
+| **Not syncing** | Syncing was stopped, the folder is paused, or Google needs a reconnect. |
+| **Checking status** | Graphify does not have a status for this folder yet. |
+
+**Updates** says **Syncs automatically** while the folder is enabled. Graphify lists an enabled folder every 15 minutes and builds a new graph when that list has changed. If a check fails, Graphify retries on its own. The wait grows after each failure, up to 6 hours.
+
+After the first successful sync, the expanded row offers **Open graph**, **Wiki**, **Ask**, and **Open in Drive**.
+
+Pull request reviews apply to GitHub and GitLab repositories. Search a Drive folder from **Open graph**, **Wiki**, or **Ask**.
+
+## Files Graphify reads
+
+Google Docs, Sheets, and Slides, plus PDF, Word, Excel, PowerPoint, CSV, Markdown, text, and image files.
+
+Expand a folder to see files that could not be read. The reason sits next to the file name. The other files in that folder stay searchable. A file is skipped when Graphify cannot read the type, the connected account cannot download it, Google could not export it, or the file is too large.
+
+## Stop a folder
+
+A workspace owner or admin opens the folder's options and chooses **Stop syncing**. Graphify stops reading that folder. The existing graph stays searchable, and the row says **Not syncing**.
+
+## Change the account
+
+**Connection settings** opens from the **Google Workspace** tile. A workspace owner or admin can use it. Anyone else sees **Done**.
+
+- Choose **Change account**, or **Reconnect with my account**, to sign in with a different Google account. Syncing stops for the existing folders. Add those folders again from the new account.
+- Choose **Disconnect** to stop every folder. Existing graphs remain searchable.
+- Choose **Reconnect Google Drive** when the dialog says Google access expired. Existing graphs stay available while you reconnect.
+
+## Fix a connection problem
+
+- The tile says **Reconnect needed**, or the dialog says Google access expired. Choose **Reconnect Google Drive**.
+- The folder is not in the picker, or adding it says the folder is unavailable. Use a Google account that can open that folder.
+- Adding a folder says only the person who connected the account can add folders. That person adds it, or an owner or admin chooses **Change account**.
+- The folder says **Syncing is paused. Google Drive requires a paid plan.** Open **Billing** and move the workspace to a paid plan.
+- A check says Google Drive did not respond, or the folder took too long. Leave the folder enabled. Graphify retries on its own.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div className="not-prose mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#586b60]">
+  <a href="https://github.com/Graphify-Labs/docs/edit/main/platform/google-drive.mdx" className="no-underline hover:text-[#118d4f]">Suggest edits</a>
+  <a href="https://github.com/Graphify-Labs/docs/issues/new?title=Issue%20on%20docs&body=Path%3A%20%2Fplatform%2Fgoogle-drive" className="no-underline hover:text-[#118d4f]">Raise issue</a>
+</div>
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+<a href="/platform/repositories" rel="prev" aria-label="Previous: Repositories and builds" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Repositories and builds</span></a>
+<a href="/platform/connections" rel="next" aria-label="Next: Agents and integrations" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Agents and integrations</span></a>
+</div>

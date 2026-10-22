@@ -1,7 +1,8 @@
 /* Mintlify's assistant is off on this site. Ask Graphify is the button
    readers use. These hooks are Mintlify's: the top-bar button, the bar
-   over the article, the side sheet, and the button on a code block.
-   Ask Graphify uses .graphify-ask-launcher and is left in place. */
+   over the article, the side sheet, the button on a code block, and the
+   Ask Assistant control inside search. Ask Graphify uses
+   .graphify-ask-launcher and is left in place. Search results stay. */
 #assistant-entry,
 #assistant-entry-mobile,
 #ask-assistant-code-block-button,
@@ -9,7 +10,10 @@ div:has(> #ask-assistant-code-block-button),
 .chat-assistant-floating-input,
 div:has(> .chat-assistant-floating-input),
 #chat-assistant-sheet,
-div:has(> #chat-assistant-sheet) {
+div:has(> #chat-assistant-sheet),
+[data-component-part="search-ask-ai-button"],
+[data-component-part="search-ask-ai-item"],
+[data-search-item="group"][data-variant="ask-ai"] {
   display: none !important;
 }
 

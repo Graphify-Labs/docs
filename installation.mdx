@@ -8,11 +8,29 @@ hideFooterPagination: true
 
 | Requirement | Check |
 | --- | --- |
-| Python 3.10 or later | `python3 --version` or `python --version` |
+| Python 3.10 or later | uv installs this. With pip or a virtual environment, `python3 --version` |
 | uv or pipx | `uv --version` or `pipx --version` |
 | A coding assistant, for the skill workflow | [Choose an integration](/integrations/overview) |
 
 The standalone CLI works without an assistant. Code-only extraction does not require an API key.
+
+## Get uv
+
+uv downloads Python 3.10 or later for Graphify. Install uv for your system, open a new terminal, and run `uv --version`.
+
+<CodeGroup>
+```bash macOS
+brew install uv
+```
+```bash Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+```powershell Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+</CodeGroup>
+
+The macOS command is Homebrew. The Linux and Windows commands are uv's own installers. Other methods, including MacPorts, are in the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
 ## Install the package
 
@@ -40,7 +58,13 @@ graphify install
 graphify install --platform codex
 ```
 
-The first command detects an assistant; the second targets one explicitly. Run the specific command for each assistant you use. Use `--project` when you want the registration committed with a repository:
+The first command detects an assistant. The second targets one explicitly. Run the specific command for each assistant you use.
+
+The package on PyPI is `graphifyy`. The command you run is `graphify`.
+
+Open the assistant in a repository and send `/graphify .`. That message builds the graph for the folder. Follow [Your first knowledge graph](/quickstart) to read the output and ask a question.
+
+Use `--project` when you want the registration committed with a repository:
 
 ```bash
 graphify install --project --platform codex

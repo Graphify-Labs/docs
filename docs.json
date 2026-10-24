@@ -40,7 +40,8 @@
           {
             "group": "Graphify Cloud",
             "pages": [
-              "platform/console"
+              "platform/console",
+              "platform/local-to-cloud"
             ],
             "root": "platform/overview"
           },

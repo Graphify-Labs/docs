@@ -1,0 +1,163 @@
+---
+title: "Highlights"
+description: "The biggest changes to Graphify Cloud, explained."
+sidebarTitle: "Highlights"
+mode: "wide"
+hideFooterPagination: true
+rss: true
+---
+
+<Update label="2026-10-12" description="Connect your agent in three steps">
+## Connect your agent in three steps
+
+Your agent is where Graphify pays off, so connecting it is now the shortest path in the console.
+
+**Connectors** brings integrations and MCP setup into one page, with **MCP** open by default. Setup has three steps shown at the top of the card: choose your agent, connect it, and try a query.
+
+- **Official plugins.** ChatGPT, Codex, VS Code, JetBrains, Gemini CLI and OpenClaw get install buttons with short sign-in and first-prompt instructions.
+- **A real Connected state.** Step 3 confirms connection when Graphify sees your agent make a tool call, so you are not left guessing. You can still confirm by hand if that check is unavailable.
+- **Connect while you wait.** You can set up your agent while your first repository is still indexing, and the graph page shows a **Connect your agent** card until you do.
+- **Clearer Claude Code setup.** The steps now follow the order you run them: add the server, authenticate, then ask.
+
+The sidebar entry is now called **Connect agent**.
+
+[Read the MCP overview](/mcp/overview)
+</Update>
+
+<Update label="2026-10-05" description="Developer Memory, with Simple and Advanced views">
+## Developer Memory, with Simple and Advanced views
+
+Graphify remembers what happens in your repository: reviews, verifications, merged pull requests and what your agent learns while it works. Memory now runs for every repository you authorize, with no setup.
+
+The Memory page offers two views of the same records. Switch with **Simple / Advanced** in the page header. Your choice is kept per workspace.
+
+- **Simple** is the default. Ask or search your memories in a chat-style panel, keep or discard suggested memories in one click, and read long notes in a side drawer.
+- **Advanced** is for developers. It has a memories table with an entity sidebar, a review queue grouped by reason, and an inline recall inspector that shows what your agent would retrieve.
+
+Automatic memories are written in plain language. A review becomes a sentence like "Automated review passed for PR #264" with its finding counts, instead of run IDs and hashes.
+
+Memory stays off for a repository until its first index finishes, so you never see an empty page that looks broken.
+
+[Read about Memory](/platform/memory)
+</Update>
+
+<Update label="2026-09-28" description="Reviews when your PR is ready, and @graphify review">
+## Reviews when your PR is ready, and @graphify review
+
+Graphify now reviews a pull request when it is ready, not on every push. That means fewer repeated comments on work in progress.
+
+- A PR gets its first review when you open it or reopen it.
+- A draft PR gets reviewed when you mark it **Ready for review**.
+- Pushing more commits no longer triggers a new review on its own.
+
+When you want a fresh review after pushing fixes, comment `@graphify review` on the pull request. Graphify reviews the PR's current head and updates its result.
+
+Formal verification is unchanged. It still runs on every push, so your behavior checks stay current while you iterate.
+
+[Read about reviews](/platform/reviews)
+</Update>
+
+<Update label="2026-09-07" description="A redesigned console">
+## A redesigned console
+
+The console has a new look, built around the pages you use most.
+
+- **A refreshed dashboard.** Overview, Repositories, Members and Billing share one cleaner layout, with clearer loading states and a new Graphify loader.
+- **A steadier graph page.** The graph loads behind a proper skeleton, and you can cancel an index that is still running.
+- **Better builds.** Each successful build shows how its graph changed against the previous one, for example `+250` nodes. **Retry** appears only on the latest build.
+- **A clearer sign-in.** The login page is redesigned, and Pro workspaces show a **Pro** badge.
+- **A friendlier first run.** Onboarding has a new layout and a walkthrough of the main pages.
+
+Nothing moved that you depended on. Every page is where it was, and easier to read.
+
+[Take the console tour](/platform/console)
+</Update>
+
+<Update label="2026-09-01" description="Connect 30 agents to Graphify">
+## Connect 30 agents to Graphify
+
+You can now connect Graphify to 30 clients from the console. The connect page groups them into **Coding agents** and **Cloud connectors**.
+
+New coding agents include Gemini CLI, Amp, Kiro, OpenCode, Warp, Conductor, Amazon Q Developer, Factory Droid, JetBrains Junie, Kilo Code, Crush, OpenHands, LM Studio and Jan.
+
+New cloud connectors include ChatGPT, Perplexity and Microsoft 365 Copilot.
+
+Every client uses the same setup: copy its config, then sign in the first time it connects. No API key is pasted into a config file.
+
+[See all integrations](/integrations/overview)
+</Update>
+
+<Update label="2026-08-24" description="See who changes your code, and share a GitHub org">
+## See who changes your code, and share a GitHub org
+
+Two changes make Graphify work better for teams.
+
+**Contributors.** A new **Contributors** page lists who has changed each repository, ranked by how much their changes affect the codebase. Anyone who can read the repository can open it, including plain members. Counts match what GitHub reports.
+
+**Shared GitHub-org access.** Before, if a teammate had already installed the Graphify GitHub App on your organization, you hit a dead end when you tried to connect. Now Graphify tells you which workspace owns the installation and lets you request access. Graphify checks your GitHub membership, and the owner approves you into the workspace.
+
+[Read about contributors](/platform/contributors)
+</Update>
+
+<Update label="2026-07-31" description="Free and Pro plans">
+## Free and Pro plans
+
+Graphify Cloud now has two plans.
+
+- **Free** lets you sign in, connect a repository and use the console.
+- **Pro** raises the limits for larger repositories and teams. You can start Pro from **Billing** in the console and check out for a single seat.
+
+The plan you are on shows in the console, and limits explain themselves when you reach them, with a link to upgrade.
+
+[Compare plans](/pricing/overview)
+</Update>
+
+<Update label="2026-07-29" description="Connect any MCP client, and sign in with GitLab">
+## Connect any MCP client, and sign in with GitLab
+
+Graphify Cloud now works with more of the tools you already use.
+
+**MCP for every client.** Your agent connects to Graphify's hosted MCP server and signs in through your browser. There is no key to copy. The connect page has one-click setup for popular agents.
+
+**GitLab.** You can sign in to Graphify with GitLab and connect GitLab repositories, alongside GitHub.
+
+[Read the MCP overview](/mcp/overview)
+</Update>
+
+<Update label="2026-07-28" description="Ask questions about your code">
+## Ask questions about your code
+
+**Ask** is live in the console. Type a question about your repository in plain English and get an answer grounded in your code graph. Answers point back to the parts of the code they came from.
+
+Use it to find where something is implemented, trace how a request moves through your services, or check what a change might touch before you make it.
+
+[Learn how to query your graph](/guides/querying)
+</Update>
+
+<Update label="2026-07-21" description="Graphify Cloud is live">
+## Graphify Cloud is live
+
+You can now use Graphify Cloud at app.graphify.com.
+
+1. Sign in.
+2. Create your workspace.
+3. Connect GitHub and choose the repositories Graphify can read.
+4. Graphify indexes each repository into a code graph.
+5. Explore the graph in the console.
+
+The setup wizard walks you through each step and only shows what works today. Features that are not ready are marked as coming soon.
+
+[Get started](/quickstart)
+</Update>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div className="not-prose mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#586b60]">
+  <a href="https://github.com/Graphify-Labs/docs/edit/main/changelog/highlights.mdx" className="no-underline hover:text-[#118d4f]">Suggest edits</a>
+  <a href="https://github.com/Graphify-Labs/docs/issues/new?title=Issue%20on%20docs&body=Path%3A%20%2Fchangelog%2Fhighlights" className="no-underline hover:text-[#118d4f]">Raise issue</a>
+</div>
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/concepts/supported-inputs" rel="prev" aria-label="Previous: Supported inputs" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Supported inputs</span></a>
+  <a href="/changelog/console" rel="next" aria-label="Next: Console" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Console</span></a>
+</div>

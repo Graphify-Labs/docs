@@ -31,12 +31,6 @@
               "concepts/supported-inputs"
             ],
             "root": "concepts/architecture"
-          },
-          {
-            "group": "Changelog",
-            "pages": [
-              "changelog"
-            ]
           }
         ]
       },
@@ -207,6 +201,20 @@
             "root": "pricing/overview"
           }
         ]
+      },
+      {
+        "tab": "Release Notes",
+        "groups": [
+          {
+            "group": "Release Notes",
+            "pages": [
+              "changelog/highlights",
+              "changelog/console",
+              "changelog/platform",
+              "changelog/local"
+            ]
+          }
+        ]
       }
     ],
     "global": {
@@ -300,5 +308,11 @@
   },
   "styling": {
     "eyebrows": "breadcrumbs"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/changelog",
+      "destination": "/changelog/highlights"
+    }
+  ]
 }

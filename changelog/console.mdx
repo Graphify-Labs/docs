@@ -1,0 +1,203 @@
+---
+title: "Console"
+description: "Weekly changes to the Graphify Cloud console."
+sidebarTitle: "Console"
+mode: "wide"
+hideFooterPagination: true
+rss: true
+---
+
+<Update label="2026-10-24" description="Pick a default repository for your agent">
+## Pick a default repository for your agent
+
+The MCP setup URL can now pin a default repository, for example `https://api.graphify.com/mcp?repo=acme/api`. Your agent queries that repository unless you name another one.
+
+### Improved
+- **Onboarding:** When you finish setup, you land on agent setup so you can connect your agent right away.
+- **Onboarding:** Repositories with no commits are refused when you select them, not later when you press **Index**.
+- **Onboarding:** If your GitHub installation shares no repositories, the console names the installation and links straight to its settings.
+- **Overview:** A **Connect your agent** card stays on the Overview until your agent makes its first call.
+- **Onboarding and Settings:** You can see which GitHub permissions Graphify has, and whether access is missing or just could not be checked.
+
+[Read the MCP overview](/mcp/overview)
+</Update>
+
+<Update label="2026-10-17" description="Plain-language verification results">
+## Plain-language verification results
+
+Verification results now say in plain language what was checked and what changed, and they match the check on your pull request. You can link to a single run with `?run=`.
+
+### New
+- **Ask:** The **Applied memory** panel shows which memories informed an answer.
+- **Overview:** A **Latest pull request** card shows the review verdict and verification result for the same commit, side by side.
+- **Repositories:** Repositories GitHub reports as gone show **No longer on GitHub** on their row.
+- **Sign in:** The sign-in page marks the method you used last with a **Last used** label.
+
+### Improved
+- **Connectors:** **MCP** opens first, before **Integrations**.
+- **Dashboard:** When a rebuild is skipped because nothing changed, the console says so instead of promising a new run.
+- **Console:** Page descriptions and empty states are shorter and clearer.
+
+### Fixed
+- **Graph:** Repeated labels no longer appear, and square markers are back.
+</Update>
+
+<Update label="2026-10-10" description="Add repositories any time">
+## Add repositories any time
+
+The **Repositories** page has an **Add** action in its header, so you can connect more GitHub repositories after setup without redoing onboarding.
+
+### New
+- **Agent setup:** A **Connect your agent** card appears on the graph page, and the sidebar entry is now **Connect agent**.
+- **Agent setup:** Install buttons for official Graphify plugins lead the MCP page.
+- **Memory:** The Memory page has **Simple** and **Advanced** views.
+- **Memory:** Memories your agent adds automatically are labeled, with one-click **Undo**.
+- **Search:** Every repository picker has a search box, and the Contributors page has search beside its tabs.
+
+### Improved
+- **Product tour:** The tour starts once your first graph is ready and shows agent setup second.
+- **Repository connection:** The connection screen is refreshed and Settings is simpler.
+- **Memory:** Memory stays off for a repository until its first index finishes.
+- **Sign up and sign in:** Buttons show a pending state while you wait.
+
+### Fixed
+- **Repositories:** Paused repositories no longer flip back to **Indexed** after a refresh.
+- **Billing:** Workspaces with a failed payment stay open during the grace period, with a banner that explains what to do.
+</Update>
+
+<Update label="2026-10-04" description="Resend your verification email">
+## Resend your verification email
+
+If your sign-up verification email got lost or expired, you can now request a new link from the sign-in page instead of getting stuck.
+
+### Improved
+- **Members:** **Last active** shows real activity, from console use and agent calls, as a single line.
+- **Keyboard shortcuts:** Hints show `⌘` on macOS and `Ctrl` on Windows and Linux.
+
+### Fixed
+- **Sign in:** Failed sign-in callbacks show an error you can act on instead of a blank error page.
+- **Notifications:** Toasts appear above open dialogs.
+</Update>
+
+<Update label="2026-09-27" description="Find unreferenced code">
+## Find unreferenced code
+
+A new card on each repository lists code that nothing references, so you can find candidates to delete. It is hidden on repositories with indexing off.
+
+### New
+- **Reviews:** Reviews add advisory notes on risky patterns and documentation that may be out of date, with per-repository settings.
+
+### Improved
+- **Repositories:** **Sync** re-reads GitHub, so new repositories and permission changes show up right away.
+- **Verifications:** The list is filtered by repository and pages through older runs.
+</Update>
+
+<Update label="2026-09-16" description="Tell your agent to reach for the graph">
+## Tell your agent to reach for the graph
+
+The connect-agent page has a copy-paste rules card that tells your agent to prefer Graphify over searching files by hand.
+
+### New
+- **Repositories:** Each repository's options menu has toggles for **Formal verification** and **Inline health**.
+
+### Improved
+- **Repositories:** When a repository cannot be indexed yet, the graph page and repository tile explain why. On the Free plan, you see Pro pricing and can upgrade from there.
+- **Overview:** The Overview shows a language breakdown for each repository.
+- **Billing:** The upgrade button no longer mentions a free trial when none applies.
+
+### Fixed
+- **Access:** The Free plan always grants access to the dashboard.
+- **Memory:** Links to a memory stay on the right repository.
+</Update>
+
+<Update label="2026-09-09" description="A redesigned console">
+## A redesigned console
+
+The dashboard, sidebar, loading states, Members page and login page have a new design. Pro workspaces show a **Pro** badge, and the Graphify logo is updated.
+
+### New
+- **Graph:** You can cancel an index that is still running.
+- **Builds:** Each successful build shows how many nodes it added or removed. **Retry** appears only on the latest build.
+
+### Improved
+- **Onboarding:** The onboarding flow has a new layout and a walkthrough.
+- **Contributors:** Contributor rows handle missing GitHub profile details.
+
+### Fixed
+- **Graph:** The graph page loads behind a skeleton instead of jumping.
+
+[Take the console tour](/platform/console)
+</Update>
+
+<Update label="2026-09-01" description="Connect 30 agents">
+## Connect 30 agents
+
+The connect-agent page grows from 12 to 30 clients, grouped into **Coding agents** and **Cloud connectors**.
+
+### Improved
+- **Browser tabs:** The tab title names the open repository, so you can tell Graphify tabs apart.
+
+### Fixed
+- **Graph:** Groups that are ready while a member is still building now show correctly.
+
+[See all integrations](/integrations/overview)
+</Update>
+
+<Update label="2026-08-24" description="Contributors">
+## Contributors
+
+The **Contributors** page shows who changes each repository, ranked by how much their changes affect the codebase.
+
+### New
+- **Onboarding:** You can skip connecting a code host and come back to it later.
+- **Memory and Learning:** Memory and Learning are available to every user.
+
+### Improved
+- **Performance:** The console loads your workspace faster on first visit.
+- **Billing:** Only owners and billing admins can open the billing portal.
+
+[Read about contributors](/platform/contributors)
+</Update>
+
+<Update label="2026-08-19" description="Clearer pull request diffs">
+## Clearer pull request diffs
+
+PR reviews render diffs with a new viewer that uses the same syntax colors as GitHub.
+
+### Improved
+- **Workspaces:** The workspace switcher separates **Your workspace** from workspaces **Shared with you**.
+</Update>
+
+<Update label="2026-08-03" description="Sign-out and GitHub fixes">
+## Sign-out and GitHub fixes
+
+### Fixed
+- **Sign out:** Signing out no longer leaves extra parameters in the URL.
+- **GitHub:** Connecting retries when a GitHub installation is out of date.
+</Update>
+
+<Update label="2026-07-27" description="A shorter, more honest setup">
+## A shorter, more honest setup
+
+The setup wizard has fewer steps, and features that are not ready show an honest **Coming soon** state.
+
+### Improved
+- **Onboarding:** You can enter your website without `https://`.
+- **Onboarding:** Once you finish setup, the wizard does not show again.
+
+### Fixed
+- **GitHub:** The connect and manage buttons link the GitHub installation to your workspace.
+- **Workspaces:** Signing in after your workspace is removed no longer fails.
+</Update>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div className="not-prose mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#586b60]">
+  <a href="https://github.com/Graphify-Labs/docs/edit/main/changelog/console.mdx" className="no-underline hover:text-[#118d4f]">Suggest edits</a>
+  <a href="https://github.com/Graphify-Labs/docs/issues/new?title=Issue%20on%20docs&body=Path%3A%20%2Fchangelog%2Fconsole" className="no-underline hover:text-[#118d4f]">Raise issue</a>
+</div>
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/changelog/highlights" rel="prev" aria-label="Previous: Highlights" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Highlights</span></a>
+  <a href="/changelog/platform" rel="next" aria-label="Next: Platform" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Platform</span></a>
+</div>

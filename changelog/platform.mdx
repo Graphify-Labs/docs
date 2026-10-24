@@ -1,0 +1,180 @@
+---
+title: "Platform"
+description: "Weekly changes to Graphify Cloud's reviews, verification, Memory, MCP and indexing."
+sidebarTitle: "Platform"
+mode: "wide"
+hideFooterPagination: true
+rss: true
+---
+
+<Update label="2026-10-25" description="Pin a default repository over MCP">
+## Pin a default repository over MCP
+
+Agents can sign in with an MCP URL that pins a default repository, such as `https://api.graphify.com/mcp?repo=acme/api`.
+
+### Improved
+- **Onboarding:** Graphify checks whether a repository's default branch has any commits before you index it.
+- **MCP:** Discovery and keep-alive requests answer faster.
+- **Indexing:** Rebuilding the same commit keeps your published graph available while it runs.
+
+### Fixed
+- **Indexing:** Repositories whose build was interrupted recover on their own.
+- **GitLab:** A slow GitLab webhook no longer holds up the ones behind it.
+</Update>
+
+<Update label="2026-10-18" description="Know when a rebuild was skipped">
+## Know when a rebuild was skipped
+
+When you rebuild a repository that has not changed, Graphify now tells you the rebuild was skipped instead of quietly returning the previous build.
+
+### Improved
+- **Reviews:** When a review is skipped because you reached a limit, the skip is visible. Reviews over the concurrency limit wait in line instead of being dropped.
+- **Verification:** The verification check reports output changes and disproved claims accurately.
+- **Plans:** Builds held back by the Free plan's graph limit publish after you upgrade.
+
+### Fixed
+- **GitHub:** A repository you transfer to a new owner keeps its builds, reviews, verifications and memories.
+- **Verification:** Runs without a graph no longer warn that the graph may be out of date.
+- **MCP:** Agent sessions stay connected while Graphify deploys.
+</Update>
+
+<Update label="2026-10-10" description="Reviews say what was checked">
+## Reviews say what was checked
+
+A review's headline now reflects what was actually checked. When tests did not run or the graph is out of date, the review says so instead of calling the PR safe to merge.
+
+### Fixed
+- **GitHub:** Installing the Graphify app from github.com, instead of from the console, now connects it to your workspace.
+- **Reviews:** Reviews that stalled on our side are recovered instead of discarded.
+- **MCP:** `list_repositories` hides repositories on a suspended GitHub installation.
+- **Sign in:** Sessions stay signed in through token refreshes.
+</Update>
+
+<Update label="2026-10-04" description="Review on demand with @graphify review">
+## Review on demand with @graphify review
+
+Reviews run when a pull request is opened, reopened or marked ready, not on every push. Comment `@graphify review` to review the current head at any time.
+
+### Improved
+- **Memory:** Automatic memories are written in plain language, without run IDs or commit hashes.
+- **Verification:** Verification compares against the merge base, and reports which changed code it covered.
+- **Members:** **Last active** reflects console use and agent calls.
+- **Sign up:** You can request a new verification email if the first one is lost.
+
+### Fixed
+- **Ask:** Ask uses your published memories again.
+- **MCP:** Sign-in works when the identity provider is slow to respond.
+
+[Read about reviews](/platform/reviews)
+</Update>
+
+<Update label="2026-09-26" description="Memory for every repository">
+## Memory for every repository
+
+Developer Memory is on by default for every repository you authorize.
+
+### New
+- **Reviews:** Findings are ranked by how likely they are to need a fix, with advisory notes on risky patterns and stale documentation.
+- **Repositories:** Graphify tracks code that nothing references, so you can find candidates to delete.
+
+### Improved
+- **GitHub:** New repositories appear as soon as you create them, and **Sync** re-reads GitHub on demand.
+- **Verification:** The verification list is filtered by repository on the server and pages quickly.
+
+### Fixed
+- **Reviews:** Slow or failed GitHub deliveries no longer delay reviews for other repositories.
+
+[Read about Memory](/platform/memory)
+</Update>
+
+<Update label="2026-09-17" description="Query across a workspace over MCP">
+## Query across a workspace over MCP
+
+Your agent can query a repository group, not just a single repository, through MCP.
+
+### Fixed
+- **Billing:** A workspace that cancels Pro stays usable on the Free plan.
+- **Billing:** A workspace gets one free trial, not two.
+</Update>
+
+<Update label="2026-09-10" description="Contributor lists match GitHub">
+## Contributor lists match GitHub
+
+Contributor lists are complete, and their counts match what GitHub shows. A contributor is no longer linked to the wrong GitHub identity.
+
+### New
+- **Verification:** You can turn formal verification on or off for each repository.
+</Update>
+
+<Update label="2026-09-03" description="New repositories sync on their own">
+## New repositories sync on their own
+
+Repositories you create after installing the GitHub App now sync into Graphify, and permission changes on GitHub show up without reconnecting.
+
+### New
+- **MCP:** Sign-in works for the full set of supported agents and cloud connectors.
+
+[See all integrations](/integrations/overview)
+</Update>
+
+<Update label="2026-08-29" description="Upgrades re-index stuck repositories">
+## Upgrades re-index stuck repositories
+
+Repositories that were held back by a plan limit re-index as soon as you upgrade, instead of staying out of date.
+
+### Fixed
+- **Indexing:** A graph that is too large fails with a clear error instead of retrying for hours.
+- **GitHub:** The approval link opens the installation's settings page instead of a missing page.
+</Update>
+
+<Update label="2026-08-20" description="One workspace you own, many you can join">
+## One workspace you own, many you can join
+
+Each person owns one workspace and joins others by invite.
+
+### Improved
+- **MCP:** Each agent installation keeps its own workspace selection, so two machines no longer overwrite each other.
+- **Contributors:** Anyone who can read a repository can see its contributors.
+
+### Fixed
+- **Billing:** A failed upgrade keeps you on the plan you last paid for.
+</Update>
+
+<Update label="2026-08-14" description="Share a GitHub org with your team">
+## Share a GitHub org with your team
+
+When a teammate has already installed Graphify on your GitHub organization, you can request access to their workspace instead of hitting an error.
+
+### New
+- **Ask:** Ask follows your code graph before answering, and cites what it used.
+- **Reviews:** The review page shows a change-risk band and who opened the PR.
+- **Reviews:** Formal verification results appear in the PR review comment.
+
+### Improved
+- **Errors:** Graphify explains why a graph is missing, and names suspended installations and renamed repositories.
+
+### Fixed
+- **Graph:** Large repositories no longer freeze the graph view.
+</Update>
+
+<Update label="2026-08-03" description="The Free plan works end to end">
+## The Free plan works end to end
+
+You can use Graphify on the Free plan without upgrading.
+
+### Fixed
+- **Sign up:** Signing up again with the same account no longer fails.
+- **GitHub:** Out-of-date GitHub installations refresh instead of blocking you.
+</Update>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div className="not-prose mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#586b60]">
+  <a href="https://github.com/Graphify-Labs/docs/edit/main/changelog/platform.mdx" className="no-underline hover:text-[#118d4f]">Suggest edits</a>
+  <a href="https://github.com/Graphify-Labs/docs/issues/new?title=Issue%20on%20docs&body=Path%3A%20%2Fchangelog%2Fplatform" className="no-underline hover:text-[#118d4f]">Raise issue</a>
+</div>
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/changelog/console" rel="prev" aria-label="Previous: Console" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Console</span></a>
+  <a href="/platform/overview" rel="next" aria-label="Next: Graphify Cloud" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] !border-b-[#c7dbd0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#062314] no-underline transition-colors hover:border-[#94b6a2] hover:!border-b-[#94b6a2] hover:bg-[#edf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify Cloud</span></a>
+</div>

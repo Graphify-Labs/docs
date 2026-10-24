@@ -4,82 +4,94 @@ description: "[Cloud] Tour the Cloud workspace, from Overview and graphs to revi
 hideFooterPagination: true
 ---
 
-Open [Graphify Cloud](https://app.graphify.com). The sidebar is **Overview**, **Graphs**, **Wiki**, **Reviews**, **Formal Verification**, **Contributors**, **Builds**, **Repositories**, **Memory**, **Learn**, and **Connectors**.
+Open [Graphify Cloud](https://app.graphify.com). The sidebar is **Overview**, **Graphs**, **Wiki**, **Reviews**, **Formal Verification**, **Contributors**, **Builds**, **Repositories**, **Memory**, **Learn**, and **Connectors**. **Search** is in the sidebar. The field along the bottom is **Deep research your codebase**.
 
 ## Overview
 
-**Overview** brings code findings, recent activity, indexed repository cards, and workspace stats together. **Connect agent** opens the path to a coding assistant. The repository list can be filtered with **All**, **Code**, and **Drive**.
+**Overview** is the workspace home. **All repositories** sets the scope. **Sync** refreshes the workspace. **Connect agent** opens the path to a coding assistant.
 
-<img src="/images/console/overview.png" alt="Graphify Cloud Overview with code findings, indexed repository cards, and workspace stats" width="2400" height="1350" className="block h-auto w-full" />
+**Code findings** lists **Checks incomplete**, **Duplicate code**, and **Dead code**. **Recent activity** includes pull requests reviewed. **Continue work** is where a recent review or finding returns. **Your indexed repositories** shows a graph card for each indexed repository, with **Combine graph** and **View all**. Further down, **Workspace stats** covers builds, code reviews, build outcomes, and graph density.
+
+<img src="/images/console/overview.png" alt="Overview with code findings, recent activity, continue work, and indexed repository cards" width="1100" height="800" className="block h-auto w-full" />
 
 ## Graphs
 
 **Graphs** has two views.
 
-**Single Repository** opens one graph. That can be a code repository or a Google Drive folder. The counts above the canvas are **Nodes**, **Edges**, **Extracted**, **Inferred**, **Synthesized**, and **Observed**. Search sits on the right, with the most connected nodes.
+**Single Repository** opens one graph. The header picks the repository, **All code areas**, and **Kind**. The counts are **Nodes**, **Edges**, **Extracted**, **Inferred**, **Synthesized**, **Observed**, and **Tokens saved**. Search sits beside the canvas, with the most connected areas.
 
-<img src="/images/console/graph.png" alt="Single repository graph with node counts, the canvas, and a search panel" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/graph.png" alt="Single repository graph with node counts, the canvas, and the most connected areas" width="1100" height="800" className="block h-auto w-full" />
 
-**Cross-Repository** opens a combined graph. The side panel lists combined graphs and the most connected areas.
+**Cross-Repository** opens a combined graph. Choose it from the menu in the header. The same counts sit above the canvas, and the side panel lists the most connected areas.
 
-<img src="/images/console/graph-cross.png" alt="Cross-repository graph with a combined canvas and a list of combined graphs" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/graph-cross.png" alt="Cross-repository graph for a combined graph, with counts, the canvas, and the most connected areas" width="1100" height="800" className="block h-auto w-full" />
 
 See [how Graphify works](/concepts/architecture) for graph structure and [edges and provenance](/concepts/provenance) for the meaning of the evidence labels.
 
 ## Wiki
 
-**Wiki** turns an indexed repository into pages. Choose a repository, browse its areas, search the pages, or ask a question from the wiki. **Reading mode** and **Ask** sit in the header. See [Wiki](/platform/wiki) for indexing requirements and empty states.
+**Wiki** turns an indexed repository into pages. Pick the repository, then browse **Areas** or use **Search pages**. **Reading mode** and **Ask** sit in the header. **On this page** follows the open article. See [Wiki](/platform/wiki) for indexing requirements and empty states.
 
-<img src="/images/console/wiki.png" alt="Wiki for one repository, with areas on the left and the overview article on the right" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/wiki.png" alt="Wiki for one repository, with areas on the left and the overview article on the right" width="1100" height="800" className="block h-auto w-full" />
 
 ## Pull request reviews
 
-**Reviews** lists pull requests for the workspace. Filter with **All**, **Needs attention**, or **In progress**, or pick one repository. Each row shows the review state and how many findings it has. Open **Review** to read that run.
+**Reviews** lists pull requests for the workspace. **Search pull requests** filters the list. **All**, **Needs attention**, and **In progress** are the other filters, and **All repositories** narrows to one repository. The list is the **Latest review per PR**. A row shows a state such as **Review suggested**, **Action needed**, or **No blocking findings**, then **Reviewed** and the finding count. **Review** opens that run.
 
-<img src="/images/console/reviews.png" alt="Reviews list with pull requests, review state, and finding counts" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/reviews.png" alt="Reviews list with pull requests, review state, and finding counts" width="1100" height="800" className="block h-auto w-full" />
 
 For the meaning and limits of verification verdicts, see [formal verification](/platform/verification). To investigate pull requests using the local CLI, see the [pull request guide](/guides/pull-requests).
 
 ## Formal verification
 
-**Formal Verification** lists behavior checks for pull requests. The page includes **How to read results**, then one row per pull request with whether the check completed. Read the [formal verification guide](/platform/verification) before interpreting a result.
+**Formal Verification** lists behavior checks. The line under the title is **Check whether code changes affect behavior.** **How to read results** opens the legend. Each row is one pull request: a short result, **Completed** when the check finished, and **Open PR**. A result can say the change was tested, not proven. Read the [formal verification guide](/platform/verification) before interpreting a result.
 
-<img src="/images/console/verification.png" alt="Formal Verification with the behavior-check legend and a list of pull requests" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/verification.png" alt="Formal Verification with behavior checks and a list of pull request results" width="1100" height="800" className="block h-auto w-full" />
 
-## Memory
+## Contributors
 
-**Memory** is where the workspace keeps notes tied to a repository. Pick the repository, then **Ask** or **Search**. **Simple** and **Advanced** switch the layout. **Add memory** saves a note. When Graphify suggests something worth remembering, **Keep**, **Edit**, or **Discard** it. See [Memory](/platform/memory).
+**Contributors** answers who contributes to the selected repository. **Tamper risk** and **Contributors** are the two tabs. **Search by name or username** filters the list. A row shows commits, how many are signed, **Ai**, and **Reach**. See [Contributors](/platform/contributors).
 
-<img src="/images/console/memory.png" alt="Memory for one repository, with Ask, Search, and suggested memories" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/contributors.png" alt="Contributors for one repository, with commits, signed commits, AI-assisted commits, and reach" width="1100" height="800" className="block h-auto w-full" />
 
-## Learn
+## Builds
 
-The sidebar label is **Learn**. The page heading is **Learning**. It shows muted findings, muted patterns, recent feedback, and verifier adjustments. The view is read-only. Feedback is submitted on pull requests, and it does not change formal verification verdicts. See [Learning](/platform/learning) for the commands and their scope.
+**Builds** is the indexing history. The heading under the title is **Repository indexing**. Filter by repository and by status. The summary is **Total builds**, **Succeeded**, **Failed**, and **Nodes produced**. A failed build leaves the previous graph in place. **Recent builds** lists each run. See [Repositories and builds](/platform/repositories).
 
-<img src="/images/console/learn.png" alt="Learn page with muted findings, suppressions, and the feedback commands" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/builds.png" alt="Builds with indexing totals and a list of recent indexing runs" width="1100" height="800" className="block h-auto w-full" />
 
 ## Repositories
 
-**Repositories** lists code repositories and Google Drive folders. **All**, **Code**, and **Drive** filter that list. **Add GitHub repositories** and **Sync** are on this page. A Drive folder is indexed like a repository. See [Repositories and builds](/platform/repositories) and [Connect Google Drive](/platform/google-drive).
+**Repositories** lists code repositories and Google Drive folders. **All**, **Code**, and **Drive** filter that list. **Search repositories and folders** is on the same page, with **Sync** and **Add GitHub repositories**. A row shows a status such as **Indexed** or **Paused**. See [Repositories and builds](/platform/repositories) and [Connect Google Drive](/platform/google-drive).
 
-<img src="/images/console/repositories.png" alt="Repositories with All, Code, and Drive filters and the code repository list" width="2400" height="1080" className="block h-auto w-full" />
+<img src="/images/console/repositories.png" alt="Repositories with All, Code, and Drive filters and the code repository list" width="1100" height="800" className="block h-auto w-full" />
+
+## Memory
+
+**Memory** is where the workspace keeps notes for one repository. **Simple** and **Advanced** switch the layout. **Add memory** saves a note. **Ask** and **Search** are the two ways in. Your agent keeps its own memory. Graphify adds shared knowledge, with no automatic syncing. See [Memory](/platform/memory).
+
+<img src="/images/console/memory.png" alt="Memory for one repository, with Add memory, Ask, and Search" width="1100" height="800" className="block h-auto w-full" />
+
+## Learn
+
+The sidebar label and the page title are **Learn**. The section under the title is **Learning**: manage feedback on code reviews, then **Open reviews**. The counts are **Muted findings**, **Muted patterns**, **Feedback last 30d**, and **Verifier adjustments**. **Learned dismissals** and **Suppressions** are read-only. If conversation replies are not being kept, the page asks an admin to approve the GitHub Issues permission. See [Learning](/platform/learning) for the feedback commands.
+
+<img src="/images/console/learn.png" alt="Learn page with muted findings, learned dismissals, and suppressions" width="1100" height="800" className="block h-auto w-full" />
 
 ## Connectors
 
 **Connectors** has two tabs.
 
-**MCP** connects a coding agent. Pick an agent, connect it, and try a query. The hosted server is `https://api.graphify.com/mcp`.
+**MCP** connects a coding agent. The steps are **Choose agent**, **Connect**, and **Try a query**. The agent list includes Claude Code, Codex, Cursor, GitHub Copilot, and VS Code. **Default repository** is the repository used when an agent does not name one. Another client uses the hosted server `https://api.graphify.com/mcp`.
 
-<img src="/images/console/connectors.png" alt="Connectors MCP tab with agent choices and the hosted MCP address" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/connectors.png" alt="Connectors MCP tab on Choose agent, with Claude Code, Codex, and Cursor" width="1100" height="800" className="block h-auto w-full" />
 
-**Integrations** lists source control, knowledge, communication, project management, and developer tools. A tile says **Connected**, **Connect**, or **Coming soon**. **Google Workspace** searches documents from Google Drive. See [Agents and integrations](/platform/connections) and [Connect Google Drive](/platform/google-drive).
+**Integrations** is **Connect your tools**. Filter by **Source control**, **Knowledge**, **Communication**, **Project management**, or **Developer tools**. A tile says **Connected**, **Connect**, or **Coming soon**. **Google Workspace** searches documents from Google Drive. See [Agents and integrations](/platform/connections) and [Connect Google Drive](/platform/google-drive).
 
-<img src="/images/console/integrations.png" alt="Connectors Integrations tab with GitHub, Google Workspace, and other tool tiles" width="2400" height="1350" className="block h-auto w-full" />
+<img src="/images/console/integrations.png" alt="Connectors Integrations tab with GitHub, Google Workspace, and other tool tiles" width="1100" height="800" className="block h-auto w-full" />
 
 ## Also in the workspace
 
-- [Contributors](/platform/contributors) is in the sidebar. It covers authorship and graph reach where that overlay is available.
-- [Builds](/platform/repositories) shares the repositories guide. It is the indexing history for a repository.
 - [Profile](/platform/profile) covers achievements, the last 7 days of Performance, and Power Ranking.
 
 Some views depend on workspace access or a completed repository index. Their guides explain what to check when a view is unavailable or empty.

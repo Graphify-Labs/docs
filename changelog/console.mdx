@@ -7,7 +7,7 @@ hideFooterPagination: true
 rss: true
 ---
 
-<Update label="2026-10-24" description="Pick a default repository for your agent">
+<Update label="2026-10-25" description="Pick a default repository for your agent">
 ## Pick a default repository for your agent
 
 The MCP setup URL can now pin a default repository, for example `https://api.graphify.com/mcp?repo=acme/api`. Your agent queries that repository unless you name another one.
@@ -22,7 +22,7 @@ The MCP setup URL can now pin a default repository, for example `https://api.gra
 [Read the MCP overview](/mcp/overview)
 </Update>
 
-<Update label="2026-10-17" description="Plain-language verification results">
+<Update label="2026-10-18" description="Plain-language verification results">
 ## Plain-language verification results
 
 Verification results now say in plain language what was checked and what changed, and they match the check on your pull request. You can link to a single run with `?run=`.
@@ -30,7 +30,7 @@ Verification results now say in plain language what was checked and what changed
 ### New
 - **Ask:** The **Applied memory** panel shows which memories informed an answer.
 - **Overview:** A **Latest pull request** card shows the review verdict and verification result for the same commit, side by side.
-- **Repositories:** Repositories GitHub reports as gone show **No longer on GitHub** on their row.
+- **Repositories:** Repositories that GitHub reports as deleted, transferred to an account without Graphify, or no longer accessible to the Graphify app show a **No longer on GitHub** label on their row, and owners can remove them.
 - **Sign in:** The sign-in page marks the method you used last with a **Last used** label.
 
 ### Improved
@@ -42,7 +42,7 @@ Verification results now say in plain language what was checked and what changed
 - **Graph:** Repeated labels no longer appear, and square markers are back.
 </Update>
 
-<Update label="2026-10-10" description="Add repositories any time">
+<Update label="2026-10-11" description="Add repositories any time">
 ## Add repositories any time
 
 The **Repositories** page has an **Add** action in its header, so you can connect more GitHub repositories after setup without redoing onboarding.
@@ -52,7 +52,7 @@ The **Repositories** page has an **Add** action in its header, so you can connec
 - **Agent setup:** Install buttons for official Graphify plugins lead the MCP page.
 - **Memory:** The Memory page has **Simple** and **Advanced** views.
 - **Memory:** Memories your agent adds automatically are labeled, with one-click **Undo**.
-- **Search:** Every repository picker has a search box, and the Contributors page has search beside its tabs.
+- **Search:** Every repository picker has a search box.
 
 ### Improved
 - **Product tour:** The tour starts once your first graph is ready and shows agent setup second.
@@ -92,16 +92,12 @@ A new card on each repository lists code that nothing references, so you can fin
 - **Verifications:** The list is filtered by repository and pages through older runs.
 </Update>
 
-<Update label="2026-09-16" description="Tell your agent to reach for the graph">
+<Update label="2026-09-20" description="Tell your agent to reach for the graph">
 ## Tell your agent to reach for the graph
 
 The connect-agent page has a copy-paste rules card that tells your agent to prefer Graphify over searching files by hand.
 
-### New
-- **Repositories:** Each repository's options menu has toggles for **Formal verification** and **Inline health**.
-
 ### Improved
-- **Repositories:** When a repository cannot be indexed yet, the graph page and repository tile explain why. On the Free plan, you see Pro pricing and can upgrade from there.
 - **Overview:** The Overview shows a language breakdown for each repository.
 - **Billing:** The upgrade button no longer mentions a free trial when none applies.
 
@@ -110,7 +106,7 @@ The connect-agent page has a copy-paste rules card that tells your agent to pref
 - **Memory:** Links to a memory stay on the right repository.
 </Update>
 
-<Update label="2026-09-09" description="A redesigned console">
+<Update label="2026-09-13" description="A redesigned console">
 ## A redesigned console
 
 The dashboard, sidebar, loading states, Members page and login page have a new design. Pro workspaces show a **Pro** badge, and the Graphify logo is updated.
@@ -118,10 +114,11 @@ The dashboard, sidebar, loading states, Members page and login page have a new d
 ### New
 - **Graph:** You can cancel an index that is still running.
 - **Builds:** Each successful build shows how many nodes it added or removed. **Retry** appears only on the latest build.
+- **Repositories:** Each repository's options menu has toggles for **Formal verification** and **Inline health**.
 
 ### Improved
+- **Repositories:** When a repository cannot be indexed yet, the graph page and repository tile explain why. On the Free plan, you see Pro pricing and can upgrade from there.
 - **Onboarding:** The onboarding flow has a new layout and a walkthrough.
-- **Contributors:** Contributor rows handle missing GitHub profile details.
 
 ### Fixed
 - **Graph:** The graph page loads behind a skeleton instead of jumping.
@@ -129,7 +126,7 @@ The dashboard, sidebar, loading states, Members page and login page have a new d
 [Take the console tour](/platform/console)
 </Update>
 
-<Update label="2026-09-01" description="Connect 30 agents">
+<Update label="2026-09-06" description="Connect 30 agents">
 ## Connect 30 agents
 
 The connect-agent page grows from 12 to 30 clients, grouped into **Coding agents** and **Cloud connectors**.
@@ -143,32 +140,29 @@ The connect-agent page grows from 12 to 30 clients, grouped into **Coding agents
 [See all integrations](/integrations/overview)
 </Update>
 
-<Update label="2026-08-24" description="Contributors">
-## Contributors
+<Update label="2026-08-30" description="Skip connecting a code host for now">
+## Skip connecting a code host for now
 
-The **Contributors** page shows who changes each repository, ranked by how much their changes affect the codebase.
-
-### New
-- **Onboarding:** You can skip connecting a code host and come back to it later.
-- **Memory and Learning:** Memory and Learning are available to every user.
+Onboarding no longer makes you connect a code host first. You can skip that step, look around the console, and connect a code host later.
 
 ### Improved
 - **Performance:** The console loads your workspace faster on first visit.
 - **Billing:** Only owners and billing admins can open the billing portal.
-
-[Read about contributors](/platform/contributors)
 </Update>
 
-<Update label="2026-08-19" description="Clearer pull request diffs">
+<Update label="2026-08-23" description="Clearer pull request diffs">
 ## Clearer pull request diffs
 
 PR reviews render diffs with a new viewer that uses the same syntax colors as GitHub.
+
+### New
+- **Memory and Learning:** Memory and Learning are available to every user.
 
 ### Improved
 - **Workspaces:** The workspace switcher separates **Your workspace** from workspaces **Shared with you**.
 </Update>
 
-<Update label="2026-08-03" description="Sign-out and GitHub fixes">
+<Update label="2026-08-09" description="Sign-out and GitHub fixes">
 ## Sign-out and GitHub fixes
 
 ### Fixed
@@ -176,17 +170,24 @@ PR reviews render diffs with a new viewer that uses the same syntax colors as Gi
 - **GitHub:** Connecting retries when a GitHub installation is out of date.
 </Update>
 
-<Update label="2026-07-27" description="A shorter, more honest setup">
+<Update label="2026-08-02" description="Setup only runs once">
+## Setup only runs once
+
+Once you finish setup, the wizard does not show again.
+
+### Fixed
+- **GitHub:** The connect and manage buttons link the GitHub installation to your workspace.
+</Update>
+
+<Update label="2026-07-26" description="A shorter, more honest setup">
 ## A shorter, more honest setup
 
 The setup wizard has fewer steps, and features that are not ready show an honest **Coming soon** state.
 
 ### Improved
 - **Onboarding:** You can enter your website without `https://`.
-- **Onboarding:** Once you finish setup, the wizard does not show again.
 
 ### Fixed
-- **GitHub:** The connect and manage buttons link the GitHub installation to your workspace.
 - **Workspaces:** Signing in after your workspace is removed no longer fails.
 </Update>
 

@@ -165,8 +165,8 @@ div:has(> #chat-assistant-sheet),
 .graphify-ask-icon {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 0;
   border-radius: var(--g-radius-md);
@@ -776,7 +776,7 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
 }
 
 .graphify-ask-form button {
-  height: 36px;
+  height: 40px;
   min-width: 72px;
   margin-bottom: 4px;
   padding: 0 14px;

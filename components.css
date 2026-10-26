@@ -1,0 +1,9 @@
+/* Shared button and card spec: 40px buttons, 8px button radius, 12px card radius. */
+[role="navigation"][aria-label="Documentation pages"] > a {
+  min-height: 40px;
+  border-radius: var(--g-radius-md) !important;
+  padding: var(--g-space-1) var(--g-space-3) !important;
+}
+#content-area .card {
+  border-radius: var(--g-radius-lg);
+}

@@ -23,21 +23,25 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
     Go to **Repositories** and click **Add GitHub repositories**, then grant the Graphify GitHub app access to the repositories you want. You can also connect from **Connectors → Integrations**.
 
     Connected repositories show up as **Paused** and **Not indexed**. That's expected, because nothing is indexed until you choose to.
+
+    <img src="/images/console/integrations.png" alt="Connectors Integrations tab with GitHub, Google Workspace, and other tool tiles" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Index a repository" titleSize="h2">
-    Find the repository and click **Index**. The Free plan indexes up to 3 repositories. See [Pricing](/pricing/overview) for more.
+    Find the repository and click **Index** next to it. This turns on indexing and queues the first build.
+
+    On **Free**, you can index up to 3 repositories. **Pro** and **Teams** have no repository cap. On Teams, the workspace is shared, so indexed repositories are available to every member. Switch workspaces from the switcher at the top of the sidebar. See [Plans and pricing](/pricing/overview).
 
     Follow the run on **Builds**. When it finishes, the repository's status changes to **Indexed**.
 
-    <img src="/images/console/builds.png" alt="Builds page listing indexing runs and their status" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/builds.png" alt="Builds with indexing totals and a list of recent indexing runs" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Look at the graph and wiki" titleSize="h2">
     Open **Graphs** to explore the repository's nodes and their most connected areas. Then open **Wiki**, which writes an article for each area of the repository automatically. **Memory** lets you ask or search across what Graphify knows.
 
-    <img src="/images/console/wiki.png" alt="Wiki for one repository, with areas on the left and the overview article on the right" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/graph.png" alt="Single repository graph with node counts, the canvas, and the most connected areas" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Connect your agent" titleSize="h2">
-    Go to **Connectors → MCP**. The wizard has three steps: **Choose agent**, **Connect**, and **Try a query**. It writes setup steps for Claude Code, Codex, Cursor, GitHub Copilot, VS Code, and 31 other agents.
+    Go to **Connectors → MCP**. The wizard has three steps: **Choose agent**, **Connect**, and **Try a query**. It writes setup steps for Claude Code, Codex, Cursor, GitHub Copilot, VS Code, and many more agents (open **Browse all agents** for the full list).
 
     You can also add the server yourself. Each agent takes one line or one config entry:
 
@@ -47,8 +51,9 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
     ```
     ```bash Codex
     codex mcp add graphify --url https://api.graphify.com/mcp
+    codex mcp login graphify
     ```
-    ```json VS Code (mcp.json)
+    ```json VS Code (.vscode/mcp.json)
     {
       "servers": {
         "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
@@ -63,7 +68,7 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
 
     The first connection opens an OAuth sign-in. There is no API key to paste. If you don't know how to configure your agent, click **Copy quick-start prompt** and paste it into the agent. It adds Graphify, walks you through sign-in, and runs a first query.
 
-    <img src="/images/console/connectors.png" alt="Connectors MCP wizard with the agent picker and the quick-start prompt" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/connectors.png" alt="Connectors MCP tab on Choose agent, with Claude Code, Codex, and Cursor" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
 
     Agent-specific guides: [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [any other MCP client](/integrations/other-agents).
   </Step>
@@ -82,7 +87,7 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
 
 | Symptom | Fix |
 | --- | --- |
-| A banner says your agent is bound to a different workspace | Click **Point my agent at Graphify** and finish the OAuth prompt in your agent. |
+| A banner says **Your agent is pointed at a different workspace** | Click **Point my agent at _workspace name_** on the banner, or switch to the workspace your agent uses. |
 | The agent asks for an API key | The server uses OAuth. Check the URL is `https://api.graphify.com/mcp`. |
 | You only see ten local tools | That connection reads a local graph file. Add the hosted URL above instead. |
 | The agent says there are no repositories | Wait for **Indexed** on **Repositories**, or set a default repository in **Connectors → MCP**. |

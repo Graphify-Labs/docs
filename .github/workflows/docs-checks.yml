@@ -46,5 +46,24 @@ jobs:
           print(f"{len(pages)} nav pages found")
           PY
 
+      - name: Every redirect destination exists
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          redirects = json.load(open("docs.json")).get("redirects", [])
+          bad = []
+          for r in redirects:
+              d = r.get("destination", "").split("#")[0].split("?")[0]
+              if d.startswith("http") or ":" in d or "*" in d:
+                  continue  # external or pattern destinations are not checked
+              path = d.strip("/") or "index"
+              if not any(os.path.exists(path + e) for e in (".mdx", ".md", "/index.mdx")):
+                  bad.append(f"{r.get('source')} -> {r.get('destination')}")
+          if bad:
+              print("Redirects pointing at missing pages:", *bad, sep="\n  ")
+              sys.exit(1)
+          print(f"{len(redirects)} redirects OK")
+          PY
+
       - name: Mintlify broken links
         run: npx -y mint@latest broken-links

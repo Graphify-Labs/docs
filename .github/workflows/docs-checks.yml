@@ -65,5 +65,12 @@ jobs:
           print(f"{len(redirects)} redirects OK")
           PY
 
+      - name: No description starts with a tag
+        run: |
+          if grep -rnE '^description: *"?\[' --include='*.mdx' --include='*.md' .; then
+            echo "Descriptions must read as sentences. Put the surface in the surface: field instead."
+            exit 1
+          fi
+
       - name: Mintlify broken links
         run: npx -y mint@latest broken-links

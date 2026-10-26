@@ -1,0 +1,50 @@
+name: Docs checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate docs.json and links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: docs.json is valid JSON
+        run: python3 -m json.tool docs.json > /dev/null
+
+      - name: Every nav page exists
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          cfg = json.load(open("docs.json"))
+          pages = []
+          def walk(n):
+              if isinstance(n, dict):
+                  for k, v in n.items():
+                      if k in ("pages", "root") :
+                          for p in (v if isinstance(v, list) else [v]):
+                              if isinstance(p, str): pages.append(p)
+                              else: walk(p)
+                      else: walk(v)
+              elif isinstance(n, list):
+                  for x in n: walk(x)
+          walk(cfg.get("navigation", {}))
+          missing = [p for p in pages if not p.startswith("http") and not any(os.path.exists(p + e) for e in (".mdx", ".md"))]
+          if missing:
+              print("Pages in docs.json with no file:", *missing, sep="\n  ")
+              sys.exit(1)
+          print(f"{len(pages)} nav pages found")
+          PY
+
+      - name: Mintlify broken links
+        run: npx -y mint@latest broken-links

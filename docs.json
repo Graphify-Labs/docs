@@ -38,7 +38,7 @@
         "tab": "Graphify Cloud",
         "groups": [
           {
-            "group": "Graphify Cloud",
+            "group": "Get started",
             "pages": [
               "platform/console",
               "platform/local-to-cloud"
@@ -130,7 +130,7 @@
         "tab": "Integrations & MCP",
         "groups": [
           {
-            "group": "Graphify Cloud",
+            "group": "Cloud MCP",
             "root": "integrations/cloud",
             "pages": [
               "integrations/vscode",

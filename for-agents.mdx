@@ -1,6 +1,7 @@
 ---
 title: "Notes for agents"
-description: "[Both] Rules for coding agents that answer questions from these docs."
+description: "Rules for coding agents that answer questions from these docs."
+surface: "both"
 hideFooterPagination: true
 sidebarTitle: "Notes for agents"
 ---
@@ -9,11 +10,11 @@ These rules are repeated at the top of every page's Markdown, in [llms.txt](http
 
 ## Which surface
 
-- `[Local]` is the `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server.
-- `[Cloud]` is the hosted workspace and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key).
-- `[Both]` applies to either surface.
+- **Local** is the `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server. Its pages are the Guides and Reference tabs, `/mcp/` (except `/mcp/docs-search`), `/installation`, `/quickstart`, and the Local skill group in Integrations.
+- **Cloud** is Graphify Cloud, the hosted workspace, and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). Its pages are the Graphify Cloud tab (`/platform/`) and the Cloud MCP and CI integrations groups in Integrations.
+- Everything else, including Concepts, Troubleshooting, Pricing, and `/platform/local-to-cloud`, applies to both.
+- Each page's source frontmatter records its surface as `surface: local`, `cloud`, or `both`.
 - Buildkite is the CI integration.
-- Each page line in [llms.txt](https://docs.graphify.com/llms.txt) starts with one of those tags.
 
 ## Which file to open
 

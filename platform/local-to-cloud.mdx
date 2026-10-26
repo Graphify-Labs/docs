@@ -1,11 +1,13 @@
 ---
 title: "Move from local to Cloud"
 sidebarTitle: "Move from local to Cloud"
-description: "[Both] Move a repository and its assistants from the local graphifyy package to Graphify Cloud, and keep the local graph as a way back."
+description: "[Both] Move one repository from the local graphifyy package to Graphify Cloud. Switch each assistant to the hosted MCP server, and keep the local graph so you can roll back."
 hideFooterPagination: true
 ---
 
-This guide moves one repository from the local `graphifyy` package to Graphify Cloud. Cloud builds the graph from the repository on GitHub or GitLab. Your assistants query it through the hosted server at `https://api.graphify.com/mcp`.
+Move a repository from the local `graphifyy` package to Graphify Cloud. Cloud indexes the repository on GitHub or GitLab. Your assistants then query that graph through the hosted server at `https://api.graphify.com/mcp`.
+
+This is a configuration change. Your application code stays as it is. Each assistant keeps reading the local graph until you switch its `graphify` entry. Leave `graphify-out/` in place until you are sure the hosted server answers, so you can roll back.
 
 ## Overview
 
@@ -20,24 +22,22 @@ Cloud indexes repositories on GitHub or GitLab. A project that exists only on yo
 <Note>
 **Why move to Cloud?**
 
-- **No local builds.** Cloud indexes the repository on each push to the default branch. The graph stays current without `graphify update .` or git hooks.
-- **Repositories by name.** Each hosted call names a repository in your workspace, such as `your-org/your-repo`. There are no local paths to keep in step.
-- **Pull request reviews.** Graphify reviews a pull request when it is opened, reopened, or marked ready for review.
-- **Learning.** Feedback on review findings, given in the pull request, tunes what later reviews surface.
-- **Formal verification.** Changed functions are compared with their earlier implementations, with a result for each function.
-- **Hosted wiki.** Each indexed repository gets a wiki you can search and ask questions about.
-- **Shared memory.** Notes saved for a repository are available to every assistant and teammate in the workspace.
-- **OAuth sign-in.** Each assistant signs in through the browser. There is no API key to paste.
-
-Available features depend on your workspace and plan.
+- **The graph updates itself.** Cloud indexes on each push to the default branch. You stop running `graphify update .` and the git hooks that rebuild the local graph.
+- **One connection for the workspace.** Assistants sign in once and name any indexed repository, such as `your-org/your-repo`. Local paths leave the MCP config.
+- **Reviews on every pull request.** Graphify comments when a pull request is opened, reopened, or marked ready for review.
+- **Learning from your team's replies.** Feedback on findings tunes what later reviews surface.
+- **Formal verification on changed functions.** Each result says whether behavior is preserved, or which input produces a different result.
+- **A wiki you can search and ask.** Generated from the indexed graph, with links back to the code in **Graphs**.
+- **Shared memory for the team.** Notes for a repository are available to every assistant and teammate in the workspace.
+- **OAuth sign-in.** Each assistant signs in through the browser. There is no API key to paste into a config file.
 </Note>
 
 ### Plan
 
 1. **Sign in.** Open [app.graphify.com](https://app.graphify.com) and sign in with Google, GitHub, GitLab, or email. If you are new to Graphify, choose **Create an account** on the login page.
 2. **Check the repository.** It is on GitHub or GitLab, and the commits you want in the graph are on its default branch. You need permission on the provider to grant Graphify access to it.
-3. **Plan the sign-in.** Each assistant signs in with OAuth the first time it connects. An agent that cannot open a browser, such as one in CI, uses an API token instead.
-4. **Review usage.** Find every place that uses the local graph. Run the list command for each assistant you use, from the repository root:
+3. **Choose how assistants sign in.** Each assistant signs in with OAuth the first time it connects. An agent that cannot open a browser, such as one in CI, uses an API token instead.
+4. **Find every local use.** From the repository root, run the list command for each assistant you use:
 
 ```bash
 claude mcp list
@@ -46,11 +46,11 @@ graphify hook status
 git grep --untracked -n -e graphify-mcp -e graphify-out -e "graphify query" -e "graphify extract"
 ```
 
-Look for MCP entries named `graphify` that run `graphify-mcp`, skill registrations from `graphify install`, git hooks, CI jobs that run `graphify extract`, and scripts that read `graphify-out/`. Also search your assistant rules for local tool names such as `get_node` and `god_nodes`. In Cursor and VS Code, open the MCP files listed in step 2.
+Look for MCP entries named `graphify` that run `graphify-mcp`, skill registrations from `graphify install`, git hooks, CI jobs that run `graphify extract`, and scripts that read `graphify-out/`. Also search your assistant rules for local tool names such as `get_node` and `god_nodes`. In Cursor and VS Code, open the MCP files named under each assistant in [Switch each assistant to the hosted server](#2-switch-each-assistant-to-the-hosted-server).
 
 ## Move with your assistant
 
-Paste this prompt into the assistant you are moving. It reads this page and lists every local Graphify piece it finds, with the change it proposes for each. Once you approve the plan, it makes the changes and stops so you can sign in yourself.
+Paste this prompt into the assistant you are moving. It reads this page, lists every local Graphify piece it finds, and shows the change it proposes for each. After you approve that list, it makes the edits and stops so you can sign in yourself.
 
 ```text
 Help me move this repository from the local Graphify package (graphifyy) to Graphify Cloud.
@@ -88,9 +88,9 @@ The local graph describes your folder as it was at the last build or update, unc
 
 ### 2. Switch each assistant to the hosted server
 
-Switch one assistant at a time. Each tab shows the local entry you have now and the hosted entry that replaces it. Keep the name `graphify`, and leave every other MCP server in place.
+Switch one assistant at a time. Each tab shows the local entry you have now and the hosted entry that replaces it. Keep the name `graphify`. Leave every other MCP server as it is.
 
-The hosted server runs in Graphify Cloud. Keep the `graphifyy` package until the move is done, because the rollback uses it.
+Keep the `graphifyy` package until the move is done. The rollback steps use it.
 
 <Tabs>
   <Tab title="Claude Code">
@@ -288,9 +288,9 @@ Then compare one answer. Ask a question with the local CLI:
 graphify query "authentication flow"
 ```
 
-Ask the assistant the same question about `your-org/your-repo`. Cloud indexes the default branch, so answers can differ where your working copy has changes the default branch lacks. Open the cited source lines before you rely on an answer.
+Ask the assistant the same question about `your-org/your-repo`. Cloud indexes the default branch, so answers can differ where your working copy has changes the default branch lacks. Open the cited source lines before you trust an answer.
 
-To set the repository an assistant uses when it names none, choose a **Default repository** on the **MCP** tab of **Connectors**.
+To set the repository an assistant uses when a tool call names none, choose a **Default repository** on the **MCP** tab of **Connectors**.
 
 ### 4. Update tool calls
 
@@ -397,7 +397,7 @@ Some tools save notes or change the selected workspace. Approve a tool only when
 
 ### 5. Move saved lessons into Memory
 
-If you used `graphify save-result` and `graphify reflect`, your lessons are in `graphify-out/reflections/LESSONS.md`. That file stays on your machine. Cloud keeps its own notes for each repository in **Memory**. Copy the lessons you still trust by hand:
+If you used `graphify save-result` and `graphify reflect`, your lessons live in `graphify-out/reflections/LESSONS.md` on your machine. Cloud keeps its own notes for each repository in **Memory**. There is no import for that file. Copy the lessons you still trust by hand:
 
 1. Check each lesson against the current source. Leave out any lesson the code no longer supports.
 2. Open **Memory** in the console and choose the repository.
@@ -435,7 +435,7 @@ Notes in **Memory** are shared with the workspace. Move only lessons that everyo
 
 If a CI job runs `graphify extract` to build a graph for assistants, remove the job once every assistant uses the hosted server. Cloud builds the graph on each push to the default branch. Keep the job if something other than an assistant reads its output.
 
-Graphify Cloud can also select the tests a pull request affects in Buildkite, in workspaces where that integration is enabled. See [Buildkite test selection](/integrations/buildkite).
+If your workspace uses Buildkite with Graphify, Cloud can also select the tests a pull request affects. See [Buildkite test selection](/integrations/buildkite).
 
 ### 7. Remove the local setup
 
@@ -447,9 +447,9 @@ For a personal install, run this from the repository root:
 graphify uninstall
 ```
 
-It removes your registrations for every assistant and the repository's Graphify git hooks. It also edits instruction files in the repository, such as `CLAUDE.md` and `AGENTS.md`, and deletes `.cursor/rules/graphify.mdc`. Review those changes with `git status` before you commit. The command keeps `graphify-out/` unless you add `--purge`.
+That command removes your registrations for every assistant and the repository's Graphify git hooks. It also edits instruction files in the repository, such as `CLAUDE.md` and `AGENTS.md`, and deletes `.cursor/rules/graphify.mdc`. Review those changes with `git status` before you commit. The command keeps `graphify-out/` unless you add `--purge`.
 
-For a registration the repository commits, run this once for each assistant. Then commit the change.
+For a registration the repository commits, run this once for each assistant, then commit the change:
 
 ```bash
 graphify uninstall --project --platform cursor
@@ -463,16 +463,16 @@ When you no longer need a way back, run `graphify uninstall --purge` to delete `
 uv tool uninstall graphifyy
 ```
 
-With pipx, run `pipx uninstall graphifyy`.
+If you installed with pipx, run `pipx uninstall graphifyy`.
 
 ## What Cloud adds
 
-These features work on the repositories you connect. Available features, permissions, and usage limits depend on your workspace and plan. See [plans and pricing](/pricing/overview).
+These features run on the repositories you connect. Open each one after the hosted server answers.
 
 <AccordionGroup>
   <Accordion title="Pull request reviews">
     <Note>
-    **Why it matters:** Each pull request is reviewed against the indexed graph and the pull request's diff, so you see the code a change can affect before it merges.
+    **Why it matters:** Each pull request is reviewed against the indexed graph and the pull request's diff. You see the code a change can affect before it merges.
     </Note>
 
     Graphify reviews a pull request when it is opened, reopened, or marked ready for review. To review the current head after new commits, a repository owner, member, or collaborator comments on the pull request:
@@ -507,7 +507,7 @@ These features work on the repositories you connect. Available features, permiss
   </Accordion>
   <Accordion title="Wiki">
     <Note>
-    **Why it matters:** `graphify export wiki` writes Markdown files on your machine. The hosted wiki is generated for each indexed repository, and you can search it or ask it questions in the console.
+    **Why it matters:** `graphify export wiki` writes Markdown files on your machine. The hosted wiki is generated for each indexed repository. You can search it or ask it questions in the console.
     </Note>
 
     Open **Wiki** and select a repository. Start with **Overview**. **Search** finds words in articles. **Ask** answers questions that need connected code context, such as a call path or where a behavior lives. Links open the matching code in **Graphs**. See [Wiki](/platform/wiki).
@@ -541,6 +541,13 @@ These features work on the repositories you connect. Available features, permiss
 
     Both results come from the indexed graph. They do not run tests or replace a review.
   </Accordion>
+  <Accordion title="Contributors">
+    <Note>
+    **Why it matters:** You can see who commits to a repository, which commits are signed, and how far each contributor's changes reach in the graph.
+    </Note>
+
+    When **Contributors** is available in your workspace, open it, choose an indexed repository, and filter the list. See [Contributors](/platform/contributors).
+  </Accordion>
 </AccordionGroup>
 
 ## Summary of changes
@@ -558,7 +565,7 @@ These features work on the repositories you connect. Available features, permiss
 | **Change impact** | `graphify affected "<node>"` | `graphify_impact` and `impact_and_risk` | Update scripts and prompts |
 | **Wiki** | `graphify export wiki` | **Wiki** for each indexed repository | None |
 | **Several repositories** | `graphify merge-graphs` or `graphify global add` | **Cross-Repository** in **Graphs** | Connect each repository |
-| **Team** | Each clone installs the skill and the hooks | **Members** in the user menu, on team workspaces | Invite teammates on a team workspace |
+| **Team** | Each clone installs the skill and the hooks | **Members** in the user menu | Invite teammates from **Members** |
 
 ## If something fails
 
@@ -585,7 +592,7 @@ To stop Cloud from indexing the repository, open **Options** for it on **Reposit
 
 ## Next steps
 
-- [Graphify Cloud](https://app.graphify.com): repositories, builds, and connectors for your workspace.
+- [Graphify Cloud](https://app.graphify.com): open the repository you just connected, then try **Reviews**, **Wiki**, or **Memory**.
 - [Pull request reviews](/platform/reviews): when a review runs and how to read its findings.
 - [Agents and integrations](/platform/connections): connect more assistants to the hosted server.
 
@@ -595,7 +602,7 @@ To stop Cloud from indexing the repository, open **Options** for it on **Reposit
   </Card>
 
   <Card title="When something fails" icon="life-buoy" href="/platform/when-stuck">
-    Fix an empty graph, a failed build, or a plan limit.
+    Fix an empty graph, a failed build, or a stuck index.
   </Card>
 </Columns>
 

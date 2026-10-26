@@ -72,7 +72,6 @@
           {
             "group": "People",
             "pages": [
-              "platform/contributors",
               "platform/profile"
             ]
           },

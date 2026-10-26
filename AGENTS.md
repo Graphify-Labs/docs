@@ -1,6 +1,6 @@
 # Instructions for agents editing these docs
 
-Follow [CONTRIBUTING.md](CONTRIBUTING.md). It is the source of truth; this file is the short version.
+Follow `CONTRIBUTING.md` at the repository root. It is the source of truth; this file is the short version.
 
 ## Project
 

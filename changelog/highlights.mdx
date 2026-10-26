@@ -7,6 +7,18 @@ hideFooterPagination: true
 rss: true
 ---
 
+<Update label="2026-10-13" description="Verification results in plain language, and the memories behind an answer">
+## Verification results in plain language, and the memories behind an answer
+
+**Formal Verification** now explains each run in words you can act on. Runs are grouped by pull request, and each one leads with a summary like "Behavior changed in 2 of 5 functions" or "Proven same: 3 of 3 functions (within checked range)".
+
+A **How to read results** legend explains the five outcomes: **Behavior changed**, **Proven same**, **No change found**, **Not checked** and **Couldn't run**. **Re-run check**, the commit and PR links, and paging all work as before.
+
+**Ask** now shows its sources from memory too. Under a grounded answer, open **Memories given to this answer** to see which memories Graphify used and why each was recalled. Mark one **Useful**, **Wrong** or **Stale** to improve what gets recalled next time.
+
+[Read about formal verification](/platform/verification)
+</Update>
+
 <Update label="2026-10-12" description="Connect your agent in three steps">
 ## Connect your agent in three steps
 
@@ -22,6 +34,20 @@ Your agent is where Graphify pays off, so connecting it is now the shortest path
 The sidebar entry is now called **Connect agent**.
 
 [Read the MCP overview](/mcp/overview)
+</Update>
+
+<Update label="2026-10-08" description="A readable wiki for every repository">
+## A readable wiki for every repository
+
+Open **Wiki** to read documentation generated from your repository's code graph. It explains your code in plain language: what each area does, its key components, and the decisions and caveats behind them.
+
+- **A reader built for long pages.** Articles sit in a clean reading column with an **On this page** outline that follows you as you scroll.
+- **Sources you can check.** Each article links the source files it was written from, and a **How we know** panel shows where its claims came from.
+- **Search or ask.** Search finds words inside articles. When you need an explanation that spans the code, use **Ask the wiki instead** to get an answer grounded in your graph.
+
+The wiki is built alongside each index, so it describes the latest build of your repository.
+
+[Read about the wiki](/platform/wiki)
 </Update>
 
 <Update label="2026-10-05" description="Developer Memory, with Simple and Advanced views">
@@ -99,6 +125,36 @@ Anyone who can read a repository can open its Contributors page, including membe
 [Read about contributors](/platform/contributors)
 </Update>
 
+<Update label="2026-08-20" description="Learn: teach Graphify which review findings matter">
+## Learn: teach Graphify which review findings matter
+
+Reviews get quieter as your team uses them. Reply to a Graphify review on the pull request and it learns from what you say:
+
+- `@graphify wrong <finding>` dismisses a finding that does not apply.
+- `@graphify good <finding>` confirms one that was useful.
+- `@graphify suppress <rule>` mutes a rule, optionally for one path.
+
+The **Learn** page shows what Graphify has learned for your workspace: muted findings, muted patterns, and recent feedback, with who gave it and on which pull request.
+
+Learning only changes which advisory findings Graphify shows. It never changes a formal verification verdict.
+
+[Read about learning](/platform/learning)
+</Update>
+
+<Update label="2026-08-11" description="Pull request reviews and formal verification">
+## Pull request reviews and formal verification
+
+Graphify now checks your pull requests in two complementary ways, and both are available to every workspace.
+
+**Reviews.** Graphify reviews a pull request using your code graph, so it looks beyond the diff to the callers and dependencies a change can reach. Findings appear on the pull request and in the **Reviews** page of the console, next to the affected code.
+
+**Formal Verification.** For supported functions, Graphify compares the changed version with the previous one. It either proves they behave the same within the checked range or finds a concrete input that gives a different result. Open a run to see each function's verdict, and re-run it when you need a fresh result.
+
+A review points you to something worth a look. Verification tells you whether behavior actually changed.
+
+[Read about reviews](/platform/reviews)
+</Update>
+
 <Update label="2026-08-10" description="Share a GitHub org with your team">
 ## Share a GitHub org with your team
 
@@ -142,6 +198,16 @@ Graphify Cloud now works with more of the tools you already use.
 Use it to find where something is implemented, trace how a request moves through your services, or check what a change might touch before you make it.
 
 [Learn how to query your graph](/guides/querying)
+</Update>
+
+<Update label="2026-07-28" description="Combine repositories into one graph">
+## Combine repositories into one graph
+
+Code rarely lives in one repository. You can now combine several of your repositories into a single cross-repository graph and follow calls and dependencies across service boundaries.
+
+Choose **Combine graphs** to pick the repositories, and Graphify builds the merged graph for you. Your combined groups appear on Overview, so you can come back to them.
+
+[Explore your graphs](/platform/graphs)
 </Update>
 
 <Update label="2026-07-21" description="Graphify Cloud is live">

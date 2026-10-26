@@ -8,3 +8,9 @@
   background-size: cover !important;
   background-position: center bottom !important;
 }
+
+/* The green wash belongs to the homepage only. index.mdx carries the
+   data-graphify-site-styles marker; every other page drops the image. */
+body:not(:has([data-graphify-site-styles])) #content-container > span[style*="features-bg"] {
+  display: none !important;
+}

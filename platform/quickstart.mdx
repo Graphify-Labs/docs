@@ -1,0 +1,107 @@
+---
+title: "Graphify Cloud in 5 minutes"
+sidebarTitle: "Cloud quickstart"
+description: "[Cloud] Sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server."
+hideFooterPagination: true
+---
+
+Graphify Cloud indexes your GitHub repositories, builds the graph and a wiki for each one, and serves them to your coding agent over a hosted MCP server. There is nothing to install on your machine.
+
+You need a GitHub account with access to the repository and a coding agent that supports MCP. If you'd rather keep the graph on your machine, use the [local quickstart](/quickstart).
+
+<Note>
+If you are an agent, read [Notes for agents](/for-agents) before these steps.
+</Note>
+
+<Steps>
+  <Step title="Sign in" titleSize="h2">
+    Open [app.graphify.com](https://app.graphify.com) and sign in. You land on **Overview**. It may ask **What would you like to do first?** You can pick an option or skip it, since the steps below cover the same ground.
+
+    <img src="/images/console/overview.png" alt="Overview with code findings, recent activity, continue work, and indexed repository cards" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+  </Step>
+  <Step title="Connect GitHub" titleSize="h2">
+    Go to **Repositories** and click **Add GitHub repositories**, then grant the Graphify GitHub app access to the repositories you want. You can also connect from **Connectors → Integrations**.
+
+    Connected repositories show up as **Paused** and **Not indexed**. That's expected, because nothing is indexed until you choose to.
+  </Step>
+  <Step title="Index a repository" titleSize="h2">
+    Find the repository and click **Index**. The Free plan indexes up to 3 repositories. See [Pricing](/pricing/overview) for more.
+
+    Follow the run on **Builds**. When it finishes, the repository's status changes to **Indexed**.
+
+    <img src="/images/console/builds.png" alt="Builds page listing indexing runs and their status" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+  </Step>
+  <Step title="Look at the graph and wiki" titleSize="h2">
+    Open **Graphs** to explore the repository's nodes and their most connected areas. Then open **Wiki**, which writes an article for each area of the repository automatically. **Memory** lets you ask or search across what Graphify knows.
+
+    <img src="/images/console/wiki.png" alt="Wiki for one repository, with areas on the left and the overview article on the right" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+  </Step>
+  <Step title="Connect your agent" titleSize="h2">
+    Go to **Connectors → MCP**. The wizard has three steps: **Choose agent**, **Connect**, and **Try a query**. It writes setup steps for Claude Code, Codex, Cursor, GitHub Copilot, VS Code, and 31 other agents.
+
+    You can also add the server yourself. Each agent takes one line or one config entry:
+
+    <CodeGroup>
+    ```bash Claude Code
+    claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+    ```
+    ```bash Codex
+    codex mcp add graphify --url https://api.graphify.com/mcp
+    ```
+    ```json VS Code (mcp.json)
+    {
+      "servers": {
+        "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
+      }
+    }
+    ```
+    ```text Any MCP client
+    Name: graphify
+    URL:  https://api.graphify.com/mcp   (Streamable HTTP)
+    ```
+    </CodeGroup>
+
+    The first connection opens an OAuth sign-in. There is no API key to paste. If you don't know how to configure your agent, click **Copy quick-start prompt** and paste it into the agent. It adds Graphify, walks you through sign-in, and runs a first query.
+
+    <img src="/images/console/connectors.png" alt="Connectors MCP wizard with the agent picker and the quick-start prompt" width="3840" height="2160" className="block h-auto w-full rounded-lg" />
+
+    Agent-specific guides: [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [any other MCP client](/integrations/other-agents).
+  </Step>
+  <Step title="Run a first task" titleSize="h2">
+    Under **Get your first useful result** on the same page, click **Copy first task** and paste it into your agent. Or ask in your own words:
+
+    ```text
+    Using Graphify, explain what this repository does, trace one main entry point, and show the files involved.
+    ```
+
+    The answer cites source locations from the indexed graph. Open them to check. For help reading the answer, see [Read a result](/platform/read-a-result).
+  </Step>
+</Steps>
+
+## If something looks wrong
+
+| Symptom | Fix |
+| --- | --- |
+| A banner says your agent is bound to a different workspace | Click **Point my agent at Graphify** and finish the OAuth prompt in your agent. |
+| The agent asks for an API key | The server uses OAuth. Check the URL is `https://api.graphify.com/mcp`. |
+| You only see ten local tools | That connection reads a local graph file. Add the hosted URL above instead. |
+| The agent says there are no repositories | Wait for **Indexed** on **Repositories**, or set a default repository in **Connectors → MCP**. |
+
+More fixes are in [When you're stuck](/platform/when-stuck).
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Trace a change" icon="route" href="/platform/trace">
+    Follow a relationship across files and repositories.
+  </Card>
+  <Card title="Tour the console" icon="layout-dashboard" href="/platform/console">
+    Every page in app.graphify.com, explained.
+  </Card>
+  <Card title="Review pull requests" icon="git-pull-request" href="/platform/reviews">
+    Get graph-aware findings on your pull requests.
+  </Card>
+  <Card title="Already use local Graphify?" icon="laptop" href="/platform/local-to-cloud">
+    Move from a local graph to Graphify Cloud.
+  </Card>
+</Columns>

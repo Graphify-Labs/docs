@@ -18,6 +18,7 @@
             "pages": [
               "index",
               "quickstart",
+              "platform/quickstart",
               "installation",
               "troubleshooting",
               "for-agents"

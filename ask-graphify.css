@@ -18,12 +18,12 @@ div:has(> #chat-assistant-sheet),
 }
 
 .graphify-ask {
-  --ask-ink: #062314;
-  --ask-quiet: #586b60;
-  --ask-line: #d7e1db;
-  --ask-mint: #edf6f0;
-  --ask-green: #118d4f;
-  --ask-focus: #4dea9c;
+  --ask-ink: var(--g-ink);
+  --ask-quiet: var(--g-text-subtle);
+  --ask-line: var(--g-border);
+  --ask-mint: var(--g-surface-hover);
+  --ask-green: var(--g-accent);
+  --ask-focus: var(--g-focus);
   color: var(--ask-ink);
   font-family: Geist, ui-sans-serif, system-ui, sans-serif;
 }
@@ -39,8 +39,8 @@ div:has(> #chat-assistant-sheet),
   min-height: 44px;
   padding: 6px 14px 6px 6px;
   border: 1px solid var(--ask-line);
-  border-radius: 12px;
-  background: #ffffff;
+  border-radius: var(--g-radius-lg);
+  background: var(--g-surface);
   color: var(--ask-ink);
   font-size: 14px;
   font-weight: 600;
@@ -108,9 +108,9 @@ div:has(> #chat-assistant-sheet),
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--ask-line);
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 16px 40px rgb(6 35 20 / 8%);
+  border-radius: var(--g-radius-lg);
+  background: var(--g-surface);
+  box-shadow: 0 16px 40px var(--g-shadow-color);
 }
 
 .graphify-ask-panel.is-full {
@@ -169,7 +169,7 @@ div:has(> #chat-assistant-sheet),
   height: 36px;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--g-radius-md);
   background: transparent;
   color: var(--ask-ink);
   cursor: pointer;
@@ -278,14 +278,14 @@ div:has(> #chat-assistant-sheet),
 .graphify-ask-code pre,
 .graphify-ask-table {
   scrollbar-width: thin;
-  scrollbar-color: #cfe3d7 transparent;
+  scrollbar-color: var(--g-border-strong) transparent;
 }
 
 .graphify-ask-turn-user {
   align-self: flex-end;
   max-width: 86%;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: var(--g-radius-lg);
   background: var(--ask-mint);
 }
 
@@ -406,7 +406,7 @@ div:has(> #chat-assistant-sheet),
   color: var(--ask-green);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: rgb(17 141 79 / 35%);
+  text-decoration-color: var(--g-accent-ring);
   text-underline-offset: 3px;
 }
 
@@ -460,8 +460,8 @@ div:has(> #chat-assistant-sheet),
 .graphify-ask-md code {
   padding: 1px 5px;
   border: 1px solid var(--ask-line);
-  border-radius: 5px;
-  background: #f6faf7;
+  border-radius: var(--g-radius-sm);
+  background: var(--g-surface-subtle);
   color: var(--ask-ink);
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 0.86em;
@@ -488,8 +488,8 @@ div:has(> #chat-assistant-sheet),
   height: 18px;
   margin: 0 1px;
   padding: 0 4px;
-  border: 1px solid #cfe3d7;
-  border-radius: 5px;
+  border: 1px solid var(--g-border-strong);
+  border-radius: var(--g-radius-sm);
   background: var(--ask-mint);
   color: var(--ask-ink);
   font-family: "Geist Mono", ui-monospace, monospace;
@@ -503,12 +503,12 @@ div:has(> #chat-assistant-sheet),
 a.graphify-ask-cite:hover {
   border-color: var(--ask-green);
   background: var(--ask-green);
-  color: #ffffff;
+  color: var(--g-surface);
 }
 
 .graphify-ask-cite.is-pending {
   border-color: var(--ask-line);
-  background: #f5f8f6;
+  background: var(--g-surface-subtle);
   color: var(--ask-quiet);
 }
 
@@ -516,8 +516,8 @@ a.graphify-ask-cite:hover {
   margin: 4px 0 12px;
   overflow: hidden;
   border: 1px solid var(--ask-line);
-  border-radius: 10px;
-  background: #f7faf8;
+  border-radius: var(--g-radius-md);
+  background: var(--g-surface-subtle);
 }
 
 .graphify-ask-code-head {
@@ -526,7 +526,7 @@ a.graphify-ask-cite:hover {
   justify-content: space-between;
   gap: 8px;
   padding: 3px 3px 3px 12px;
-  border-bottom: 1px solid #e3ece6;
+  border-bottom: 1px solid var(--g-border-subtle);
   color: var(--ask-quiet);
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 10.5px;
@@ -560,7 +560,7 @@ a.graphify-ask-cite:hover {
   height: 30px;
   padding: 0 10px;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--g-radius-sm);
   background: transparent;
   color: var(--ask-quiet);
   font-family: "Geist Mono", ui-monospace, monospace;
@@ -580,7 +580,7 @@ a.graphify-ask-cite:hover {
   margin: 4px 0 12px;
   overflow-x: auto;
   border: 1px solid var(--ask-line);
-  border-radius: 10px;
+  border-radius: var(--g-radius-md);
 }
 
 .graphify-ask-table table {
@@ -593,13 +593,13 @@ a.graphify-ask-cite:hover {
 .graphify-ask-table th,
 .graphify-ask-table td {
   padding: 7px 10px;
-  border-bottom: 1px solid #e3ece6;
+  border-bottom: 1px solid var(--g-border-subtle);
   text-align: left;
   vertical-align: top;
 }
 
 .graphify-ask-table th {
-  background: #f7faf8;
+  background: var(--g-surface-subtle);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -611,7 +611,7 @@ a.graphify-ask-cite:hover {
 .graphify-ask-sources {
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid #e5efe9;
+  border-top: 1px solid var(--g-border-subtle);
 }
 
 .graphify-ask-sources-label {
@@ -639,14 +639,14 @@ a.graphify-ask-cite:hover {
   min-height: 44px;
   padding: 7px 12px 7px 8px;
   border: 1px solid var(--ask-line);
-  border-radius: 10px;
-  background: #ffffff;
+  border-radius: var(--g-radius-md);
+  background: var(--g-surface);
   color: var(--ask-ink);
   text-decoration: none;
 }
 
 a.graphify-ask-source:hover {
-  border-color: #c4dccd;
+  border-color: var(--g-border-strong);
   background: var(--ask-mint);
 }
 
@@ -655,8 +655,8 @@ a.graphify-ask-source:hover {
   place-items: center;
   width: 22px;
   height: 22px;
-  border: 1px solid #cfe3d7;
-  border-radius: 6px;
+  border: 1px solid var(--g-border-strong);
+  border-radius: var(--g-radius-sm);
   background: var(--ask-mint);
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 11px;
@@ -721,8 +721,8 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   min-height: 44px;
   padding: 6px 10px;
   border: 1px solid var(--ask-line);
-  border-radius: 999px;
-  background: #ffffff;
+  border-radius: var(--g-radius-full);
+  background: var(--g-surface);
   color: var(--ask-ink);
   font-size: 13px;
   text-align: left;
@@ -747,12 +747,12 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   gap: 8px;
   padding: 4px 4px 4px 12px;
   border: 1px solid var(--ask-line);
-  border-radius: 12px;
-  background: #ffffff;
+  border-radius: var(--g-radius-lg);
+  background: var(--g-surface);
 }
 
 .graphify-ask-composer:focus-within {
-  border-color: #b7d4c4;
+  border-color: var(--g-border-strong);
   outline: 2px solid var(--ask-focus);
   outline-offset: 2px;
 }
@@ -781,9 +781,9 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   margin-bottom: 4px;
   padding: 0 14px;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--g-radius-md);
   background: var(--ask-green);
-  color: #ffffff;
+  color: var(--g-surface);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -807,8 +807,8 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   padding: 0 5px;
   border: 1px solid var(--ask-line);
   border-bottom-width: 2px;
-  border-radius: 4px;
-  background: #ffffff;
+  border-radius: var(--g-radius-sm);
+  background: var(--g-surface);
   color: var(--ask-ink);
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 11px;
@@ -862,7 +862,7 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
     justify-content: center;
     gap: 0;
     padding: 0;
-    border-radius: 999px;
+    border-radius: var(--g-radius-full);
   }
 
   .graphify-ask-label {

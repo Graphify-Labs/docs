@@ -5,11 +5,11 @@
   isolation: isolate;
   display: none;
   width: 300px;
-  border: 1px solid #d7e1db;
-  border-radius: 16px;
-  background: #ffffff;
-  color: #062314;
-  box-shadow: 0 8px 32px rgb(6 35 20 / 10%);
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius-lg);
+  background: var(--g-surface);
+  color: var(--g-ink);
+  box-shadow: 0 8px 32px var(--g-shadow-color);
   overflow: auto;
   font-family: inherit;
   font-size: 14px;
@@ -31,8 +31,8 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #f0f7f3;
-  border-bottom: 1px solid #d7e1db;
+  background: var(--g-surface-hover);
+  border-bottom: 1px solid var(--g-border);
 }
 
 .graphify-community-image {
@@ -62,7 +62,7 @@
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #062314;
+  color: var(--g-ink);
   appearance: none;
   cursor: pointer;
 }
@@ -71,9 +71,9 @@
   content: "";
   position: absolute;
   inset: 8px;
-  border: 1px solid #d7e1db;
+  border: 1px solid var(--g-border);
   border-radius: 50%;
-  background: #ffffff;
+  background: var(--g-surface);
 }
 
 .graphify-community-close svg {
@@ -102,7 +102,7 @@
 .graphify-community-card p {
   margin: 0 0 14px;
   padding: 0;
-  color: #45594d;
+  color: var(--g-text-muted);
   font: inherit;
   line-height: 21px;
 }
@@ -120,10 +120,10 @@
   gap: 6px;
   min-height: 44px;
   padding: 10px 12px;
-  border: 1px solid #d7e1db;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #062314;
+  border: 1px solid var(--g-border);
+  border-radius: var(--g-radius-md);
+  background: var(--g-surface);
+  color: var(--g-ink);
   font-size: 12px;
   font-weight: 600;
   line-height: 20px;
@@ -141,13 +141,13 @@
 
 .graphify-community-actions a:hover,
 .graphify-community-close:hover::before {
-  background: #f0f7f3;
-  border-color: #118d4f;
+  background: var(--g-surface-hover);
+  border-color: var(--g-accent);
 }
 
 .graphify-community-actions a:focus-visible,
 .graphify-community-close:focus-visible {
-  outline: 3px solid #118d4f;
+  outline: 3px solid var(--g-accent);
   outline-offset: -4px;
 }
 
@@ -190,10 +190,10 @@
 /* Phone outline. Hidden whenever the right-hand outline is on screen. */
 .graphify-mobile-outline {
   margin: 0 0 24px;
-  border: 1px solid #c7dbd0;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #062314;
+  border: 1px solid var(--g-border-strong);
+  border-radius: var(--g-radius-lg);
+  background: var(--g-surface);
+  color: var(--g-ink);
 }
 
 .graphify-mobile-outline summary {
@@ -241,12 +241,12 @@
 }
 
 .graphify-mobile-outline nav a:hover {
-  background: #edf6f0;
+  background: var(--g-surface-hover);
 }
 
 .graphify-mobile-outline summary:focus-visible,
 .graphify-mobile-outline nav a:focus-visible {
-  outline: 2px solid #4dea9c;
+  outline: 2px solid var(--g-focus);
   outline-offset: -2px;
 }
 

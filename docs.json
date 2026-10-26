@@ -17,8 +17,8 @@
             "group": "Get started",
             "pages": [
               "index",
-              "quickstart",
               "platform/quickstart",
+              "quickstart",
               "installation",
               "troubleshooting",
               "for-agents"
@@ -246,12 +246,16 @@
       {
         "label": "Support",
         "href": "https://discord.gg/graphify"
+      },
+      {
+        "label": "Log in",
+        "href": "https://app.graphify.com/login"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Open Graphify",
-      "href": "https://app.graphify.com"
+      "label": "Start free",
+      "href": "https://app.graphify.com/signup"
     }
   },
   "contextual": {

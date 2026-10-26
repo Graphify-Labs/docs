@@ -7,6 +7,49 @@ hideFooterPagination: true
 rss: true
 ---
 
+<Update label="2026-10-23" description="A new Overview, with code findings">
+## A new Overview, with code findings
+
+**Overview** is now a compact home page for your workspace. It puts what needs you first and keeps everything else one click away.
+
+- **Needs attention** collects review bugs, incomplete reviews and indexing failures. Mark items as read, and **Undo** if you change your mind.
+- **Code findings** lists dead code and duplicate code across your repositories, grouped by type. **View all** opens the full list, split into repository scans and PR reviews. Open a finding to see its symbol, file and lines, then use **Copy task for my agent** to hand it off (you can preview or edit the task first), or **Hide or give feedback** if it's intentional or wrong.
+- **Continue work** takes you back to the reviews and findings you were looking at, and **Recent activity** shows what changed lately.
+- **Latest pull request** shows the review and formal verification result for your most recent PR side by side.
+
+**Explore Graphify** on the Overview is a map of what you can do next, from reviewing changes and verifying behavior to connecting your coding agent and managing repositories.
+
+[Take the console tour](/platform/console)
+</Update>
+
+<Update label="2026-10-21" description="A new Reviews workspace">
+## A new Reviews workspace
+
+**Reviews** now opens as an inbox of your pull requests, showing the latest review for each one. Search by title or PR number, filter by repository or to the reviews that need attention, and page through ten at a time. Status chips like **Action needed** show which reviews need you.
+
+Open a pull request to review it in one place:
+
+- **Review** starts with the review summary in plain language, then **Files with findings**, with a count next to each file and a box to find a file or finding. Step through issues with **Next finding**, and tick **Viewed** on each file to keep your place. When the review captured a file's changes, you can read them as a **Unified** or **Split** diff. Otherwise, **Open file at reviewed commit** takes you to the code.
+- **Evidence** stays beside the code. It shows what supports the finding, whether it's grounded or advisory, its location and callers, and the exact commit that was reviewed. From there, **Explain this finding** asks Graphify about it.
+- **Activity** shows the review's history and other reviews of the same PR, including runs superseded by a newer push.
+
+**Ask about this PR** answers questions using that review's evidence, and keeps your draft if you close it. When a finding comes with a proposed fix, **Preview fix** shows the change and where it will go before anything is applied.
+
+[Read about reviews](/platform/reviews)
+</Update>
+
+<Update label="2026-10-13" description="Verification results in plain language, and the memories behind an answer">
+## Verification results in plain language, and the memories behind an answer
+
+**Formal Verification** now explains each run in words you can act on. Runs are grouped by pull request, and each one leads with a summary like "Behavior changed in 2 of 5 functions" or "Proven same: 3 of 3 functions (within checked range)".
+
+A **How to read results** legend explains the five outcomes: **Behavior changed**, **Proven same**, **No change found**, **Not checked** and **Couldn't run**. **Re-run check**, the commit and PR links, and paging all work as before.
+
+**Ask** now shows its sources from memory too. Under a grounded answer, open **Memories given to this answer** to see which memories Graphify used and why each was recalled. Mark one **Useful**, **Wrong** or **Stale** to improve what gets recalled next time.
+
+[Read about formal verification](/platform/verification)
+</Update>
+
 <Update label="2026-10-12" description="Connect your agent in three steps">
 ## Connect your agent in three steps
 
@@ -24,6 +67,20 @@ The sidebar entry is now called **Connect agent**.
 [Read the MCP overview](/mcp/overview)
 </Update>
 
+<Update label="2026-10-08" description="A readable wiki for every repository">
+## A readable wiki for every repository
+
+Open **Wiki** to read documentation generated from your repository's code graph. It explains your code in plain language: what each area does, its key components, and the decisions and caveats behind them.
+
+- **A reader built for long pages.** Articles sit in a clean reading column with an **On this page** outline that follows you as you scroll.
+- **Sources you can check.** Each article links the source files it was written from, and a **How we know** panel shows where its claims came from.
+- **Search or ask.** Search finds words inside articles. When you need an explanation that spans the code, use **Ask the wiki instead** to get an answer grounded in your graph.
+
+The wiki is built alongside each index, so it describes the latest build of your repository.
+
+[Read about the wiki](/platform/wiki)
+</Update>
+
 <Update label="2026-10-05" description="Developer Memory, with Simple and Advanced views">
 ## Developer Memory, with Simple and Advanced views
 
@@ -39,6 +96,19 @@ Automatic memories are written in plain language. A review becomes a sentence li
 Memory stays off for a repository until its first index finishes, so you never see an empty page that looks broken.
 
 [Read about Memory](/platform/memory)
+</Update>
+
+<Update label="2026-10-02" description="Ask Graphify in Slack">
+## Ask Graphify in Slack
+
+You can now connect Slack from the **Slack** tile on the console's integrations page. Graphify answers questions from your code graph, with sources, in direct messages and in the channels you choose.
+
+- **Direct messages.** Pick a default repository, then message Graphify directly to ask about that code.
+- **Channels.** Add the channels Graphify may answer in and pick a repository for each. Then invite `@Graphify` to the channel so it can reply.
+
+A workspace owner or admin connects Slack, and each Graphify workspace links to one Slack workspace.
+
+[See all integrations](/integrations/overview)
 </Update>
 
 <Update label="2026-09-28" description="Reviews when your PR is ready, and @graphify review">
@@ -73,6 +143,18 @@ Nothing moved that you depended on. Every page is where it was, and easier to re
 [Take the console tour](/platform/console)
 </Update>
 
+<Update label="2026-09-02" description="Teams, and switching between workspaces">
+## Teams, and switching between workspaces
+
+The **Teams** plan lets your whole team share one Graphify workspace, with a seat for each developer. Start it from **Billing**: choose how many seats you need and check out with Stripe.
+
+When you upgrade, you can turn your current workspace into a team workspace and keep its repositories, graphs, memory and address. Or you can create a new team workspace. Invite teammates from **Members** in the user menu at the bottom of the sidebar. Owners and admins of a team workspace see there how many seats are in use.
+
+If you belong to more than one workspace, switch between them from the top of the sidebar. Team workspaces show a **Teams** badge.
+
+[See pricing](/pricing/overview)
+</Update>
+
 <Update label="2026-09-01" description="Connect 30 agents to Graphify">
 ## Connect 30 agents to Graphify
 
@@ -97,6 +179,36 @@ The **Tamper risk** tab flags supply-chain risks: critical code with a single ow
 Anyone who can read a repository can open its Contributors page, including members.
 
 [Read about contributors](/platform/contributors)
+</Update>
+
+<Update label="2026-08-20" description="Learn: teach Graphify which review findings matter">
+## Learn: teach Graphify which review findings matter
+
+Reviews get quieter as your team uses them. Reply to a Graphify review on the pull request and it learns from what you say:
+
+- `@graphify wrong <finding>` dismisses a finding that does not apply.
+- `@graphify good <finding>` confirms one that was useful.
+- `@graphify suppress <rule>` mutes a rule, optionally for one path.
+
+The **Learn** page shows what Graphify has learned for your workspace: muted findings, muted patterns, and recent feedback, with who gave it and on which pull request.
+
+Learning only changes which advisory findings Graphify shows. It never changes a formal verification verdict.
+
+[Read about learning](/platform/learning)
+</Update>
+
+<Update label="2026-08-11" description="Pull request reviews and formal verification">
+## Pull request reviews and formal verification
+
+Graphify now checks your pull requests in two complementary ways, and both are available to every workspace.
+
+**Reviews.** Graphify reviews a pull request using your code graph, so it looks beyond the diff to the callers and dependencies a change can reach. Findings appear on the pull request and in the **Reviews** page of the console, next to the affected code.
+
+**Formal Verification.** For supported functions, Graphify compares the changed version with the previous one. It either proves they behave the same within the checked range or finds a concrete input that gives a different result. Open a run to see each function's verdict, and re-run it when you need a fresh result.
+
+A review points you to something worth a look. Verification tells you whether behavior actually changed.
+
+[Read about reviews](/platform/reviews)
 </Update>
 
 <Update label="2026-08-10" description="Share a GitHub org with your team">
@@ -142,6 +254,16 @@ Graphify Cloud now works with more of the tools you already use.
 Use it to find where something is implemented, trace how a request moves through your services, or check what a change might touch before you make it.
 
 [Learn how to query your graph](/guides/querying)
+</Update>
+
+<Update label="2026-07-28" description="Combine repositories into one graph">
+## Combine repositories into one graph
+
+Code rarely lives in one repository. You can now combine several of your repositories into a single cross-repository graph and follow calls and dependencies across service boundaries.
+
+Choose **Combine graphs** to pick the repositories, and Graphify builds the merged graph for you. Your combined groups appear on Overview, so you can come back to them.
+
+[Explore your graphs](/platform/graphs)
 </Update>
 
 <Update label="2026-07-21" description="Graphify Cloud is live">

@@ -7,6 +7,37 @@ hideFooterPagination: true
 rss: true
 ---
 
+<Update label="2026-10-23" description="A new Overview, with code findings">
+## A new Overview, with code findings
+
+**Overview** is now a compact home page for your workspace. It puts what needs you first and keeps everything else one click away.
+
+- **Needs attention** collects review bugs, incomplete reviews and indexing failures. Mark items as read, and **Undo** if you change your mind.
+- **Code findings** lists dead code and duplicate code across your repositories, grouped by type. Open a finding to see its symbol, file and lines, then use **Copy task for my agent** to hand it off, or **Hide or give feedback** if it's intentional or wrong.
+- **Continue work** takes you back to the reviews and findings you were looking at, and **Recent activity** shows what changed lately.
+- **Latest pull request** shows the review and formal verification result for your most recent PR side by side.
+
+**Explore Graphify** on the Overview also opens two new views of a repository, where its index supports them. **Structure** maps its modules and shows what each one uses and what uses it. **Patterns** lists the conventions your code follows, with source examples.
+
+[Take the console tour](/platform/console)
+</Update>
+
+<Update label="2026-10-21" description="A new Reviews workspace">
+## A new Reviews workspace
+
+**Reviews** now opens as an inbox of your pull requests, showing the latest review for each one. Search by title or PR number, filter by repository or to the reviews that need attention, and page through ten at a time.
+
+Open a pull request to review it in one place:
+
+- **Review** starts with the review summary in plain language, then a file list with finding counts next to each file. Select a file to see its changes in a **Unified** or **Split** diff, step through issues with **Next finding**, and mark files as viewed to keep your place.
+- **Evidence** stays beside the code. It shows where a finding is, what supports it, whether it's grounded or advisory, and the exact commit that was reviewed.
+- **Activity** shows the review's history and other reviews of the same PR, including runs superseded by a newer push.
+
+**Ask about this PR** answers questions using that review's evidence, and keeps your draft if you close it. When a finding comes with a proposed fix, **Preview fix** shows the change and where it will go before you **Apply fix**.
+
+[Read about reviews](/platform/reviews)
+</Update>
+
 <Update label="2026-10-13" description="Verification results in plain language, and the memories behind an answer">
 ## Verification results in plain language, and the memories behind an answer
 
@@ -67,6 +98,19 @@ Memory stays off for a repository until its first index finishes, so you never s
 [Read about Memory](/platform/memory)
 </Update>
 
+<Update label="2026-10-02" description="Ask Graphify in Slack">
+## Ask Graphify in Slack
+
+You can now connect Slack from the **Slack** tile on the console's integrations page. Graphify answers questions from your code graph, with sources, in direct messages and in the channels you choose.
+
+- **Direct messages.** Pick a default repository, then message Graphify directly to ask about that code.
+- **Channels.** Add the channels Graphify may answer in and pick a repository for each. Then invite `@Graphify` to the channel so it can reply.
+
+A workspace owner or admin connects Slack, and each Graphify workspace links to one Slack workspace.
+
+[See all integrations](/integrations/overview)
+</Update>
+
 <Update label="2026-09-28" description="Reviews when your PR is ready, and @graphify review">
 ## Reviews when your PR is ready, and @graphify review
 
@@ -97,6 +141,18 @@ The console has a new look, built around the pages you use most.
 Nothing moved that you depended on. Every page is where it was, and easier to read.
 
 [Take the console tour](/platform/console)
+</Update>
+
+<Update label="2026-09-02" description="Teams, and switching between workspaces">
+## Teams, and switching between workspaces
+
+The **Teams** plan lets your whole team share one Graphify workspace, with a seat for each developer. Start it from **Billing**: choose how many seats you need and check out with Stripe.
+
+When you upgrade, you can turn your current workspace into a team workspace and keep its repositories, graphs, memory and address. Or you can create a new team workspace. Invite teammates from **Members**, which shows how many seats are in use.
+
+If you belong to more than one workspace, switch between them from the top of the sidebar.
+
+[See pricing](/pricing/overview)
 </Update>
 
 <Update label="2026-09-01" description="Connect 30 agents to Graphify">

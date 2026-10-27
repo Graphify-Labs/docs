@@ -10,9 +10,9 @@ rss: true
 <Update label="2026-10-27" description="Clearer graph states, and pickers grouped by index">
 ## Clearer graph states, and pickers grouped by index
 
-When the Graph page can't show a graph, it now tells you why and gives you one thing to do next. You'll see states like **Building your graph**, **Indexing stopped**, **Your graph couldn't finish building** and **This graph is too large to display**, plus a clear message when you've hit a repository, size, daily or monthly indexing limit. A combined graph that failed to build no longer retries on its own when you open it. You decide when to rebuild.
+When the Graph page can't show a graph, it now tells you why and gives you one thing to do next. You'll see states like **Building your graph**, **Indexing stopped**, **Your graph couldn't finish building** and **This graph is too large to display**, plus a clear message when you've hit a repository, size, daily or monthly indexing limit. A combined graph that failed to build no longer retries on its own when you open it. You decide when to rebuild with **Retry build**.
 
-Repository pickers across the console now group repositories under **Indexed** and **Not indexed**. Repositories that are paused or were never indexed used to be hidden in places like Ask and Patterns. Now they're listed under **Not indexed**, so you can always find them.
+Repository pickers across the console now group repositories under **Indexed** and **Not indexed**. Paused repositories used to be left out of pickers like Ask and Patterns. Now they all show up: paused ones that were indexed before stay under **Indexed**, and ones that haven't finished a first index go under **Not indexed**.
 
 ### Improved
 - **Plans:** On Free, upgrade prompts are shorter, and the Pro card calls out **Upstream and downstream dependencies** and **Incident memory for agents**.

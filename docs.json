@@ -13,26 +13,7 @@
       {
         "tab": "Get started",
         "pages": [
-          {
-            "group": "Get started",
-            "pages": [
-              "index",
-              "platform/quickstart",
-              "quickstart",
-              "installation",
-              "troubleshooting",
-              "for-agents"
-            ]
-          },
-          {
-            "group": "Concepts",
-            "pages": [
-              "concepts/provenance",
-              "concepts/outputs",
-              "concepts/supported-inputs"
-            ],
-            "root": "concepts/architecture"
-          }
+          "index"
         ]
       },
       {
@@ -41,10 +22,20 @@
           {
             "group": "Get started",
             "pages": [
+              "platform/quickstart",
               "platform/console",
               "platform/local-to-cloud"
             ],
             "root": "platform/overview"
+          },
+          {
+            "group": "Core concepts",
+            "root": "concepts/architecture",
+            "pages": [
+              "concepts/provenance",
+              "concepts/outputs",
+              "concepts/supported-inputs"
+            ]
           },
           {
             "group": "Tasks",
@@ -83,6 +74,19 @@
               "platform/repositories",
               "platform/google-drive",
               "platform/connections"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Open Source",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "quickstart",
+              "installation",
+              "troubleshooting"
             ]
           }
         ]
@@ -173,6 +177,12 @@
               "mcp/docs-search"
             ],
             "root": "mcp/overview"
+          },
+          {
+            "group": "For agents",
+            "pages": [
+              "for-agents"
+            ]
           }
         ]
       },

@@ -33,7 +33,8 @@
             "group": "Core concepts",
             "icon": "brain",
             "pages": [
-              "concepts/architecture"
+              "concepts/architecture",
+              "concepts/ask-about-your-code"
             ]
           },
           {

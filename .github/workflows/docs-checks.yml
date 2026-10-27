@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -71,6 +73,24 @@ jobs:
             echo "Descriptions must read as sentences. Put the surface in the surface: field instead."
             exit 1
           fi
+
+      - name: New or changed images stay under 400 KB
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MAX_KB: 400
+        run: |
+          fail=0
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            kb=$(( $(stat -c %s "$f") / 1024 ))
+            if [ "$kb" -gt "$MAX_KB" ]; then
+              echo "::error file=$f::$f is ${kb} KB (budget ${MAX_KB} KB). Export WebP or AVIF at about 2x its display size."
+              fail=1
+            fi
+          done < <(git diff --name-only --diff-filter=AM "$BASE_SHA"...HEAD | grep -iE '\.(png|jpe?g|gif|webp|avif|svg)$' || true)
+          [ "$fail" -eq 0 ] && echo "All new or changed images are within ${MAX_KB} KB"
+          exit $fail
 
       - name: Mintlify broken links
         run: npx -y mint@latest broken-links

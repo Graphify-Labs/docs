@@ -1,0 +1,98 @@
+---
+title: "Ask a question about your code"
+sidebarTitle: "Ask about your code"
+description: "Ask your agent a plain-English question and get back the definitions and files from your indexed repository that answer it."
+surface: "cloud"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Ask your agent a question in plain English, and Graphify answers from the graph of your indexed repository. The answer cites definitions and files, so your agent reads the code that matters instead of searching the whole repository.
+
+Use this when you know what you want to understand but not where it lives. If you already know the symbol name, ask your agent to look it up with `graphify_find` instead.
+
+## Before you start
+
+- An account at [app.graphify.com](https://app.graphify.com). The Free plan covers 3 indexed repositories, and you don't need a card.
+- A repository with the status **Indexed**. See [Repositories and builds](/platform/repositories).
+- Your agent connected to the hosted MCP server at `https://api.graphify.com/mcp`. See [Code with an agent](/guides/cloud-coding-agents).
+
+## Ask the question
+
+<CodeGroup>
+
+```text Agent prompt
+Use Graphify to answer: how does a request get authenticated in Graphify-Labs/graphify?
+Show the definitions and file paths you used.
+```
+
+```bash Local CLI
+graphify query "how does a request get authenticated" --budget 1500
+```
+
+</CodeGroup>
+
+Name the area you care about, such as a feature, a subsystem, or a file. A specific question returns a smaller, more useful set of results than a broad one.
+
+If you work in more than one workspace, ask your agent to list repositories first. The `list_repositories` tool shows the repositories this connection can query and their index status.
+
+## What your agent calls
+
+Your agent picks the tools. These are the hosted tools it uses for a question in plain English:
+
+| Tool | What it returns |
+| --- | --- |
+| `query_graph` | The definitions that match a plain-English question. |
+| `graphify_rank_files` | The source files most relevant to the question. |
+| `graphify_find_seeds` | The top starting nodes for the question, without their definition bodies. |
+| `graphify_expand` | Full definition bodies for node handles returned by another tool. |
+
+A common pattern is to find seeds or rank files first, then expand only the nodes the agent needs. The full list is in [Tools](/integrations/chatgpt#3-tools).
+
+The local CLI takes these options:
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--dfs` | Off | Follow one path deep instead of searching broadly. |
+| `--context` | No filter | Keep only one kind of edge, such as `call`. Repeat it for more kinds. |
+| `--budget` | `2000` | Approximate output token budget. |
+| `--graph` | `graphify-out/graph.json` | The graph file to query. |
+
+## Read the result
+
+The result is graph evidence, not a checked answer. Each relationship carries a confidence tag:
+
+- `EXTRACTED`: written in the source.
+- `INFERRED`: worked out by Graphify, with or without a model.
+- `AMBIGUOUS`: flagged as uncertain by the model pass. Check the source.
+
+Open the cited source before you rely on an answer. [Edges and provenance](/concepts/provenance) explains each tag.
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| The agent does not use Graphify | Name it in the prompt: "Use Graphify to answer". Check that the connection is listed in your agent. |
+| No repositories, or an empty answer | The repository is not indexed yet, or it is in another workspace. Check its status in [Repositories and builds](/platform/repositories). |
+| The answer is too broad | Name a function, class, file, or subsystem in the question. |
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Repository graphs" icon="share-2" href="/platform/graphs">
+    See the nodes behind an answer in the console.
+  </Card>
+  <Card title="graphify query" icon="terminal" href="/reference/query">
+    Every option for the local command.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/concepts/architecture" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">How Graphify works</span></a>
+  <a href="/platform/reviews" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Pull request reviews</span></a>
+</div>

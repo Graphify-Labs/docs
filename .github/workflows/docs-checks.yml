@@ -93,4 +93,4 @@ jobs:
           exit $fail
 
       - name: Mintlify broken links
-        run: npx -y mint@latest broken-links
+        run: npx -y mint@4.2.1152 broken-links

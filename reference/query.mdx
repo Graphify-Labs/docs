@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 ```bash
 graphify query "<question>" [--dfs] [--context <value>] [--budget <tokens>] [--graph <path>]
 ```
@@ -28,6 +30,19 @@ The response is graph context, not an independently verified natural-language an
 ## Empty results
 
 Check the graph path and refresh changed source. Try a concrete function, class, or subsystem name. The graph can only return relationships present in the analyzed inputs.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="graphify path" icon="route" href="/reference/path">
+    Find how two concepts connect.
+  </Card>
+  <Card title="Ask better graph questions" icon="search" href="/guides/querying">
+    Pick the right command.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

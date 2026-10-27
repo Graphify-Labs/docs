@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 **Reviews** brings pull requests, findings, and code-graph context together in [Graphify Cloud](https://app.graphify.com). Use it to understand a change and the code it can affect.
 
 ## When a review runs
@@ -52,6 +54,19 @@ Expand the repository row to see **Unreferenced code (heuristic)**. It is not a 
 ## Missing or outdated results
 
 Check the selected repository and commit, the settings above, and any plan-limit or access message. A result for an older commit describes that earlier revision. [Repositories and builds](/platform/repositories) explains where to check indexing and repository controls.
+
+## Next steps
+
+<HostedMcpCard />
+
+<Columns cols={2}>
+  <Card title="Read a review and a verdict" icon="file-check" href="/platform/read-a-result">
+    What each finding means.
+  </Card>
+  <Card title="Formal verification" icon="shield-check" href="/platform/verification">
+    How verdicts are checked.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

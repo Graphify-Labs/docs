@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 The package is `graphifyy`; the CLI is `graphify`. Run commands from your project root unless you provide an explicit graph path.
 
 ## Core commands
@@ -50,6 +52,19 @@ Choose a unique project name when registering a graph globally. `graphify global
 ## Version scope
 
 This reference was checked against source version **0.9.62** on the repository’s `v8` branch. Check your installed version with `graphify --version`; flags and coverage can differ across releases. [Current source](https://github.com/Graphify-Labs/graphify).
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="graphify query" icon="terminal" href="/reference/query">
+    Gather context for a question.
+  </Card>
+  <Card title="Configuration" icon="settings" href="/reference/configuration">
+    Settings and environment variables.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Start with a specific subsystem or concept, then narrow your investigation. A compact query is usually more useful to an assistant than the whole architecture report.
 
 ## Gather context with query
@@ -42,6 +44,19 @@ This uses the [tutorial’s example project](/guides/first-graph). In your proje
 > Use Graphify to trace how a request reaches persistence. Show the path and source references. Flag inferred or ambiguous edges, and tell me if the graph is missing evidence.
 
 The tool supplies context, and the assistant interprets it. Ask for evidence and avoid treating an absent path as proof that two systems are independent.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Trace who calls this" icon="route" href="/platform/trace">
+    Follow calls across repositories in the console.
+  </Card>
+  <Card title="graphify query" icon="terminal" href="/reference/query">
+    Flags and output for query.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

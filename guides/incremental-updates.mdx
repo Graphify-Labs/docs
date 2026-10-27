@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Graph queries read the saved graph. Update it after changing the source to keep answers relevant.
 
 ## Refresh code
@@ -60,6 +62,19 @@ graphify update . --force
 ```
 
 Keep a copy of the old graph if you need to compare it. Regenerate visualizations with `graphify export html` after a refresh when necessary.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Repositories and builds" icon="git-commit" href="/platform/repositories">
+    How Cloud indexes and rebuilds repositories.
+  </Card>
+  <Card title="Record useful findings" icon="notebook-pen" href="/guides/work-memory">
+    Save what you learn next to the graph.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

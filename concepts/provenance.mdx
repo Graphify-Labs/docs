@@ -5,6 +5,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 A graph edge connects a source node to a target node. Its `relation` explains the connection, such as `calls`, `imports`, `inherits`, or `references`.
 
 ## Confidence labels
@@ -33,6 +35,19 @@ These are example names. Replace them with nodes from your project.
 Source-level calls may be conditional or dynamically resolved. A path shows the relationships in the analyzed graph; it does not prove a request will execute that path or that a change is safe.
 
 Use [formal verification](/platform/verification) in Graphify Cloud to compare supported changed functions. Graph traversal itself is not a formal proof.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Graph files and outputs" icon="file-json" href="/concepts/outputs">
+    What a build writes and how to reuse it.
+  </Card>
+  <Card title="Ask better graph questions" icon="search" href="/guides/querying">
+    Use query, path, and explain.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

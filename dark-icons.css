@@ -1,0 +1,26 @@
+/* Logos and icons that are black on transparent and vanish on the
+   dark page. Multi-colour marks (Claude, Cursor, Gemini, VS Code and so
+   on) stay as they are; monochrome marks use dark:invert in the MDX. */
+
+/* Footer socials: the per-page site-styles block paints X and GitHub in
+   their brand black (#000000, #181717). In dark mode use the page ink,
+   the same way those brands publish a white mark for dark backgrounds.
+   LinkedIn blue and Discord blurple already read on the dark page. */
+html.dark body #footer a[href*="x.com"] svg,
+html.dark body #footer a[href*="github.com"] svg {
+  background-color: #ededed !important;
+}
+
+/* Community card: Join (Discord) and Follow (X) use black Font Awesome
+   brand SVGs as <img>. */
+html.dark .graphify-community-actions img {
+  filter: invert(1);
+}
+
+/* Monochrome black brand marks: render white in dark mode */
+html.dark img[src$="/logos/jetbrains.svg"],
+html.dark img[src$="/logos/openai.svg"],
+html.dark img[src$="/logos/vercel.svg"],
+html.dark img[src$="/logos/windsurf.svg"],
+html.dark img[src$="/logos/cline.svg"],
+html.dark img[src$="/logos/codex.svg"] { filter: invert(1); }

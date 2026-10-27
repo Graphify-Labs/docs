@@ -304,7 +304,9 @@
       "weight": 600
     },
     "body": {
-      "family": "Geist"
+      "family": "Geist",
+      "source": "/fonts/geist-regular-latin.woff2",
+      "format": "woff2"
     }
   },
   "icons": {

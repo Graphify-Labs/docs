@@ -17,36 +17,38 @@
         ]
       },
       {
-        "tab": "Graphify Cloud",
+        "tab": "Graphify",
         "groups": [
           {
             "group": "Get started",
+            "icon": "rocket",
             "pages": [
+              "platform/overview",
               "platform/quickstart",
               "platform/console",
               "platform/local-to-cloud"
-            ],
-            "root": "platform/overview"
-          },
-          {
-            "group": "Core concepts",
-            "root": "concepts/architecture",
-            "pages": [
-              "concepts/provenance",
-              "concepts/outputs",
-              "concepts/supported-inputs"
             ]
           },
           {
-            "group": "Tasks",
+            "group": "Core concepts",
+            "icon": "brain",
             "pages": [
-              "platform/trace",
+              "concepts/architecture"
+            ]
+          },
+          {
+            "group": "Review code",
+            "icon": "git-pull-request",
+            "pages": [
+              "platform/reviews",
               "platform/read-a-result",
-              "platform/when-stuck"
+              "platform/verification",
+              "platform/learning"
             ]
           },
           {
             "group": "Explore",
+            "icon": "compass",
             "pages": [
               "platform/graphs",
               "platform/wiki",
@@ -54,26 +56,29 @@
             ]
           },
           {
-            "group": "Review",
+            "group": "Workspace",
+            "icon": "building-2",
             "pages": [
-              "platform/reviews",
-              "platform/verification",
-              "platform/learning"
-            ]
-          },
-          {
-            "group": "People",
-            "pages": [
+              "platform/repositories",
+              "platform/google-drive",
+              "platform/connections",
               "platform/contributors",
               "platform/profile"
             ]
           },
           {
-            "group": "Workspace",
+            "group": "Reference",
+            "icon": "book-open",
             "pages": [
-              "platform/repositories",
-              "platform/google-drive",
-              "platform/connections"
+              "platform/when-stuck",
+              {
+                "group": "Glossary",
+                "pages": [
+                  "concepts/provenance",
+                  "concepts/outputs",
+                  "concepts/supported-inputs"
+                ]
+              }
             ]
           }
         ]
@@ -86,6 +91,7 @@
             "pages": [
               "quickstart",
               "installation",
+              "platform/trace",
               "troubleshooting"
             ]
           }
@@ -409,7 +415,7 @@
       "The PyPI package is graphifyy, with two y's. The command is graphify.",
       "/graphify . is typed in an assistant chat, not in a shell.",
       "Use only commands, flags, and endpoints shown on these pages. Do not invent one.",
-      "Choose the surface before you open a page. Local is the graphifyy package on the machine: the skill, the CLI, and the ten-tool MCP. Its pages are the Guides and Reference tabs, /mcp/ (except /mcp/docs-search, which is for both), and the Local skill group in Integrations. Cloud (Graphify Cloud) is the hosted workspace and https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). Its pages are the Graphify Cloud tab (/platform/) and the Cloud MCP group in Integrations. Concepts, troubleshooting, pricing, and /platform/local-to-cloud apply to both. Each page's source frontmatter records this as surface: local, cloud, or both. Buildkite is the CI integration.",
+      "Choose the surface before you open a page. Local is the graphifyy package on the machine: the skill, the CLI, and the ten-tool MCP. Its pages are the Guides and Reference tabs, /mcp/ (except /mcp/docs-search, which is for both), and the Local skill group in Integrations. Cloud (Graphify Cloud) is the hosted workspace and https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (/platform/) and the Cloud MCP group in Integrations. Concepts, troubleshooting, pricing, and /platform/local-to-cloud apply to both. Each page's source frontmatter records this as surface: local, cloud, or both. Buildkite is the CI integration.",
       "In llms.txt, tell the surface from the page path. Cloud: /platform/ and /integrations/ cloud, vscode, jetbrains, chatgpt, openclaw, vercel, other-agents, buildkite. Local: /guides/, /reference/, /mcp/overview, /mcp/shared-http, /installation, /quickstart, and /integrations/ claude-code, cursor, codex, gemini-cli, copilot, other-assistants. Everything else applies to both.",
       "The docs changelog summarizes selected graphifyy releases. The current package version is on PyPI (https://pypi.org/project/graphifyy/). The full history is https://graphify.com/changelog.",
       "The official site is https://graphify.com. These docs are https://docs.graphify.com.",

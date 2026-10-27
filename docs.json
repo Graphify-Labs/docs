@@ -286,11 +286,10 @@
   "background": {
     "color": {
       "light": "#FFFFFF",
-      "dark": "#072B19"
+      "dark": "#0B0C0C"
     },
     "image": {
-      "light": "https://graphify.com/assets/features-bg.webp",
-      "dark": "/images/home/features-bg-dark.webp"
+      "light": "https://graphify.com/assets/features-bg.webp"
     }
   },
   "search": {

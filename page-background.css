@@ -14,3 +14,8 @@ span[style*="features-bg"] {
 body:not(:has([data-graphify-home])) span[style*="features-bg"] {
   display: none !important;
 }
+
+/* Dark mode uses a plain near-black page, no wash. */
+html.dark span[style*="features-bg"] {
+  display: none !important;
+}

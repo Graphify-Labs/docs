@@ -13,7 +13,7 @@ a[href*="mintlify.com"][href*="poweredBy"] {
   color: #586b60; /* 5.7:1 on white */
 }
 html.dark a[href*="mintlify.com"][href*="poweredBy"] {
-  color: #a3b8ac;
+  color: #a3a3a3;
 }
 
 /* Tap targets of at least 24 x 24 px (WCAG 2.2 target size). */

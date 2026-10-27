@@ -30,19 +30,20 @@
   --g-space-5: 32px;
 }
 
-/* Dark theme (Mintlify adds .dark to the root element). Pine surfaces, Mint accent. */
+/* Dark theme (Mintlify adds .dark to the root element). Neutral near-black
+   surfaces like mem0, Supermemory and Exa; Mint is the accent only. */
 html.dark {
-  --g-ink: #e6f5ec;
-  --g-text-muted: #b5cabe;
-  --g-text-subtle: #a3b8ac;
+  --g-ink: #ededed;
+  --g-text-muted: #b4b4b4;
+  --g-text-subtle: #a3a3a3;
   --g-accent: #4dea9c;
   --g-focus: #4dea9c;
-  --g-surface: #0b3520;
-  --g-surface-subtle: #0a311d;
-  --g-surface-hover: #10422a;
-  --g-border-subtle: #164029;
-  --g-border: #1f4d35;
-  --g-border-strong: #2a5e42;
+  --g-surface: #141515;
+  --g-surface-subtle: #101111;
+  --g-surface-hover: #1c1d1d;
+  --g-border-subtle: #1f1f1f;
+  --g-border: #262626;
+  --g-border-strong: #333333;
   --g-accent-ring: rgb(77 234 156 / 35%);
-  --g-shadow-color: rgb(0 0 0 / 40%);
+  --g-shadow-color: rgb(0 0 0 / 50%);
 }

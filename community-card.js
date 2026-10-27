@@ -3,7 +3,7 @@
   if (window.__graphifyCommunityCardInitialized) return;
   window.__graphifyCommunityCardInitialized = true;
 
-  const ARTWORK_URL = "/images/community-card.png";
+  const ARTWORK_URL = "/images/community-card.webp";
   const LOGO_URL = "https://graphify.com/assets/brand/graphify-logo-ink.svg";
   const DISMISSAL_KEY = "graphify-community-dismissed-v1";
   const desktop = window.matchMedia("(min-width: 1024px)");
@@ -28,9 +28,11 @@
   image.src = ARTWORK_URL || LOGO_URL;
   image.alt = "";
   image.className = ARTWORK_URL ? "graphify-community-image" : "graphify-community-logo";
-  image.width = ARTWORK_URL ? 2048 : 160;
-  image.height = ARTWORK_URL ? 1024 : 52;
+  image.width = ARTWORK_URL ? 640 : 160;
+  image.height = ARTWORK_URL ? 320 : 52;
   image.decoding = "async";
+  image.loading = "lazy";
+  image.setAttribute("fetchpriority", "low");
   artwork.append(image);
 
   const close = document.createElement("button");

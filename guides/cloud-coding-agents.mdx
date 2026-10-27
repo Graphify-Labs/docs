@@ -1,0 +1,47 @@
+---
+title: "Code with an agent on Graphify Cloud"
+sidebarTitle: "Code with an agent"
+description: "Give Claude Code, Codex, Cursor, or another coding agent your indexed repositories through the hosted MCP server."
+surface: "cloud"
+hideFooterPagination: true
+---
+
+This guide is for working with a coding agent, sometimes called vibe coding, on top of Graphify Cloud, the hosted version of Graphify. We run it for you, so there's nothing to deploy. Your agent asks the hosted MCP server at `https://api.graphify.com/mcp` about your repositories instead of re-reading the same files every session.
+
+## Before you start
+
+- An account at [app.graphify.com](https://app.graphify.com).
+- At least one repository with the status **Indexed**. The [Cloud quickstart](/platform/quickstart) walks through connecting GitHub and switching on **Indexing** from a repository's **…** menu.
+
+## 1. Connect your agent
+
+In the console, go to **Connectors → MCP**. The setup has three steps: **Choose agent**, **Connect**, and **Try a query**. Pick your agent, or open **Browse all agents** for the full list.
+
+If you'd rather let the agent do the setup, choose **Copy quick-start prompt** and paste it into your coding agent. Finish the sign-in when the agent asks.
+
+Agents such as Claude Code, Codex, and Cursor sign in with OAuth on first use, so there is no API key to paste. Per-agent steps are on [Cloud MCP](/integrations/cloud).
+
+## 2. Check the connection
+
+On **Try a query**, the console gives you a test prompt to paste into your agent. It asks the agent to use Graphify's `list_repositories` tool and show the repositories you can access. Check that the list matches the workspace you picked. If you have more than one workspace, the prompt names the one to use.
+
+## 3. Ask about your code
+
+Ask in plain language and name the symbol, file, or area you care about. For example:
+
+- `Who calls the function that validates a session token?`
+- `What would break if I changed this module's public interface?`
+- `Summarize how requests reach the billing service.`
+
+When an answer needs a closer look, open the same repository in the console:
+
+<CardGroup cols={2}>
+  <Card title="Graphs" icon="share-2" href="/platform/graphs">See the nodes and most connected areas behind an answer.</Card>
+  <Card title="Wiki" icon="book-open" href="/platform/wiki">Read the generated article for an area before you change it.</Card>
+  <Card title="Memory" icon="brain" href="/platform/memory">Inspect the shared context your agents and team have recorded.</Card>
+  <Card title="Reviews" icon="git-pull-request" href="/platform/reviews">Check a pull request your agent opened.</Card>
+</CardGroup>
+
+## Prefer to stay on your machine?
+
+Graphify Local, the open-source `graphifyy` package, builds the graph in your repository and gives your assistant a local skill. See [Choose your coding assistant](/integrations/overview).

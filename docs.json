@@ -91,6 +91,12 @@
         "tab": "Guides",
         "groups": [
           {
+            "group": "Graphify Cloud",
+            "pages": [
+              "guides/cloud-coding-agents"
+            ]
+          },
+          {
             "group": "Build a graph",
             "pages": [
               "guides/local-development",

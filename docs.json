@@ -402,7 +402,13 @@
     ]
   },
   "styling": {
-    "eyebrows": "breadcrumbs"
+    "eyebrows": "breadcrumbs",
+    "codeblocks": {
+      "theme": {
+        "light": "github-light-default",
+        "dark": "github-dark-default"
+      }
+    }
   },
   "redirects": [
     {

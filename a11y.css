@@ -27,9 +27,3 @@ footer a.h-fit {
 button[aria-label="More actions"] {
   min-width: 24px;
 }
-#content-area a[href*="/edit/"],
-#content-area a[href*="/issues/new"] {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-}

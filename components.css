@@ -7,3 +7,31 @@
 #content-area .card {
   border-radius: var(--g-radius-lg);
 }
+
+/* Mintlify's "Suggest edits" / "Raise issue" toolbar. Sit it directly under
+   the page pager, on the same left edge, using the shared 40px / 8px button spec. */
+#content-area #content:has(+ .feedback-toolbar) {
+  margin-bottom: var(--g-space-4);
+}
+#content-area .feedback-toolbar a[href*="/edit/"],
+#content-area .feedback-toolbar a[href*="/issues/new"] {
+  min-height: 40px;
+  padding: var(--g-space-1) var(--g-space-3);
+  gap: var(--g-space-1);
+  border: 1px solid var(--g-border-strong);
+  border-radius: var(--g-radius-md);
+  background: var(--g-surface);
+  color: var(--g-text-subtle);
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+#content-area .feedback-toolbar a[href*="/edit/"]:hover,
+#content-area .feedback-toolbar a[href*="/issues/new"]:hover {
+  border-color: var(--g-border-strong);
+  background: var(--g-surface-hover);
+  color: var(--g-ink);
+}
+#content-area .feedback-toolbar a[href*="/edit/"]:focus-visible,
+#content-area .feedback-toolbar a[href*="/issues/new"]:focus-visible {
+  outline: 2px solid var(--g-focus);
+  outline-offset: 4px;
+}

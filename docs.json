@@ -294,7 +294,6 @@
     "prompt": "Search Graphify docs..."
   },
   "fonts": {
-    "family": "Geist",
     "heading": {
       "family": "Bricolage Grotesque",
       "source": "/fonts/bricolage-grotesque-latin.woff2",

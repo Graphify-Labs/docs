@@ -35,7 +35,8 @@
             "pages": [
               "concepts/architecture",
               "concepts/ask-about-your-code",
-              "concepts/follow-calls"
+              "concepts/follow-calls",
+              "concepts/check-impact"
             ]
           },
           {

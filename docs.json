@@ -7,7 +7,7 @@
     "light": "#4DEA9C",
     "dark": "#118D4F"
   },
-  "favicon": "https://graphify.com/icon.svg",
+  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {

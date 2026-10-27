@@ -1,0 +1,31 @@
+/* Graphify design tokens. Custom components read these, never raw hex.
+   Dark values are added in the dark mode change. */
+:root {
+  /* Colour */
+  --g-ink: #062314;
+  --g-text-muted: #45594d;
+  --g-text-subtle: #586b60;
+  --g-accent: #118d4f;
+  --g-focus: #4dea9c;
+  --g-surface: #ffffff;
+  --g-surface-subtle: #f6faf7;
+  --g-surface-hover: #edf6f0;
+  --g-border-subtle: #e5efe9;
+  --g-border: #d7e1db;
+  --g-border-strong: #c7dbd0;
+  --g-accent-ring: rgb(17 141 79 / 35%);
+  --g-shadow-color: rgb(6 35 20 / 10%);
+
+  /* Radius scale */
+  --g-radius-sm: 6px;
+  --g-radius-md: 8px;
+  --g-radius-lg: 12px;
+  --g-radius-full: 999px;
+
+  /* Spacing scale */
+  --g-space-1: 8px;
+  --g-space-2: 12px;
+  --g-space-3: 16px;
+  --g-space-4: 24px;
+  --g-space-5: 32px;
+}

@@ -5,6 +5,9 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 The documentation MCP answers questions about **using Graphify**. The [graph MCP server](/mcp/overview) answers questions about **your repository**.
 
 ## Website documentation endpoint
@@ -42,6 +45,17 @@ This site also provides Mintlify’s documentation features, including Markdown 
 - How do I install the Graphify skill in Cursor?
 - How do I run a code-only extraction?
 - What is the difference between query, path, and explain?
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <HostedMcpCard />
+  <Card title="Notes for agents" icon="bot" href="/for-agents">
+    How agents should read these docs.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

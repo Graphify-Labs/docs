@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 Open **Learn** in [Graphify Cloud](https://app.graphify.com) to see how your team's pull request feedback shapes advisory reviews. Learning records dismissed findings, suppressed patterns, and the feedback behind them.
 
 ## Teach Graphify on a pull request
@@ -44,6 +46,19 @@ See [formal verification](/platform/verification) to interpret proof and behavio
 ## Missing feedback
 
 If **Action needed** reports a pending GitHub Issues permission, an installation administrator must approve the requested permission before PR-conversation feedback can be processed. Learning data also depends on the feature being enabled for your workspace. An empty panel can simply mean no eligible feedback has been recorded yet.
+
+## Next steps
+
+<HostedMcpCard />
+
+<Columns cols={2}>
+  <Card title="Agent memory" icon="brain" href="/platform/memory">
+    What your agents remember.
+  </Card>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    Graph-aware findings on pull requests.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

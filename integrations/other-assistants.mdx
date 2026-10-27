@@ -5,6 +5,9 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 Install the package once, then select your platform:
 
 ```bash
@@ -37,6 +40,17 @@ The OpenClaw row installs the local skill. To query repositories indexed in Grap
 ## Any MCP client
 
 An assistant does not need a dedicated skill installer to read an existing graph. If it supports MCP, connect the [Graphify MCP server](/mcp/overview). Build the graph separately with the CLI or a supported assistant.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <HostedMcpCard />
+  <Card title="Connect the graph MCP server" icon="server" href="/mcp/overview">
+    Serve a local graph to your assistant.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

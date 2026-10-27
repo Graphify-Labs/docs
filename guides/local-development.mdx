@@ -5,6 +5,12 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+<Tip>
+Don't want to install anything? Graphify Cloud, the hosted version of Graphify, indexes your GitHub repositories in the browser. We run it for you, so there's nothing to deploy. Start with the [Cloud quickstart](/platform/quickstart).
+</Tip>
+
 The open-source engine stores its graph on your filesystem. It does not require a Graphify account.
 
 ## Code-only workflow
@@ -39,6 +45,19 @@ Graphify defaults to the local Ollama endpoint. If you override the endpoint to 
 - Query logging is off by default in the current implementation; [configuration](/reference/configuration) describes the opt-in controls.
 
 The generated graph can contain source text, labels, paths, and document concepts. Keep it in a location appropriate for that source material.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Extract without an IDE" icon="cpu" href="/guides/headless-extraction">
+    Build graphs in scripts and CI.
+  </Card>
+  <Card title="Ask better graph questions" icon="search" href="/guides/querying">
+    Use query, path, and explain.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

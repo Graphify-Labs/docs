@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Graphify can combine a repository’s graph with open pull request information. This workflow needs the GitHub CLI (`gh`) authenticated for the repository.
 
 ## Inspect the queue
@@ -39,6 +41,19 @@ Replace `owner/repository` and `main` with the repository and base branch you us
 `list_prs`, `get_pr_impact`, and `triage_prs` expose PR context to an assistant. MCP `triage_prs` returns actionable PR data for the assistant to reason over; it is distinct from the CLI’s backend-assisted ranking.
 
 These commands inspect PRs. Merging and changing code remain separate actions in your normal workflow.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    Get graph-aware review comments automatically.
+  </Card>
+  <Card title="Read a review and a verdict" icon="file-check" href="/platform/read-a-result">
+    What each finding means.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

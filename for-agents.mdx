@@ -6,6 +6,9 @@ hideFooterPagination: true
 sidebarTitle: "Notes for agents"
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 These rules are repeated at the top of every page's Markdown, in [llms.txt](https://docs.graphify.com/llms.txt), and in [llms-full.txt](https://docs.graphify.com/llms-full.txt).
 
 ## Which surface
@@ -46,6 +49,17 @@ To point an agent at these docs, give it this prompt:
 ```text
 Read https://docs.graphify.com/llms.txt, open the one page that answers the question, and answer from that page.
 ```
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <HostedMcpCard />
+  <Card title="MCP tool reference" icon="wrench" href="/reference/mcp-tools">
+    Every tool the local server exposes.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

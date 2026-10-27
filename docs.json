@@ -276,7 +276,76 @@
       "github": "https://github.com/Graphify-Labs/graphify",
       "linkedin": "https://www.linkedin.com/company/graphify-labs",
       "discord": "https://discord.gg/graphify"
-    }
+    },
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          {
+            "label": "Graphify Cloud",
+            "href": "https://app.graphify.com"
+          },
+          {
+            "label": "Pricing",
+            "href": "/pricing/overview"
+          },
+          {
+            "label": "Changelog",
+            "href": "/changelog/highlights"
+          },
+          {
+            "label": "graphify.com",
+            "href": "https://graphify.com"
+          }
+        ]
+      },
+      {
+        "header": "Resources",
+        "items": [
+          {
+            "label": "Local quickstart",
+            "href": "/quickstart"
+          },
+          {
+            "label": "Cloud quickstart",
+            "href": "/platform/quickstart"
+          },
+          {
+            "label": "Guides",
+            "href": "/guides/first-graph"
+          },
+          {
+            "label": "GitHub",
+            "href": "https://github.com/Graphify-Labs/graphify"
+          },
+          {
+            "label": "Contributing",
+            "href": "https://github.com/Graphify-Labs/graphify/blob/v8/CONTRIBUTING.md"
+          }
+        ]
+      },
+      {
+        "header": "For AI agents",
+        "items": [
+          {
+            "label": "llms.txt",
+            "href": "https://docs.graphify.com/llms.txt"
+          },
+          {
+            "label": "llms-full.txt",
+            "href": "https://docs.graphify.com/llms-full.txt"
+          },
+          {
+            "label": "Connect the MCP server",
+            "href": "/mcp/overview"
+          },
+          {
+            "label": "Docs search MCP",
+            "href": "/mcp/docs-search"
+          }
+        ]
+      }
+    ]
   },
   "description": "Documentation for Graphify: turn code and documents into a knowledge graph your AI agent can query, trace, and explain.",
   "appearance": {

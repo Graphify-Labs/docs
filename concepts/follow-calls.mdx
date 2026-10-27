@@ -1,0 +1,98 @@
+---
+title: "Follow calls and trace a path between symbols"
+sidebarTitle: "Follow calls and paths"
+description: "Ask your agent what calls a function, what it calls, and how one symbol reaches another in your indexed repository."
+surface: "cloud"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Ask your agent who calls a function, what it calls, or how one symbol reaches another. Graphify answers from the call edges in the graph of your indexed repository, so your agent follows real links instead of searching for names.
+
+Use this when you already know a symbol and want to see what is around it. If you don't know where to start, [ask a question about your code](/concepts/ask-about-your-code) first.
+
+## Before you start
+
+- An account at [app.graphify.com](https://app.graphify.com). The Free plan covers 3 indexed repositories, and you don't need a card.
+- A repository with the status **Indexed**. See [Repositories and builds](/platform/repositories).
+- Your agent connected to the hosted MCP server at `https://api.graphify.com/mcp`. See [Code with an agent](/guides/cloud-coding-agents).
+
+## Follow callers and callees
+
+<CodeGroup>
+
+```text Agent prompt
+Use Graphify on Graphify-Labs/graphify: what calls build_from_json, and what does it call?
+```
+
+</CodeGroup>
+
+Your agent uses these hosted tools:
+
+| Tool | What it returns |
+| --- | --- |
+| `graphify_callers` | What calls a symbol, from directed call edges. |
+| `graphify_callees` | What a symbol calls, from directed call edges. |
+| `graphify_references` | References to a symbol that are not calls. |
+
+An empty callers or callees result describes the indexed graph. It does not prove that nothing calls the symbol, for example when code is called dynamically or the index is out of date.
+
+## Trace a path between two symbols
+
+<CodeGroup>
+
+```text Agent prompt
+Use Graphify on Graphify-Labs/graphify: how does extract reach build_from_json?
+```
+
+```bash Local CLI
+graphify path "extract" "build_from_json"
+```
+
+</CodeGroup>
+
+| Tool | What it returns |
+| --- | --- |
+| `graphify_trace` | Directed call paths from one symbol to another. |
+| `shortest_path` | The most confident path between two symbols. |
+
+The local `graphify path` command takes these options:
+
+| Option | Meaning |
+| --- | --- |
+| `--directed` | Respect stored direction. This is the default. |
+| `--undirected` | Ignore direction to explore how two symbols connect. |
+| `--graph` | The graph file to read. |
+
+## Read the result
+
+A lookup or a trace can return a semantic suggestion when a name has no exact match. Check the labels and resolution fields on the result before you trust a path. Each edge also carries a confidence tag (`EXTRACTED`, `INFERRED`, or `AMBIGUOUS`). [Edges and provenance](/concepts/provenance) explains each tag.
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| The wrong symbol is used | Give the full name or the file it lives in. |
+| No path found | Try `--undirected` locally, or ask for callers of the target and work backwards. |
+| Callers are missing | Check that the latest build of the repository is **Indexed**. |
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    See what Graphify checks on each pull request.
+  </Card>
+  <Card title="graphify path" icon="terminal" href="/reference/path">
+    Every option for the local command.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/concepts/ask-about-your-code" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Ask a question about your code</span></a>
+  <a href="/platform/reviews" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Pull request reviews</span></a>
+</div>

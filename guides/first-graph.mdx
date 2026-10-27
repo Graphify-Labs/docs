@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 <Tip>
 Don't want to install anything? Graphify Cloud, the hosted version of Graphify, indexes your GitHub repositories in the browser. We run it for you, so there's nothing to deploy. Start with the [Cloud quickstart](/platform/quickstart).
 </Tip>
@@ -65,9 +67,7 @@ Re-run the query and compare the connections. Graphify queries the saved graph, 
 
 Repeat the workflow from your repository root. Use [the assistant skill](/quickstart) to include model-assisted document context, or connect [MCP](/mcp/overview) for native agent tool calls.
 
-<Card title="Try this in Graphify Cloud" icon="cloud" href="/platform/quickstart">
-  Ready to use it on a real repository without running the build yourself? Graphify Cloud builds and hosts the graph for you, adds a searchable wiki and pull request reviews, and serves it all to your agent over hosted MCP. The Free plan covers one developer and up to 3 indexed repositories, with no card required.
-</Card>
+<TryCloudCard />
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

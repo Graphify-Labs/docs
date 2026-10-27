@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Code-only extraction works without a provider key. These backend settings matter when you explicitly run semantic extraction or model-assisted CLI workflows.
 
 ## Semantic backends
@@ -53,6 +55,18 @@ Logs can contain questions and corpus paths. Full responses are opt-in. Keep acc
 ## Ignore rules
 
 Use `.graphifyignore` to exclude dependency folders, build artifacts, or irrelevant content. See [incremental updates](/guides/incremental-updates) for examples.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Troubleshooting" icon="wrench" href="/troubleshooting">
+    Fixes for common local problems.
+  </Card>
+  <Card title="MCP tool reference" icon="wrench" href="/reference/mcp-tools">
+    Every tool the local server exposes.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

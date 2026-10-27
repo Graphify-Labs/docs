@@ -5,6 +5,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 The assistant skill produces a visualization, report, and graph under `graphify-out/`. Headless code-only extraction writes the graph and analysis first. Run `graphify cluster-only . --no-label` to generate the report and visualization without model-generated labels. Use `graphify export html` to regenerate the visualization separately.
 
 | File or directory | Purpose |
@@ -36,6 +38,18 @@ The graph contains labels and source-derived context. Treat it with the same acc
 ## Change the output location
 
 `GRAPHIFY_OUT` changes the output directory. Use a distinct directory when multiple worktrees need their own graph. See [configuration](/reference/configuration).
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Supported inputs" icon="files" href="/concepts/supported-inputs">
+    Languages and documents Graphify can read.
+  </Card>
+  <Card title="Export and reuse your graph" icon="share-2" href="/guides/exports">
+    Turn the graph into HTML, JSON, and more.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

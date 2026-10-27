@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 ```bash
 graphify extract <path> [options]
 ```
@@ -43,6 +45,18 @@ graphify extract ./src --code-only --timing
 Inspect the console summary and generated report before using the graph. Missing grammars, unsupported files, model errors, partial results, and the smaller-graph guard can affect what was written. `--force` is an explicit override, not a routine remedy for an unexplained failure.
 
 See [headless extraction](/guides/headless-extraction) for provider setup and [outputs](/concepts/outputs) for the saved files.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Keep the graph current" icon="refresh-cw" href="/guides/incremental-updates">
+    Update only what changed.
+  </Card>
+  <Card title="Configuration" icon="settings" href="/reference/configuration">
+    Settings and environment variables.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

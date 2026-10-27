@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 The **Google Workspace** tile on **Connectors** connects Google Drive. A folder you add becomes a repository the workspace can search.
 
 Read-only access. Graphify never edits your files.
@@ -84,6 +86,18 @@ A workspace owner or admin opens the folder's options and chooses **Stop syncing
 - Adding a folder says only the person who connected the account can add folders. That person adds it, or an owner or admin chooses **Change account**.
 - The folder says **Syncing is paused. Google Drive requires a paid plan.** Open **Billing** and move the workspace to a paid plan.
 - A check says Google Drive did not respond, or the folder took too long. Leave the folder enabled. Graphify retries on its own.
+
+## Next steps
+
+<Columns cols={3}>
+  <HostedMcpCard />
+  <Card title="Wiki" icon="book-open" href="/platform/wiki">
+    Browse what Graphify learned from your sources.
+  </Card>
+  <Card title="Supported inputs" icon="files" href="/concepts/supported-inputs">
+    Which file types Graphify reads.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

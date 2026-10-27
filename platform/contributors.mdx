@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 **Contributors** connects repository authorship with graph reach and commit-signing evidence. Use it to understand who has worked on heavily depended-on code and where to investigate an ownership or signing question.
 
 Open **Contributors** in [Graphify Cloud](https://app.graphify.com) when it is enabled for your workspace, then choose an indexed repository.
@@ -24,6 +26,18 @@ This is an advisory investigation surface, not an accusation or a measure of dev
 ## Missing contributor data
 
 The contributor overlay is produced at index time when enabled for the workspace. If the view says there is no overlay yet, check [Repositories and builds](/platform/repositories) and the feature's workspace availability.
+
+## Next steps
+
+<Columns cols={3}>
+  <HostedMcpCard />
+  <Card title="Console tour" icon="layout-dashboard" href="/platform/console">
+    Every page in app.graphify.com.
+  </Card>
+  <Card title="Repositories and builds" icon="git-commit" href="/platform/repositories">
+    Add and index repositories.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

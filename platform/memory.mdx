@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 **Memory** makes recorded agent context inspectable in [Graphify Cloud](https://app.graphify.com). Facts are organized around the entities they describe, with source and grounding information alongside them.
 
 ## How Memory complements your agent
@@ -40,6 +42,18 @@ An empty repository has no recorded memories yet. Connect an agent and use the w
 ## Memory and learning
 
 Memory stores contextual facts around entities. [Learning](/platform/learning) uses pull request feedback to adjust advisory reviews. Both are Cloud features, with separate purposes and controls.
+
+## Next steps
+
+<Columns cols={3}>
+  <HostedMcpCard />
+  <Card title="Learning" icon="graduation-cap" href="/platform/learning">
+    How review feedback reduces noise.
+  </Card>
+  <Card title="Wiki" icon="book-open" href="/platform/wiki">
+    Generated pages for every repository.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

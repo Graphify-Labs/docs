@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 ```bash
 graphify path "<source>" "<target>" [--graph <path>] [--directed | --undirected]
 ```
@@ -30,6 +32,18 @@ These examples use the [tutorial project](/guides/first-graph). In another repos
 Follow each relationship and check its evidence. A source-level path does not prove that a particular runtime input executes it. An absent path can mean missing or unresolved relationships; it does not prove independence.
 
 For the MCP version, use `shortest_path`. Its inputs additionally expose `max_hops`; see the [MCP reference](/reference/mcp-tools).
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="graphify explain" icon="info" href="/reference/explain">
+    Describe one node and its neighbors.
+  </Card>
+  <Card title="Trace who calls this" icon="route" href="/platform/trace">
+    The same question, answered in the console.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

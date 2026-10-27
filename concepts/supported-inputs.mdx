@@ -5,6 +5,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Graphify supports a growing set of languages and input formats. Parser coverage varies by construct, and specialized extractors may require an optional package. The [package manifest](https://github.com/Graphify-Labs/graphify/blob/v8/pyproject.toml) lists the current dependencies.
 
 ## Code and configuration
@@ -35,6 +37,18 @@ Graphify supports a growing set of languages and input formats. Parser coverage 
 ## Keep the first scan focused
 
 Start with a repository or one documentation folder. Exclude build outputs and dependencies using [ignore rules](/guides/incremental-updates). Add media only when it contributes useful context; transcription and semantic extraction have different resource requirements from a code-only scan.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Connect Google Drive" icon="hard-drive" href="/platform/google-drive">
+    Add Drive documents to a Cloud workspace.
+  </Card>
+  <Card title="Run Graphify locally" icon="terminal" href="/guides/local-development">
+    Build a graph from your own repository.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

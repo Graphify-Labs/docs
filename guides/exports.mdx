@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Build a graph first, then export the same saved relationships into the format you need.
 
 | Command | Output |
@@ -44,6 +46,18 @@ Review generated content before syncing it to a shared vault. The exporter is de
 ## Push to a graph database
 
 Neo4j and FalkorDB exports support optional push connections. Install the matching extra, use the appropriate connection URL, and supply passwords through `NEO4J_PASSWORD` or `FALKORDB_PASSWORD` rather than putting secrets on the command line.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Share context with your team" icon="users" href="/guides/team-workflows">
+    Keep one graph for everyone.
+  </Card>
+  <Card title="Graph files and outputs" icon="file-json" href="/concepts/outputs">
+    What each output file contains.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 `graphify extract` runs the pipeline without an assistant skill. It is useful for repeatable local scripts and CI jobs.
 
 ## Code-only extraction
@@ -38,6 +40,18 @@ graphify extract ./docs --backend ollama --token-budget 4000 --max-concurrency 2
 Install a pinned package version in the CI environment, run extraction from the repository root, and retain the reviewed graph or report as an artifact. Use the same ignore rules and output location on every run. Supply provider credentials through the CI secret store only when semantic extraction is part of the job.
 
 No provider key is necessary for `--code-only`. Do not make CI publication of the graph public unless the underlying source can be public too.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Keep the graph current" icon="refresh-cw" href="/guides/incremental-updates">
+    Update only what changed.
+  </Card>
+  <Card title="graphify extract" icon="terminal" href="/reference/extract">
+    Every flag for the extract command.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

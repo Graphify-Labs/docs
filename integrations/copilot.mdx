@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 Copilot CLI and Copilot Chat in VS Code use different integration paths. Choose the environment you actually run.
 
 <Tabs>
@@ -35,6 +37,18 @@ graphify query "application entry points"
 ```
 
 If `graphify-out/graph.json` does not exist yet, run the [quickstart](/quickstart) or build with `graphify extract . --code-only`.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="VS Code with hosted MCP" icon="plug" href="/integrations/vscode">
+    Connect Copilot to Graphify Cloud.
+  </Card>
+  <Card title="Connect the graph MCP server" icon="server" href="/mcp/overview">
+    Serve a local graph to your assistant.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

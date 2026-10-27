@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 You can share generated graph files in the repository, build them in each clone, or run a shared MCP server. Choose based on the size of the graph and who may access the source context.
 
 ## Repository workflow
@@ -94,6 +96,18 @@ Run a [shared HTTP MCP endpoint](/mcp/shared-http) if several clients should que
 ## Review related pull requests
 
 [PR context](/guides/pull-requests) helps spot changes that touch the same files or graph communities. Use it to guide review and merge order alongside your tests and normal code review.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="Move from local to Cloud" icon="cloud-upload" href="/platform/local-to-cloud">
+    Share one hosted workspace with your team.
+  </Card>
+  <Card title="Review pull requests" icon="git-pull-request" href="/guides/pull-requests">
+    Use graph context in code review.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

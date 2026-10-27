@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 **Wiki** turns an indexed repository into browsable documentation connected to its code graph. Open **Wiki** in [Graphify Cloud](https://app.graphify.com), then select a repository.
 
 ## Read your repository's wiki
@@ -39,6 +41,18 @@ If the article no longer exists in the current build, the reader falls back to t
 Wiki availability depends on workspace access. If the page reports an unavailable or oversized artifact, follow its displayed message; that state is different from an empty search result.
 
 For graph navigation, see [Explore your graphs](/platform/graphs). For a local Markdown export, see [Export and reuse your graph](/guides/exports).
+
+## Next steps
+
+<Columns cols={3}>
+  <HostedMcpCard />
+  <Card title="Repository graphs" icon="network" href="/platform/graphs">
+    Explore the graph behind the wiki.
+  </Card>
+  <Card title="Connect Google Drive" icon="hard-drive" href="/platform/google-drive">
+    Add documents to the wiki.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

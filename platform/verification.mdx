@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 Graphify Cloud includes **Formal Verification** as a core feature. It compares changed functions with their earlier implementations to determine whether behavior is preserved or whether a concrete input produces a different result.
 
 Open **Formal Verification** in [Graphify Cloud](https://app.graphify.com). Hosted plans include verification with different usage and concurrency allowances; see [plans and pricing](/pricing/overview).
@@ -51,6 +53,18 @@ When Graphify supplies a distinguishing input, use it to reproduce the differenc
 Verification is function-level and differential: the previous implementation is the reference. It does not establish that the application meets its intended requirements. Read bounds, unsupported cases, and reproduction status with the result.
 
 For the separately installed enterprise CLI, the website's [verification reference](https://graphify.com/docs/verification) documents `verify-edit` and gate configuration. Those commands are distinct from the hosted console workflow and the public open-source CLI.
+
+## Next steps
+
+<Columns cols={3}>
+  <HostedMcpCard />
+  <Card title="Read a review and a verdict" icon="file-check" href="/platform/read-a-result">
+    What each verdict means.
+  </Card>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    Where verification runs.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

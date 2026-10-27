@@ -6,6 +6,8 @@ hideFooterPagination: true
 sidebarTitle: "When something fails"
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 Match the message on screen, then open the page it points to.
 
 ## The map did not write graphify-out
@@ -55,6 +57,18 @@ Compare allowances on [Plans and pricing](/pricing/overview), and check the work
 ## Still stuck
 
 Ask in [Discord](https://discord.gg/graphify), or open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues) for the open-source engine. Include the installed version, operating system, exact command, and a sanitized error.
+
+## Next steps
+
+<Columns cols={3}>
+  <HostedMcpCard />
+  <Card title="Repositories and builds" icon="git-commit" href="/platform/repositories">
+    Index and rebuild repositories.
+  </Card>
+  <Card title="Troubleshooting local Graphify" icon="wrench" href="/troubleshooting">
+    Fixes for the open-source package.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

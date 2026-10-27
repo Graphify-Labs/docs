@@ -5,6 +5,9 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 The current graph MCP server exposes ten tools. Connect it with the [MCP setup guide](/mcp/overview).
 
 Every tool also accepts an optional `project_path`: an absolute path to a project directory containing `graphify-out/graph.json`. Omit it to use the graph selected when the server started. Access is subject to the server’s path controls.
@@ -114,6 +117,16 @@ Return all actionable open PRs (correct base, not stale) with full graph impact 
 ```
 
 The second example uses the [tutorial project](/guides/first-graph). Replace labels with nodes from your graph. A returned path is source-level context, not proof of runtime execution.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <HostedMcpCard />
+  <Card title="Connect the graph MCP server" icon="server" href="/mcp/overview">
+    Serve a local graph to your assistant.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

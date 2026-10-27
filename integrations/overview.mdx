@@ -5,6 +5,9 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 Graphify Cloud answers from repositories you have already indexed. The Cloud path uses the hosted MCP server at `https://api.graphify.com/mcp`. A local skill builds a graph on your machine.
 
 ## Graphify Cloud
@@ -55,6 +58,16 @@ The installer adds platform-specific files and may install hooks or instructions
 [Connect the graph MCP server](/mcp/overview) for ten tools on a graph that already exists on your machine. You can use those tools with the skill, or on their own.
 
 Codex and OpenClaw each have a local skill and a Cloud install. **Graphify with Codex** is the local skill, and so is `graphify install --platform claw` on Other local assistants. **ChatGPT, Codex, and Dots** and **Graphify MCP for OpenClaw** are the Cloud install. **Other Cloud agents** is the hosted server for every other MCP client.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <HostedMcpCard />
+  <Card title="Other Cloud agents" icon="bot" href="/integrations/other-agents">
+    Any MCP client with OAuth support.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

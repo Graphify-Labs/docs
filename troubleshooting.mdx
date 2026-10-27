@@ -5,6 +5,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 <AccordionGroup>
 <Accordion title="The graphify command is not found">
 Run `uv tool update-shell` or `pipx ensurepath`, then open a new terminal. Verify that the package you installed was `graphifyy`. A GUI app may need an absolute executable path even when your terminal finds it.
@@ -41,6 +43,18 @@ Confirm `gh` is installed and authenticated for the repository. Check the repo a
 ## Get help
 
 Open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues) or join [Discord](https://discord.gg/graphify). Include the installed version, operating system, exact command, and a sanitized error. A small reproducible example is more useful than a private repository dump.
+
+## Next steps
+
+<Columns cols={3}>
+  <TryCloudCard />
+  <Card title="When something fails in Cloud" icon="life-buoy" href="/platform/when-stuck">
+    Fixes for builds, sign-in, and agent connections.
+  </Card>
+  <Card title="Installation" icon="download" href="/installation">
+    Reinstall or upgrade the local package.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

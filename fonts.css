@@ -16,6 +16,35 @@
   src: url("/fonts/geist-mono-latin.woff2") format("woff2");
 }
 
+/* Geist body text. Static, hinted cuts from Vercel's geist package (v1.8.2),
+   latin subset. The Google Fonts build Mintlify loads by default is one
+   unhinted variable file, which renders soft at 14px on 1x and scaled
+   screens, most visibly light-on-dark in the nav tabs and sidebar.
+   docs.json loads the 400 cut; the other weights are declared here. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/geist-medium-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/geist-semibold-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/geist-bold-latin.woff2") format("woff2");
+}
+
 /* Code uses Geist Mono, matching Geist body text. */
 code,
 pre,

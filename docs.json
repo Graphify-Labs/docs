@@ -289,7 +289,8 @@
       "dark": "#0B0C0C"
     },
     "image": {
-      "light": "https://graphify.com/assets/features-bg.webp"
+      "light": "https://graphify.com/assets/features-bg.webp",
+      "dark": "https://graphify.com/assets/features-bg.webp"
     }
   },
   "search": {

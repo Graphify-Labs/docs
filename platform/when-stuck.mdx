@@ -8,18 +8,9 @@ sidebarTitle: "When something fails"
 
 Match the message on screen, then open the page it points to.
 
-## The map did not write graphify-out
-
-`/graphify .` is an assistant instruction, not a shell command. Run it in the assistant chat at the repository root. A finished map writes `graphify-out/graph.html`, `GRAPH_REPORT.md`, and `graph.json`.
-
-If the folder is missing, confirm the install:
-
-```bash
-graphify --version
-graphify install --platform cursor
-```
-
-You should see a version line, then a skill install for that assistant. More install failures are in [Troubleshooting](/troubleshooting).
+<Note>
+This page covers Graphify Cloud. If you build graphs on your own machine with the `graphify` CLI, see [Troubleshooting](/troubleshooting).
+</Note>
 
 ## Cloud shows no graph
 

@@ -1,0 +1,35 @@
+/* Accessibility fixes for Mintlify chrome we don't render ourselves. */
+
+/* Code group tabs: raise contrast on the #f3f7f5 tab bar (was 3.9:1 and 4.4:1). */
+html:not(.dark) [role="tab"] .peer\/title {
+  color: #4a5650; /* 7.0:1 */
+}
+html:not(.dark) [role="tab"][aria-selected="true"] .peer\/title {
+  color: #0b6b3b; /* 6.1:1 */
+}
+
+/* "Powered by Mintlify" footer text (was #9fa2a0, 2.6:1). */
+a[href*="mintlify.com"][href*="poweredBy"] {
+  color: #586b60; /* 5.7:1 on white */
+}
+html.dark a[href*="mintlify.com"][href*="poweredBy"] {
+  color: #a3b8ac;
+}
+
+/* Tap targets of at least 24 x 24 px (WCAG 2.2 target size). */
+footer a.h-fit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+}
+button[aria-label="More actions"] {
+  min-width: 24px;
+}
+#content-area a[href*="/edit/"],
+#content-area a[href*="/issues/new"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}

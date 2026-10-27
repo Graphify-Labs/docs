@@ -1,7 +1,8 @@
 /* Mintlify's assistant is off on this site. Ask Graphify is the button
    readers use. These hooks are Mintlify's: the top-bar button, the bar
    over the article, the side sheet, the button on a code block, and the
-   Ask Assistant control inside search. Ask Graphify uses
+   Ask Assistant control inside search, and the Add to assistant
+   tooltip shown on text selection. Ask Graphify uses
    .graphify-ask-launcher and is left in place. Search results stay. */
 #assistant-entry,
 #assistant-entry-mobile,
@@ -11,6 +12,7 @@ div:has(> #ask-assistant-code-block-button),
 div:has(> .chat-assistant-floating-input),
 #chat-assistant-sheet,
 div:has(> #chat-assistant-sheet),
+#text-selection-tooltip,
 [data-component-part="search-ask-ai-button"],
 [data-component-part="search-ask-ai-item"],
 [data-search-item="group"][data-variant="ask-ai"] {
@@ -945,4 +947,55 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
 /* The avatar logo is the Ink mark; turn it white on dark surfaces. */
 html.dark .graphify-ask-avatar img {
   filter: brightness(0) invert(0.93);
+}
+
+/* Shown over selected article text, in place of Mintlify's tooltip. */
+.graphify-ask-pick {
+  position: fixed;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--g-border);
+  border-radius: 12px;
+  background: var(--g-surface);
+  color: var(--g-ink);
+  font-family: Geist, ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.graphify-ask-pick[hidden] {
+  display: none;
+}
+
+.graphify-ask-pick:hover {
+  background: var(--g-surface-hover);
+}
+
+.graphify-ask-pick:focus-visible {
+  outline: 2px solid var(--g-focus);
+  outline-offset: 2px;
+}
+
+.graphify-ask-pick-icon {
+  width: 12px;
+  height: 14px;
+  display: block;
+  background: var(--g-accent);
+  -webkit-mask: url("https://graphify.com/assets/logo-icon.svg") center / contain no-repeat;
+  mask: url("https://graphify.com/assets/logo-icon.svg") center / contain no-repeat;
+}
+
+.graphify-ask-pick-keys {
+  color: var(--g-text-subtle);
+  font-size: 12px;
 }

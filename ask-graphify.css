@@ -941,3 +941,8 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
     display: none !important;
   }
 }
+
+/* The avatar logo is the Ink mark; turn it white on dark surfaces. */
+html.dark .graphify-ask-avatar img {
+  filter: brightness(0) invert(0.93);
+}

@@ -1059,6 +1059,125 @@
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   }
 
+  /* Mintlify shows an "Add to assistant" tooltip when text is selected.
+     That tooltip is hidden in ask-graphify.css. This button takes its
+     place and opens Ask Graphify with the selection quoted. */
+  const QUOTE_CHARS = 1500;
+  const pick = document.createElement("button");
+  pick.type = "button";
+  pick.className = "graphify-ask-pick";
+  pick.hidden = true;
+  const pickIcon = document.createElement("span");
+  pickIcon.className = "graphify-ask-pick-icon";
+  pickIcon.setAttribute("aria-hidden", "true");
+  const pickLabel = document.createElement("span");
+  pickLabel.textContent = "Ask Graphify";
+  const pickKeys = document.createElement("span");
+  pickKeys.className = "graphify-ask-pick-keys";
+  pickKeys.textContent = apple ? "⌘I" : "Ctrl+I";
+  pick.append(pickIcon, pickLabel);
+  if (!coarse) pick.append(pickKeys);
+  root.append(pick);
+
+  function readSelection() {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed || !selection.rangeCount) return null;
+    const range = selection.getRangeAt(0);
+    const node = range.commonAncestorContainer;
+    const element = node.nodeType === 1 ? node : node.parentElement;
+    if (!element || element.closest(".graphify-ask, input, textarea, [contenteditable], nav, header")) return null;
+    if (!element.closest("#content-area, #content, main, article")) return null;
+    const text = selection.toString().replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+    if (!text) return null;
+    return { text, rect: range.getBoundingClientRect() };
+  }
+
+  function hidePick() {
+    pick.hidden = true;
+  }
+
+  function showPick() {
+    const picked = readSelection();
+    if (!picked || !panel.hidden) {
+      hidePick();
+      return;
+    }
+    pick.hidden = false;
+    const width = pick.offsetWidth;
+    const height = pick.offsetHeight;
+    const rect = picked.rect;
+    let top = rect.top - height - 8;
+    // On touch screens the system menu sits above the selection.
+    if (coarse || top < 72) top = rect.bottom + 8;
+    const center = rect.left + rect.width / 2;
+    const left = Math.min(Math.max(center - width / 2, 8), window.innerWidth - width - 8);
+    pick.style.top = Math.round(top) + "px";
+    pick.style.left = Math.round(left) + "px";
+  }
+
+  function askAbout(text) {
+    const body = text.length > QUOTE_CHARS ? text.slice(0, QUOTE_CHARS).trimEnd() + "…" : text;
+    const quote = body.split("\n").map((line) => "> " + line).join("\n") + "\n\n";
+    hidePick();
+    if (panel.hidden) openPanel();
+    if (mode === "min") setMode(restoreMode);
+    input.value = quote;
+    fitInput();
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }
+
+  let pickTimer = 0;
+  function queuePick() {
+    clearTimeout(pickTimer);
+    pickTimer = setTimeout(showPick, coarse ? 400 : 120);
+  }
+
+  document.addEventListener("selectionchange", () => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) {
+      clearTimeout(pickTimer);
+      hidePick();
+      return;
+    }
+    if (coarse) queuePick();
+  });
+  document.addEventListener("mouseup", (event) => {
+    if (pick.contains(event.target)) return;
+    queuePick();
+  });
+  document.addEventListener("keyup", (event) => {
+    if (event.shiftKey || event.key === "Shift") queuePick();
+  });
+  window.addEventListener("scroll", hidePick, { passive: true });
+  window.addEventListener("resize", hidePick);
+  // Keep the selection when the button is pressed.
+  pick.addEventListener("mousedown", (event) => event.preventDefault());
+  pick.addEventListener("click", () => {
+    const picked = readSelection();
+    if (picked) askAbout(picked.text);
+    else hidePick();
+  });
+
+  // Mintlify binds Cmd/Ctrl+I to its own assistant. Catch it first and
+  // send it to Ask Graphify instead.
+  window.addEventListener(
+    "keydown",
+    (event) => {
+      if (!(event.metaKey || event.ctrlKey) || event.shiftKey || event.altKey) return;
+      if (event.key !== "i" && event.key !== "I") return;
+      const target = event.target;
+      if (target instanceof Element && target.closest("input, textarea, [contenteditable]")) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const picked = readSelection();
+      if (picked) askAbout(picked.text);
+      else if (panel.hidden) openPanel();
+      else input.focus();
+    },
+    true,
+  );
+
   refreshTools();
   launcher.addEventListener("click", openPanel);
   close.addEventListener("click", closePanel);

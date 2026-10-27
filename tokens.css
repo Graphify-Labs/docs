@@ -29,3 +29,21 @@
   --g-space-4: 24px;
   --g-space-5: 32px;
 }
+
+/* Dark theme (Mintlify adds .dark to the root element). Neutral near-black
+   surfaces like mem0, Supermemory and Exa; Mint is the accent only. */
+html.dark {
+  --g-ink: #ededed;
+  --g-text-muted: #b4b4b4;
+  --g-text-subtle: #a3a3a3;
+  --g-accent: #4dea9c;
+  --g-focus: #4dea9c;
+  --g-surface: #141515;
+  --g-surface-subtle: #101111;
+  --g-surface-hover: #1c1d1d;
+  --g-border-subtle: #1f1f1f;
+  --g-border: #262626;
+  --g-border-strong: #333333;
+  --g-accent-ring: rgb(77 234 156 / 35%);
+  --g-shadow-color: rgb(0 0 0 / 50%);
+}

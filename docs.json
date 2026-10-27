@@ -280,15 +280,18 @@
   },
   "description": "Documentation for Graphify: turn code and documents into a knowledge graph your AI agent can query, trace, and explain.",
   "appearance": {
-    "default": "light",
-    "strict": true
+    "default": "system",
+    "strict": false
   },
   "background": {
     "color": {
       "light": "#FFFFFF",
-      "dark": "#FFFFFF"
+      "dark": "#0B0C0C"
     },
-    "image": "https://graphify.com/assets/features-bg.webp"
+    "image": {
+      "light": "https://graphify.com/assets/features-bg.webp",
+      "dark": "https://graphify.com/assets/features-bg.webp"
+    }
   },
   "search": {
     "prompt": "Search Graphify docs..."

@@ -1,0 +1,20 @@
+/* Sidebar: separate groups with a thin rule, more space, and quiet section labels. */
+div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+}
+html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
+  border-top-color: #262626;
+}
+.sidebar-group-header {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.sidebar-group-header svg {
+  color: #118d4f;
+}
+html.dark .sidebar-group-header svg {
+  color: #4dea9c;
+}

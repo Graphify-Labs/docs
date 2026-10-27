@@ -5,6 +5,8 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
 ```bash
 graphify explain "<node>" [--graph <path>]
 ```
@@ -21,6 +23,19 @@ Look for the source file, community, and relationships connected to the node. Av
 Optional [work-memory](/guides/work-memory) overlays can add lesson hints. Check for stale-source warnings and re-verify a lesson after code changes.
 
 For native MCP access, use `get_node` followed by `get_neighbors` when you need the surrounding edges.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="graphify extract" icon="terminal" href="/reference/extract">
+    Build or refresh a graph.
+  </Card>
+  <Card title="Ask better graph questions" icon="search" href="/guides/querying">
+    Pick the right command.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

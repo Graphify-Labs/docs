@@ -6,6 +6,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 <div className="not-prose mb-6 flex items-center gap-3 text-sm font-medium text-[#586b60] dark:text-[#a3a3a3]">
   <svg width="48" height="32" viewBox="0 0 480 320" fill="none" role="img" aria-label="Buildkite">
     <path fill="#14CC80" d="M320 160v160l160-80V80l-160 80Z" />
@@ -168,6 +170,19 @@ Open a pull request against the connected GitHub repository. In Buildkite, confi
 | HTTP 422 | Confirm both SHAs are real commits and the repository has a GitHub connection. Do not combine a commit range with a manually supplied changed-file list. |
 | Git cannot resolve the base | Fetch the PR's target branch and enough history to compute its merge base. The script stops if it cannot establish the range. |
 | Every run uses the full suite | Inspect the uploaded step's label and selection-step logs. Check graph indexing, unmapped changes, non-code changes, and service errors before changing your test configuration. |
+
+## Next steps
+
+<HostedMcpCard />
+
+<Columns cols={2}>
+  <Card title="Repositories and builds" icon="git-commit" href="/platform/repositories">
+    How Cloud indexes and rebuilds repositories.
+  </Card>
+  <Card title="Trace who calls this" icon="route" href="/platform/trace">
+    See what a change can affect.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

@@ -5,6 +5,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 Use **Graphs** in [Graphify Cloud](https://app.graphify.com) to explore code relationships within a repository or across your workspace.
 
 ## Choose your scope
@@ -47,6 +49,19 @@ See [Edges and provenance](/concepts/provenance) for the evidence labels and [Fo
 ## Keep the graph current
 
 The canvas reflects an indexed build. Check **Repositories** and **Builds** when recent code is missing. [Wiki](/platform/wiki) provides a written view of the same indexed repository, while [MCP](/platform/connections) makes workspace context available to your coding assistant.
+
+## Next steps
+
+<HostedMcpCard />
+
+<Columns cols={2}>
+  <Card title="Wiki" icon="book-open" href="/platform/wiki">
+    Read the graph as generated pages.
+  </Card>
+  <Card title="Trace who calls this" icon="route" href="/platform/trace">
+    Follow calls across files.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

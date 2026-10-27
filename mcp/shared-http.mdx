@@ -5,6 +5,9 @@ surface: "local"
 hideFooterPagination: true
 ---
 
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 The same ten tools can run over MCP Streamable HTTP. A local HTTP server is useful when a client connects by URL instead of launching a stdio process.
 
 ## Start on localhost
@@ -51,6 +54,17 @@ docker run --rm -p 127.0.0.1:8080:8080 \
 ```
 
 This example publishes to localhost and mounts the graph read-only. Set `GRAPHIFY_API_KEY` before running it. Make deliberate network and authentication choices before exposing the endpoint to other hosts.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <HostedMcpCard />
+  <Card title="Share context with your team" icon="users" href="/guides/team-workflows">
+    Keep one graph for everyone.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

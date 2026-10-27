@@ -6,6 +6,8 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
 The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), and [Vercel](/integrations/vercel) pages are install packages for one product. They are not the only way to use Graphify Cloud.
 
 Any coding assistant or IDE that can add a remote MCP server can use the same hosted server. That includes Antigravity, Windsurf, Cline, Continue, Zed, and clients that are not listed yet.
@@ -73,6 +75,19 @@ This page uses the hosted server. To query a graph file on your computer, follow
 | The assistant asks for an API key | This server uses OAuth. The URL is `https://api.graphify.com/mcp`. |
 | The tools are the ten local ones | That connection reads a graph on your machine. This page uses the hosted server. See the [MCP tool reference](/reference/mcp-tools). |
 | The same tools appear twice | A dedicated plugin and a manual server are both configured. Keep one. |
+
+## Next steps
+
+<HostedMcpCard />
+
+<Columns cols={2}>
+  <Card title="Agents and integrations" icon="settings" href="/platform/connections">
+    Manage connected agents in the console.
+  </Card>
+  <Card title="When something fails" icon="life-buoy" href="/platform/when-stuck">
+    Fix sign-in and connection problems.
+  </Card>
+</Columns>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

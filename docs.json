@@ -153,6 +153,9 @@
             "group": "Cloud MCP",
             "root": "integrations/cloud",
             "pages": [
+              "integrations/claude-code-mcp",
+              "integrations/cursor-mcp",
+              "integrations/codex-mcp",
               "integrations/vscode",
               "integrations/jetbrains",
               "integrations/chatgpt",

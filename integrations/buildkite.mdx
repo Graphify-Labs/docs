@@ -1,7 +1,7 @@
 ---
 title: "Buildkite test selection"
 sidebarTitle: "Buildkite (Test Impact)"
-description: "Connect Buildkite to Graphify Cloud to select affected tests, upload a dynamic pipeline, and fall back to the full suite."
+description: "Connect Buildkite to Graphify to select affected tests, upload a dynamic pipeline, and fall back to the full suite."
 surface: "cloud"
 hideFooterPagination: true
 ---
@@ -15,25 +15,25 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
     <path fill="#14CC80" d="M160 80v160l160-80V0L160 80Z" />
     <path fill="#30F2A2" d="M0 0v160l160 80V80L0 0Z" />
   </svg>
-  <span>Graphify Cloud × Buildkite</span>
+  <span>Graphify × Buildkite</span>
 </div>
 
 Run the tests affected by a pull request. Graphify uses your repository graph to map changed code to tests, then returns a dynamic pipeline that Buildkite executes.
 
 <Note>
-  This integration is available in enabled Graphify Cloud workspaces. Open **Integrations → BuildKite (Test Impact)** in [the console](https://app.graphify.com). If the tile says **Coming soon**, contact your workspace owner about availability.
+  This integration is available in enabled Graphify workspaces. Open **Integrations → BuildKite (Test Impact)** in [the console](https://app.graphify.com). If the tile says **Coming soon**, contact your workspace owner about availability.
 </Note>
 
 ## Before you start
 
-- Connect and index a **GitHub repository** in Graphify Cloud. The commit-range endpoint used here requires a GitHub connection.
+- Connect and index a **GitHub repository** in Graphify. The commit-range endpoint used here requires a GitHub connection.
 - Have a workspace **owner or admin** create the CI token.
 - Configure a Buildkite pipeline with repository checkout, Git history sufficient to find the PR merge base, and an agent with **Bash, Git, curl, jq, and buildkite-agent**.
 - Ensure uploaded test steps run on agents with your test dependencies installed. The example uses **pytest**; configure the default queue and environment for your project.
 
 ## 1. Create the CI token
 
-1. In Graphify Cloud, open **Integrations → BuildKite (Test Impact)**.
+1. In Graphify, open **Integrations → BuildKite (Test Impact)**.
 2. Under **Generate a token**, enter a name such as `buildkite-main` and select **Generate token**.
 3. Copy the token immediately. It is shown only once.
 4. Store it as a [Buildkite secret](https://buildkite.com/docs/pipelines/security/secrets/buildkite-secrets) named `GRAPHIFY_CI_TOKEN`, with access granted to this pipeline. The script below retrieves it at job runtime. If you use another secret manager, inject the same environment variable through your agent's secret hook instead.
@@ -188,5 +188,5 @@ Open a pull request against the connected GitHub repository. In Buildkite, confi
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
   <a href="/integrations/other-assistants" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Other local assistants</span></a>
-  <a href="/mcp/overview" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Connect the graph MCP server</span></a>
+  <a href="/mcp/overview" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Local MCP server</span></a>
 </div>

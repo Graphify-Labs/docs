@@ -1,11 +1,13 @@
 ---
-title: "Graphify MCP for VS Code"
-description: "Connect VS Code agents to your indexed repositories through Graphify's hosted MCP server."
+title: "Connect VS Code to Graphify's MCP server"
+sidebarTitle: "VS Code"
+description: "Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with the extension or mcp.json, sign in with OAuth, and query your indexed repositories."
+keywords: ["VS Code MCP","GitHub Copilot MCP","VS Code mcp.json","remote MCP server"]
 surface: "cloud"
 hideFooterPagination: true
 ---
 
-The **Graphify MCP** extension registers Graphify's hosted MCP server in VS Code. Your agent can then search the repositories you have indexed in [Graphify Cloud](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
+The **Graphify MCP** extension registers Graphify's hosted MCP server in VS Code. Your agent can then search the repositories you have indexed in [Graphify](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
 
 VS Code handles the sign-in, the server trust prompt, and every tool approval. There is no API key to paste and no local process to run.
 
@@ -93,6 +95,20 @@ Some tools write workspace memory or switch the selected workspace. Read each to
 | Every Graphify tool appears twice | You have both the extension and a manual `mcp.json` entry. Remove one. |
 | No tools appear in chat | No agent model is available, or Graphify's tools are switched off for that chat. |
 
+## FAQ
+
+### Do I need an API key to connect VS Code to Graphify?
+
+No. VS Code signs in with OAuth in your browser the first time the server starts. There is no key to paste or store.
+
+### Does the extension upload my local files?
+
+No. It registers `https://api.graphify.com/mcp` and stores no credentials of its own. Answers come from repositories already indexed in your Graphify workspace.
+
+### Is the Graphify MCP server free?
+
+Yes, on the Free plan, which covers up to 3 indexed repositories with no card required. See [Plans and pricing](/pricing/overview).
+
 ## Related
 
 <Columns cols={2}>
@@ -112,6 +128,6 @@ Some tools write workspace memory or switch the selected workspace. Read each to
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/integrations/cloud" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify Cloud</span></a>
+  <a href="/integrations/codex-mcp" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Connect Codex to Graphify's MCP server</span></a>
   <a href="/integrations/jetbrains" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify MCP for JetBrains</span></a>
 </div>

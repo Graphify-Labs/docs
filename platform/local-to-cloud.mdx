@@ -1,7 +1,7 @@
 ---
 title: "Move from local to Cloud"
 sidebarTitle: "Move from local to Cloud"
-description: "Move one repository from the local graphifyy package to Graphify Cloud. Switch each assistant to the hosted MCP server, and keep the local graph so you can roll back."
+description: "Move one repository from the local graphifyy package to Graphify. Switch each assistant to the hosted MCP server, and keep the local graph so you can roll back."
 surface: "both"
 hideFooterPagination: true
 ---
@@ -54,7 +54,7 @@ Look for MCP entries named `graphify` that run `graphify-mcp`, skill registratio
 Paste this prompt into the assistant you are moving. It reads this page, lists every local Graphify piece it finds, and shows the change it proposes for each. After you approve that list, it makes the edits and stops so you can sign in yourself.
 
 ```text
-Help me move this repository from the local Graphify package (graphifyy) to Graphify Cloud.
+Help me move this repository from the local Graphify package (graphifyy) to Graphify.
 
 Read https://docs.graphify.com/platform/local-to-cloud.md first and follow it for this assistant.
 
@@ -71,7 +71,7 @@ To verify, use Graphify's list_repositories tool and show the repositories I can
 
 ### 1. Connect the repository
 
-1. Open **Repositories** in [Graphify Cloud](https://app.graphify.com).
+1. Open **Repositories** in [Graphify](https://app.graphify.com).
 2. Choose **Connect GitHub** or **Connect GitLab**.
 3. Complete the provider's repository-access flow.
 4. Wait until the repository's status is **Indexed**.
@@ -584,7 +584,7 @@ These features run on the repositories you connect. Open each one after the host
 
 The local graph stays in `graphify-out/` until you delete it, so you can go back at any point.
 
-1. **Restore the entry.** In each assistant, replace the hosted `graphify` entry with the **Local (before)** entry from step 2. [Connect the graph MCP server](/mcp/overview) has the command for each client.
+1. **Restore the entry.** In each assistant, replace the hosted `graphify` entry with the **Local (before)** entry from step 2. [Local MCP server](/mcp/overview) has the command for each client.
 2. **Reinstall what you removed.** If you removed the package, run `uv tool install "graphifyy[mcp]"`. If you removed the skill, register it again, for example with `graphify install --platform cursor`. Add `--project` for a registration the repository commits.
 3. **Refresh the graph.** Run `graphify update .`. If you used git hooks, run `graphify hook install`.
 4. **Verify.** Ask the assistant to call `graph_stats`, then `query_graph` with a question about the repository.
@@ -593,7 +593,7 @@ To stop Cloud from indexing the repository, open **Options** for it on **Reposit
 
 ## Next steps
 
-- [Graphify Cloud](https://app.graphify.com): open the repository you just connected, then try **Reviews**, **Wiki**, or **Memory**.
+- [Graphify](https://app.graphify.com): open the repository you just connected, then try **Reviews**, **Wiki**, or **Memory**.
 - [Pull request reviews](/platform/reviews): when a review runs and how to read its findings.
 - [Agents and integrations](/platform/connections): connect more assistants to the hosted server.
 

@@ -1,0 +1,157 @@
+---
+title: "Community detection in Graphify Local"
+sidebarTitle: "Community detection"
+description: "How Graphify Local groups your code into communities with Leiden clustering, names them, and keeps their IDs stable as the graph changes."
+keywords: ["graphify communities", "leiden clustering", "code clustering", "graphify cluster-only", "graphify label"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+A large codebase is easier to navigate in neighbourhoods than file by file. After every build, Graphify Local splits the graph into **communities**: groups of functions, classes, files, and concepts that connect to each other more than to the rest of the code. Communities give `GRAPH_REPORT.md` its structure, colour `graph.html`, and let your agent say "this lives in the parsing layer" instead of listing fifty files.
+
+<Note>
+**Use communities when** you join a new repository and want its real architecture, not the folder layout, or when your agent needs a short map of where a change belongs.
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="Partition">
+    Graphify runs Leiden community detection on an undirected copy of the graph. If the Leiden package isn't installed, it falls back to Louvain from NetworkX. Install `graphifyy[leiden]` for the better partition.
+  </Step>
+  <Step title="Down-weight weak edges">
+    Edges tagged `AMBIGUOUS` count half as much (`GRAPHIFY_AMBIGUOUS_SCALE`, default `0.5`), so a guess can't glue two unrelated groups together. They stay in the graph for `path` and `explain`.
+  </Step>
+  <Step title="Split oversized groups">
+    Any community holding more than 25% of the graph (and at least 10 nodes) gets a second Leiden pass on its own subgraph.
+  </Step>
+  <Step title="Number and score">
+    Community `0` is the largest. Each one gets a cohesion score: the share of possible internal edges that actually exist.
+  </Step>
+  <Step title="Name">
+    With a model configured, Graphify names each community in plain language. Without one, it keeps `Community N` placeholders.
+  </Step>
+</Steps>
+
+Ordering is canonicalised before clustering, so the same graph gives the same communities on every run, on every machine.
+
+## See it in action
+
+Re-cluster an existing graph without calling a model:
+
+```bash
+graphify cluster-only . --no-label --no-viz
+```
+
+```text
+Loading existing graph...
+Graph: 3872 nodes, 8833 edges
+Re-clustering...
+Done - 175 communities. GRAPH_REPORT.md and graph.json updated (--no-viz; graph.html removed).
+```
+
+The report lists each one with its cohesion and members:
+
+```markdown GRAPH_REPORT.md
+## Communities (175 total, 21 thin omitted)
+
+### Community 0 - "Community 0"
+Cohesion: 0.03
+Nodes (89): _augment_js_reexport_edges(), _NamespaceExportFact, _StarExportFact, ... (+81 more)
+```
+
+`graphify explain` shows which community a node belongs to:
+
+```text
+Node: cluster()
+  Source:    corpus/cluster.py L233
+  Type:      code
+  Community: Community 49
+  Degree:    8
+```
+
+## Configure
+
+<Tabs>
+  <Tab title="Name communities">
+    ```bash
+    graphify label .
+    graphify label . --missing-only
+    ```
+    `--missing-only` keeps names you already have and only fills placeholders. Pick a model with `--backend` and `--model`; by default the backend is detected from your API keys.
+  </Tab>
+  <Tab title="Re-cluster">
+    ```bash
+    graphify cluster-only . --no-label
+    ```
+    Useful after changing `GRAPHIFY_AMBIGUOUS_SCALE`, or after merging graphs.
+  </Tab>
+  <Tab title="Small context models">
+    ```bash
+    graphify label . --backend ollama --batch-size 40
+    ```
+    `--batch-size` (default 100) sets how many communities go in one request. Use 40 for an 8k-context model. `--max-concurrency` defaults to 4 and is forced to 1 for Ollama and `claude-cli`.
+  </Tab>
+</Tabs>
+
+## What changes when the code changes
+
+When you run `update`, `watch`, or a git hook, Graphify maps new communities onto the previous IDs by overlap, so "Community 12" stays the same group of code. A saved name is reused only while it still describes the community's members; when a group changes enough, it's renamed on the next `label` run.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| One giant community | Install `graphifyy[leiden]`, then run `graphify cluster-only .`. |
+| Every community is `Community N` | No model was available. Run `graphify label .` with a backend set. |
+| Unrelated code grouped together | Lower `GRAPHIFY_AMBIGUOUS_SCALE` (for example `0`) and re-cluster. |
+| Names change on every run | You probably ran `label` without `--missing-only`. |
+
+<AccordionGroup>
+  <Accordion title="What does cohesion mean?">
+    It's the ratio of edges inside the community to the most it could have. Code graphs are sparse, so values like 0.02 to 0.1 are normal; compare communities against each other, not against 1.
+  </Accordion>
+  <Accordion title="Do communities follow folders?">
+    No. They follow calls, imports, and references. A community that spans folders often shows a real dependency that the layout hides.
+  </Accordion>
+</AccordionGroup>
+
+## Run it on a second repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```text
+$ graphify cluster-only . --no-label --no-viz
+Loading existing graph...
+Graph: 1883 nodes, 3960 edges
+Re-clustering...
+Done - 106 communities. GRAPH_REPORT.md and graph.json updated (--no-viz; graph.html removed).
+```
+
+`graphify label . --missing-only` with no backend configured keeps the placeholders and says why:
+
+```text
+[graphify label] no LLM backend configured; keeping Community N placeholders. Set an API key (e.g. GOOGLE_API_KEY) or pass --backend.
+```
+
+Communities also drive the pull request overlap view. `graphify prs --conflicts` lists pull requests that touch the same community; see [pull request impact](/open-source/features/pr-impact).
+
+## FAQ
+
+**Why did my community names change after `update`?** When the community set changes, Graphify renames communities after their hub node and asks you to run `graphify label`.
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Deduplication and resolution" icon="code-merge" href="/open-source/features/deduplication">
+    How edges and nodes are resolved before clustering.
+  </Card>
+  <Card title="Ask better graph questions" icon="magnifying-glass" href="/open-source/features/querying">
+    Use communities in your queries.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

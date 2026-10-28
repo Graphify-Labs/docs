@@ -1,0 +1,159 @@
+---
+title: "Databases and package graphs"
+sidebarTitle: "Databases"
+description: "Map a live PostgreSQL schema and Rust crate dependencies into your Graphify Local graph, alongside the code that uses them."
+keywords: ["graphify postgres", "database schema graph", "graphify cargo", "sql graph"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+The code that queries a table is only half the picture. Graphify Local can read your database schema and your Rust workspace's crate graph, so your agent sees tables, views, functions, foreign keys, and crate dependencies next to the code.
+
+<Note>
+**Use this when** you're changing a table or a shared crate and want to know what depends on it.
+</Note>
+
+## Sources
+
+| Source | How | What you get |
+| --- | --- | --- |
+| `.sql` files in the repo | Parsed automatically | Tables, views, and functions defined in the files |
+| A live PostgreSQL database | `graphify extract --postgres <DSN>` | Tables, views, functions, and foreign-key relationships |
+| A Rust workspace | `graphify extract --cargo` | Crate-to-crate dependencies |
+
+Columns are not represented as separate nodes.
+
+## How PostgreSQL introspection works
+
+<Steps>
+  <Step title="Connect read-only">
+    Graphify opens a `READ ONLY` serializable transaction. It never writes to your database.
+  </Step>
+  <Step title="Read the catalog">
+    It lists tables, views, and routines from `information_schema`, skipping the system schemas.
+  </Step>
+  <Step title="Rebuild DDL">
+    It reconstructs the schema as SQL and runs it through the same parser used for `.sql` files.
+  </Step>
+</Steps>
+
+If the connection fails, the error message is trimmed so your DSN and password don't end up in logs.
+
+## See it in action
+
+```bash
+pip install "graphifyy[postgres]"
+graphify extract . --postgres "postgresql://readonly@localhost:5432/app"
+```
+
+Pass an empty DSN to use the standard `PGHOST`, `PGUSER`, `PGPASSWORD`, and `PGDATABASE` environment variables, which keeps the password out of your shell history:
+
+```bash
+export PGHOST=localhost PGUSER=readonly PGDATABASE=app
+graphify extract . --postgres ""
+```
+
+For a Rust workspace:
+
+```bash
+graphify extract . --cargo
+```
+
+Then ask about it like any other node:
+
+```bash
+graphify explain "orders"
+graphify path "orders" "checkout"
+```
+
+## Configure
+
+<Tabs>
+  <Tab title="Least privilege">
+    Create a role that can read the catalog and nothing else. Graphify needs no access to table data.
+  </Tab>
+  <Tab title="CI">
+    Store the DSN as a secret and pass it through `PG*` variables in your job. See [Headless extraction](/open-source/features/headless-extraction).
+  </Tab>
+</Tabs>
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| `psycopg is required for --postgres` | `pip install "graphifyy[postgres]"` |
+| `could not connect to PostgreSQL` | Check host, port, and role. The full error is hidden to protect credentials; test with `psql` first. |
+| Tables missing | Only non-system schemas the role can see are read. Grant usage on the schema. |
+| No crate edges | Run from your Rust workspace, or a folder under it, so Graphify can find the root `Cargo.toml`. |
+
+<AccordionGroup>
+  <Accordion title="Which databases are supported?">
+    PostgreSQL for live introspection. Any dialect the SQL parser understands works from `.sql` files.
+  </Accordion>
+  <Accordion title="Does Graphify read rows?">
+    No. Only catalog metadata: names, definitions, and relationships.
+  </Accordion>
+</AccordionGroup>
+
+## Flags
+
+| Flag | What it does |
+| --- | --- |
+| `--postgres DSN` | Reads tables, views, functions and foreign keys from a live database. Column-level detail isn't represented in the graph. |
+| `--cargo` | Extracts crate-to-crate dependencies from `Cargo.toml`. |
+| `--code-only` | Skips documents. SQL files are still extracted as code. |
+
+The `postgres` extra installs both `psycopg[binary]` and `tree-sitter-sql`. Introspection rebuilds DDL and parses it with the SQL grammar, and without that grammar it returns 0 nodes. If a `--postgres` run produces no tables, reinstall the extra:
+
+```bash
+pip install "graphifyy[postgres]"
+```
+
+For `.sql` files without a database, install the `sql` extra (`tree-sitter-sql`).
+
+## Try it with a SQL file
+
+You can try this without a database. Install the `sql` extra and extract a schema file:
+
+```sql schema.sql
+CREATE TABLE users (id SERIAL PRIMARY KEY, email TEXT NOT NULL);
+CREATE TABLE orders (id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id), total NUMERIC);
+CREATE VIEW big_orders AS SELECT o.id, u.email FROM orders o JOIN users u ON u.id = o.user_id WHERE o.total > 100;
+```
+
+```text
+$ graphify extract . --code-only
+[graphify extract] wrote ./graphify-out/graph.json: 4 nodes, 6 edges, 1 communities
+
+$ graphify explain orders
+Node: orders
+  Source:    schema.sql L2
+Connections (3):
+  --> users [references] [EXTRACTED] schema.sql:L2
+  <-- schema.sql [contains] [EXTRACTED] schema.sql:L2
+  <-- big_orders [reads_from] [EXTRACTED] schema.sql:L3
+```
+
+The foreign key appears as a `references` edge, and the view as `reads_from` edges to both tables. Column definitions don't become nodes.
+
+## FAQ
+
+**Does Graphify write to the database?** No. The connection is read-only.
+
+**Can I keep the password out of my shell history?** Yes. Pass `--postgres ""` and set the standard `PG*` environment variables.
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="PR impact" icon="code-pull-request" href="/open-source/features/pr-impact">
+    See what a schema change touches.
+  </Card>
+  <Card title="Multiple repositories" icon="layer-group" href="/open-source/features/multi-repo">
+    Join a database graph with several services.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

@@ -2,7 +2,6 @@
 title: "Extract without an IDE"
 description: "Run graphify extraction from a terminal or CI without an IDE or assistant, for code-only graphs or optional semantic extraction."
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
@@ -40,6 +39,55 @@ graphify extract ./docs --backend ollama --token-budget 4000 --max-concurrency 2
 Install a pinned package version in the CI environment, run extraction from the repository root, and retain the reviewed graph or report as an artifact. Use the same ignore rules and output location on every run. Supply provider credentials through the CI secret store only when semantic extraction is part of the job.
 
 No provider key is necessary for `--code-only`. Do not make CI publication of the graph public unless the underlying source can be public too.
+
+## Run it on a real repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ. A code-only run finished in about 2.6 seconds of wall time:
+
+```text
+$ time graphify extract . --code-only
+[graphify extract] found 78 code, 0 docs, 0 papers, 0 images
+[graphify extract] AST extraction on 78 code files...
+  AST cache: 0/78 files served from cache (0%); 78 to extract
+[graphify] Deduplicated 32 node(s) (28 exact, 4 fuzzy).
+[graphify extract] wrote /workspace/runs/httpx/graphify-out/graph.json: 1883 nodes, 3960 edges, 106 communities
+[graphify extract] next: run `graphify cluster-only /workspace/runs/httpx` to generate GRAPH_REPORT.md and name communities
+
+real	0m2.601s
+```
+
+Follow it with `cluster-only` to write the report:
+
+```text
+$ graphify cluster-only . --no-label --no-viz
+Graph: 1883 nodes, 3960 edges
+Done - 106 communities. GRAPH_REPORT.md and graph.json updated (--no-viz; graph.html removed).
+```
+
+## Flags
+
+| Flag | What it does |
+| --- | --- |
+| `--code-only` | Indexes code with local AST extraction and needs no API key. Skips documents, papers and images. |
+| `--backend B` | `gemini`, `kimi`, `claude`, `openai`, `deepseek` or `ollama`. The default is whichever API key is set. |
+| `--model M` | Overrides the backend's default model. |
+| `--mode deep` | Extracts INFERRED semantic edges more aggressively. |
+| `--force` | Re-scans everything and skips the semantic cache. You can also set `GRAPHIFY_FORCE=1`. |
+| `--max-workers N` | The number of AST subprocesses. The default is the CPU count. |
+| `--token-budget N` | The token cap per semantic chunk. The default is 60000. |
+| `--max-concurrency N` | How many semantic chunks run at once. The default is 4; use 1 for local LLMs. |
+| `--api-timeout S` | The per-request LLM timeout in seconds. The default is 600. |
+| `--out DIR` | Writes `<DIR>/graphify-out/`. |
+| `--no-gitignore` | Ignores `.gitignore`. `.graphifyignore` still applies. |
+| `--no-cluster` | Writes the raw extraction only. |
+
+For a self-hosted OpenAI-compatible server (llama.cpp, vLLM or LM Studio), use `--backend openai` and set `OPENAI_BASE_URL` and `OPENAI_MODEL`. For an Anthropic-compatible gateway, use `--backend claude` and set `ANTHROPIC_BASE_URL` and `ANTHROPIC_MODEL`.
+
+## FAQ
+
+**Why is `.netrc` skipped?** Credential files are never indexed. The run lists them as "skipped as potentially sensitive".
+
+**Can CI fail when the graph shrinks?** `graph.json` reports the node count, so you can compare it in a script step. See the [incremental updates](/open-source/features/incremental-updates) page for `--force`.
 
 ## Next steps
 

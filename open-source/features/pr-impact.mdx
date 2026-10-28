@@ -3,7 +3,6 @@ title: "Review pull requests locally with graphify prs"
 sidebarTitle: "Review pull requests with graph context"
 description: "Review pull requests locally with graphify prs: see the impact of each change, find overlapping PRs with --conflicts, and rank the queue with --triage."
 surface: "local"
-hideFooterPagination: true
 keywords: ["pull request impact", "PR conflicts", "review triage"]
 ---
 
@@ -43,6 +42,77 @@ Replace `owner/repository` and `main` with the repository and base branch you us
 `list_prs`, `get_pr_impact`, and `triage_prs` expose PR context to an assistant. MCP `triage_prs` returns actionable PR data for the assistant to reason over; it is distinct from the CLI’s backend-assisted ranking.
 
 These commands inspect PRs. Merging and changing code remain separate actions in your normal workflow.
+
+## Run it on a real repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ. The repository had 49 open pull requests, and `gh` was signed in.
+
+```text
+$ graphify prs
+  graphify prs  ·  base: master  ·  49 PRs
+
+     #  CI  STATUS         UPDATED   IMPACT                  TITLE
+  #3796     ✗  CI-FAIL           15d   –                       Version 1.0
+  #3769     ✓  STALE             29d   –                       Ensure mounted transports are closed even if main t…
+  #3697     ✓  READY           today   –                       bugfix for zstd decompressobj reuse
+  ...
+  10 ready · 2 CI failing · 37 stale · 1 wrong base
+```
+
+The IMPACT column showed `–` for most rows on the first run. It filled in on later runs, after `graphify prs 3769` and `--conflicts`. Open one pull request for its full impact:
+
+```text
+$ graphify prs 3769
+  PR #3769  ·  STALE
+  Ensure mounted transports are closed even if main transport raises
+
+  branch:  fix/ensure-transport-cleanup-on-close  ->  master
+  CI:      ✓ SUCCESS
+  review: REVIEW_REQUIRED
+
+  Graph impact:  131 nodes / 14 communities
+  files changed: 1
+    httpx/_client.py
+```
+
+`--conflicts` groups pull requests that touch the same community:
+
+```text
+  Community 101  — .merge(), .copy_merge_params(), .__init__(), .update()  (2 PRs overlap)
+    #3710  STALE          Keep original host on IDNA decode errors
+    #3618  STALE          Fix URL params to merge with existing query parameters…
+```
+
+A shared community means two changes touch related code, so review them together. It doesn't mean they will conflict in git.
+
+## Troubleshooting
+
+**`Triage failed: No module named 'openai'`.** `--triage` needs a model backend. Install the extra for your backend, such as `graphifyy[openai]` or `graphifyy[gemini]`, and set its API key. When triage fails, the normal queue still prints.
+
+**`Error: gh CLI not found or not authenticated. Run: gh auth login`.** Install the GitHub CLI and run `gh auth login` for the repository's host. We saw this error from `--worktrees` even though `gh pr list` worked in the same shell. If that happens to you, run the command from inside the git repository and confirm `gh auth status`.
+
+**The impact numbers look wrong.** Impact comes from your local graph. Run `graphify update .` on the base branch first.
+
+## Flags
+
+These come from the argument parser in `graphify/prs.py`:
+
+| Flag | What it does |
+| --- | --- |
+| `<number>` | Shows one pull request with its graph impact and changed files. |
+| `--conflicts` | Groups open pull requests by the communities they share. |
+| `--triage` | Ranks the queue with a configured model backend. |
+| `--worktrees` | Maps pull requests to local git worktrees. |
+| `--wrong-base` | Shows pull requests that target a branch other than the base. |
+| `--base B`, `-b B` | Sets the base branch. The default is the repository's default branch. |
+| `--repo OWNER/NAME`, `-R` | Targets a repository other than the current one. |
+| `--graph PATH` | Reads a different `graph.json`. |
+
+The status column uses READY, STALE and CI-FAIL, and the summary line counts pull requests on the wrong base. In the httpx run that was "1 wrong base".
+
+## FAQ
+
+**Does `graphify prs` change anything on GitHub?** No. It reads pull requests through `gh` and prints them.
 
 ## Next steps
 

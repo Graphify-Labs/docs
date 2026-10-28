@@ -2,7 +2,6 @@
 title: "Supported inputs"
 description: "The languages, schemas, documents, and media Graphify can map, which extractor handles each, and the optional extras to install."
 surface: "both"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
@@ -37,6 +36,53 @@ Graphify supports a growing set of languages and input formats. Parser coverage 
 ## Keep the first scan focused
 
 Start with a repository or one documentation folder. Exclude build outputs and dependencies using [ignore rules](/open-source/features/incremental-updates). Add media only when it contributes useful context; transcription and semantic extraction have different resource requirements from a code-only scan.
+
+## Check what a scan picked up
+
+Every extraction prints what it found and what it skipped. These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```text
+$ graphify extract . --code-only
+[graphify extract] --code-only: skipping 41 non-code file(s) (31 docs, 0 papers, 10 images) — no LLM extraction
+[graphify extract] found 78 code, 0 docs, 0 papers, 0 images
+[graphify extract] 5 file(s) not classified (no supported extension or shebang), skipped: .gitignore, .netrc-nopassword, CNAME, custom.css, py.typed
+[graphify extract] 1 file(s) skipped as potentially sensitive (rename or move if wrongly flagged): .netrc
+  warning: 4 code file(s) yielded no symbols (0.00 MB) — a data file, or source this extractor models no symbols for: httpx/__version__.py, httpx/_transports/__init__.py, pyproject.toml, tests/common.py
+```
+
+Read those lines as follows:
+
+- **Not classified** means the file has no supported extension and no shebang, so Graphify skips it.
+- **Potentially sensitive** files are always skipped. The rules cover `.env` files, keys and certificates (`.pem`, `.key`, `.p12` and others), SSH private keys, and credential dotfiles such as `.netrc`, `.npmrc`, `.pypirc` and `.git-credentials`.
+- **Yielded no symbols** is a warning, not an error. Package `__init__.py` files and data files often contain nothing to model.
+
+## File extensions
+
+In 0.9.97, these are the extensions in `graphify/detect.py`:
+
+| Group | Extensions |
+| --- | --- |
+| Code (114) | `.py` `.ts` `.tsx` `.js` `.jsx` `.mjs` `.cjs` `.go` `.rs` `.java` `.kt` `.kts` `.scala` `.groovy` `.gradle` `.c` `.h` `.cpp` `.cc` `.hpp` `.cu` `.cs` `.vb` `.fsproj` `.csproj` `.razor` `.cshtml` `.xaml` `.swift` `.m` `.mm` `.rb` `.rake` `.php` `.lua` `.luau` `.zig` `.ex` `.exs` `.erl` `.hrl` `.ml` `.mli` `.jl` `.r` `.dart` `.vue` `.svelte` `.astro` `.sol` `.sql` `.sh` `.bash` `.ps1` `.f90` and other Fortran forms, `.pas` `.dpr` and other Pascal/Delphi forms, `.v` `.sv` `.cbl` `.cob` `.lisp` `.cl` `.robot` `.resource` `.cls` `.trigger` `.tf` `.tfvars` `.hcl` `.json` `.yaml` `.yml`, and more |
+| Documents | `.md` `.mdx` `.qmd` `.txt` `.rst` `.html` `.skill` `.j2` `.jinja` `.jinja2` |
+| Papers | `.pdf` |
+| Office | `.docx` `.xlsx` |
+| Images | `.png` `.jpg` `.jpeg` `.gif` `.webp` `.svg` |
+| Video and audio | `.mp4` `.mov` `.mkv` `.webm` `.avi` `.m4v` `.mp3` `.wav` `.m4a` `.ogg` |
+| Google Workspace | `.gdoc` `.gsheet` `.gslides` |
+
+To list the full set for your installed version:
+
+```bash
+python -c "import graphify.detect as d; print(sorted(d.CODE_EXTENSIONS))"
+```
+
+## FAQ
+
+**Does `--code-only` need an API key?** No. Code goes through local AST extraction. Documents, papers and images are skipped.
+
+**A file in my language was skipped.** Check its extension against the table. If it's a script without an extension, add a shebang line.
+
+**Why did `pyproject.toml` yield no symbols?** It's classified as code but contributes package metadata rather than functions or classes.
 
 ## Next steps
 

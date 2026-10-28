@@ -32,17 +32,19 @@ Ollama is checked after every paid key on purpose. If you have `OPENAI_API_KEY` 
 
 ## Built-in backends
 
-| Backend | Credentials | Default model | Model override | Endpoint override |
-| --- | --- | --- | --- | --- |
-| `claude` | `ANTHROPIC_API_KEY` | `claude-sonnet-4-6` | `ANTHROPIC_MODEL` | `ANTHROPIC_BASE_URL` |
-| `gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `gemini-3-flash-preview` | `GRAPHIFY_GEMINI_MODEL` | `GEMINI_BASE_URL` |
-| `openai` | `OPENAI_API_KEY` | `gpt-4.1-mini` | `GRAPHIFY_OPENAI_MODEL`, then `OPENAI_MODEL` | `OPENAI_BASE_URL` |
-| `kimi` | `MOONSHOT_API_KEY` | `kimi-k2.6` | `--model` | `KIMI_BASE_URL` |
-| `deepseek` | `DEEPSEEK_API_KEY` | `deepseek-v4-flash` | `GRAPHIFY_DEEPSEEK_MODEL` | none |
-| `azure` | `AZURE_OPENAI_API_KEY` and `AZURE_OPENAI_ENDPOINT` | `AZURE_OPENAI_DEPLOYMENT`, else `gpt-4o` | `GRAPHIFY_AZURE_MODEL` | `AZURE_OPENAI_API_VERSION` (default `2024-12-01-preview`) |
-| `bedrock` | Standard AWS credential chain | `anthropic.claude-3-5-sonnet-20241022-v2:0` | `GRAPHIFY_BEDROCK_MODEL` | `AWS_REGION` |
-| `ollama` | none (`OLLAMA_API_KEY` optional) | `qwen2.5-coder:7b` | `OLLAMA_MODEL` | `OLLAMA_BASE_URL` or `OLLAMA_HOST` (default `http://localhost:11434/v1`) |
-| `claude-cli` | Your signed-in Claude Code | Claude Code's default | `GRAPHIFY_CLAUDE_CLI_MODEL` | none |
+| Backend | Credentials | Default model | Model override |
+| --- | --- | --- | --- |
+| `claude` | `ANTHROPIC_API_KEY` | `claude-sonnet-4-6` | `ANTHROPIC_MODEL` |
+| `gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `gemini-3-flash-preview` | `GRAPHIFY_GEMINI_MODEL` |
+| `openai` | `OPENAI_API_KEY` | `gpt-4.1-mini` | `GRAPHIFY_OPENAI_MODEL` or `OPENAI_MODEL` |
+| `kimi` | `MOONSHOT_API_KEY` | `kimi-k2.6` | `--model` |
+| `deepseek` | `DEEPSEEK_API_KEY` | `deepseek-v4-flash` | `GRAPHIFY_DEEPSEEK_MODEL` |
+| `azure` | `AZURE_OPENAI_API_KEY` and `AZURE_OPENAI_ENDPOINT` | `AZURE_OPENAI_DEPLOYMENT`, else `gpt-4o` | `GRAPHIFY_AZURE_MODEL` |
+| `bedrock` | Standard AWS credential chain | `anthropic.claude-3-5-sonnet-20241022-v2:0` | `GRAPHIFY_BEDROCK_MODEL` |
+| `ollama` | none (`OLLAMA_API_KEY` optional) | `qwen2.5-coder:7b` | `OLLAMA_MODEL` |
+| `claude-cli` | Your signed-in Claude Code | Claude Code's default | `GRAPHIFY_CLAUDE_CLI_MODEL` |
+
+To point a backend at a different endpoint, set `ANTHROPIC_BASE_URL`, `GEMINI_BASE_URL`, `OPENAI_BASE_URL`, `KIMI_BASE_URL`, or `OLLAMA_BASE_URL` (or `OLLAMA_HOST`, default `http://localhost:11434/v1`). Azure also reads `AZURE_OPENAI_API_VERSION` (default `2024-12-01-preview`), and Bedrock uses `AWS_REGION`.
 
 `claude-cli` runs extraction through the `claude` command, so it uses your Claude Code plan instead of an API key. It is never auto-detected; choose it with `--backend claude-cli`.
 

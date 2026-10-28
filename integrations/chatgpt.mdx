@@ -6,11 +6,17 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
+import { InstallButton } from '/snippets/install-button.mdx';
+
 The **Graphify** plugin is one listing in OpenAI's plugin directory. ChatGPT and Codex share that directory, and a [Dot](https://openai.com/index/introducing-dots/) uses the plugins you have already connected. You install it once. The permissions you approve apply in ChatGPT, ChatGPT Work, Codex, and Dots.
 
 MCP is the connection, at `https://api.graphify.com/mcp`. The plugin is the package that sets that connection up. There is no API key to paste and no graph to build on your computer. This is the same hosted server as [Graphify MCP for VS Code](/integrations/vscode) and [Graphify MCP for JetBrains](/integrations/jetbrains). The [Codex skill](/integrations/codex) is a separate install: it teaches Codex how to build a graph on your machine.
 
 Once connected, ChatGPT, Codex, and a Dot can search the repositories you have indexed in [Graphify](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
+
+<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Install in ChatGPT">
+One click: open the official **Graphify** plugin by Graphify Labs in the OpenAI plugin directory. One install covers ChatGPT, Codex, and Dots.
+</InstallButton>
 
 ## Before you start
 

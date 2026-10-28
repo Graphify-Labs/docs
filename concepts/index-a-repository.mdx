@@ -1,0 +1,90 @@
+---
+title: "Index your first repository in Graphify"
+sidebarTitle: "Index your first repository"
+description: "Connect a GitHub or GitLab repository to Graphify, switch on indexing, and confirm the build finished so your agent can query the graph."
+surface: "cloud"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Indexing turns a repository into a graph that Graphify and your agent can query. Connect the repository, switch on indexing, and wait for the status **Indexed**. After that, each push to the default branch updates the graph.
+
+## Before you start
+
+- An account at [app.graphify.com](https://app.graphify.com). The Free plan covers 3 indexed repositories, and you don't need a card.
+- Permission to grant the Graphify app access to the repository on GitHub or GitLab.
+
+## Index the repository
+
+<Steps>
+  <Step title="Connect the repository">
+    Open **Repositories** and choose **Connect GitHub** or **Connect GitLab**. Grant access to the repositories you want in the provider's flow.
+
+    A newly connected repository shows **Paused** and **Not indexed**. Nothing is indexed until you switch it on.
+  </Step>
+  <Step title="Switch on indexing">
+    Open the repository's **…** menu and switch on **Indexing**. This queues the first build. You can also click **Index** next to the repository card on **Overview**.
+  </Step>
+  <Step title="Follow the build">
+    Open **Builds** and filter by the repository. When the build finishes, the repository shows **Indexed**.
+  </Step>
+  <Step title="Check the graph">
+    Open **Graphs** and choose the repository to see its nodes and most connected areas.
+  </Step>
+</Steps>
+
+To try it on a public codebase, index a fork of [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify).
+
+<Accordion title="Build the graph locally instead">
+  The open-source CLI builds the same kind of graph on your machine, with no account:
+
+  ```bash
+  uv tool install graphifyy
+  graphify install
+  ```
+
+  `graphify install` sets up Claude Code. Every other assistant has its own command on its [integration page](/integrations/overview). Then send `/graphify .` in your assistant's chat. The graph is written to `graphify-out/graph.json`. See [Your first knowledge graph](/quickstart).
+</Accordion>
+
+## What updates the graph
+
+| Event | What happens |
+| --- | --- |
+| A push to the default branch | Graphify indexes that commit. |
+| A push to any other branch | Nothing. The graph follows the default branch only. |
+| A pull request | No new graph. The review uses the default-branch graph and the pull request's diff. |
+| **Retry** on a failed build | Graphify indexes the current head of the default branch. |
+
+One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/pricing/overview).
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| The repository is not in the list | Grant the Graphify app access to it on GitHub or GitLab, then return to **Repositories**. |
+| You can't switch on indexing | On Free, check that fewer than 3 repositories are indexed. |
+| The status is **Failed** | Open **Builds**, read the failed run, then choose **Retry**. |
+| The status is **Out of date** | The newest default-branch commit is not the one the graph serves, and no build is running. Start a reindex. |
+
+[Repositories and builds](/platform/repositories) covers every status and control.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Ask a question about your code" icon="message-circle-question" href="/concepts/ask-about-your-code">
+    Query the graph from your agent.
+  </Card>
+  <Card title="Review a pull request" icon="git-pull-request" href="/platform/reviews">
+    What Graphify checks on each pull request.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/quickstart" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Quickstart</span></a>
+  <a href="/platform/console" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Console tour</span></a>
+</div>

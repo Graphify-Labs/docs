@@ -1,0 +1,201 @@
+---
+title: "Hosted MCP"
+sidebarTitle: "Hosted MCP"
+description: "Connect Claude Code, Codex, Cursor, VS Code, Copilot CLI, and other MCP clients to Graphify's hosted MCP server at api.graphify.com/mcp, signed in with OAuth."
+keywords: ["graphify mcp", "hosted mcp server", "claude code mcp", "cursor mcp", "codex mcp"]
+surface: "cloud"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+The **hosted MCP** server gives your coding agent the same graph you see in the Console. Instead of grepping through files, your agent asks Graphify for the entities, relationships, and paths it needs, and gets grounded answers for a fraction of the tokens.
+
+```text
+https://api.graphify.com/mcp
+```
+
+You sign in with OAuth from your client. There's no API key to paste.
+
+<Note>
+**Use the hosted MCP when** your repositories are indexed in Graphify and you want every agent on your team to use the same graph. To run a server on your own graph, see the [local MCP server](/open-source/mcp-server).
+</Note>
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- At least one indexed repository.
+- An MCP client that supports remote HTTP servers.
+
+## Connect your client
+
+The **MCP** tab under **Connectors** in the Console shows the setup for your client, with your endpoint filled in.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+    ```
+    Then start Claude Code, run `/mcp`, select **graphify**, and choose **Authenticate**. Finish the sign-in in your browser. Until you authenticate, no tool call reaches Graphify.
+
+    To share it with a repository instead, add `.mcp.json`:
+
+    ```json .mcp.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "type": "http",
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex mcp add graphify --url https://api.graphify.com/mcp
+    codex mcp login graphify
+    ```
+    The login step is required. Without it, Graphify rejects the connection.
+  </Tab>
+  <Tab title="Cursor">
+    ```json ~/.cursor/mcp.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+    Use `.cursor/mcp.json` to scope it to one repository. Cursor shows **Needs login** until you finish the one-time sign-in.
+  </Tab>
+  <Tab title="Copilot CLI">
+    ```bash
+    copilot mcp add --transport http graphify https://api.graphify.com/mcp
+    ```
+    Copilot CLI signs in on first connect. If you edit `~/.copilot/mcp-config.json` by hand, include `"tools": ["*"]`, or the tools stay unavailable to the model.
+  </Tab>
+  <Tab title="VS Code">
+    Run **MCP: Add Server** from the Command Palette, choose **HTTP**, enter `https://api.graphify.com/mcp`, and name it `graphify`. Or add `.vscode/mcp.json`:
+
+    ```json .vscode/mcp.json
+    {
+      "servers": {
+        "graphify": {
+          "type": "http",
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+    VS Code uses `servers`, not `mcpServers`. Finish the browser sign-in when prompted. No token goes in this file.
+  </Tab>
+  <Tab title="Gemini CLI">
+    ```bash
+    gemini mcp add --transport http graphify https://api.graphify.com/mcp
+    ```
+    Or add it to `~/.gemini/settings.json`. Gemini CLI uses `httpUrl` for remote servers, not `url`:
+
+    ```json ~/.gemini/settings.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "httpUrl": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+    On first use, Gemini CLI opens a browser sign-in. There's no key to paste. Use `.gemini/settings.json` to scope it to one repository.
+  </Tab>
+</Tabs>
+
+The Console also has setup for VS Code, Windsurf, Cline, Continue, JetBrains, Zed, Goose, Kiro, and other clients, including one-click install links where a client supports them.
+
+### Clients without remote OAuth
+
+For a client that only runs local (stdio) servers, use the pinned `mcp-remote` bridge. It needs Node.js and npm on the client's PATH, runs the browser sign-in, and stores credentials on your machine:
+
+```json
+{
+  "mcpServers": {
+    "graphify": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@0.14.3", "https://api.graphify.com/mcp", "--transport", "http-only"]
+    }
+  }
+}
+```
+
+Use your client's native remote connection when it supports Graphify's sign-in. The bridge is a third-party package.
+
+## Scope it to one repository
+
+Add `?repo=` with the repository's full name to set a default:
+
+```text
+https://api.graphify.com/mcp?repo=acme/payments
+```
+
+## Test the connection
+
+Ask your agent:
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+```
+
+If you belong to several workspaces, ask it to run `list_workspaces`, then `set_workspace` with the one you want.
+
+## What your agent can do
+
+Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. The repository tools, such as `list_repositories`, come from the indexed graph. Graphify adds two workspace tools to every session:
+
+| Tool | Arguments | Behavior |
+| --- | --- | --- |
+| `list_workspaces` | None | Lists the workspaces you belong to and marks the active one. Read-only. |
+| `set_workspace` | `handle` (string, required), `make_default` (boolean, optional) | Switches the session to that workspace. With `make_default`, the choice persists. Marked as a state-changing tool, so most clients ask before running it. |
+
+Changing workspace changes which repositories the session can see. It doesn't change your code or the graph.
+
+## Verify the connection
+
+1. Check that your client shows `graphify` as connected and lists its tools.
+2. Ask it to list your workspaces and repositories.
+3. Pick an indexed repository and ask about a function you know.
+4. Ask for that function's callers or tests, and check the evidence it returns against the code.
+
+Seeing the tools doesn't prove repository access. Step 4 does.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| Client shows "needs authentication" | Run the client's sign-in step (`/mcp` → Authenticate, or `codex mcp login graphify`). |
+| `list_repositories` is empty | You're in a workspace with no indexed repositories. Use `set_workspace`. |
+| Copilot connects but has no tools | Add `"tools": ["*"]` to its config. |
+| Server isn't in a client's MCP gallery | Add `https://api.graphify.com/mcp` directly. Registry listing (`io.github.Graphify-Labs/graphify`) and gallery inclusion are separate. |
+| `npx` or Node.js not found | Install Node.js where the client can find it, or use the native remote setup. |
+| Tools connect but chat can't run them | Turn the tools on in your client and check that your model can call tools. |
+| No results from a repository | Check that it finished indexing in the Console, and that you're in the right workspace (`list_workspaces`). |
+| Copilot on github.com can't connect | Copilot's coding agent and code review only support static header credentials, not OAuth sign-in, so they can't use this endpoint yet. |
+
+<AccordionGroup>
+  <Accordion title="Does the hosted MCP see my local changes?">
+    No. It serves the indexed graph. For uncommitted work, use the [local MCP server](/open-source/mcp-server).
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Ask" icon="comments" href="/platform/ask">
+    The same graph, in the Console.
+  </Card>
+  <Card title="Memory" icon="brain" href="/platform/memory">
+    What your agents remember.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

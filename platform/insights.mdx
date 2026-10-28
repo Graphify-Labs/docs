@@ -1,0 +1,127 @@
+---
+title: "Insights"
+sidebarTitle: "Insights"
+description: "Review code findings across your repositories and pull requests in Graphify, with evidence, priority, and a team decision on each one."
+keywords: ["graphify insights", "code findings", "repository findings", "pr findings"]
+surface: "cloud"
+---
+
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
+**Insights** collects code findings in one place: findings from pull request reviews and findings from repository-wide analysis. Each finding has its evidence, a priority, and a status, so your team can decide what to fix, what's intentional, and what's wrong.
+
+<Note>
+**Use Insights when** you want one list of what needs attention across repositories, instead of reading each pull request.
+</Note>
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- An indexed repository. Pull request findings need [reviews](/platform/reviews) on that repository.
+
+## Find what matters
+
+<Steps>
+  <Step title="Open Insights">
+    Choose a **Repository**, or **All repositories**.
+  </Step>
+  <Step title="Filter">
+    Switch between **PR findings** and **Repository findings**. Filter by **Priority**, **Review category**, and **Finding status**, or **Search findings by title or file path**.
+  </Step>
+  <Step title="Sort">
+    **Highest priority (PRs)** puts the most urgent first. `P0 · Critical` is the top priority.
+  </Step>
+</Steps>
+
+## Read a finding
+
+Open a finding to see:
+
+- **Evidence**: the code and reasoning behind it.
+- Its status, such as **Supported by code**, **Confirmed by test**, or **Not yet verified**.
+- **Observed history**: earlier analysis of the same finding.
+- **Show in graph**: the code in [Graph explorer](/platform/graphs).
+
+When some checks didn't finish, the finding says **Some checks incomplete**.
+
+## Act on a finding
+
+<Tabs>
+  <Tab title="Hand it to an agent">
+    **Copy task for my agent** copies a task your coding agent can work from. Use **Preview or edit the task** first to adjust it.
+  </Tab>
+  <Tab title="Ask about it">
+    **Ask about this finding** opens a conversation grounded in the same graph.
+  </Tab>
+  <Tab title="Decide as a team">
+    Set a **Team decision** (**Open**, **Acknowledged**, **Fix proposed** or **Dismissed**), write a **Reason**, and select **Save team decision**.
+  </Tab>
+  <Tab title="Hide it">
+    **Hide or give feedback** hides the finding for you, with a reason and optional feedback. Turn on **Include findings I hid** to see them again.
+  </Tab>
+</Tabs>
+
+## Filters and what they mean
+
+| Filter | Options |
+| --- | --- |
+| Show | **Current findings**, **Earlier analysis**, **Hidden by me** |
+| Sort | **Newest first**, **Oldest first**, **Highest priority (PRs)** |
+| Category | **All review findings**, **Bugs**, **Improvements** |
+| Evidence | **Any evidence**, **Not yet verified**, **Supported by code**, **Confirmed by test** |
+| Priority | **Any priority**, **P0 · Critical**, **P1 · High**, **P2 · Medium**, **P3 · Low** |
+
+Searches match a finding's title or file path, up to 200 characters. Use **Clear filters** or **Reset filters** to start over. Findings load a page at a time. Select **More repository findings** or **Next PR findings** to load the next page.
+
+The evidence levels go from weakest to strongest. **Not yet verified** is a claim nobody has checked yet. **Supported by code** means the code backs it up. **Confirmed by test** means a test reproduced it.
+
+## Team decisions and hiding
+
+These do different things:
+
+| | Team decision | Hide this finding |
+| --- | --- | --- |
+| Who sees it | Everyone in the workspace | Only you (**Personal visibility**) |
+| Choices | **Open**, **Acknowledged**, **Fix proposed**, **Dismissed** | **Not useful**, **Intentional behavior**, **Finding appears incorrect** |
+| Reason | Required, up to 1,000 characters | Choose one |
+| Effect on evidence | None. "A team decision does not verify a fix or change the recorded evidence." | None |
+
+After you save, the Console shows **Team decision saved. Verification is unchanged.** After you hide a finding, it shows **Hidden for you. You can undo this below.**
+
+## Verify and troubleshoot
+
+| Message | What to do |
+| --- | --- |
+| **Couldn't refresh. Showing saved results.** | The latest analysis is unavailable. Saved findings stay. Try again later. |
+| **Code findings are not available for this workspace.** | Insights isn't turned on for this workspace. |
+| No PR findings | The repository has no reviewed pull requests yet. |
+| **Could not save the team decision. Refresh and retry.** | Reload the page and save again. |
+| **This report is unavailable. It may no longer be accessible to your workspace.** | The repository was removed or you lost access to it. |
+| **PR findings are not available on this deployment yet.** | Use **Repository findings** instead. |
+
+<AccordionGroup>
+  <Accordion title="Do findings block merges?">
+    No. Findings are advisory.
+  </Accordion>
+  <Accordion title="Does hiding a finding hide it for the team?">
+    Hiding is personal. A team decision is shared.
+  </Accordion>
+  <Accordion title="Does Dismissed mean the finding was wrong?">
+    No. It records the team's decision and reason. The evidence level stays as it was.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Pull request reviews" icon="code-pull-request" href="/platform/reviews">
+    Where PR findings come from.
+  </Card>
+  <Card title="Read a result" icon="file-magnifying-glass" href="/platform/read-a-result">
+    How to read a review result.
+  </Card>
+</Columns>
+
+<HostedMcpCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

@@ -1,71 +1,131 @@
 ---
-title: "Repository graphs"
-description: "Explore the code knowledge graph Graphify builds for each repository: symbols, callers, dependencies, and links across your connected workspace."
+title: "Graph explorer"
+sidebarTitle: "Graph explorer"
+description: "Explore an indexed repository's modules, files, classes, and functions in Graphify's interactive graph, see what a change could affect, and combine repositories into cross-repo graphs."
+keywords: ["graphify graph", "code graph explorer", "cross-repo graph", "impact analysis"]
 surface: "cloud"
-hideFooterPagination: true
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-Use **Graphs** in [Graphify](https://app.graphify.com) to explore code relationships within a repository or across your workspace.
+**Graph** shows the code knowledge graph of a repository: its modules, files, classes, and functions, and how they connect. Every relationship carries a confidence tag, so you can tell what was read from the code and what was worked out by analysis.
 
-## Choose your scope
+<Note>
+**Use the graph when** you want to see the shape of a system, find its most connected code, or check what a change could affect.
+</Note>
 
-Expand **Graphs** in the sidebar:
+## Before you start
 
-- **Single Repository** focuses on one indexed codebase.
-- **Cross-Repository** follows relationships that cross repository or service boundaries.
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- A repository with the status **Indexed**. To combine graphs, you need at least two.
 
-Choose the repository context you need before interpreting a node or connection. A missing connection can reflect the selected scope or the indexed source rather than the absence of a runtime dependency.
+## Read the canvas
 
-## Structure and reusable patterns
+| Visual | Means |
+| --- | --- |
+| Dot colour | Code area (community). Colours match the **Code areas** list. |
+| Node size | How connected the node is. |
+| Edge weight | Certainty of the relationship. |
 
-Where enabled in Cloud, the existing Graphs page offers **Structure**, **Graph**, and **Patterns**. Existing graph links continue to open the detailed explorer.
+Select a code area to see its connections, or use **Filter the canvas by code area**. **Most connected** lists the nodes that much of the code depends on. **Graph totals** shows the size of what you're looking at.
 
-- **Structure** shows declared package boundaries, directory groupings, repository dependencies, consumers, and declared external libraries. A directory grouping is not a declared architectural boundary.
-- **Graph** keeps the detailed node and relationship explorer.
-- **Patterns** shows resolved implementations and source-derived conventions from the indexed revision. Search for a component, utility, or static style token, then select **View examples**.
+## Explore a node
 
-An **Inferred convention** needs at least three distinct production consumer files in a coherent scope. Tests, stories, generated code, and vendored dependencies do not count. Dynamic or unresolved evidence is omitted. Repetition is evidence of usage, not correctness or a universal preference.
+<Steps>
+  <Step title="Find it">
+    Use **Find a node** to search by name, path, or repository. Prefix with a kind, such as `repo:`, to narrow results.
+  </Step>
+  <Step title="Read its connections">
+    The panel lists **Incoming connections** and **Outgoing connections**. Choose **How many connections to follow** to widen or narrow the view.
+  </Step>
+  <Step title="Check impact">
+    **What a change could affect** lists the possible dependents of the node.
+  </Step>
+  <Step title="Ask about it">
+    **Explain this code** gives a plain-language explanation of the selected node. For a broader question, use [Ask](/platform/ask).
+  </Step>
+</Steps>
 
-The evidence drawer shows sources, scope, indexed revision, coverage, and available snapshot/control history. **Correct** saves an attributed decision through Memory and ignores the inferred convention. **Ignore this convention** persists across reindexing; enable **Include ignored conventions** to restore it. These controls apply to repository guidance and require write access.
+Use **Fit graph to view**, **Zoom out**, full screen, and **Reset layout** (which returns dragged nodes to the computed layout) to move around. **Export the graph** downloads it.
 
-Catalogs are optional. Older indexes and unsupported coverage remain usable in the Graph view. Opening this page does not trigger reindexing. Snapshot history starts with available catalogs; Graphify does not reconstruct earlier personal design choices.
+## Combine repositories
 
-## Explore the map
+Real systems span repositories. A combined graph links entities in different repositories so you can trace a change across them.
 
-Search for a node, inspect its neighbors, and use community filters to narrow the canvas. Node and edge totals help describe the current graph; provenance categories explain how its connections were obtained.
+<Steps>
+  <Step title="Open Combine graphs">
+    Go to the cross-repository view and select **Combine graphs**.
+  </Step>
+  <Step title="Pick repositories">
+    Select two or more under **Repositories to combine**.
+  </Step>
+  <Step title="Name it">
+    Enter a name, or leave it blank to use the suggested one.
+  </Step>
+</Steps>
 
-<img src="https://graphify.com/assets/shots/graph.webp" alt="Graphify cross-repository graph with community filters, node search, and provenance counts" width="1704" height="910" className="block h-auto w-full" />
+The combined graph shows **Cross-repo connections** and **Possible cross-repo dependents**. It's saved under **Saved combined graphs**.
 
-The graph is useful for tracing a call path, finding dependent code, and identifying boundaries between services. Follow source references when you need to inspect the implementation behind a relationship.
+## Link to a view
 
-## Read provenance
+The graph reads its URL, so you can share an exact view. It accepts `?repo=`, `?repos=`, `?node=`, `?impact=`, and `?group=`.
 
-Graphify distinguishes extracted relationships from inferred or ambiguous ones. Keep those labels visible when using graph context to assess a change. A traversable connection provides evidence to investigate; it is not a formal proof of application behavior.
+## Read the legend
 
-See [Edges and provenance](/concepts/provenance) for the evidence labels and [Formal verification](/platform/verification) for behavior comparisons.
+| Visual | Meaning |
+| --- | --- |
+| Dot color | Code area (community). Select a color to show only that area. |
+| Dot size | How connected a node is. |
+| Edge weight | Certainty. The legend has three levels: firmly asserted (read from source, or seen at runtime), probably right but not proven (derived, not read verbatim), and loosely asserted (dynamic dispatch, string keys, prose). |
 
-## Keep the graph current
+Use **Search nodes by name, path, or repository**. You can narrow a search with `kind:` and `repo:`. Press <kbd>F</kbd> to open the focus lens. Use **Fit graph to view**, **Show the minimap** and **Maximize the graph to full screen** to move around large graphs, and **Reset layout** to put dragged nodes back.
 
-The canvas reflects an indexed build. Check **Repositories** and **Builds** when recent code is missing. [Wiki](/platform/wiki) provides a written view of the same indexed repository, while [MCP](/platform/connections) makes workspace context available to your coding assistant.
+## What a change could affect
 
-## Next steps
+Select a node and open **What a change could affect**. Under **How many connections to follow**, choose a depth of 1, 2 or 3 hops. Graphify highlights everything that calls, imports, cites or implements the node within that range.
 
-<HostedMcpCard />
+This is a structural over-estimate. It's not a prediction that anything will break, and it doesn't verify anything. **No dependents found in this view** means nothing in the loaded graph depends on the node.
+
+## Plan limits
+
+Combining graphs needs an active plan. New accounts get a 14-day Pro trial, then move to Free (3 repositories, no card required).
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| **No cross-repository graphs yet** | Combine two or more repositories. |
+| **Select at least two repositories.** | A combined graph needs two or more. |
+| **The graph could not be refreshed** | Graphify shows the last loaded graph while it reconnects. Reload later. |
+| **Could not load combined graphs** | Try again. Your saved graphs aren't deleted. |
+| Banner says **Demo graph** | You're looking at sample data, not your code. Index a repository. |
+| **Combining graphs needs an active plan.** | Check **Billing**. |
+| **We couldn't confirm the combined graph was created.** | Check **Saved combined graphs** before you try again, so you don't create a duplicate. |
+| **Graph unavailable** | The build hasn't finished or couldn't start. If you see **We couldn't start this build. Try again.**, start it again. |
+
+<AccordionGroup>
+  <Accordion title="What are the confidence tags?">
+    Relationships are tagged as read directly from the code or inferred by analysis. See [provenance](/concepts/provenance).
+  </Accordion>
+  <Accordion title="Can I explore the same graph locally?">
+    Yes. Graphify Local writes `graph.html` for a local build. See [Exports](/open-source/features/exports).
+  </Accordion>
+  <Accordion title="Does a highlighted dependent mean my change breaks it?">
+    No. The impact view is a dependency estimate. Use [reviews](/platform/reviews) and your tests to check a real change.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
 
 <Columns cols={2}>
-  <Card title="Wiki" icon="book-open" href="/platform/wiki">
-    Read the graph as generated pages.
+  <Card title="Ask" icon="comments" href="/platform/ask">
+    Question the graph in plain language.
   </Card>
-  <Card title="Trace who calls this" icon="route" href="/platform/trace">
-    Follow calls across files.
+  <Card title="Pull request reviews" icon="code-pull-request" href="/platform/reviews">
+    See what a pull request changes.
   </Card>
 </Columns>
 
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+<HostedMcpCard />
 
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-<a href="/platform/support/faqs" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">When something fails</span></a>
-<a href="/platform/wiki" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Wiki</span></a>
-</div>
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

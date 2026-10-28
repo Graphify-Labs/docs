@@ -16,7 +16,7 @@ This walkthrough uses the open-source [Graphify-Labs/graphify](https://github.co
 
 <Steps>
   <Step title="Map what the change reaches">
-    With the repository **Indexed** and your agent connected, ask:
+    With the repository **Indexed** ([Index your first repository](/concepts/index-a-repository)) and your agent connected ([Claude Code](/integrations/claude-code-mcp), [Cursor](/integrations/cursor-mcp), [Codex](/integrations/codex-mcp) or [VS Code](/integrations/vscode)), ask:
 
     ```text
     Use Graphify on Graphify-Labs/graphify: I want to change build_from_json.
@@ -32,7 +32,7 @@ This walkthrough uses the open-source [Graphify-Labs/graphify](https://github.co
     Expand the repository row on **Repositories** to see **Unreferenced code (heuristic)**. Code reached through reflection, a string lookup, or another repository can still appear, so check before you delete it.
   </Step>
   <Step title="Split the change and review it">
-    Open the refactor as small pull requests. Each gets a review. Where verification ran, each supported changed function is proved equivalent, shows a behavior change with the input that triggers it, or has no verdict. See [Read a review and a verdict](/platform/read-a-result).
+    Open the refactor as small pull requests. Each gets a review. Where verification ran, each supported changed function is proved equivalent, shows a behavior change with the input that triggers it, or has no verdict. See [Review a pull request](/concepts/review-a-pull-request) and [Read a review and a verdict](/platform/read-a-result).
   </Step>
 </Steps>
 

@@ -61,29 +61,44 @@ Pro also includes deep reading of your documents. Teams adds shared graphs, cent
 
 All hosted plans allow **1 index build at a time per repository** and **10 across a workspace**. PR reviews and formal verification runs have the plan-specific concurrency limits shown above.
 
-### Shared operational limits
+### Rate and memory limits
 
-The published hosted plans also have the following limits:
-
-| Operation | Limit |
-| --- | --- |
-| Memory ingestion | 2,000 ingests/day |
-| Stored memory | 10,000 turns/repository |
-| Memory consolidation | 1 concurrent job/workspace |
-| Ask requests | 30/minute |
-| Query requests | 120/minute |
-| MCP requests | 240/minute |
-
-If an operation reaches a limit, follow the message in the console. For higher capacity or a different deployment model, [discuss Enterprise](https://graphify.com/enterprise) with the team.
+Ask, query, and MCP requests have per-minute limits, and agent memory has daily and per-repository limits. They are the same on every hosted plan. See [Rate limits and plan limits](/platform/support/rate-limits) for the numbers, what a `429` looks like, and how to retry.
 
 ## Enterprise
 
-Enterprise includes unlimited repositories and combines the graph workflow with **self-hosting, SSO/SAML, GitHub Enterprise support, formal verification, graph-aware PR review, and a dedicated Slack support channel**. It also supports custom invoicing, payment terms, a DPA, and terms of service.
+Enterprise runs Graphify on your own infrastructure, with enterprise identity and negotiated terms. It is in **early access**. Deployment, capacity, and price are scoped with your account team, not bought at checkout.
 
-Licensing is **per developer seat**. Deployment, capacity, and pricing are scoped with your account team. Enterprise is currently in **early access**.
+| Area | What Enterprise includes |
+| --- | --- |
+| Deployment | Self-hosted on your infrastructure. Bring BYOC, VPC, on-premises, or air-gapped requirements to the scoping call. |
+| Repositories | Unlimited. Capacity is sized for your deployment; the hosted allowances above are not Enterprise guarantees. |
+| Identity and code host | SSO/SAML and GitHub Enterprise support. |
+| Workflows | Repository graphs, graph-aware PR review, and formal verification. |
+| Support | A dedicated Slack support channel. Response times, coverage hours, and any SLA are agreed in the contract. |
+| Commercial | Per developer seat, custom quote. Custom invoicing, payment terms, DPA, and terms of service. |
 
-<Card title="Graphify Enterprise" icon="building-2" href="/platform/support/enterprise">
-  A guide for engineering, security, and procurement teams: capabilities, deployment, data handling, licensing, and evaluation.
+### Data and compliance
+
+In a self-hosted deployment, ingested code and graph data stay in your infrastructure, and retention follows your own policy. Plan the whole data path: code hosts, identity provider, model endpoints, connected assistants, and CI. An external coding assistant still follows its own provider's terms.
+
+Graphify does not train models on your code. Graphify's SOC 2 Type II engagement has started, and no report is available yet. Check the [Security page](https://graphify.com/security) and [Trust Center](https://trust.graphify.com) for current evidence, and see [Security and data handling](/platform/support/security) for the hosted service.
+
+### Prepare for the scoping call
+
+| Bring | Why it helps |
+| --- | --- |
+| Developer count and expected growth | Scopes seats and rollout phases. |
+| Code hosts, repository count, languages, and sizes | Sets integration and indexing requirements. |
+| PR volume and CI or verification workflows | Sizes workload and concurrency. |
+| Cloud or on-premises environment, regions, network limits | Defines deployment and data residency. |
+| Identity provider and access rules | Scopes SSO, administration, and offboarding. |
+| Security questionnaire, audit needs, retention policy, DPA | Gives your reviewers a concrete list of controls to check. |
+
+A typical evaluation runs in four steps: scope the deployment, agree success measures on representative repositories, pilot with one team, then complete security review and procurement before you add more teams.
+
+<Card title="Discuss Enterprise" icon="building-2" href="https://graphify.com/enterprise">
+  Share your team size, infrastructure, and workflows with the enterprise team.
 </Card>
 
 ## Dedicated Slack support
@@ -116,7 +131,7 @@ Paid subscriptions renew until cancelled. Under the standard [Terms of Service](
 
 ### Do I need Enterprise for formal verification?
 
-No. Formal verification is also part of Graphify, with the hosted allowances listed above. Enterprise adds the deployment, identity, support, and commercial arrangements described in the [enterprise guide](/platform/support/enterprise).
+No. Formal verification is also part of Graphify, with the hosted allowances listed above. Enterprise adds the deployment, identity, support, and commercial arrangements described in [Enterprise](#enterprise).
 
 ### Should we choose Teams or Enterprise?
 
@@ -133,5 +148,6 @@ Create a [Cloud account](https://app.graphify.com) to start Free or a paid trial
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-<a href="/platform/support/enterprise" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next</span><span className="text-[15px] font-semibold leading-6">Graphify Enterprise</span></a>
+  <a href="/platform/support/faqs" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">FAQs</span></a>
+  <a href="/platform/support/rate-limits" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Rate limits and plan limits</span></a>
 </div>

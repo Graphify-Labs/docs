@@ -1,53 +1,122 @@
 ---
-title: "When something fails"
-description: "What to check for an empty graph, a failed build, or a plan limit."
+title: "FAQs"
+sidebarTitle: "FAQs"
+description: "Answers to common Graphify questions: getting started, indexing, failed builds, plan limits, reviews, assistants, data, and where to get help."
 surface: "cloud"
 hideFooterPagination: true
-sidebarTitle: "When something fails"
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-Match the message on screen, then open the page it points to.
+Quick answers to the questions people ask most about Graphify, the hosted product. For the open-source CLI, see [Troubleshooting](/open-source/troubleshooting).
 
-<Note>
-This page covers Graphify. If you build graphs on your own machine with the `graphify` CLI, see [Troubleshooting](/open-source/troubleshooting).
-</Note>
+## Getting started
 
-## Cloud shows no graph
+<AccordionGroup>
+<Accordion title="What is the difference between Graphify and Graphify Local?">
+Graphify is hosted: it indexes your GitHub or GitLab repositories, rebuilds on each push to the default branch, reviews pull requests, and serves every repository through one MCP connection. Graphify Local is the free, open-source `graphifyy` package. It builds a graph on your machine, with no account. See [Move from Graphify Local](/platform/support/move-from-local) to switch.
+</Accordion>
+<Accordion title="Which code hosts does Graphify support?">
+GitHub and GitLab. Connect them from **Repositories**. GitHub Enterprise is part of [Enterprise](/platform/support/pricing#enterprise). A project that is only on your machine needs Graphify Local.
+</Accordion>
+<Accordion title="Do I need a card to start?">
+No. Free needs no card and indexes up to 3 repositories. Pro and Teams start with a two-week trial, which needs a card. See [Plans and pricing](/platform/support/pricing).
+</Accordion>
+<Accordion title="Which branch does Graphify index?">
+The default branch. A push to another branch, or a pull request, does not change the repository graph. Pull requests get their own review against that graph.
+</Accordion>
+</AccordionGroup>
 
+## Indexing and builds
+
+<AccordionGroup>
+<Accordion title="Graphify shows no graph for my repository">
 Open **Repositories** and read the status.
 
 | Status | Meaning |
 | --- | --- |
-| Indexed | A graph has been built and is available. |
+| Indexed | A graph is built and available. |
 | Building | Indexing is running. |
 | Queued | The repository is waiting to build. |
 | Failed | The latest attempt did not finish. |
-| Paused | Indexing is off. |
+| Paused | Indexing is off. Switch it on in the repository's **Options**. |
 
-[Repositories and builds](/platform/repositories) is where you connect the repository and turn indexing on.
+See [Repositories and builds](/platform/repositories).
+</Accordion>
+<Accordion title="A build failed. How do I retry it?">
+Open **Builds**, filter to the repository, and choose **Retry** on the latest failed build. On **Repositories**, a failed repository's **Options** also offer **Retry indexing**. Both index the current head of the default branch, not the commit that failed.
+</Accordion>
+<Accordion title="An answer misses code I can see locally">
+Graphify indexes the default branch. Push the code there and wait for **Indexed**. Uncommitted work and other branches are not in the graph.
+</Accordion>
+</AccordionGroup>
 
-## A build failed
+## Plans and limits
 
-Open **Builds**, filter to that repository, and choose **Retry** on its latest failed build. On **Repositories**, a failed repository's **Options** also offer **Retry indexing**. Both index the repository's current head, not the commit that failed.
-
-## You hit a plan limit
-
-The console names the limit:
-
+<AccordionGroup>
+<Accordion title="I hit a plan limit. What does the message mean?">
 | Message | What it means |
 | --- | --- |
-| **Monthly indexing allowance used** | The workspace has used this month's indexing allowance. It resets at the start of next month. |
-| **Daily build limit reached** | This repository has used today's automatic builds. The limit resets at 00:00 UTC. |
+| **Monthly indexing allowance used** | The workspace used this month's indexing allowance. It resets at the start of next month. |
+| **Daily build limit reached** | The repository used today's automatic builds. It resets at 00:00 UTC. |
 | **Repository too large for this plan** | The newest version was not published. The last published version still works. |
-| **Monthly reviews used** | The reviews included in the plan are used for this month. |
+| **Monthly reviews used** | The plan's reviews for this month are used. |
 
-Compare allowances on [Plans and pricing](/platform/support/pricing), and check the workspace **Billing** page for the plan in use. A limit message is not an empty repository.
+A limit message does not mean the repository is empty. Compare plans on [Plans and pricing](/platform/support/pricing).
+</Accordion>
+<Accordion title="My agent gets a 429 rate_limited error">
+It sent too many Ask, query, or MCP requests in a short time. Wait a few seconds and retry with exponential backoff. See [Rate limits and plan limits](/platform/support/rate-limits).
+</Accordion>
+<Accordion title="Does buying more Teams seats raise every limit?">
+No. Workspace allowances are shared across the workspace and do not multiply by seat count. Talk to Graphify before planning a larger rollout.
+</Accordion>
+</AccordionGroup>
+
+## Reviews
+
+<AccordionGroup>
+<Accordion title="When does Graphify review a pull request?">
+When it is opened, reopened, or marked ready for review. To review the latest commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. See [Pull request reviews](/platform/reviews).
+</Accordion>
+<Accordion title="How do I tell Graphify a finding is wrong?">
+Reply on the pull request with `@graphify wrong <finding>`, `@graphify good <finding>`, or `@graphify suppress <rule>`. That feedback tunes later reviews. See [Learning](/platform/learning).
+</Accordion>
+</AccordionGroup>
+
+## Assistants and MCP
+
+<AccordionGroup>
+<Accordion title="How do I connect my coding assistant?">
+Add the hosted MCP server, `https://api.graphify.com/mcp`, and sign in with OAuth in the browser. Each integration page has the exact steps; start at [Hosted MCP](/integrations/cloud).
+</Accordion>
+<Accordion title="My assistant still uses local tools like get_node">
+A local `graphify` entry is still active and wins over the hosted one. Remove it, then restart the assistant. See [Move from Graphify Local](/platform/support/move-from-local#if-something-fails).
+</Accordion>
+<Accordion title="How does a CI agent sign in without a browser?">
+Use an API token from the **MCP** tab of **Connectors**. Store it as a CI secret, never in the repository.
+</Accordion>
+<Accordion title="A tool call fails and lists repositories">
+The workspace has more than one repository, so the call needs `repository_id`. Pass one of the names in the error, such as `your-org/your-repo`, or run `list_repositories`.
+</Accordion>
+</AccordionGroup>
+
+## Data and security
+
+<AccordionGroup>
+<Accordion title="Does Graphify train models on my code?">
+No. Code goes to Graphify's LLM subprocessors only to produce results, under terms that prohibit training. See [Security and data handling](/platform/support/security).
+</Accordion>
+<Accordion title="How do I delete my data?">
+Contact the [Graphify team](https://graphify.com/contact) to request deletion or export. Content is kept until you delete it or close your account, then removed from active systems within 30 days.
+</Accordion>
+<Accordion title="Can I run Graphify on my own infrastructure?">
+Yes, with [Enterprise](/platform/support/pricing#enterprise), which is self-hosted and in early access. Graphify Local also runs entirely on your machine.
+</Accordion>
+</AccordionGroup>
 
 ## Still stuck
 
-Ask in [Discord](https://discord.gg/graphify), or open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues) for the open-source engine. Include the installed version, operating system, exact command, and a sanitized error.
+Ask in [Discord](https://discord.gg/graphify). Teams and Enterprise workspaces also have a dedicated Slack support channel. For the open-source engine, open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues). Include what you ran, the exact error, and the `correlationId` from an API error if there is one.
 
 ## Next steps
 
@@ -57,7 +126,7 @@ Ask in [Discord](https://discord.gg/graphify), or open a [GitHub issue](https://
   <Card title="Repositories and builds" icon="git-commit" href="/platform/repositories">
     Index and rebuild repositories.
   </Card>
-  <Card title="Troubleshooting local Graphify" icon="wrench" href="/open-source/troubleshooting">
+  <Card title="Troubleshooting Graphify Local" icon="wrench" href="/open-source/troubleshooting">
     Fixes for the open-source package.
   </Card>
 </Columns>
@@ -65,6 +134,5 @@ Ask in [Discord](https://discord.gg/graphify), or open a [GitHub issue](https://
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/platform/read-a-result" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Read a review and a verdict</span></a>
-  <a href="/platform/graphs" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Repository graphs</span></a>
+  <a href="/platform/support/pricing" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Plans and pricing</span></a>
 </div>

@@ -1,0 +1,133 @@
+---
+title: "Move from Graphify Local"
+sidebarTitle: "Move from Graphify Local"
+description: "Move a repository from the local graphifyy package to Graphify: connect it, point each assistant at the hosted MCP server, update tool calls, and keep a way back."
+surface: "both"
+hideFooterPagination: true
+---
+
+Move a repository from Graphify Local, the `graphifyy` package on your machine, to Graphify, the hosted product. You connect the repository, then point each assistant at `https://api.graphify.com/mcp`. Your application code does not change, and the local graph keeps working until you switch, so there is no downtime.
+
+<Note>
+Graphify indexes repositories on GitHub or GitLab. A project that exists only on your machine stays on Graphify Local.
+</Note>
+
+## Before you start
+
+1. Sign in at [app.graphify.com](https://app.graphify.com) with Google, GitHub, GitLab, or email.
+2. Check that the commits you want in the graph are on the repository's default branch.
+3. List every local use. From the repository root, run:
+
+```bash
+claude mcp list
+codex mcp list
+graphify hook status
+git grep --untracked -n -e graphify-mcp -e graphify-out -e "graphify query" -e "graphify extract"
+```
+
+Look for MCP entries named `graphify` that run `graphify-mcp`, git hooks, CI jobs that run `graphify extract`, and rules that name local tools such as `get_node` or `god_nodes`.
+
+## Let your assistant do it
+
+Paste this prompt into the assistant you are moving. It proposes every change and waits for your approval.
+
+```text
+Help me move this repository from the local Graphify package (graphifyy) to Graphify.
+
+Read https://docs.graphify.com/platform/support/move-from-local.md first and follow it for this assistant.
+
+Start with a plan. List every MCP server entry named graphify that runs graphify-mcp, in each scope and configuration file this assistant reads. Also list Graphify skill files, git hooks, and any rule, prompt, or script that names a local Graphify tool. For each item, show the change you propose. Wait for my approval before you edit anything.
+
+When I approve, replace each local graphify entry with the hosted Streamable HTTP server at https://api.graphify.com/mcp under the same name. Keep every other MCP server and setting as it is. Let me complete the OAuth sign-in myself.
+
+Leave graphify-out/ and the local Graphify skill in place. I will remove them after the hosted server answers.
+
+To verify, use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing. Do not claim the move succeeded until a hosted tool has answered.
+```
+
+## Move by hand
+
+<Steps>
+  <Step title="Connect the repository">
+    Open **Repositories**, choose **Connect GitHub** or **Connect GitLab**, and finish the provider's flow. Wait for the status **Indexed**. If it shows **Failed**, open **Builds** and choose **Retry**.
+
+    Graphify indexes the latest commit on the default branch. Your local graph also included uncommitted changes, so answers can differ.
+  </Step>
+  <Step title="Switch each assistant">
+    Replace the local `graphify` entry with the hosted server. Keep the name `graphify`, and switch one assistant at a time.
+
+    <CodeGroup>
+    ```bash Claude Code
+    claude mcp remove graphify --scope local
+    claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+    ```
+    ```json .mcp.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "type": "http",
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+    </CodeGroup>
+
+    Sign in when the assistant opens the browser. For other clients, follow the hosted tab on [Claude Code](/integrations/claude-code-mcp), [Cursor](/integrations/cursor-mcp), [Codex](/integrations/codex-mcp), or [other assistants](/integrations/other-assistants).
+  </Step>
+  <Step title="Check that the hosted server answers">
+    Start a new session and paste:
+
+    ```text
+    Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+    ```
+
+    The assistant is on the hosted server when its tools include `list_workspaces` and `list_repositories`. If you still see `get_node` or `god_nodes`, it is reading the local graph. Repeat the previous step for that assistant.
+  </Step>
+  <Step title="Update tool calls">
+    One hosted connection serves every repository in the workspace, so repository tools take `repository_id`, as `owner/name`. You can leave it out when the workspace has one repository. Update rules, prompts, and scripts:
+
+    | Job | Local call | Hosted call |
+    | --- | --- | --- |
+    | Ask a question | `query_graph` with `question` and `token_budget` | `query_graph` with `repository_id`, `question`, and `budget` |
+    | Read one symbol | `get_node` with `label` | `graphify_node` with `repository_id` and `symbol` |
+    | List neighbors | `get_neighbors` | `graphify_callers`, `graphify_callees`, or `graphify_references` |
+    | Connect two symbols | `shortest_path` with `source` and `target` | `shortest_path` with `src` and `tgt`, or `graphify_trace` |
+    | Summarize the graph | `graph_stats` | `graph_stats` with `repository_id` |
+    | Most connected code, communities | `god_nodes`, `get_community` | **Graphs** in the console |
+    | Pull requests | `list_prs`, `get_pr_impact`, `triage_prs` | **Reviews** in the console, `graphify_impact`, `impact_and_risk` |
+  </Step>
+  <Step title="Move saved lessons into Memory">
+    Lessons from `graphify reflect` live in `graphify-out/reflections/LESSONS.md`. There is no import. Check each lesson against the current code, then add the ones that still hold in **Memory** with **Add memory**, or ask the assistant to save them with `remember`. Memory is shared with the workspace, so move only lessons everyone may read.
+  </Step>
+  <Step title="Retire local builds">
+    Remove CI jobs that run `graphify extract` only for assistants; Graphify rebuilds on each push to the default branch. When every assistant answers from the hosted server, run `graphify uninstall` from the repository root. It removes skill registrations and git hooks, and edits files such as `CLAUDE.md` and `AGENTS.md`, so review `git status` before you commit. It keeps `graphify-out/` unless you add `--purge`.
+  </Step>
+</Steps>
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| Tools include `get_node` or `god_nodes` | A local `graphify` entry still wins. Remove it; `claude mcp list` shows every entry in Claude Code. |
+| The same tools appear twice | Two entries reach the hosted server. Keep one. |
+| The assistant asks for an API key | Finish the OAuth sign-in in the browser. For CI, use an API token from the **MCP** tab of **Connectors**. |
+| A call fails and names repositories | Pass `repository_id`, or run `list_repositories`. |
+| The repository is missing | It is not indexed yet, or it is in another workspace. Check **Repositories** and `list_workspaces`. |
+| An answer misses code you see locally | Push it to the default branch and wait for **Indexed**. |
+
+## Roll back
+
+Until you delete `graphify-out/`, you can go back at any time:
+
+1. Restore the local entry in each assistant. [Local MCP server](/open-source/mcp-server) has the command for each client.
+2. If you removed the package or skill, run `uv tool install "graphifyy[mcp]"` and `graphify install --platform <name>`.
+3. Run `graphify update .`, and `graphify hook install` if you used hooks.
+
+To stop Graphify indexing the repository, open its **Options** on **Repositories** and switch **Indexing** off.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/support/security" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Security and data handling</span></a>
+</div>

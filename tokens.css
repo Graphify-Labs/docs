@@ -34,7 +34,7 @@
 }
 
 /* Dark theme (Mintlify adds .dark to the root element). Neutral near-black
-   surfaces like mem0, Supermemory and Exa; Mint is the accent only. */
+   surfaces; Mint is the accent only. */
 html.dark {
   --g-ink: #ededed;
   --g-text-muted: #b4b4b4;

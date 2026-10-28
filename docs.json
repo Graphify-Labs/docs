@@ -45,6 +45,7 @@
             "pages": [
               "platform/reviews",
               "platform/read-a-result",
+              "concepts/colliding-pull-requests",
               "platform/verification",
               "platform/learning"
             ]

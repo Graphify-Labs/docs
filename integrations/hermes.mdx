@@ -11,12 +11,12 @@ Connect [Hermes Agent](https://hermes-agent.nousresearch.com/docs/user-guide/fea
 <Tabs>
 <Tab title="Graphify (hosted)">
 
-### Before you start
+## Before you start
 
 - A [Graphify](https://app.graphify.com) account with a workspace and at least one repository that has finished indexing.
 - A current Hermes release with native MCP OAuth support.
 
-### 1. Add the server
+## 1. Add the server
 
 Merge this entry into your active Hermes profile's `config.yaml`, normally `~/.hermes/config.yaml`. Keep your existing configuration and other MCP servers.
 
@@ -27,7 +27,7 @@ mcp_servers:
     auth: oauth
 ```
 
-### 2. Sign in
+## 2. Sign in
 
 ```bash
 hermes mcp login graphify
@@ -35,7 +35,7 @@ hermes mcp login graphify
 
 Complete the authorization in your browser. Hermes stores and manages the OAuth credentials.
 
-### 3. Choose tools
+## 3. Choose tools
 
 ```bash
 hermes mcp configure graphify
@@ -43,11 +43,11 @@ hermes mcp configure graphify
 
 Pick the Graphify tools you want Hermes to use, then restart the Hermes session. Some tools write: they can record query trails, save or change memory, and switch the active workspace. Leave those off if you want read-only use.
 
-### 4. Ask a question
+## 4. Ask a question
 
 Ask Hermes to list your Graphify workspaces and repositories, select a repository, and look up a function you know. Check that the file paths it returns match the repository.
 
-### If something fails
+## If something fails
 
 - **Sign-in does not open.** Update Hermes to a release with MCP OAuth support, then run `hermes mcp login graphify` again.
 - **No repositories.** Wait until the repository shows **Indexed** in **Repositories**, and check that you signed in to the right workspace.

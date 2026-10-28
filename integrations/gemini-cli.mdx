@@ -16,12 +16,12 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
 Connect Gemini CLI to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Gemini CLI can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches.
 
-### Before you start
+## Before you start
 
 - A Graphify account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
 - At least one repository with the status **Indexed**. See [Repositories and builds](/platform/repositories).
 
-### 1. Add the server
+## 1. Add the server
 
 **Terminal**
 
@@ -43,11 +43,11 @@ Add Graphify to `~/.gemini/settings.json`. Keep any other servers already in the
 }
 ```
 
-### 2. Sign in
+## 2. Sign in
 
 Start `gemini`. Gemini CLI opens your browser to sign in to Graphify with OAuth the first time it uses the server. There is no API key to paste.
 
-### 3. Check the connection
+## 3. Check the connection
 
 Run `/mcp` in Gemini CLI. `graphify` should be listed with its tools. Then ask:
 
@@ -55,14 +55,14 @@ Run `/mcp` in Gemini CLI. `graphify` should be listed with its tools. Then ask:
 Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
 ```
 
-### 4. Ask a question
+## 4. Ask a question
 
 Name the symbol, file, or area you care about, for example `Who calls the function that validates a session token?` Open the source lines an answer cites before you rely on it.
 
 </Tab>
 <Tab title="Graphify Local">
 
-### 1. Install and register
+## 1. Install and register
 
 ```bash
 uv tool install graphifyy
@@ -77,7 +77,7 @@ For a repository-local setup, run this from the project root:
 graphify install --project --platform gemini
 ```
 
-### 2. Build the graph
+## 2. Build the graph
 
 Open your project in Gemini CLI. Select the Graphify skill and enter:
 
@@ -87,7 +87,7 @@ Open your project in Gemini CLI. Select the Graphify skill and enter:
 
 The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
 
-### 3. Ask with context
+## 3. Ask with context
 
 After the graph is built, ask:
 
@@ -99,7 +99,7 @@ You can also query from a terminal:
 graphify query "authentication flow"
 ```
 
-### Keep it current
+## Keep it current
 
 ```bash
 uv tool upgrade graphifyy

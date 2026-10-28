@@ -23,16 +23,16 @@ The server uses Streamable HTTP and OAuth. You sign in once in the browser, so t
 One click: install the official **Graphify** plugin by Graphify Labs from the OpenAI plugin directory, then select **Connect** and sign in. The same install works in ChatGPT.
 </InstallButton>
 
-### Before you start
+## Before you start
 
 - A Graphify account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
-### 1. Install the plugin
+## 1. Install the plugin
 
 Open the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) and select **Install plugin**, or open `/plugins` in Codex CLI and search for **Graphify**. Connect your Graphify account and finish the browser sign-in. The same plugin works in ChatGPT; see [ChatGPT, Codex, and Dots](/integrations/chatgpt).
 
-#### Manual setup
+### Manual setup
 
 Prefer to keep the setup in your own config? Add the server by hand instead.
 
@@ -59,7 +59,7 @@ Then run `codex mcp login graphify` to sign in.
 
 Use one path. Two connections show every Graphify tool twice.
 
-### 2. Check the connection
+## 2. Check the connection
 
 Open a new Codex session and run `/mcp` to check that `graphify` is available. Then paste:
 
@@ -69,11 +69,11 @@ Use Graphify's list_repositories tool and show the repositories I can access. If
 
 This is the same test prompt the console shows on **Connectors → MCP → Try a query**. Check that the list matches the workspace you chose when you signed in.
 
-#### Optional: set a default repository
+### Optional: set a default repository
 
 Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
 
-### 3. Ask a question
+## 3. Ask a question
 
 Pick a repository from the list and name the symbol, file, or area you care about:
 
@@ -83,7 +83,7 @@ Pick a repository from the list and name the symbol, file, or area you care abou
 
 Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
 
-### Troubleshooting
+## Troubleshooting
 
 | What you see | What to do |
 | --- | --- |
@@ -92,21 +92,21 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
 | Every Graphify tool appears twice | You have both the plugin and a manual server entry. Remove one. |
 
-### FAQ
+## FAQ
 
-#### Do I need an API key to connect Codex to Graphify?
+### Do I need an API key to connect Codex to Graphify?
 
 No. Codex signs in with OAuth in your browser the first time it connects. There is no key to paste or store.
 
-#### Does Graphify read my local files from Codex?
+### Does Graphify read my local files from Codex?
 
 No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine instead, use the open-source package and its local skill.
 
-#### Is the Graphify MCP server free?
+### Is the Graphify MCP server free?
 
 Every new account starts on a 14-day Pro trial. After the trial, the Free plan keeps the hosted server available for up to 3 indexed repositories, with no card required. See [Plans and pricing](/platform/support/pricing) for Pro and Teams.
 
-#### Should I use the plugin or codex mcp add?
+### Should I use the plugin or codex mcp add?
 
 Either works and both sign in with OAuth. The plugin is the quickest path. `codex mcp add` keeps the setup in your own `config.toml`.
 
@@ -115,7 +115,7 @@ Either works and both sign in with OAuth. The plugin is the quickest path. `code
 
 This page installs the local skill. Codex builds the graph on your machine. To query a repository already indexed in Graphify, use [ChatGPT, Codex, and Dots](/integrations/chatgpt).
 
-### 1. Install and register
+## 1. Install and register
 
 ```bash
 uv tool install graphifyy
@@ -130,7 +130,7 @@ For a repository-local setup, run this from the project root:
 graphify install --project --platform codex
 ```
 
-### 2. Build the graph
+## 2. Build the graph
 
 Open your project in Codex. Select the Graphify skill and enter:
 
@@ -140,7 +140,7 @@ $graphify map the current repository
 
 The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
 
-### 3. Ask with context
+## 3. Ask with context
 
 After the graph is built, ask:
 
@@ -152,7 +152,7 @@ You can also query from a terminal:
 graphify query "authentication flow"
 ```
 
-### Keep it current
+## Keep it current
 
 ```bash
 uv tool upgrade graphifyy

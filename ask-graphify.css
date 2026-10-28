@@ -33,8 +33,8 @@ div:has(> #chat-assistant-sheet),
 .graphify-ask-launcher {
   position: fixed;
   z-index: 35;
-  right: max(24px, env(safe-area-inset-right));
-  bottom: max(24px, env(safe-area-inset-bottom));
+  right: calc(24px + env(safe-area-inset-right, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -998,4 +998,15 @@ html.dark .graphify-ask-avatar img {
 .graphify-ask-pick-keys {
   color: var(--g-text-subtle);
   font-size: 12px;
+}
+
+/* Keep the "On this page" list clear of the community card and the
+   launcher in the bottom-right corner. The top edge of those overlays
+   is set by ask-graphify.js; without it the list keeps Mintlify's height. */
+@media (min-width: 1280px) {
+  #table-of-contents-layout {
+    max-height: min(100%, calc(var(--graphify-overlay-top, 100vh) - 168px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 }

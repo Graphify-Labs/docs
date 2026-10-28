@@ -265,3 +265,11 @@
     display: none !important;
   }
 }
+
+/* On shorter desktop screens, drop the artwork so the card takes less
+   of the page and covers less of the article and the outline. */
+@media (min-width: 1024px) and (max-height: 959px) {
+  .graphify-community-card[data-placement="desktop"] .graphify-community-artwork {
+    display: none;
+  }
+}

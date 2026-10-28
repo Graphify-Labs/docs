@@ -1,6 +1,6 @@
 ---
 title: "Local MCP server for your code knowledge graph"
-sidebarTitle: "Connect the graph MCP server"
+sidebarTitle: "Local MCP server"
 description: "Run graphify-mcp, the local MCP server for your code knowledge graph, and give Claude Code, Cursor, or VS Code ten structured graph tools."
 surface: "local"
 hideFooterPagination: true
@@ -54,7 +54,7 @@ Use an **absolute path** to the graph. GUI apps often start with a different wor
   <Tab title="Other clients">
     Choose the stdio transport, set the command to `graphify-mcp`, and pass the absolute graph path as the first argument. If the client cannot find the executable, replace it with the absolute path to `graphify-mcp` in your installed tool environment.
 
-    For client-specific setup, visit the [Graphify MCP connection guide](https://graphify.com/mcp). Choose your client there for its configuration instructions. That page also covers the hosted Graphify Cloud endpoint; the stdio setup above connects to a graph on your own machine.
+    For client-specific setup, visit the [Graphify MCP connection guide](https://graphify.com/mcp). Choose your client there for its configuration instructions. That page also covers the hosted Graphify endpoint; the stdio setup above connects to a graph on your own machine.
   </Tab>
 </Tabs>
 
@@ -80,7 +80,7 @@ Use the interpreter where the MCP extra is installed. In a GUI client, set the c
 
 Graph exploration tools retrieve the saved graph. The PR tools additionally read GitHub context through `gh`; they are not an entirely offline workflow. MCP `triage_prs` returns data for the calling assistant to reason over.
 
-To share a graph through a URL, use the [HTTP server guide](/mcp/shared-http). To search Graphify’s documentation instead of your code graph, use the [docs search MCP](/mcp/docs-search). To switch from this local server to the hosted one in Graphify Cloud, follow [Move from local to Cloud](/platform/local-to-cloud).
+To share a graph through a URL, use the [HTTP server guide](/mcp/shared-http). To search Graphify’s documentation instead of your code graph, use the [docs search MCP](/mcp/docs-search). To switch from this local server to the hosted one in Graphify, follow [Move from local to Cloud](/platform/local-to-cloud).
 
 ## Next steps
 

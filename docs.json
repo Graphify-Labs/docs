@@ -25,6 +25,7 @@
             "pages": [
               "platform/overview",
               "platform/quickstart",
+              "concepts/index-a-repository",
               "platform/console",
               "platform/local-to-cloud"
             ]
@@ -44,7 +45,9 @@
             "icon": "git-pull-request",
             "pages": [
               "platform/reviews",
+              "concepts/review-a-pull-request",
               "platform/read-a-result",
+              "concepts/colliding-pull-requests",
               "platform/verification",
               "platform/learning"
             ]
@@ -104,7 +107,7 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Graphify Cloud",
+            "group": "Graphify",
             "pages": [
               "guides/cloud-coding-agents"
             ]
@@ -169,6 +172,9 @@
             "group": "Cloud MCP",
             "root": "integrations/cloud",
             "pages": [
+              "integrations/claude-code-mcp",
+              "integrations/cursor-mcp",
+              "integrations/codex-mcp",
               "integrations/vscode",
               "integrations/jetbrains",
               "integrations/chatgpt",
@@ -312,7 +318,7 @@
         "header": "Product",
         "items": [
           {
-            "label": "Graphify Cloud",
+            "label": "Graphify",
             "href": "https://app.graphify.com"
           },
           {

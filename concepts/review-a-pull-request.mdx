@@ -1,0 +1,87 @@
+---
+title: "Review a pull request with Graphify"
+sidebarTitle: "Review a pull request"
+description: "Get a Graphify review on a pull request, rerun it after new commits with @graphify review, and teach it with @graphify wrong, good and suppress."
+surface: "cloud"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify reviews a pull request against the graph of your repository, so a finding can point past the diff to the callers and dependencies a change reaches. You read the review in **Reviews**, rerun it with a comment, and tell it which findings were right.
+
+Reviews are advisory. They don't block a merge.
+
+## Before you start
+
+- An account at [app.graphify.com](https://app.graphify.com). The Free plan covers 3 indexed repositories, and you don't need a card.
+- A repository with the status **Indexed**. See [Repositories and builds](/platform/repositories).
+- **PR reviews** switched on for the repository. It is on unless someone turned it off in **Repositories** > **Options**.
+
+## Get a review
+
+Open a pull request, reopen one, or mark a draft as ready for review. Graphify reviews it at that point. A draft is skipped until it is marked ready.
+
+A later push to the pull request does not start another review. To review the current head after new commits, comment on the pull request:
+
+```text
+@graphify review
+```
+
+The comment works for a repository owner, member, or collaborator. The review uses the indexed default-branch graph plus the pull request's diff. It does not index the pull request's branch.
+
+## Read the review
+
+1. Open **Reviews** and choose the repository.
+2. Select the pull request and the review run. Check the commit, so you know which revision was reviewed.
+3. Read each finding with its source context and the affected code.
+
+The review can also include these advisory sections, each with its own switch in **Repositories** > **Options**:
+
+| Section | What it lists |
+| --- | --- |
+| **Risky patterns (advisory)** | Risky patterns on lines the pull request adds. |
+| **Docs that may be stale (advisory)** | Docs that mention code the pull request changed. |
+
+Where formal verification ran, each supported changed function gets a result: proved equivalent, a behavior change with the input that shows it, or no verdict. A finished review is not proof that the change keeps behavior. See [Read a review and a verdict](/platform/read-a-result).
+
+## Tell Graphify what was right
+
+Reply on the pull request with the exact finding or rule name from the review:
+
+| Comment | Use it when |
+| --- | --- |
+| `@graphify wrong <finding>` | The finding is a false positive. |
+| `@graphify good <finding>` | The finding was useful. |
+| `@graphify suppress <rule>` | You want Graphify to stop surfacing findings from that rule. |
+
+Feedback changes which advisory findings appear later. It does not change verification results. The [Learn](/platform/learning) view shows the dismissals, suppressed patterns and feedback history.
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| No review on a new pull request | Check that **PR reviews** is on and the repository is **Indexed**. A draft waits until it is marked ready. |
+| The review is for an old commit | Comment `@graphify review` to review the current head. |
+| `@graphify review` does nothing | The commenter must be an owner, member, or collaborator, and **PR reviews** must be on. |
+| A finding misses recent default-branch code | The graph may be **Out of date**. Check [Repositories and builds](/platform/repositories). |
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Read a review and a verdict" icon="file-check" href="/platform/read-a-result">
+    What each finding and verification label means.
+  </Card>
+  <Card title="Check the impact of a change" icon="radar" href="/concepts/check-impact">
+    Ask your agent what a change reaches before you open the pull request.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/reviews" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Pull request reviews</span></a>
+  <a href="/platform/read-a-result" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Read a review and a verdict</span></a>
+</div>

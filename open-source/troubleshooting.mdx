@@ -1,0 +1,65 @@
+---
+title: "Troubleshooting"
+description: "Fix common Graphify problems: install errors, an empty or stale graph, and MCP server connection issues in Claude Code, Cursor, and other clients."
+surface: "both"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+<AccordionGroup>
+<Accordion title="The graphify command is not found">
+Run `uv tool update-shell` or `pipx ensurepath`, then open a new terminal. Verify that the package you installed was `graphifyy`. A GUI app may need an absolute executable path even when your terminal finds it.
+</Accordion>
+<Accordion title="Python cannot import graphify or mcp">
+Your command may be using a different Python environment. Install the `mcp` extra in the environment that launches the server, or use the `graphify-mcp` executable from the uv tool installation. See [MCP setup](/open-source/mcp-server).
+</Accordion>
+<Accordion title="My assistant does not discover the skill">
+Register the exact platform with `graphify install --platform <name>`. Confirm whether you intended a user or project installation. Refresh the assistant’s skills or restart it. In Codex, use the skill picker; not every client has the same slash-command behavior.
+</Accordion>
+<Accordion title="graph.json does not exist">
+Run the build workflow before querying. For a local test, use `graphify extract . --code-only` at the project root. For another location, pass `--graph /absolute/path/to/graph.json` to queries and the absolute path to MCP.
+</Accordion>
+<Accordion title="The answer reflects old code">
+Run `graphify update .`, then query again. Git hooks run in the background, and pulls/merges require an explicit update. Refresh document context through the skill or semantic extraction if documents changed.
+</Accordion>
+<Accordion title="A refresh refuses to write a smaller graph">
+Inspect the warning and confirm the smaller result is intentional. Missing dependencies or failed semantic calls can produce incomplete output. After an intentional removal or refactor, use `graphify update . --force` to allow replacement.
+</Accordion>
+<Accordion title="A query returns no path">
+Check the node names and graph version. Paths respect stored direction by default; try `--undirected` only if you want general connectivity. Missing edges can reflect unresolved or unsupported code, not necessarily the absence of a relationship.
+</Accordion>
+<Accordion title="Local model extraction is slow or runs out of memory">
+Lower `--token-budget` and `--max-concurrency`. Check that the chosen model supports the input and output size. Adjust `GRAPHIFY_OLLAMA_NUM_CTX` only with the local model’s memory needs in mind.
+</Accordion>
+<Accordion title="The MCP server disconnects or shows no tools">
+Run its configured command manually and inspect stderr. Check the MCP extra, executable path, and graph path. Refresh the client after changes. For HTTP, verify the endpoint path, reachability, and authentication header.
+</Accordion>
+<Accordion title="PR commands fail">
+Confirm `gh` is installed and authenticated for the repository. Check the repo and base-branch options. CLI `--triage` additionally needs a configured model backend.
+</Accordion>
+</AccordionGroup>
+
+## Get help
+
+Open a [GitHub issue](https://github.com/Graphify-Labs/graphify/issues) or join [Discord](https://discord.gg/graphify). Include the installed version, operating system, exact command, and a sanitized error. A small reproducible example is more useful than a private repository dump.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="When something fails in Cloud" icon="life-buoy" href="/platform/support/faqs">
+    Fixes for builds, sign-in, and agent connections.
+  </Card>
+  <Card title="Installation" icon="download" href="/open-source/installation">
+    Reinstall or upgrade the local package.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/installation" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Installation</span></a>
+  <a href="/for-agents" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Notes for agents</span></a>
+</div>

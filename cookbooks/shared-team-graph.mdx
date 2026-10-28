@@ -1,0 +1,118 @@
+---
+title: "Share context with your team"
+description: "Share a code knowledge graph with your team: choose how to distribute graphify output and keep every checkout up to date."
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+You can share generated graph files in the repository, build them in each clone, or run a shared MCP server. Choose based on the size of the graph and who may access the source context.
+
+## Repository workflow
+
+1. Register the assistant skill in project scope if your team wants shared instructions.
+2. Build and inspect the graph.
+3. Decide which generated artifacts belong in version control.
+4. Install `graphify hook install` once in each clone, or the [pre-commit hook](#commit-the-graph-with-the-code-that-changed-it) if you commit the graph.
+5. Run `graphify update .` after pulls and merges.
+
+The upstream project recommends committing `graphify-out/` to share a starting map. Review generated files first; they contain source-derived information. Keep local cost reports out of version control:
+
+```gitignore
+graphify-out/cost.json
+```
+
+You can also exclude `graphify-out/cache/` to reduce repository size, at the cost of less cache reuse. The portable manifest uses relative paths and is re-anchored on load.
+
+## Commit the graph with the code that changed it
+
+`graphify hook install` rebuilds the graph in the background after each commit. If you commit `graphify-out/graph.json`, every commit that changes code then leaves the rebuilt graph behind as an uncommitted change. A `pre-commit` hook avoids that: it rebuilds the graph before the commit and stages it, so each commit carries the graph of its own code.
+
+Track only the graph, so the hook stages exactly what it rebuilt. Each clone rebuilds the other files in `graphify-out/` locally. Replace any existing `graphify-out/` ignore line with these two lines:
+
+```gitignore
+graphify-out/*
+!graphify-out/graph.json
+```
+
+If you already track other files in `graphify-out/`, untrack them once with `git rm -r --cached graphify-out` and then run `git add graphify-out/graph.json`. Otherwise each rebuild leaves them modified.
+
+Mark the graph as generated output in `.gitattributes`:
+
+```gitattributes
+graphify-out/graph.json merge=graphify linguist-generated=true -diff
+```
+
+- `linguist-generated=true` collapses the file in GitHub pull requests.
+- `-diff` makes `git diff`, `git log -p`, and `git show` print `Binary files differ` instead of the graph. A patch saved from `git diff` then can't be applied; `git format-patch` still includes the graph.
+- `merge=graphify` merges the graph with graphify's union merge driver instead of as text.
+
+Since graphify 0.9.86, `graph.json` is one line of compact JSON, so GitHub counts a rebuilt graph as one changed line (+1 −1) in a pull request.
+
+`graphify hook install` registers the merge driver. With the pre-commit hook instead, register it once in each clone. If a repository already has it from `graphify hook install`, copy its `merge.graphify.driver` value. Otherwise point the driver at the Python that graphify is installed in, the way `hook install` does, so merges also work when `graphify` is not on `PATH`, as in GUI git clients:
+
+```bash
+git config merge.graphify.name "graphify graph.json union merge"
+git config merge.graphify.driver '"/path/to/python" -m graphify merge-driver %O %A %B'
+```
+
+On Linux and macOS, `sed -n '1s/^#!//p' "$(command -v graphify)"` prints that Python. Keep the double quotes around its path; a Windows path can contain a space.
+
+Without the driver, a merge, rebase, or cherry-pick that changed the graph on both sides stops with a conflict in `graph.json`. Rebuild it with `rm graphify-out/graph.json && graphify update . && git add graphify-out/graph.json`, then continue.
+
+If you use a hook manager such as Husky, pre-commit, or lefthook, add the lines below to its pre-commit step. Otherwise put them where `graphify hook install` puts its post-commit hook: the `pre-commit` file in git's hooks directory, which `git rev-parse --git-path hooks` prints. That is `.git/hooks` unless `core.hooksPath` names another directory. If the file already exists, add the lines before any final `exit` or `exec` line, so they run and your other checks keep running:
+
+```sh
+# graphify: rebuild graphify-out/graph.json and commit it with the code that changed it.
+if [ "${GRAPHIFY_SKIP_HOOK:-0}" != 1 ] && [ -f graphify-out/graph.json ] &&
+	! git diff --cached --quiet -- . ':!graphify-out/graph.json'; then
+	{ PYTHONHASHSEED=0 graphify update . && git add graphify-out/graph.json; } || exit 1
+fi
+```
+
+A new file needs `#!/bin/sh` as its first line and must be executable (`chmod +x`). The hook only refreshes an existing graph, so build and commit the first one yourself. `PYTHONHASHSEED=0` keeps the rebuild deterministic, as in the hooks `graphify hook install` writes: clustering walks sets whose order depends on that seed, so without it community ids can change on commits that did not change the code's structure.
+
+`.git/hooks` is not committed, so each clone adds the hook itself. To share it through the repository, commit it in a directory such as `.githooks/` and run `git config core.hooksPath .githooks` in each clone. Git then runs only the hooks in that directory and ignores `.git/hooks`, so move any hooks you still use from `.git/hooks` into it. If your CI commits to the repository, install graphify there too, or set `GRAPHIFY_SKIP_HOOK=1` for those commits.
+
+Use this hook in place of `graphify hook install`. It replaces all four hooks that `hook install` adds: post-commit, post-checkout, post-merge, and post-rewrite. The committed graph already matches each commit, but the untracked files in `graphify-out/`, such as `GRAPH_REPORT.md` and `graph.html`, are not refreshed after a branch switch. Run `graphify update .` after a branch switch, as after pulls and merges.
+
+Keep these points in mind:
+
+- A commit fails when the rebuild fails or `graphify` is not on `PATH`. Set `GRAPHIFY_SKIP_HOOK=1` or pass `--no-verify` to commit without the rebuild; the committed graph is then stale.
+- The rebuild reads your working tree, not the staged files, so unstaged and untracked code ends up in the committed graph. To commit part of your changes, stage them, run `git stash --keep-index --include-untracked`, run a plain `git commit`, and then `git stash pop`. Avoid `git commit <path>`: the hook stages the graph into git's temporary index, so your index keeps the old graph.
+- Git runs no pre-commit hook for a merge it completes without conflicts, or for the commits that `rebase`, `cherry-pick`, and `revert` create. Those commits carry the graph git merged from their parents, not a rebuild, and the merged graph can keep symbols that one side deleted. Run `graphify update .` afterward and commit the graph, or merge with `git merge --no-commit` and then run `git commit` so the hook runs.
+- Everyone should run the same graphify release. The graph records the version that built it, and releases can build different graphs from the same code.
+- Each commit waits for a full rebuild, which takes from seconds to minutes depending on the code. One 2,800-file repository takes about a minute.
+
+## One graph per worktree
+
+Avoid multiple branches writing into one output location. Set `GRAPHIFY_OUT` to a worktree-specific directory when you use a shared or custom output setup.
+
+## Shared MCP
+
+Run a [shared HTTP MCP endpoint](/open-source/self-host) if several clients should query one managed graph. Define who refreshes it, which revision it represents, and who is allowed to access it.
+
+## Review related pull requests
+
+[PR context](/open-source/features/pr-impact) helps spot changes that touch the same files or graph communities. Use it to guide review and merge order alongside your tests and normal code review.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Move from local to Cloud" icon="cloud-upload" href="/platform/local-to-cloud">
+    Share one hosted workspace with your team.
+  </Card>
+  <Card title="Review pull requests" icon="git-pull-request" href="/open-source/features/pr-impact">
+    Use graph context in code review.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/features/exports" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Export and reuse your graph</span></a>
+  <a href="/open-source/features/pr-impact" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Review pull requests with graph context</span></a>
+</div>

@@ -26,13 +26,13 @@ flowchart LR
 
 The code pipeline uses tree-sitter and specialized extractors to identify functions, classes, imports, calls, and other relationships. Parsing happens locally and does not require an LLM. Some formats use dedicated or heuristic parsers, so support differs by language and construct.
 
-SQL and Terraform have structural extractors too; their optional dependencies are listed in [supported inputs](/concepts/supported-inputs).
+SQL and Terraform have structural extractors too; their optional dependencies are listed in [supported inputs](/open-source/features/languages).
 
 ## Add semantic context
 
 Documents, papers, images, and transcripts can contribute concepts and relationships through a model. The skill uses the assistant environment; `graphify extract` supports configured headless backends.
 
-This is a separate data path. A local code parse does not send files to a model, but semantic extraction may send its input to the provider you select. [Local development](/guides/local-development) explains the choices.
+This is a separate data path. A local code parse does not send files to a model, but semantic extraction may send its input to the provider you select. [Local development](/open-source/local-development) explains the choices.
 
 ## Resolve and merge
 

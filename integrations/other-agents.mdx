@@ -25,7 +25,7 @@ Read the current setup guide at https://docs.graphify.com/integrations/cloud fir
 
 For Graphify, the Streamable HTTP MCP endpoint is https://api.graphify.com/mcp. Guide me through adding Graphify and completing its OAuth sign-in. I need a Graphify account, access to a workspace, and an indexed repository; if those are missing, help me get started at https://app.graphify.com. Let me complete sign-in and authorization myself.
 
-If this client cannot configure a connection directly, show me the manual steps and any plan or workspace-admin requirements. If I want a local graph instead, follow https://docs.graphify.com/mcp/overview. Do not claim the connection succeeded until it has been verified.
+If this client cannot configure a connection directly, show me the manual steps and any plan or workspace-admin requirements. If I want a local graph instead, follow https://docs.graphify.com/open-source/mcp-server. Do not claim the connection succeeded until it has been verified.
 
 After connecting, list my available workspaces and indexed repositories, ask which repository to use, and answer one architecture question using graph evidence and source locations.
 ```
@@ -65,7 +65,7 @@ Some tools can save repository memory or change the selected workspace. Approve 
 
 ## A graph on your machine
 
-This page uses the hosted server. To query a graph file on your computer, follow [Local MCP server](/mcp/overview). The local skill for assistants without their own page is [Other local assistants](/integrations/other-assistants).
+This page uses the hosted server. To query a graph file on your computer, follow [Local MCP server](/open-source/mcp-server). The local skill for assistants without their own page is [Other local assistants](/integrations/other-assistants).
 
 ## If something fails
 
@@ -73,7 +73,7 @@ This page uses the hosted server. To query a graph file on your computer, follow
 | --- | --- |
 | The repository is missing | It is not indexed yet, or it is in another workspace. Check its status in [Repositories and builds](/platform/repositories). |
 | The assistant asks for an API key | This server uses OAuth. The URL is `https://api.graphify.com/mcp`. |
-| The tools are the ten local ones | That connection reads a graph on your machine. This page uses the hosted server. See the [MCP tool reference](/reference/mcp-tools). |
+| The tools are the ten local ones | That connection reads a graph on your machine. This page uses the hosted server. See the [MCP tool reference](/open-source/features/mcp-tools). |
 | The same tools appear twice | A dedicated plugin and a manual server are both configured. Keep one. |
 
 ## Next steps
@@ -84,7 +84,7 @@ This page uses the hosted server. To query a graph file on your computer, follow
   <Card title="Agents and integrations" icon="settings" href="/platform/connections">
     Manage connected agents in the console.
   </Card>
-  <Card title="When something fails" icon="life-buoy" href="/platform/when-stuck">
+  <Card title="When something fails" icon="life-buoy" href="/platform/support/faqs">
     Fix sign-in and connection problems.
   </Card>
 </Columns>

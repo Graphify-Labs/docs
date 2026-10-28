@@ -37,7 +37,7 @@ A push to any other branch does not update the graph. Branches named `dev` or `u
 
 There is no setting to index every branch, or to index on every pull request. To index a different line of development, make that branch the default branch on GitHub or GitLab. **Retry** on a failed build indexes the current head of the default branch.
 
-One index of a repository runs at a time. A later push to the default branch waits, or joins the build already queued. Hosted plans can also limit how many push-triggered indexes a repository finishes in a UTC day. A manual reindex does not use that allowance. The allowances are on [plans and pricing](/pricing/overview). The repository row can show **Out of date** when the newest default-branch commit is not the commit the graph is serving, and no build for that commit is running.
+One index of a repository runs at a time. A later push to the default branch waits, or joins the build already queued. Hosted plans can also limit how many push-triggered indexes a repository finishes in a UTC day. A manual reindex does not use that allowance. The allowances are on [plans and pricing](/platform/support/pricing). The repository row can show **Out of date** when the newest default-branch commit is not the commit the graph is serving, and no build for that commit is running.
 
 ## Follow a build
 
@@ -51,7 +51,7 @@ The first completed index makes code context available in [Graphs](/platform/gra
 
 ## Usage and access
 
-Respect the limit or provisioning message shown by the console. Hosted plans have daily push-build allowances as well as build concurrency and operational limits. Uncapped graph size on Pro and Teams does not remove those limits. See [plans and pricing](/pricing/overview) for hosted allowances, and the workspace's **Billing** view for its plan.
+Respect the limit or provisioning message shown by the console. Hosted plans have daily push-build allowances as well as build concurrency and operational limits. Uncapped graph size on Pro and Teams does not remove those limits. See [plans and pricing](/platform/support/pricing) for hosted allowances, and the workspace's **Billing** view for its plan.
 
 ## Next steps
 

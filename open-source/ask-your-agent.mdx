@@ -1,0 +1,82 @@
+---
+title: "Ask your agent one question"
+description: "Install Graphify, map the repository, and check the files a successful run writes."
+surface: "local"
+hideFooterPagination: true
+sidebarTitle: "Ask your agent one question"
+---
+
+This is the shortest path from an empty checkout to one real question. It uses the open-source engine on your machine. You need Python 3.10 or later and a supported coding assistant.
+
+<Steps>
+  <Step titleSize="h2" title="Install and check the version">
+    ```bash
+    uv tool install graphifyy
+    graphify --version
+    ```
+
+    `graphify --version` prints the version you installed. The latest release is on [PyPI](https://pypi.org/project/graphifyy/) and in the [changelog](/changelog). The package is `graphifyy`, with two y's. The command is `graphify`.
+  </Step>
+  <Step titleSize="h2" title="Install the skill for your assistant">
+    ```bash
+    graphify install --platform cursor
+    ```
+
+    Use `claude`, `codex`, `gemini`, or `copilot` in place of `cursor` when that is the assistant. `graphify install` with no flag uses the assistant it detects. Copilot in VS Code uses `graphify vscode install`. See [all integrations](/integrations/overview).
+  </Step>
+  <Step titleSize="h2" title="Map the repository">
+    In the assistant chat, at the repository root:
+
+    ```text
+    /graphify .
+    ```
+
+    In Codex, select the Graphify skill with `$graphify` and ask it to map the current repository. This is an assistant instruction, not a shell command.
+  </Step>
+  <Step titleSize="h2" title="Check the files">
+    A finished map writes `graphify-out/` at the repository root:
+
+    ```text
+    graphify-out/
+    ├── graph.html        Interactive graph
+    ├── GRAPH_REPORT.md   Concepts, communities, and suggested questions
+    └── graph.json        The graph used by CLI and MCP queries
+    ```
+  </Step>
+  <Step titleSize="h2" title="Ask one question">
+    ```bash
+    graphify query "how does authentication reach the database?"
+    ```
+
+    The first line names the graph and the nodes the search started from. Each `NODE` line is a concept with its source file and line. Each `EDGE` line is a relationship and where it happens in the code. If the output says `TRUNCATED`, raise `--budget` or ask about a narrower name.
+
+    This is graph context from the files Graphify analyzed, not a verified answer. Open the source lines it cites before you rely on it.
+  </Step>
+</Steps>
+
+## If a step fails
+
+| What you see | What to do |
+| --- | --- |
+| The shell cannot find `graphify` | Run `uv tool update-shell`, then open a new terminal. See [Troubleshooting](/open-source/troubleshooting). |
+| No `graphify-out/` after `/graphify .` | Run it in the assistant chat at the repository root, not in a shell. See [When something fails](/platform/support/faqs). |
+| The query returns nothing useful | Ask about a function, class, or file in this repository. If the code changed since the map, run `graphify update .` first. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Trace who calls this" icon="route" href="/platform/trace">
+    Find the callers of a symbol and check whether two names connect.
+  </Card>
+
+  <Card title="Query reference" icon="terminal" href="/open-source/configuration/cli#query">
+    Every flag `graphify query` accepts.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/features/headless-extraction" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Extract without an IDE</span></a>
+  <a href="/open-source/features/querying" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Ask better graph questions</span></a>
+</div>

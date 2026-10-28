@@ -1,0 +1,61 @@
+---
+title: "Plan a risky refactor with Graphify"
+sidebarTitle: "Plan a risky refactor"
+description: "Before a large change, use Graphify to see what the code reaches, which files carry the most risk, and which tests cover them, then review the result."
+surface: "both"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+You need to change something many parts of the code depend on: a core function, a data shape, a module boundary. The risk is the code you don't know about. Graphify shows what a change reaches before you make it, and reviews the pull request against the same graph after.
+
+This walkthrough uses the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, with `build_from_json` as the function to change.
+
+## Walk through it
+
+<Steps>
+  <Step title="Map what the change reaches">
+    With the repository **Indexed** ([Index your first repository](/concepts/index-a-repository)) and your agent connected ([Claude Code](/integrations/claude-code-mcp), [Cursor](/integrations/cursor-mcp), [Codex](/integrations/codex-mcp) or [VS Code](/integrations/vscode)), ask:
+
+    ```text
+    Use Graphify on Graphify-Labs/graphify: I want to change build_from_json.
+    What does that reach, which files are riskiest, and which tests cover them?
+    ```
+
+    See [Check the impact of a change](/concepts/check-impact).
+  </Step>
+  <Step title="Follow the callers">
+    Ask what calls `build_from_json`, and trace how `extract` reaches it. See [Follow calls and trace a path](/concepts/follow-calls).
+  </Step>
+  <Step title="Look for code you can remove">
+    Expand the repository row on **Repositories** to see **Unreferenced code (heuristic)**. Code reached through reflection, a string lookup, or another repository can still appear, so check before you delete it.
+  </Step>
+  <Step title="Split the change and review it">
+    Open the refactor as small pull requests. Each gets a review. Where verification ran, each supported changed function is proved equivalent, shows a behavior change with the input that triggers it, or has no verdict. See [Review a pull request](/concepts/review-a-pull-request) and [Read a review and a verdict](/platform/read-a-result).
+  </Step>
+</Steps>
+
+Impact results list direct connections. Code called dynamically, or tested in a way the graph does not link, may not appear. Run your tests.
+
+## Do it locally instead
+
+```bash
+graphify extract . --code-only
+graphify explain "build_from_json"
+graphify path "extract" "build_from_json"
+graphify query "what depends on build_from_json" --budget 1500
+```
+
+After the refactor, rebuild with `graphify update . --force`. See [Keep the graph current](/open-source/features/incremental-updates).
+
+## Next steps
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/cookbooks/keep-docs-in-sync" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Keep docs in sync with code</span></a>
+  <a href="/open-source/configuration/cli" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">CLI reference</span></a>
+</div>

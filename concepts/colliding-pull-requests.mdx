@@ -13,7 +13,7 @@ Two pull requests can both pass review and still collide when they change the sa
 ## Before you start
 
 - An account at [app.graphify.com](https://app.graphify.com). The Free plan covers 3 indexed repositories, and you don't need a card.
-- For the local commands, the open-source CLI. See [Installation](/installation).
+- For the local commands, the open-source CLI. See [Installation](/open-source/installation).
 - A repository with the status **Indexed**, or a local graph at `graphify-out/graph.json`.
 - For the local commands, the [GitHub CLI](https://cli.github.com) signed in to the repository. `graphify prs` reads open pull requests through it.
 
@@ -69,7 +69,7 @@ Pull requests in the same community change code that is closely connected in the
 | An error from `gh` | Sign in with `gh auth login` and check you can see the repository. |
 | Triage can't find a backend | Set `GRAPHIFY_TRIAGE_BACKEND` and the API key for that backend. |
 
-[Pull request context](/guides/pull-requests) covers the rest of `graphify prs` and the MCP tools for pull requests.
+[Pull request context](/open-source/features/pr-impact) covers the rest of `graphify prs` and the MCP tools for pull requests.
 
 ## Next steps
 

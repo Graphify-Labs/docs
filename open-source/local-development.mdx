@@ -1,0 +1,67 @@
+---
+title: "Run Graphify locally"
+description: "Run Graphify entirely on your machine: a code-only workflow, or semantic extraction with a local model backend such as Ollama."
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+<Tip>
+Don't want to install anything? Graphify, the hosted product at app.graphify.com, indexes your GitHub repositories in the browser. We run it for you, so there's nothing to deploy. Start with the [Cloud quickstart](/platform/quickstart).
+</Tip>
+
+The open-source engine stores its graph on your filesystem. It does not require a Graphify account.
+
+## Code-only workflow
+
+```bash
+uv tool install graphifyy
+graphify extract . --code-only
+graphify cluster-only . --no-label
+graphify export html
+graphify query "entry points"
+```
+
+`--code-only` is an `extract` flag. It skips semantic document and media extraction. It is not a flag you need to pass to the assistant skill.
+
+## Include documents with a local model
+
+Install the Ollama extra and run an Ollama model suitable for your content. Select an installed model in `OLLAMA_MODEL`, then:
+
+```bash
+uv tool install "graphifyy[ollama]"
+graphify extract ./docs --backend ollama
+```
+
+Graphify defaults to the local Ollama endpoint. If you override the endpoint to a remote host, that changes where the content is sent. Large documents may need a smaller `--token-budget` or lower `--max-concurrency`.
+
+## Understand the boundaries
+
+- Local structural parsing does not send code to a model.
+- A cloud coding assistant still controls where its own prompts and context go.
+- A headless semantic backend receives the documents or media you ask it to process.
+- PR commands contact GitHub, and model-assisted CLI triage can call your configured provider.
+- Query logging is off by default in the current implementation; [configuration](/open-source/configuration/graphifyrc) describes the opt-in controls.
+
+The generated graph can contain source text, labels, paths, and document concepts. Keep it in a location appropriate for that source material.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Extract without an IDE" icon="cpu" href="/open-source/features/headless-extraction">
+    Build graphs in scripts and CI.
+  </Card>
+  <Card title="Ask better graph questions" icon="search" href="/open-source/features/querying">
+    Use query, path, and explain.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/cli-quickstart" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Build and explore a small graph</span></a>
+  <a href="/open-source/features/headless-extraction" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Extract without an IDE</span></a>
+</div>

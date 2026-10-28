@@ -33,21 +33,21 @@ You can point a query at a specific file:
 graphify query "authentication" --graph ./shared/graph.json
 ```
 
-The graph contains labels and source-derived context. Treat it with the same access controls as the source repository. See [team workflows](/guides/team-workflows) before committing generated artifacts.
+The graph contains labels and source-derived context. Treat it with the same access controls as the source repository. See [team workflows](/cookbooks/shared-team-graph) before committing generated artifacts.
 
 ## Change the output location
 
-`GRAPHIFY_OUT` changes the output directory. Use a distinct directory when multiple worktrees need their own graph. See [configuration](/reference/configuration).
+`GRAPHIFY_OUT` changes the output directory. Use a distinct directory when multiple worktrees need their own graph. See [configuration](/open-source/configuration/graphifyrc).
 
 ## Next steps
 
 <TryCloudCard />
 
 <Columns cols={2}>
-  <Card title="Supported inputs" icon="files" href="/concepts/supported-inputs">
+  <Card title="Supported inputs" icon="files" href="/open-source/features/languages">
     Languages and documents Graphify can read.
   </Card>
-  <Card title="Export and reuse your graph" icon="share-2" href="/guides/exports">
+  <Card title="Export and reuse your graph" icon="share-2" href="/open-source/features/exports">
     Turn the graph into HTML, JSON, and more.
   </Card>
 </Columns>
@@ -56,5 +56,5 @@ The graph contains labels and source-derived context. Treat it with the same acc
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
   <a href="/concepts/provenance" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Edges and provenance</span></a>
-  <a href="/concepts/supported-inputs" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Supported inputs</span></a>
+  <a href="/open-source/features/languages" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Supported inputs</span></a>
 </div>

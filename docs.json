@@ -47,6 +47,7 @@
               "platform/reviews",
               "concepts/review-a-pull-request",
               "platform/read-a-result",
+              "concepts/colliding-pull-requests",
               "platform/verification",
               "platform/learning"
             ]

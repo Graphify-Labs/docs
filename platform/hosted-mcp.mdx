@@ -90,9 +90,26 @@ The **MCP** tab under **Connectors** in the Console shows the setup for your cli
     ```
     VS Code uses `servers`, not `mcpServers`. Finish the browser sign-in when prompted. No token goes in this file.
   </Tab>
+  <Tab title="Gemini CLI">
+    ```bash
+    gemini mcp add --transport http graphify https://api.graphify.com/mcp
+    ```
+    Or add it to `~/.gemini/settings.json`. Gemini CLI uses `httpUrl` for remote servers, not `url`:
+
+    ```json ~/.gemini/settings.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "httpUrl": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+    On first use, Gemini CLI opens a browser sign-in. There's no key to paste. Use `.gemini/settings.json` to scope it to one repository.
+  </Tab>
 </Tabs>
 
-The Console also has setup for VS Code, Windsurf, Cline, Continue, JetBrains, Zed, Goose, Gemini CLI, Kiro, and other clients, including one-click install links where a client supports them.
+The Console also has setup for VS Code, Windsurf, Cline, Continue, JetBrains, Zed, Goose, Kiro, and other clients, including one-click install links where a client supports them.
 
 ### Clients without remote OAuth
 

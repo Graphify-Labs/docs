@@ -1,26 +1,16 @@
 ---
 title: "Local"
-description: "Summaries of graphifyy releases that change a command, flag, or file. The full list is on graphify.com/changelog."
+description: "Where to find graphifyy open-source release notes: GitHub releases for the Graphify-Labs/graphify repo and the changelog on graphify.com."
 hideFooterPagination: true
-rss: true
 sidebarTitle: "Local"
 ---
 
-Each entry summarizes a release of the open-source package, `graphifyy`, when that release changes a command, a flag, or a file a reader follows. The newest summary on this page is v0.9.72 (September 29, 2026). Later package versions are on [PyPI](https://pypi.org/project/graphifyy/), with the full history on [graphify.com/changelog](https://graphify.com/changelog) and in the [GitHub releases](https://github.com/Graphify-Labs/graphify/releases).
+The open-source package, `graphifyy`, ships new versions often, sometimes several in a week. Release notes live in two places that stay current, so this page points to them instead of repeating them.
 
-<Update label="v0.9.72" description="September 29, 2026">
-
-## Installed skills refresh after an upgrade
-
-- After an upgrade, `graphify` refreshes a stale installed skill on the next command other than `graphify install`, so the version warning no longer needs a manual install. Set `GRAPHIFY_NO_AUTO_REFRESH=1` to turn that off. Local edits to `SKILL.md` are backed up. Marker-bounded sections in `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md` are left alone.
-- The Node Info panel in `graph.html` shows each node's type, source, and community. A community node shows how many members it holds.
-- A Kotlin property that is both annotated and inferred, such as `@Volatile var x = 0`, no longer drops the whole file during extraction.
-- SQL before a PostgreSQL `DO` block is extracted. Razor `@functions` blocks are read. A Blade view links to the layout it extends.
-- `graphify` and `graphify --help` show the logo and a link to [app.graphify.com](https://app.graphify.com).
-
-Import resolution, docx sidecars, wiki links, and the PDF extra warning are in the [full v0.9.72 release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.72).
-
-</Update>
+<div className="not-prose mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+  <a href="https://github.com/Graphify-Labs/graphify/releases" className="group flex flex-col rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] p-6 no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[#1f8a55] dark:text-[#4dea9c]">GitHub</span><span className="mt-2 text-base font-semibold text-[#062314] dark:text-[#ededed]">GitHub releases</span><span className="mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">Full release notes and tags for every version of the open-source repo.</span><span className="mt-4 text-sm font-medium text-[#254d37] dark:text-[#d4d4d4]">View releases ↗</span></a>
+  <a href="https://graphify.com/changelog" className="group flex flex-col rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] p-6 no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[#1f8a55] dark:text-[#4dea9c]">graphify.com</span><span className="mt-2 text-base font-semibold text-[#062314] dark:text-[#ededed]">Website changelog</span><span className="mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">A readable summary of each release, newest first.</span><span className="mt-4 text-sm font-medium text-[#254d37] dark:text-[#d4d4d4]">Read the changelog ↗</span></a>
+</div>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

@@ -1,0 +1,157 @@
+---
+title: "Graphify troubleshooting: MCP, OAuth, 429, indexing"
+sidebarTitle: "Troubleshooting"
+description: "Fix Graphify sign-in and MCP OAuth errors, 429 rate_limited, failed or slow indexing, GitHub and GitLab connect issues, and MCP config mistakes."
+keywords: ["graphify troubleshooting", "mcp oauth error", "invalid_grant refresh token", "429 rate_limited", "indexing failed", "mcp server not connecting"]
+surface: "cloud"
+---
+
+This page covers Graphify, the hosted product at [app.graphify.com](https://app.graphify.com). Each section heading uses the error text you see, so you can search for it.
+
+Every API error has the same shape. Include the `correlationId` when you contact support:
+
+```json Error response
+{
+  "error": { "code": "rate_limited", "message": "Too many requests. Please slow down." },
+  "meta": { "correlationId": "…" }
+}
+```
+
+## Sign-in and MCP OAuth errors
+
+### MCP client shows "Needs login" or "needs authentication"
+
+Your client hasn't finished the one-time browser sign-in. Graphify answers a request with no token with `401` and a `WWW-Authenticate` header, which starts the sign-in.
+
+- Claude Code: run `/mcp`, select **graphify**, and choose **Authenticate**.
+- Codex: run `codex mcp login graphify`.
+- Cursor: select **Needs login** next to the server.
+
+See [Hosted MCP](/platform/hosted-mcp#how-hosted-mcp-sign-in-works) for how sign-in works.
+
+### invalid_grant: "Refresh token superseded; retry the login."
+
+Several agent sessions shared one stored login and refreshed at the same time. Only one refresh wins. Sign in again from the client that failed.
+
+### invalid_grant: "Refresh token reuse detected." or "Refresh token expired."
+
+The stored login is no longer valid. Sign out of the server in your client, then sign in again. Other `invalid_grant` messages, such as "Authorization code expired." or "PKCE verification failed.", also mean you should start the sign-in again.
+
+### invalid_client_metadata: "Only public clients (auth method 'none') are supported."
+
+Your client tried to register with a client secret. Graphify supports public OAuth clients only. Use the client's standard remote MCP setup, or the [`mcp-remote` bridge](/platform/hosted-mcp#clients-without-remote-oauth).
+
+### 429 on sign-in
+
+Too many token refreshes for one login in a minute. The response includes `Retry-After`. Wait that long, then retry.
+
+### "Your session expired. Signing you back in…"
+
+The console's session ended. The console signs you in again on its own. If it keeps happening, sign out and sign in again.
+
+## MCP workspace errors
+
+### no_workspace: "No workspace is selected for this agent."
+
+You belong to more than one workspace and haven't picked one. The message lists your workspaces. Ask your agent to run `set_workspace` with one handle. `set_workspace` changes which workspace the session reads from.
+
+### workspace_access_revoked
+
+You were removed from the bound workspace, or lost access. Run `list_workspaces` and pick another.
+
+### mcp_session_required: "set_workspace can only run inside an established MCP session."
+
+Reconnect the server in your client, then run `set_workspace` again.
+
+### list_repositories is empty
+
+You're in a workspace with no indexed repositories, or the repository is still indexing. Check the workspace with `list_workspaces`, and check indexing in the console.
+
+## 429 rate_limited: "Too many requests. Please slow down."
+
+You went over a default per-minute limit:
+
+| Operation | Default limit |
+| --- | --- |
+| Ask | 30/minute per workspace |
+| Query | 120/minute per workspace |
+| Hosted MCP | 240/minute per client IP |
+| Test impact | 60/minute per workspace |
+
+Back off and retry with exponential delay and jitter. The usual cause is an agent calling Graphify in a tight loop. In CI, treat a `429` from test impact as "run the full suite". See [Rate limits](/platform/support/rate-limits).
+
+## Indexing failed or stuck
+
+### "Taking longer than usual. Still indexing."
+
+Large repositories take longer. The build is still running. Wait, and keep using the last published graph in the meantime.
+
+### "Indexing failed"
+
+Open the repository in the console and select **Retry indexing**. For a combined graph, the message is "Your graph couldn’t finish building" with a **Retry build** button.
+
+### "Nothing to show yet"
+
+No code was found in the graph. Select **Reindex repository**. If the repository has no commits on its default branch, GitLab sync reports `repository_empty`: "This repository has no commits on its default branch yet." Push a commit first.
+
+### Plan limits stop a build
+
+Messages such as **Monthly indexing allowance used** or **Daily build limit reached** mean a plan limit, not a fault. See [Rate limits and plan limits](/platform/support/rate-limits#other-limit-responses).
+
+If a build stays stuck, use **Get in touch** under **Settings** in the console.
+
+## Repository connect issues
+
+### GitHub repositories are missing
+
+On the **Repositories** page, select **Add GitHub repositories**. It opens GitHub, where you choose which repositories the Graphify app can access. A repository you didn't grant there won't appear. See [GitHub](/integrations/github).
+
+### GitLab: "GitLab is not connected." or "Reconnect GitLab to continue."
+
+Graphify supports GitLab on **gitlab.com only**. Self-managed GitLab isn't supported. Open **Integrations**, then select **Connect** on the GitLab card. If you see `gitlab_reconnect_required`, connect again.
+
+Other GitLab errors:
+
+| Code | Message | What to do |
+| --- | --- | --- |
+| `gitlab_repository_unavailable` | "GitLab repository access is unavailable." | Check that your GitLab account can still see the project, then reconnect. |
+| `gitlab_sync_conflict` | "The GitLab connection changed while syncing. Retry the sync." | Retry the sync. |
+| `repository_empty` | "This repository has no commits on its default branch yet." | Push a commit. |
+
+See [GitLab](/integrations/gitlab).
+
+## MCP client config mistakes
+
+| Mistake | Fix |
+| --- | --- |
+| VS Code config uses `mcpServers` | VS Code uses `servers`. |
+| Gemini CLI config uses `url` | Gemini CLI uses `httpUrl` for remote servers. |
+| Copilot CLI connects but has no tools | Add `"tools": ["*"]` to `~/.copilot/mcp-config.json`. |
+| A token or API key pasted into the config | Remove it. The hosted server signs in with OAuth. |
+| Wrong URL | Use `https://api.graphify.com/mcp`. |
+| `npx` not found with `mcp-remote` | Install Node.js where the client can find it, or use native remote setup. |
+| `413 mcp_body_too_large` | A request body was over 256 KB. Send smaller requests. |
+
+Per-client setup is in [Integrations](/integrations/overview).
+
+## Graphify vs Graphify Local confusion
+
+| Symptom | Cause |
+| --- | --- |
+| The agent doesn't see uncommitted changes | The hosted MCP serves the indexed graph. Use the [local MCP server](/open-source/mcp-server) for local work. |
+| A Local command or flag doesn't work in the console | Graphify Local is the open-source CLI. It's a separate product. |
+| Rate limits on Local | Graphify Local runs on your machine and has no rate limits. |
+| Moving a Local graph to Graphify | See [Move from Local](/platform/support/move-from-local). |
+
+See [Graphify vs Graphify Local](/platform/graphify-vs-local).
+
+## Still stuck
+
+<Columns cols={2}>
+  <Card title="FAQs" icon="circle-help" href="/platform/support/faqs">
+    Common questions.
+  </Card>
+  <Card title="Hosted MCP" icon="plug" href="/platform/hosted-mcp">
+    Setup and verification.
+  </Card>
+</Columns>

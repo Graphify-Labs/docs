@@ -20,14 +20,14 @@ Graphify can't read audio directly, so it transcribes recordings to text with [f
 ## Setup
 
 ```bash
-uv tool install "graphifyy[video]" --with "av<16"
+uv tool install "graphifyy[video]" --with "av<19"
 mkdir -p meetings && cp ~/Recordings/*.m4a meetings/
 ```
 
 The `video` extra installs faster-whisper and yt-dlp. Graphify picks up `.mp4`, `.mov`, `.webm`, `.mkv`, `.avi`, `.m4v`, `.mp3`, `.wav`, `.m4a` and `.ogg`.
 
 <Warning>
-At the time of writing, faster-whisper 1.2.1 fails with PyAV 16 or later: `open() got an unexpected keyword argument 'metadata_errors'`. Pin `av<16`, as above, until this is fixed upstream.
+At the time of writing, faster-whisper 1.2.1 fails with PyAV 19 or later: `open() got an unexpected keyword argument 'metadata_errors'`. Pin `av<19`, as above, until this is fixed upstream.
 </Warning>
 
 ## Step 1: Let your agent do it
@@ -62,7 +62,7 @@ print(paths)
 Run it in an environment that has the `video` extra:
 
 ```bash
-uv run --with "graphifyy[video]" --with "av<16" python transcribe.py
+uv run --with "graphifyy[video]" --with "av<19" python transcribe.py
 ```
 
 ```text
@@ -100,7 +100,7 @@ graphify add "https://www.youtube.com/watch?v=VIDEO_ID"
 
 ## When it goes wrong
 
-**`open() got an unexpected keyword argument 'metadata_errors'`.** PyAV is too new for faster-whisper. Reinstall with `--with "av<16"`.
+**`open() got an unexpected keyword argument 'metadata_errors'`.** PyAV is too new for faster-whisper. Reinstall with `--with "av<19"`.
 
 **Names are misspelled.** Add them to the prompt, or use a larger model.
 
@@ -117,8 +117,8 @@ graphify add "https://www.youtube.com/watch?v=VIDEO_ID"
 ## Complete example
 
 ```bash
-uv tool install "graphifyy[video]" --with "av<16"
-uv run --with "graphifyy[video]" --with "av<16" python transcribe.py
+uv tool install "graphifyy[video]" --with "av<19"
+uv run --with "graphifyy[video]" --with "av<19" python transcribe.py
 mkdir -p docs/meetings && cp graphify-out/transcripts/*.txt docs/meetings/
 graphify extract . --backend claude
 graphify query "what did we decide about the retry queue?"

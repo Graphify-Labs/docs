@@ -1,0 +1,140 @@
+---
+title: "Environment variables for Graphify Local"
+sidebarTitle: "Environment variables"
+description: "Every GRAPHIFY_ environment variable that changes where Graphify Local writes, how it calls models, how hooks behave, and what it logs."
+keywords: ["GRAPHIFY_OUT", "graphify environment variables", "GRAPHIFY_BACKEND", "graphify configuration"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify Local reads its per-run settings from environment variables. Set them in your shell, CI job, or MCP client config. Nothing here is needed for a code-only build; you reach for these when you change the output folder, tune model calls, or quiet the hooks.
+
+<Note>
+**Use environment variables when** a setting depends on the machine or the run (a CI output path, a model name, a timeout). For settings that describe the repository itself, use [`.graphifyrc`](/open-source/configuration/graphifyrc).
+</Note>
+
+## How it works
+
+Command-line flags win over environment variables, and environment variables win over built-in defaults. Several flags simply set the matching variable for the rest of the run: `--api-timeout` sets `GRAPHIFY_API_TIMEOUT` and `--max-workers` sets `GRAPHIFY_MAX_WORKERS`. Boolean variables accept `1`, `true`, or `yes`.
+
+Provider keys such as `ANTHROPIC_API_KEY` are covered on [LLM providers](/open-source/configuration/llm-providers).
+
+## Output and size
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `GRAPHIFY_OUT` | `graphify-out` | Output folder. Use a different one per git worktree. Absolute paths work. |
+| `GRAPHIFY_MAX_WORKERS` | CPU count | Parallel AST extraction processes. |
+| `GRAPHIFY_MAX_GRAPH_BYTES` | 512 MiB | Largest `graph.json` Graphify will load. |
+| `GRAPHIFY_VIZ_NODE_LIMIT` | `5000` | Skip `graph.html` above this many nodes. `0` disables the HTML view. |
+| `GRAPHIFY_FORCE` | off | Write the graph even if a rebuild has fewer nodes, and skip incremental caches. Same as `--force`. |
+| `GRAPHIFY_NO_INCREMENTAL_CACHE` | off | Don't save semantic results chunk by chunk during a run. An interrupted run then starts over. |
+| `GRAPHIFY_NO_BACKUP` | off | Don't back up the previous outputs before overwriting them. |
+| `GRAPHIFY_AMBIGUOUS_SCALE` | `0.5` | Weight applied to `AMBIGUOUS` edges during clustering. |
+
+## Model calls
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `GRAPHIFY_BACKEND` | auto-detect | Pick a backend by name. `none`, `off`, or `disabled` turns model calls off. |
+| `GRAPHIFY_API_TIMEOUT` | `600` | Seconds per model request. |
+| `GRAPHIFY_MAX_RETRIES` | built in | Retries for rate-limited requests. |
+| `GRAPHIFY_MAX_RETRY_DEPTH` | built in | How far Graphify splits a truncated chunk to recover it. |
+| `GRAPHIFY_MAX_OUTPUT_TOKENS` | backend's | Output token cap per request. |
+| `GRAPHIFY_LLM_TEMPERATURE` | backend's | Override the sampling temperature. |
+| `GRAPHIFY_DISABLE_THINKING` | off | Turn off thinking on models that enable it by default, such as DeepSeek v4. |
+| `GRAPHIFY_OPENAI_MODEL`, `GRAPHIFY_GEMINI_MODEL`, `GRAPHIFY_DEEPSEEK_MODEL`, `GRAPHIFY_AZURE_MODEL`, `GRAPHIFY_BEDROCK_MODEL` | backend's | Model for that backend. |
+| `GRAPHIFY_CLAUDE_CLI_MODEL` | plan default | Model for the `claude-cli` backend. |
+| `GRAPHIFY_ALLOW_LOCAL_PROVIDERS` | off | Load a project-local `.graphify/providers.json`. |
+| `GRAPHIFY_TRIAGE_BACKEND`, `GRAPHIFY_TRIAGE_MODEL` | auto | Backend and model for pull request triage. |
+
+### Ollama
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `GRAPHIFY_OLLAMA_NUM_CTX` | derived | Context window sent to Ollama. |
+| `GRAPHIFY_OLLAMA_KEEP_ALIVE` | `30m` | How long Ollama keeps the model loaded. |
+| `GRAPHIFY_OLLAMA_PARALLEL` | off | Allow parallel requests (otherwise one at a time). |
+| `GRAPHIFY_OLLAMA_VISION` | off | Send images to the Ollama model. |
+| `GRAPHIFY_OLLAMA_SEED` | none | Fixed sampling seed for repeatable output. |
+
+### Media
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `GRAPHIFY_WHISPER_MODEL` | `base` | Whisper model used to transcribe audio and video. |
+| `GRAPHIFY_WHISPER_PROMPT` | built from corpus | Prompt that primes transcription with domain words. |
+| `GRAPHIFY_GOOGLE_WORKSPACE` | off | Export Google Docs, Sheets, and Slides shortcuts before extraction. Same as `--google-workspace`. |
+| `GRAPHIFY_GOOGLE_WORKSPACE_TIMEOUT` | `120` | Seconds per Google Workspace export. |
+
+## Hooks and the agent loop
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `GRAPHIFY_SKIP_HOOK` | off | Skip the git hook rebuild for one command, for example `GRAPHIFY_SKIP_HOOK=1 git commit`. |
+| `GRAPHIFY_REBUILD_TIMEOUT` | `600` | Seconds before a hook rebuild gives up. |
+| `GRAPHIFY_REBUILD_MEMORY_LIMIT_MB` | none | Memory cap, in MB, for a background rebuild. |
+| `GRAPHIFY_NO_AUTO_REFRESH` | off | Don't refresh installed agent skill files after a Graphify upgrade. Useful for pinned skill folders. |
+| `GRAPHIFY_HOOK_STRICT` | install flag | Force strict mode on (`1`) or off (`0`) without reinstalling. In strict mode, the agent hook blocks raw file reads until the agent has queried the graph. |
+| `GRAPHIFY_HOOK_STRICT_TTL` | `1800` | Seconds a `query`, `explain`, or `path` counts as recent, so strict mode lets reads through. |
+| `GRAPHIFY_HOOK_NUDGE_CAP` | `5` | Most reminders the agent hook adds per session. |
+
+## Server, logs, and output
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `GRAPHIFY_API_KEY` | none | Key required by `graphify-mcp --transport http`. |
+| `GRAPHIFY_QUERY_LOG` | off | Log queries to this file. |
+| `GRAPHIFY_QUERY_LOG_ENABLE` | off | Log queries to `~/.cache/graphify-queries.log`. |
+| `GRAPHIFY_QUERY_LOG_RESPONSES` | off | Include responses in the query log. |
+| `GRAPHIFY_QUERY_LOG_DISABLE` | off | Force query logging off. Wins over the two above. |
+| `GRAPHIFY_DEBUG` | off | Print extra diagnostics. |
+| `GRAPHIFY_NO_TIPS`, `GRAPHIFY_NO_CTA` | off | Hide tips and the hosted-product message in CLI output. |
+
+Query logging is off unless you turn it on. Graphify Local sends no telemetry.
+
+## See it in action
+
+<CodeGroup>
+```bash Separate worktree output
+GRAPHIFY_OUT=graphify-out-feature graphify extract . --code-only
+```
+
+```bash CI without model calls
+GRAPHIFY_BACKEND=none GRAPHIFY_NO_TIPS=1 graphify extract . --code-only
+```
+
+```bash Commit without a rebuild
+GRAPHIFY_SKIP_HOOK=1 git commit -m "docs: typo"
+```
+</CodeGroup>
+
+## Verify and troubleshoot
+
+To list every variable your installed version reads:
+
+```bash
+python -c "import graphify, pathlib, re; print('\n'.join(sorted({m for f in pathlib.Path(graphify.__file__).parent.glob('*.py') for m in re.findall(r'GRAPHIFY_[A-Z0-9_]+', f.read_text(encoding='utf-8'))})))"
+```
+
+| Symptom | Fix |
+| --- | --- |
+| A GUI MCP client ignores a variable | GUI apps don't read your shell profile. Set it in the client's MCP `env` block. |
+| `graph.json` fails to load as too large | Raise `GRAPHIFY_MAX_GRAPH_BYTES`, or split the corpus. |
+| A paid backend runs when you wanted Ollama | Paid keys win over Ollama during auto-detection. Set `GRAPHIFY_BACKEND=ollama` or pass `--backend ollama`. |
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="LLM providers" icon="microchip" href="/open-source/configuration/llm-providers">
+    Keys, defaults, and custom endpoints for each backend.
+  </Card>
+  <Card title="CLI reference" icon="terminal" href="/open-source/configuration/cli">
+    Every command and flag.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

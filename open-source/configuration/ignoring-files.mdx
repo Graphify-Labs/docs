@@ -1,0 +1,129 @@
+---
+title: "Ignoring files and size limits"
+sidebarTitle: "Ignoring files and limits"
+description: "Control what Graphify Local scans with .gitignore, .graphifyignore, and --exclude, and learn which folders, secrets, and oversized files it skips on its own."
+keywords: [".graphifyignore", "graphify exclude", "graphify skip files", "graphify sensitive files"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+A good graph comes from the files you wrote, not from vendored packages, build output, or secrets. Graphify Local already skips most of that. This page shows what it skips by default, how to add your own rules, and the size limits that keep a run from running out of memory.
+
+<Note>
+**Use this page when** the graph contains generated or third-party code, a scan is slow because of a big folder, or Graphify reports a file as sensitive.
+</Note>
+
+## How it works
+
+For every file under the scan root, Graphify applies these checks in order:
+
+<Steps>
+  <Step title="Built-in skips">
+    Dependency, build, cache, and editor folders, plus lock files, are never scanned.
+  </Step>
+  <Step title="Ignore files">
+    `.gitignore` (and `.git/info/exclude`) is read first, then `.graphifyignore`. Both use gitignore syntax, so a later `!pattern` can bring a file back.
+  </Step>
+  <Step title="--exclude">
+    Patterns passed on the command line are applied last and win over the ignore files.
+  </Step>
+  <Step title="Sensitive-file filter">
+    Anything that looks like a secret is skipped and reported, whatever your rules say.
+  </Step>
+</Steps>
+
+## What Graphify skips by default
+
+<AccordionGroup>
+  <Accordion title="Folders">
+    `node_modules`, `venv`, `.venv`, `__pycache__`, `site-packages`, `.git`, `dist`, `build`, `target`, `.next`, `.nuxt`, `.turbo`, `.angular`, `.svelte-kit`, `.cache`, `.parcel-cache`, `.pytest_cache`, `.mypy_cache`, `.ruff_cache`, `.tox`, `.nox`, `__snapshots__`, `storybook-static`, `.idea`, `.terraform`, `.serverless`, `.obsidian`, `.worktrees`, `.graphify`, and `graphify-out`. Folders named `env`, `out`, or `coverage` are skipped only when they look like a virtual environment, build output, or coverage report.
+  </Accordion>
+  <Accordion title="Lock files">
+    `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `Cargo.lock`, `poetry.lock`, `Gemfile.lock`, `composer.lock`, and `go.sum`.
+  </Accordion>
+  <Accordion title="Possible secrets">
+    `.env` and `.envrc` (templates such as `.env.example` and `.env.sample` are kept), certificates and keys (`.pem`, `.key`, `.p12`, `.pfx`, `.crt`), SSH keys such as `id_rsa`, and credential files such as `.netrc`, `.npmrc`, `.pypirc`, and `.git-credentials`.
+  </Accordion>
+</AccordionGroup>
+
+## Configure
+
+<Tabs>
+  <Tab title=".graphifyignore">
+    Commit a `.graphifyignore` at the scan root for rules that only matter to the graph:
+    ```gitignore .graphifyignore
+    # Generated clients
+    src/generated/
+    *.pb.go
+
+    # Fixtures are huge and repetitive
+    tests/fixtures/
+
+    # ...but keep this one
+    !tests/fixtures/schema.sql
+    ```
+  </Tab>
+  <Tab title="--exclude">
+    For one run, pass `--exclude`. It is repeatable and anchored at the scan root:
+    ```bash
+    graphify extract . --exclude "docs/archive/**" --exclude "*.min.js"
+    ```
+  </Tab>
+  <Tab title="--no-gitignore">
+    To scan files your `.gitignore` hides, such as a generated SDK you want in the graph:
+    ```bash
+    graphify extract . --no-gitignore
+    ```
+    `.graphifyignore`, `--exclude`, and the built-in skips still apply.
+  </Tab>
+</Tabs>
+
+`.graphifyinclude` is no longer supported. If one exists, Graphify prints a warning; move its rules into `.graphifyignore` as `!` patterns.
+
+## See it in action
+
+In a repository with a `.graphifyignore` and a `.env` file:
+
+```bash
+graphify extract . --code-only
+```
+
+```text
+[graphify extract] found 92 code, 0 docs, 0 papers, 0 images, 0 videos
+[graphify extract] 3 file(s) not classified (unsupported extension or no shebang), skipped: .gitattributes, .graphifyignore, .graphifyrc
+[graphify extract] 1 file(s) skipped as potentially sensitive (rename or move if wrongly flagged): .env
+```
+
+## Size limits
+
+| Limit | Default | Change it with |
+| --- | --- | --- |
+| Office file (`.docx`, `.xlsx`, `.pptx`) | 50 MiB on disk, 512 MiB unpacked | Not configurable |
+| `graph.json` Graphify will load | 512 MiB | `GRAPHIFY_MAX_GRAPH_BYTES` |
+| Nodes in `graph.html` | 5000 | `GRAPHIFY_VIZ_NODE_LIMIT` (`0` turns the HTML off), or `viz_node_limit` in [`.graphifyrc`](/open-source/configuration/graphifyrc) for hooks |
+
+Graphs above the HTML limit still write `graph.json` and `GRAPH_REPORT.md`, and every query and MCP tool still works.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| A file you need is reported as sensitive | Rename it (for example `config.env.example`) or move its contents into a non-secret file. |
+| An ignored folder still appears | Rules are relative to the scan root. Check where your `.graphifyignore` sits. |
+| Results look stale after changing rules | Run `graphify extract . --force` once. |
+
+## What's next
+
+<Columns cols={2}>
+  <Card title=".graphifyrc" icon="file-code" href="/open-source/configuration/graphifyrc">
+    Map ambiguous extensions to a language.
+  </Card>
+  <Card title="CLI reference" icon="terminal" href="/open-source/configuration/cli">
+    Every `extract` flag.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

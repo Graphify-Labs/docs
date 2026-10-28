@@ -1,203 +1,186 @@
 ---
-title: "CLI reference"
-description: "Graphify CLI reference: the commands for building, querying, exploring, exporting, and maintaining a knowledge graph of your code."
+title: "Graphify CLI reference"
+sidebarTitle: "CLI reference"
+description: "Every graphify command and flag in Graphify Local: build, query, explain, path, affected, clustering, memory, exports, hooks, and agent installs."
+keywords: ["graphify cli", "graphify commands", "graphify extract", "graphify query", "graphify flags"]
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-The package is `graphifyy`; the CLI is `graphify`. Run commands from your project root unless you provide an explicit graph path.
+The package is `graphifyy` and the command is `graphify`. Run commands from your project root; every reading command looks for `graphify-out/graph.json` unless you pass `--graph PATH`. This page is checked against `graphify --help` for version 0.9.97. Run `graphify --version` to see yours.
 
-## Core commands
+<Note>
+**Skill or command?** `/graphify .` is a message to your coding agent, which then runs these commands for you. `graphify extract .` is the shell command itself. Both write the same `graphify-out/` folder.
+</Note>
 
-| Command | Purpose |
+## Commands at a glance
+
+| Task | Command |
 | --- | --- |
-| `graphify install` | Register the assistant skill. |
-| [`graphify extract`](/open-source/configuration/cli#extract) | Run the extraction pipeline. |
-| [`graphify query`](/open-source/configuration/cli#query) | Retrieve context around a question. |
-| [`graphify path`](/open-source/configuration/cli#path) | Follow a path between concepts. |
-| [`graphify explain`](/open-source/configuration/cli#explain) | Inspect one node. |
-| `graphify affected "<node>"` | Inspect dependent impact using selected relations and depth. |
-| `graphify god-nodes` | Find highly connected nodes. |
-| `graphify diagnose` | Inspect graph quality and diagnostics. |
-| `graphify tree` | View graph-related project structure. |
+| Build a graph | [`extract`](#extract), `update`, `watch` |
+| Ask the graph | [`query`](#query), [`explain`](#explain), [`path`](#path), [`affected`](#affected), `god-nodes` |
+| Communities | [`cluster-only`, `label`](#clustering-and-labels) |
+| Work memory | [`save-result`, `reflect`](#work-memory) |
+| Outputs | [`export`](#exports), `tree`, `benchmark` |
+| Many repositories | [`global`, `merge-graphs`, `clone`](#many-repositories) |
+| Automation | [`hook`](#hooks-and-agents), `<agent> install`, `check-update` |
+| Models | `provider`. See [LLM providers](/open-source/configuration/llm-providers) |
 
-## Maintenance and exports
-
-| Command | Guide |
-| --- | --- |
-| `graphify update .`, `graphify watch .`, `graphify check-update .` | [Incremental updates](/open-source/features/incremental-updates) |
-| `graphify hook install`, `graphify hook status`, `graphify hook uninstall` | [Team workflows](/cookbooks/shared-team-graph) |
-| `graphify cluster-only .`, `graphify label .` | [Architecture](/concepts/architecture) |
-| `graphify export <format>` | [Exports](/open-source/features/exports) |
-| `graphify prs` | [Pull requests](/open-source/features/pr-impact) |
-| `graphify save-result`, `graphify reflect` | [Work memory](/open-source/features/work-memory) |
-
-## Multiple graphs
-
-```bash
-graphify merge-graphs first.json second.json --out combined.json
-graphify global add graphify-out/graph.json --as my-project
-graphify global list
-graphify global path
-```
-
-Choose a unique project name when registering a graph globally. `graphify global remove my-project` removes that registration.
-
-## Skill syntax is different
-
-`/graphify .` is an instruction to your coding assistant. `graphify extract . --code-only` is a shell command. Use the [integration guide](/integrations/overview) for your client’s skill invocation.
-
-## Version scope
-
-This reference was checked against source version **0.9.62** on the repository’s `v8` branch. Check your installed version with `graphify --version`; flags and coverage can differ across releases. [Current source](https://github.com/Graphify-Labs/graphify).
-
-## Next steps
-
-<TryCloudCard />
-
-<Columns cols={2}>
-  <Card title="graphify query" icon="terminal" href="/open-source/configuration/cli#query">
-    Gather context for a question.
-  </Card>
-  <Card title="Configuration" icon="settings" href="/open-source/configuration/graphifyrc">
-    Settings and environment variables.
-  </Card>
-</Columns>
-
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/open-source/configuration/cli#query" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">graphify query</span></a>
-</div>
-
-## graphify query {#query}
-
-Retrieve a compact neighborhood of graph evidence for a question.
-
-
-
-```bash
-graphify query "<question>" [--dfs] [--context <value>] [--budget <tokens>] [--graph <path>]
-```
-
-| Argument | Default | Meaning |
-| --- | --- | --- |
-| Question | Required | Natural-language question or keywords. |
-| `--dfs` | Off | Use depth-first traversal instead of breadth-first. |
-| `--context` | No explicit filter | Filter edge context, such as `call`; repeat for multiple contexts. |
-| `--budget` | `2000` | Approximate output token budget. |
-| `--graph` | `graphify-out/graph.json` | JSON graph to query. |
-
-```bash
-graphify query "request validation" --budget 1500
-graphify query "database access" --dfs --context call
-graphify query "entry points" --graph ./shared/graph.json
-```
-
-The response is graph context, not an independently verified natural-language answer. Review returned nodes, relations, provenance, and source references. Use [explain](/open-source/configuration/cli#explain) or [path](/open-source/configuration/cli#path) to narrow the result.
-
-### Empty results
-
-Check the graph path and refresh changed source. Try a concrete function, class, or subsystem name. The graph can only return relationships present in the analyzed inputs.
-
-## graphify path {#path}
-
-Trace the shortest relationship path between two graph concepts.
-
-
-
-```bash
-graphify path "<source>" "<target>" [--graph <path>] [--directed | --undirected]
-```
-
-| Argument | Meaning |
-| --- | --- |
-| Source and target | Node labels, IDs, or matching keywords. |
-| `--graph` | Use a specific JSON graph. |
-| `--directed` | Respect stored direction; this is the current default. |
-| `--undirected` | Explore connectivity while ignoring direction. |
-
-The direction flags are mutually exclusive.
-
-```bash
-graphify path "login" "normalize_email"
-graphify path "normalize_email" "login" --undirected
-```
-
-These examples use the [tutorial project](/open-source/cli-quickstart). In another repository, use its actual labels or IDs.
-
-### Interpret the path
-
-Follow each relationship and check its evidence. A source-level path does not prove that a particular runtime input executes it. An absent path can mean missing or unresolved relationships; it does not prove independence.
-
-For the MCP version, use `shortest_path`. Its inputs additionally expose `max_hops`; see the [MCP reference](/open-source/features/mcp-tools).
-
-## graphify explain {#explain}
-
-Inspect a concept, its source, and the relationships around it.
-
-
-
-```bash
-graphify explain "<node>" [--graph <path>]
-```
-
-Give the command a label or node identifier from a query result. It returns details about the node and its graph context.
-
-```bash
-graphify explain "normalize_email"
-graphify explain "YourNodeId" --graph ./shared/graph.json
-```
-
-Look for the source file, community, and relationships connected to the node. Available fields depend on the extractor. If several concepts have similar names, use the precise ID returned by the graph.
-
-Optional [work-memory](/open-source/features/work-memory) overlays can add lesson hints. Check for stale-source warnings and re-verify a lesson after code changes.
-
-For native MCP access, use `get_node` followed by `get_neighbors` when you need the surrounding edges.
+`query`, `path`, and `explain` exit `0` with an answer, `3` when a name matches several nodes (the candidates are printed), and `4` when nothing matches. Scripts can branch on these codes.
 
 ## graphify extract {#extract}
 
-Run local structural extraction and optional semantic processing.
-
-
-
-```bash
-graphify extract <path> [options]
-```
-
-### Common options
-
-| Option | Purpose |
-| --- | --- |
-| `--code-only` | Skip semantic document and media extraction; no model key needed. |
-| `--backend <name>` | Select a headless semantic backend. |
-| `--model <name>` | Override the model for that backend. |
-| `--mode deep` | Request richer semantic extraction. |
-| `--out <dir>` / `--output <dir>` | Choose an output root. |
-| `--no-cluster` | Skip clustering. |
-| `--no-gitignore` | Ignore Git’s exclusions while still honoring `.graphifyignore`. |
-| `--max-workers <n>` | Structural extraction parallelism. |
-| `--token-budget <n>` | Semantic chunk budget. |
-| `--max-concurrency <n>` | Concurrent model requests. |
-| `--api-timeout <seconds>` | Request timeout. |
-| `--force` | Permit replacement with a smaller graph after intentional changes. |
-| `--timing` | Print stage timings. |
-| `--google-workspace` | Explicitly enable Google Workspace shortcut export. |
-| `--cargo` | Include Cargo workspace dependency information. |
-| `--postgres <DSN>` | Read a PostgreSQL schema with the relevant extra and credentials. |
-
-### Examples
+Headless build for CI and scripts: tree-sitter parsing for code, plus semantic extraction for docs, papers, and images.
 
 ```bash
 graphify extract . --code-only
-graphify extract ./docs --backend ollama --max-concurrency 2
-graphify extract ./src --code-only --timing
 ```
 
-### Outputs and failures
+| Flag | Default | What it does |
+| --- | --- | --- |
+| `--code-only` | off | Index code only. No model or API key needed. |
+| `--backend B`, `--model M` | auto-detect | Choose the model for semantic extraction. |
+| `--mode deep` | off | More aggressive `INFERRED` edges from semantic extraction. |
+| `--exclude PATTERN` | none | Skip matching paths. Repeatable, anchored at the root. |
+| `--no-gitignore` | off | Ignore `.gitignore` and `.git/info/exclude`. |
+| `--force` | off | Full re-scan, skipping incremental and semantic caches. |
+| `--max-workers N` | CPU count | AST processes. |
+| `--token-budget N` | `60000` | Token cap per semantic chunk. |
+| `--max-concurrency N` | `4` | Parallel semantic chunks. Use `1` for local models. |
+| `--api-timeout S` | `600` | Seconds per model request. |
+| `--out DIR` | the scan path | Write `<DIR>/graphify-out/`. |
+| `--no-cluster` | off | Skip clustering and write the raw extraction. |
+| `--google-workspace` | off | Export Google Docs, Sheets, and Slides shortcuts first. |
+| `--postgres DSN` | none | Add tables, views, functions, and foreign keys from a live PostgreSQL database. |
+| `--cargo` | off | Add crate-to-crate dependencies from `Cargo.toml`. |
+| `--global`, `--as TAG` | off | Also merge the result into the global graph. |
 
-Inspect the console summary and generated report before using the graph. Missing grammars, unsupported files, model errors, partial results, and the smaller-graph guard can affect what was written. `--force` is an explicit override, not a routine remedy for an unexplained failure.
+`graphify update <path>` re-extracts changed code without a model, and `graphify watch <path>` does it on every save. Both accept `--force` and `--no-cluster`. See [Incremental updates](/open-source/features/incremental-updates).
 
-See [headless extraction](/open-source/features/headless-extraction) for provider setup and [outputs](/concepts/outputs) for the saved files.
+## graphify query {#query}
+
+Traverses the graph from the nodes whose labels match words in your question.
+
+```bash
+graphify query "cluster leiden" --budget 1000
+```
+
+| Flag | Default | What it does |
+| --- | --- | --- |
+| `--budget N` | `2000` | Cap the answer at N tokens. |
+| `--dfs` | breadth-first | Follow one branch deep instead of the nearest neighbors. |
+| `--seed X` | keyword matches | Start at a node id, label, or file path. Repeatable. |
+| `--context C` | all | Only follow edges with this context. Repeatable. |
+| `--graph PATH` | `graphify-out/graph.json` | Graph to read. |
+
+Matching uses label words, not full sentences. If you get exit code `4`, use names from your code.
+
+## graphify explain {#explain}
+
+A plain-language summary of one node and its neighbors.
+
+```bash
+graphify explain "build_graph"
+graphify explain "build_graph" --all
+```
+
+By default, the 20 most connected neighbors are listed; `--all` lists every connection.
+
+## graphify path {#path}
+
+The shortest path between two nodes.
+
+```bash
+graphify path "extract" "cluster"
+```
+
+The search follows edge direction by default. Pass `--undirected` to ignore direction; `--directed` forces the default.
+
+## graphify affected {#affected}
+
+Walks edges in reverse to find what depends on a node.
+
+```bash
+graphify affected "load_config" --depth 3 --relation calls
+```
+
+`--depth` defaults to `2`. `--relation` is repeatable. `graphify god-nodes --top 10 [--json]` lists the most connected nodes.
+
+## Clustering and labels
+
+| Command | What it does |
+| --- | --- |
+| `graphify cluster-only <path>` | Re-cluster an existing graph and rewrite the report. Flags: `--no-viz`, `--no-label`, `--backend`, `--model`, `--max-concurrency` (default 4), `--batch-size` (default 100). |
+| `graphify label <path>` | Rename communities with the model. `--missing-only` keeps existing names. |
+
+## Work memory
+
+```bash
+graphify save-result --question "Where is auth checked?" \
+  --answer "middleware.verify_session" --nodes verify_session \
+  --outcome useful
+graphify reflect
+```
+
+`--outcome` is `useful`, `dead_end`, or `corrected` (with `--correction TEXT`). `reflect` writes `graphify-out/reflections/LESSONS.md`; `--half-life-days` (default 30) and `--min-corroboration` (default 2) tune it. See [Work memory](/open-source/features/work-memory).
+
+## Exports
+
+| Command | Output |
+| --- | --- |
+| `graphify export html` | `graph.html` (`--node-limit`, default 5000) |
+| `graphify export callflow-html` | Mermaid architecture and call-flow page |
+| `graphify export obsidian` | Obsidian vault notes and canvas |
+| `graphify export wiki` | Markdown wiki articles |
+| `graphify export svg`, `graphml` | `graph.svg`, GraphML |
+| `graphify export neo4j`, `falkordb` | Cypher, or `--push URI` to a database |
+| `graphify tree` | `GRAPH_TREE.html` collapsible tree |
+| `graphify benchmark` | Token use of the graph versus reading every file |
+
+For database pushes, set `NEO4J_PASSWORD` or `FALKORDB_PASSWORD` instead of passing `--password`, so it stays out of your shell history. See [Exports](/open-source/features/exports).
+
+## Many repositories
+
+```bash
+graphify global add graphify-out/graph.json --as api
+graphify global list
+graphify merge-graphs a.json b.json --out combined.json
+graphify clone https://github.com/Graphify-Labs/graphify
+```
+
+`global remove TAG` drops a repository; `global path` prints the global graph's location (`~/.graphify/global-graph.json`).
+
+## Hooks and agents
+
+| Command | What it does |
+| --- | --- |
+| `graphify hook install` | Add post-commit, post-checkout, post-merge, and post-rewrite hooks, plus a merge driver for `graph.json`. `status` and `uninstall` too. |
+| `graphify install [--platform P]` | Copy the skill for your agent. `uninstall` removes it everywhere (`--purge` also deletes `graphify-out/`). |
+| `graphify claude install`, `cursor install`, `codex install`, and so on | Write the agent's rules file and, where supported, a hook that points it at the graph. |
+| `graphify check-update <path>` | Cron-safe check for pending semantic re-extraction. |
+| `graphify prs` | Pull request dashboard. See [PR impact](/open-source/features/pr-impact). |
+| `graphify add <url>` | Save a web page to `./raw` and update the graph. |
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| `error: graph file not found` | Run `graphify extract .` first, or pass `--graph`. |
+| Exit code `3` | Several nodes matched. Use a printed candidate or a file path. |
+| A flag here is missing | Your version is older. Run `pip install -U graphifyy`. |
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Environment variables" icon="sliders" href="/open-source/configuration/environment-variables">
+    Settings for output, models, and hooks.
+  </Card>
+  <Card title="Ignoring files and limits" icon="filter" href="/open-source/configuration/ignoring-files">
+    Control what gets scanned.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

@@ -1,0 +1,140 @@
+---
+title: "LLM providers for semantic extraction"
+sidebarTitle: "LLM providers"
+description: "Choose the model backend Graphify Local uses for docs, papers, and images: Claude, Gemini, OpenAI, Ollama, Kimi, DeepSeek, Azure, Bedrock, or your own endpoint."
+keywords: ["graphify ollama", "graphify openai", "graphify backend", "custom llm provider", "local llm"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify Local builds the code graph without any model. It parses source files with tree-sitter on your machine. A model is only used for **semantic extraction**: reading docs, papers, images, and transcripts, and naming communities. This page shows how Graphify picks that model and how to point it somewhere else.
+
+<Note>
+**Use this page when** you want docs and PDFs in the graph, want to run fully offline with Ollama, or need to route calls through Azure, Bedrock, or an OpenAI-compatible gateway. If you only need code, pass `--code-only` and skip it.
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="An explicit choice wins">
+    `--backend NAME` on the command line, or `GRAPHIFY_BACKEND=NAME`. Set it to `none`, `off`, or `disabled` to turn model calls off.
+  </Step>
+  <Step title="Otherwise Graphify auto-detects">
+    It checks for credentials in this order: Gemini, Kimi, Claude, OpenAI, DeepSeek, Azure (needs an endpoint too), Bedrock (needs `AWS_PROFILE` or `AWS_REGION`), then Ollama (only when `OLLAMA_BASE_URL` or `OLLAMA_HOST` is set), then your custom providers. The first match is used.
+  </Step>
+  <Step title="The model comes from the backend default or your override">
+    `--model NAME` wins, then the backend's model variable, then the default below.
+  </Step>
+</Steps>
+
+Ollama is checked after every paid key on purpose. If you have `OPENAI_API_KEY` set and want local inference, choose Ollama explicitly.
+
+## Built-in backends
+
+| Backend | Credentials | Default model | Model override | Endpoint override |
+| --- | --- | --- | --- | --- |
+| `claude` | `ANTHROPIC_API_KEY` | `claude-sonnet-4-6` | `ANTHROPIC_MODEL` | `ANTHROPIC_BASE_URL` |
+| `gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `gemini-3-flash-preview` | `GRAPHIFY_GEMINI_MODEL` | `GEMINI_BASE_URL` |
+| `openai` | `OPENAI_API_KEY` | `gpt-4.1-mini` | `GRAPHIFY_OPENAI_MODEL`, then `OPENAI_MODEL` | `OPENAI_BASE_URL` |
+| `kimi` | `MOONSHOT_API_KEY` | `kimi-k2.6` | `--model` | `KIMI_BASE_URL` |
+| `deepseek` | `DEEPSEEK_API_KEY` | `deepseek-v4-flash` | `GRAPHIFY_DEEPSEEK_MODEL` | none |
+| `azure` | `AZURE_OPENAI_API_KEY` and `AZURE_OPENAI_ENDPOINT` | `AZURE_OPENAI_DEPLOYMENT`, else `gpt-4o` | `GRAPHIFY_AZURE_MODEL` | `AZURE_OPENAI_API_VERSION` (default `2024-12-01-preview`) |
+| `bedrock` | Standard AWS credential chain | `anthropic.claude-3-5-sonnet-20241022-v2:0` | `GRAPHIFY_BEDROCK_MODEL` | `AWS_REGION` |
+| `ollama` | none (`OLLAMA_API_KEY` optional) | `qwen2.5-coder:7b` | `OLLAMA_MODEL` | `OLLAMA_BASE_URL` or `OLLAMA_HOST` (default `http://localhost:11434/v1`) |
+| `claude-cli` | Your signed-in Claude Code | Claude Code's default | `GRAPHIFY_CLAUDE_CLI_MODEL` | none |
+
+`claude-cli` runs extraction through the `claude` command, so it uses your Claude Code plan instead of an API key. It is never auto-detected; choose it with `--backend claude-cli`.
+
+## Configure
+
+<Tabs>
+  <Tab title="Ollama (offline)">
+    ```bash
+    ollama pull qwen2.5-coder:7b
+    graphify extract . --backend ollama
+    ```
+    Nothing leaves your machine. Use `GRAPHIFY_OLLAMA_NUM_CTX` and `GRAPHIFY_OLLAMA_PARALLEL` to tune it. See [environment variables](/open-source/configuration/environment-variables#ollama).
+  </Tab>
+  <Tab title="OpenAI-compatible server">
+    llama.cpp, vLLM, LM Studio, and gateways that speak the OpenAI API work through the `openai` backend:
+    ```bash
+    export OPENAI_BASE_URL=http://localhost:8000/v1
+    export OPENAI_API_KEY=local
+    graphify extract . --backend openai --model my-model
+    ```
+  </Tab>
+  <Tab title="Hosted API">
+    ```bash
+    export GEMINI_API_KEY=...
+    graphify extract .
+    ```
+    With one key set, auto-detection picks it up.
+  </Tab>
+  <Tab title="Azure or Bedrock">
+    ```bash
+    export AZURE_OPENAI_API_KEY=...
+    export AZURE_OPENAI_ENDPOINT=https://my-resource.openai.azure.com
+    export AZURE_OPENAI_DEPLOYMENT=gpt-4o
+    graphify extract . --backend azure
+    ```
+    For Bedrock, sign in with the AWS CLI and pass `--backend bedrock`.
+  </Tab>
+</Tabs>
+
+### Add your own provider
+
+Register any OpenAI-compatible endpoint once, then use it by name:
+
+```bash
+graphify provider add my-gateway \
+  --base-url https://llm.example.com/v1 \
+  --default-model my-model \
+  --env-key MY_GATEWAY_KEY
+graphify provider list
+graphify extract . --backend my-gateway
+```
+
+<ParamField path="--base-url" type="string" required>OpenAI-compatible base URL. Plain `http://` prints a warning, because your key and code would travel unencrypted.</ParamField>
+<ParamField path="--default-model" type="string" required>Model used when you don't pass `--model`.</ParamField>
+<ParamField path="--env-key" type="string" required>Name of the environment variable that holds the key. The key itself is never stored.</ParamField>
+<ParamField path="--pricing-input / --pricing-output" type="number">Token prices used in cost estimates.</ParamField>
+
+Providers are saved in `~/.graphify/providers.json`. A `.graphify/providers.json` inside a repository is ignored unless you set `GRAPHIFY_ALLOW_LOCAL_PROVIDERS=1`, so a cloned repository can't redirect your keys to its own server. Built-in names such as `openai` can't be overridden. Use `graphify provider show NAME` and `graphify provider remove NAME` to manage them.
+
+## What gets sent
+
+Source files are parsed locally by tree-sitter. The model receives the non-code files Graphify finds (Markdown, text, PDFs, Office files, images, and transcripts) after your [ignore rules](/open-source/configuration/ignoring-files) and the sensitive-file filter are applied, plus node labels when it names communities. With `--code-only` or `GRAPHIFY_BACKEND=none`, nothing is sent anywhere.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| The wrong backend runs | Several keys are set. Pass `--backend NAME`. |
+| Ollama times out on large docs | Raise `GRAPHIFY_API_TIMEOUT` or lower `--max-concurrency`. |
+| DeepSeek returns empty output | Thinking uses the output budget. Set `GRAPHIFY_DISABLE_THINKING=1`. |
+| A custom provider isn't found | Check `graphify provider list`. Project-local files need `GRAPHIFY_ALLOW_LOCAL_PROVIDERS=1`. |
+
+<AccordionGroup>
+  <Accordion title="Which model should I start with?">
+    Any default above works. For privacy-sensitive code, start with Ollama. For large doc sets, a hosted flash-class model is faster.
+  </Accordion>
+  <Accordion title="Do I need a model for the MCP server?">
+    No. `graphify-mcp` serves an existing graph and makes no model calls.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Ignoring files and limits" icon="filter" href="/open-source/configuration/ignoring-files">
+    Keep secrets and generated files out of the graph.
+  </Card>
+  <Card title="CLI reference" icon="terminal" href="/open-source/configuration/cli">
+    Every `extract` flag.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

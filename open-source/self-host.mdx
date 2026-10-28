@@ -1,74 +1,143 @@
 ---
-title: "Serve a graph over HTTP"
-description: "Serve a Graphify graph over HTTP as a shared MCP endpoint, with explicit network binding and authentication settings for your team."
+title: "Self-host the Graphify MCP server with Docker"
+sidebarTitle: "Self-host with Docker"
+description: "Build the Graphify Local Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph."
+keywords: ["graphify docker", "self-host MCP server", "graphify-mcp http", "team code graph"]
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
-import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-The same ten tools can run over MCP Streamable HTTP. A local HTTP server is useful when a client connects by URL instead of launching a stdio process.
+The Graphify Local repository ships a `Dockerfile` that runs `graphify-mcp` over streamable HTTP. Mount a `graphify-out/` folder into the container and every agent on your network can query the same graph.
 
-## Start on localhost
+<Note>
+**Self-host when** your team wants one shared graph but the code must stay on your own infrastructure. If you don't want to run a server, [Graphify](/integrations/other-agents) hosts the MCP endpoint for you.
+</Note>
 
-```bash
-graphify-mcp /absolute/path/to/graphify-out/graph.json --transport http --port 8080
+## How the image works
+
+The image is built from [`Dockerfile`](https://github.com/Graphify-Labs/graphify/blob/HEAD/Dockerfile) in the repository root:
+
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY . /app
+RUN pip install --no-cache-dir ".[mcp]"
+RUN useradd --create-home --uid 10001 graphify
+USER graphify
+EXPOSE 8080
+ENTRYPOINT ["python", "-m", "graphify.serve"]
+CMD ["/data/graph.json", "--transport", "http", "--host", "0.0.0.0", "--port", "8080"]
 ```
 
-The endpoint is `http://127.0.0.1:8080/mcp`. The default host is loopback-only.
+- It installs only the `mcp` extra, so the image serves graphs but doesn't build them.
+- It runs as a non-root user (UID `10001`).
+- The default command reads `/data/graph.json`, so you mount your `graphify-out/` folder at `/data`.
 
-## Share within your environment
+Graphify doesn't publish a prebuilt image, so you build it yourself.
 
-Set `GRAPHIFY_API_KEY` in the server environment using your secret manager. Then start with the intended bind address:
+## Run it
 
-```bash
-graphify-mcp /data/graph.json --transport http --host 0.0.0.0 --port 8080
-```
+<Steps>
+  <Step title="Build a graph">
+    On a machine with Graphify Local installed:
 
-Clients authenticate with `Authorization: Bearer <key>` or `X-API-Key`. Use a private network or an authenticated TLS proxy for traffic beyond the local machine. A graph can contain proprietary source context.
+    ```bash
+    graphify extract . --code-only
+    ```
+  </Step>
+  <Step title="Build the image">
+    ```bash
+    git clone https://github.com/Graphify-Labs/graphify.git
+    cd graphify
+    docker build -t graphify .
+    ```
+  </Step>
+  <Step title="Start the server with a key">
+    ```bash
+    export GRAPHIFY_API_KEY="$(openssl rand -hex 32)"
 
-## Server options
+    docker run -d --name graphify-mcp -p 127.0.0.1:8080:8080 \
+      -v "/path/to/repo/graphify-out:/data:ro" \
+      graphify /data/graph.json --transport http --host 0.0.0.0 --api-key "$GRAPHIFY_API_KEY"
+    ```
 
-| Option | Default | Purpose |
+    Arguments after the image name replace the default command, so repeat the graph path and transport flags when you add `--api-key`.
+  </Step>
+  <Step title="Point clients at it">
+    For clients that take a URL and headers, such as Cursor:
+
+    ```json
+    {
+      "mcpServers": {
+        "graphify": {
+          "url": "http://your-host:8080/mcp",
+          "headers": { "Authorization": "Bearer <your key>" }
+        }
+      }
+    }
+    ```
+
+    Clients can also send the key as an `X-API-Key` header.
+  </Step>
+</Steps>
+
+<Warning>
+Always set `--api-key` when you bind `0.0.0.0`. Without one, anyone who can reach the port can read your graph, and the server logs a warning at start-up. Put the server behind TLS (a reverse proxy or load balancer) before exposing it beyond a private network.
+</Warning>
+
+## Configure
+
+| Flag | Default | When to change it |
 | --- | --- | --- |
-| `--transport` | `stdio` | Select `stdio` or `http`. |
-| `--host` | `127.0.0.1` | HTTP bind address. |
-| `--port` | `8080` | HTTP port. |
-| `--path` | `/mcp` | HTTP endpoint path. |
-| `--api-key` | `GRAPHIFY_API_KEY` | Require a client key; prefer the environment variable to placing a secret in shell history. |
-| `--json-response` | Off | Use JSON responses rather than SSE streams. |
-| `--stateless` | Off | Disable per-session state. |
-| `--session-timeout` | `3600` | Idle session timeout in seconds; `0` disables reaping. |
+| `--api-key` | `GRAPHIFY_API_KEY` env | Always, for any shared server |
+| `--port` | `8080` | Another service already uses 8080 |
+| `--path` | `/mcp` | Your proxy routes a different path |
+| `--stateless` | off | You run several replicas behind a load balancer |
+| `--json-response` | off | Your client can't read server-sent events |
+| `--session-timeout` | `3600` | Long-idle agents lose their session; `0` disables the timeout |
 
-## Docker
+## Keep the graph fresh
 
-The source repository includes a Dockerfile. Build it from that checkout:
+The server reloads `graph.json` whenever the file changes, so you don't restart the container. Rebuild the graph on the host and the mounted file updates in place:
 
 ```bash
-docker build -t graphify .
-docker run --rm -p 127.0.0.1:8080:8080 \
-  -v "$PWD/graphify-out:/data:ro" \
-  -e GRAPHIFY_API_KEY \
-  graphify /data/graph.json --transport http --host 0.0.0.0
+graphify update /path/to/repo
 ```
 
-This example publishes to localhost and mounts the graph read-only. Set `GRAPHIFY_API_KEY` before running it. Make deliberate network and authentication choices before exposing the endpoint to other hosts.
+To automate this, run `graphify hook install` in the repository on the host that owns the mount, or run `graphify update` from a scheduled CI job that writes to the same volume.
 
-## Next steps
+## Verify and troubleshoot
 
-<TryCloudCard />
+```bash
+docker logs graphify-mcp
+```
+
+Look for `graphify MCP server (streamable-http) on http://0.0.0.0:8080/mcp - api-key required`. Then send an `initialize` request with your key, as shown in the [MCP server quickstart](/open-source/mcp-server#verify-the-connection). A `200` means it works; `401` means the key is missing or wrong.
+
+<AccordionGroup>
+  <Accordion title="The container exits straight away">
+    The graph path doesn't exist inside the container. Check that the mount points at a folder containing `graph.json` and that UID `10001` can read it.
+  </Accordion>
+  <Accordion title="Can the container build graphs too?">
+    Not as shipped. It installs only the `mcp` extra. Build graphs on the host or in CI, and use the container to serve them.
+  </Accordion>
+  <Accordion title="Can I serve several repositories?">
+    Run one container per graph, or merge repositories into one graph first with `graphify merge-graphs`.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
 
 <Columns cols={2}>
-  <HostedMcpCard />
-  <Card title="Share context with your team" icon="users" href="/cookbooks/shared-team-graph">
-    Keep one graph for everyone.
+  <Card title="MCP server quickstart" icon="plug" href="/open-source/mcp-server">
+    Every tool and flag the server exposes.
+  </Card>
+  <Card title="Vibe coding with Graphify Local" icon="wand-magic-sparkles" href="/open-source/vibe-coding">
+    Make agents reach for the graph first.
   </Card>
 </Columns>
 
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+<TryCloudCard />
 
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/open-source/mcp-server" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Local MCP server</span></a>
-  <a href="/mcp/docs-search" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Search the docs from your agent</span></a>
-</div>
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

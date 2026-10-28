@@ -82,11 +82,13 @@
             "group": "Get started",
             "icon": "rocket",
             "pages": [
+              "open-source/overview",
               "open-source/quickstart",
               "open-source/installation",
               "open-source/cli-quickstart",
               "open-source/mcp-server",
               "open-source/self-host",
+              "open-source/vibe-coding",
               "open-source/local-development",
               "open-source/ask-your-agent",
               "platform/trace"

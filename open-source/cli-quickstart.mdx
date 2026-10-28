@@ -1,76 +1,140 @@
 ---
-title: "Build and explore a small graph"
-description: "Build and explore your first code knowledge graph on a tiny Python project, and learn the complete local graphify workflow end to end."
+title: "CLI quickstart: build and query a graph from the terminal"
+sidebarTitle: "CLI quickstart"
+description: "Build a code knowledge graph with graphify extract, then query it with query, path, explain, and god-nodes. No agent or API key needed."
+keywords: ["graphify cli", "graphify extract", "graphify query", "code graph terminal"]
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-<Tip>
-Don't want to install anything? Graphify, the hosted product at app.graphify.com, indexes your GitHub repositories in the browser. We run it for you, so there's nothing to deploy. Start with the [Cloud quickstart](/platform/quickstart).
-</Tip>
+The `graphify` command does everything the agent skill does, from a terminal. Code extraction is deterministic and runs without an API key, so this is also the path for scripts and CI.
 
-This example works without an API key. It makes the first query reproducible, instead of depending on names that may not exist in your repository.
+<Note>
+**Use the CLI when** you want to build graphs in a script or pipeline, inspect a codebase yourself, or check what your agent will see. To let an agent drive, use the [skill quickstart](/open-source/quickstart).
+</Note>
 
-## Create a project
+## Install
 
-Create a folder containing `app.py`:
-
-```python app.py
-def normalize_email(email: str) -> str:
-    return email.strip().lower()
-
-
-def find_user(email: str) -> dict:
-    return {"email": normalize_email(email)}
-
-
-def login(email: str) -> dict:
-    return find_user(email)
+```bash
+uv tool install graphifyy    # or: pipx install graphifyy / pip install graphifyy
+graphify --help
 ```
 
 ## Build the graph
 
-From that folder, with Graphify installed:
+<Steps>
+  <Step title="Extract the code">
+    ```bash
+    cd your-repo
+    graphify extract . --code-only
+    ```
+
+    `--code-only` skips documents and media, so no model is called. On a copy of the Graphify package (98 code files) this took about 6 seconds.
+
+    ```text
+    [graphify extract] next: run `graphify cluster-only .` to generate GRAPH_REPORT.md and name communities
+    ```
+  </Step>
+  <Step title="Write the report and HTML view">
+    ```bash
+    graphify cluster-only . --no-label
+    ```
+
+    This writes `graphify-out/GRAPH_REPORT.md` and `graphify-out/graph.html`. Drop `--no-label` to name communities with an LLM backend.
+  </Step>
+</Steps>
+
+## Query the graph
+
+<Tabs>
+  <Tab title="query">
+    Traverse from the nodes that match your words and return a token-budgeted subgraph.
+
+    ```bash
+    graphify query "cluster leiden" --budget 300
+    ```
+
+    ```text
+    Graph: graphify-out/graph.json (4856 nodes) | Traversal: BFS depth=2 | Start: ['cluster()', '_native_leiden()'] | 34 nodes found
+
+    [!] TRUNCATED: showing 12 of 34 nodes (~300-token budget). ...
+
+    NODE cluster() [src=corpus/cluster.py loc=L233 community=cluster.py]
+    NODE _native_leiden() [src=corpus/cluster.py loc=L23 community=cluster.py]
+    NODE dispatch_command() [src=corpus/cli.py loc=L1447 community=dispatch_command]
+    ```
+
+    Add `--dfs` to follow one chain deeply instead of exploring broadly.
+  </Tab>
+  <Tab title="path">
+    Find the shortest path between two symbols.
+
+    ```bash
+    graphify path "cluster()" "build()" --undirected
+    ```
+
+    ```text
+    Shortest path (3 hops):
+      cluster() <--calls [INFERRED]-- dispatch_command() --calls [INFERRED]--> build_from_json() <--calls [EXTRACTED]-- build()
+    ```
+  </Tab>
+  <Tab title="explain">
+    Show one node, where it lives, and everything connected to it.
+
+    ```bash
+    graphify explain "reflect()"
+    ```
+
+    ```text
+    Node: reflect()
+      ID:        corpus_reflect_reflect
+      Source:    corpus/reflect.py L564
+      Type:      code
+      Community: reflect
+      Degree:    25
+    ```
+  </Tab>
+  <Tab title="god-nodes">
+    List the most connected symbols, the ones most changes touch.
+
+    ```bash
+    graphify god-nodes --top 5
+    ```
+  </Tab>
+</Tabs>
+
+Each edge shows its confidence: `EXTRACTED` was read from the source, `INFERRED` was derived by a resolver, and `AMBIGUOUS` had several possible targets.
+
+## Keep it current
 
 ```bash
-graphify extract . --code-only
-graphify cluster-only . --no-label
-graphify export html
+graphify update .          # re-extract changed code files only
+graphify hook install      # rebuild automatically after commit, checkout, merge, and rebase
 ```
 
-Open `graphify-out/graph.html`, or read `graphify-out/GRAPH_REPORT.md`. The graph should contain the three functions and their call relationships. Exact IDs and report formatting can vary by release.
+`graphify update` re-parses only files whose hashes changed. `graphify hook install` adds `post-commit`, `post-checkout`, `post-merge`, and `post-rewrite` hooks and registers a git merge driver for `graph.json`.
 
-## Ask for context
+## Troubleshooting
 
-```bash
-graphify query "how does login normalize an email?"
-graphify explain "normalize_email"
-graphify path "login" "normalize_email"
-```
+| Symptom | Fix |
+| --- | --- |
+| `No matching nodes found.` (exit code 4) | `query` matches words in node labels. Use symbol or file names, such as `"cluster leiden"`, rather than a full sentence. |
+| Exit code 3 from `query` | Several nodes matched equally. Use a more specific term. |
+| `No directed path` from `path` | Add `--undirected` to ignore edge direction. |
+| `No unique node match` from `explain` or `affected` | Include the parentheses for functions, for example `"reflect()"`. |
 
-Look for the relationship from `login` to `find_user`, then to `normalize_email`. Check the associated source references. If a label matches several nodes, use the node ID returned by the query for a more precise lookup.
+## What's next
 
-## Make a change
-
-Add another helper or change a call, then refresh:
-
-```bash
-graphify update .
-graphify export html
-```
-
-Re-run the query and compare the connections. Graphify queries the saved graph, so changing a source file without updating the graph can leave an old answer.
-
-## Move to your repository
-
-Repeat the workflow from your repository root. Use [the assistant skill](/open-source/quickstart) to include model-assisted document context, or connect [MCP](/open-source/mcp-server) for native agent tool calls.
+<Columns cols={2}>
+  <Card title="MCP server quickstart" icon="plug" href="/open-source/mcp-server">
+    Give any MCP client the same queries as tools.
+  </Card>
+  <Card title="Self-host with Docker" icon="docker" href="/open-source/self-host">
+    Share one graph with your team over HTTP.
+  </Card>
+</Columns>
 
 <TryCloudCard />
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/open-source/local-development" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Run Graphify locally</span></a>
-</div>

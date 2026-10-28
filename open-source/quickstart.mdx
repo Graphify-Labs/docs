@@ -1,121 +1,126 @@
 ---
-title: "Your first knowledge graph"
-sidebarTitle: "Local quickstart"
-description: "Install the open-source graphify CLI (graphifyy on PyPI), build a local knowledge graph of your repository, and ask your coding assistant a question about it."
+title: "Quickstart: map a repository with the Graphify skill"
+sidebarTitle: "Quickstart (skill)"
+description: "Install the graphifyy package, add the Graphify skill to your coding agent, and build a knowledge graph of your repository with one command."
+keywords: ["graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph"]
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Graphify turns a repository into a graph of its functions, classes, imports, and relationships. Your assistant can query that graph instead of repeatedly scanning the same files.
-
-Pick a path:
-
-<Columns cols={2}>
-  <Card title="Graphify (recommended)" icon="cloud" href="/platform/quickstart">
-    The hosted version of Graphify. We run it for you, so there's nothing to deploy. Index GitHub repositories in the browser and connect your agent through hosted MCP.
-  </Card>
-  <Card title="Local: you are here" icon="terminal" href="/open-source/installation">
-    Graphify Local, the open-source `graphifyy` package on your machine. Needs Python 3.10+ and a coding assistant. Follow the steps below, or see every install option.
-  </Card>
-</Columns>
-
-This quickstart uses **Graphify Local**, the open-source `graphifyy` package on your machine. You need Python 3.10 or later and a supported coding assistant.
+The fastest way to use Graphify Local is as a skill inside your coding agent. You install it once, type `/graphify .`, and the agent builds the graph and reads `GRAPH_REPORT.md` before it answers questions about your code.
 
 <Note>
-If you are an agent, read [Notes for agents](/for-agents) before these steps.
+**Use the skill when** you work in Claude Code, Codex, Cursor, Gemini CLI, or another agent that supports skills, and you want the agent to drive extraction for you. If you only want terminal commands, follow the [CLI quickstart](/open-source/cli-quickstart).
 </Note>
 
-<Steps>
-  <Step title="Install the CLI" titleSize="h2">
-    On a Mac, use the macOS tab. The version check is the same on every tab.
+## Before you start
 
+- Python 3.10 or later
+- A coding agent that `graphify install` supports (Claude Code is the default)
+
+## Build your first graph
+
+<Steps>
+  <Step title="Install the package">
     <CodeGroup>
-    ```bash macOS
-    brew install uv
-    uv tool install graphifyy
-    graphify --version
-    ```
     ```bash uv
     uv tool install graphifyy
-    graphify --version
     ```
+
     ```bash pipx
     pipx install graphifyy
-    graphify --version
+    ```
+
+    ```bash pip
+    pip install graphifyy
     ```
     </CodeGroup>
 
-    `graphify --version` prints the version you installed. The latest release is on [PyPI](https://pypi.org/project/graphifyy/) and in the [changelog](/changelog). The package is **`graphifyy`**, with two y's. The command is `graphify`. A virtual environment install is on [Installation](/open-source/installation).
+    The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands.
   </Step>
-  <Step title="Connect your assistant" titleSize="h2">
+  <Step title="Install the skill">
     ```bash
     graphify install
     ```
 
-    This installs the Graphify skill for a detected assistant. To choose one explicitly:
-
-    ```bash
-    graphify install --platform cursor
-    ```
-
-    See [all integrations](/integrations/overview) for your assistant’s setup.
+    With no flag, this targets Claude Code. It copies the skill to `~/.claude/skills/graphify/SKILL.md` and registers it in `~/.claude/CLAUDE.md`. For another agent, pass `--platform`, for example `graphify install --platform codex`.
   </Step>
-  <Step title="Map a repository" titleSize="h2">
-    Open a repository in your assistant, then enter this in its chat:
+  <Step title="Run it in your agent">
+    Open your agent in the repository and type:
 
     ```text
     /graphify .
     ```
 
-    In Codex, select the Graphify skill with `$graphify` and ask it to map the current repository. This is an **assistant instruction**, not a shell command.
-
-    Code is parsed locally. If the repository includes documents or media, the skill can use your assistant’s model for semantic extraction. For an explicit code-only run, use the [local CLI workflow](/open-source/local-development).
+    The agent runs detection, extraction, and clustering, then summarises the report. Code is parsed locally. Documents, papers, and images go through the agent's own model.
   </Step>
-  <Step title="Inspect the output" titleSize="h2">
+  <Step title="Ask a question">
     ```text
-    graphify-out/
-    ├── graph.html        Interactive graph
-    ├── GRAPH_REPORT.md   Concepts, communities, and suggested questions
-    └── graph.json        The graph used by CLI and MCP queries
+    /graphify query "how does authentication reach the database"
     ```
 
-    Open `graph.html` in your browser. Click a node to inspect its connections, or start with the report for a tour of the architecture.
-  </Step>
-  <Step title="Ask a question" titleSize="h2">
-    From a terminal at the repository root:
-
-    ```bash
-    graphify query "how does authentication reach the database?"
-    ```
-
-    Use names from **your graph** to investigate further:
-
-    ```bash
-    graphify explain "YourService"
-    graphify path "YourService" "YourRepository"
-    ```
-
-    The names above are placeholders. A path only exists if those nodes and connecting edges exist in your project.
+    The skill traverses the graph and returns only the nodes and edges that answer the question, trimmed to a token budget.
   </Step>
 </Steps>
 
-<Columns cols={2}>
-  <Card title="Take the full tutorial" icon="route" href="/open-source/cli-quickstart">
-    Build a small example and follow a real relationship.
-  </Card>
+## What changes in your repository
 
-  <Card title="Give your agent MCP tools" icon="plug" href="/open-source/mcp-server">
-    Expose the graph as structured tools in your editor.
+After the first run you'll find a `graphify-out/` folder:
+
+```text
+graphify-out/
+├── graph.json
+├── graph.html
+├── GRAPH_REPORT.md
+├── manifest.json
+└── cache/
+```
+
+Open `graph.html` in a browser to explore the graph. Commit `graph.json` and `GRAPH_REPORT.md` if you want teammates and CI to share the same graph; add `cache/` to `.gitignore`.
+
+## Useful skill commands
+
+| Command | What it does |
+| --- | --- |
+| `/graphify . --update` | Re-extract only new or changed files |
+| `/graphify . --mode deep` | Slower extraction with richer `INFERRED` edges |
+| `/graphify . --wiki` | Write an agent-readable wiki, one article per community |
+| `/graphify path "AuthModule" "Database"` | Shortest path between two concepts |
+| `/graphify explain "SessionStore"` | Plain-language explanation of one node |
+| `/graphify https://github.com/<owner>/<repo>` | Clone a repository and graph it |
+
+## Verify it worked
+
+```bash
+graphify god-nodes --top 5
+```
+
+You should see the five most connected symbols in your code. If the command says it can't find a graph, run it from the folder that contains `graphify-out/`, or pass `--graph graphify-out/graph.json`.
+
+<AccordionGroup>
+  <Accordion title="The agent doesn't recognise /graphify">
+    Restart the agent so it reloads skills. For Claude Code, check that `~/.claude/skills/graphify/SKILL.md` exists. For other agents, re-run `graphify install --platform <name>`.
+  </Accordion>
+  <Accordion title="Can I skip the LLM step?">
+    Yes. Run `graphify extract . --code-only` from a terminal. It builds the code graph with no model calls.
+  </Accordion>
+  <Accordion title="How do I remove the skill?">
+    Run `graphify uninstall`. Add `--purge` to also delete `graphify-out/` in the current folder.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Vibe coding with Graphify Local" icon="wand-magic-sparkles" href="/open-source/vibe-coding">
+    Make your agent check the graph before every search.
+  </Card>
+  <Card title="CLI quickstart" icon="terminal" href="/open-source/cli-quickstart">
+    Build and query the graph straight from a terminal.
   </Card>
 </Columns>
 
 <TryCloudCard />
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/platform/quickstart" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify in 5 minutes</span></a>
-  <a href="/open-source/installation" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Installation</span></a>
-</div>

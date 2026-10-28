@@ -1,0 +1,148 @@
+---
+title: "Vibe coding with Graphify Local"
+sidebarTitle: "Vibe coding with Graphify Local"
+description: "Set up Graphify Local so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code."
+keywords: ["vibe coding", "claude code hooks", "graphify claude install", "agent context"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Vibe coding works best when the agent already knows where things are. This page sets up Graphify Local so your agent asks the graph first, reads only the files that matter, and has a fresh graph after every change.
+
+<Note>
+**Use this setup when** you let an agent make broad changes across a repository and want it to stop re-reading the same files every session.
+</Note>
+
+## How it works
+
+A project install does three things:
+
+1. **Rules.** It adds a `## graphify` section to the project's `CLAUDE.md` (or your agent's equivalent rules file). The rules tell the agent to run `graphify query` before searching, use `path` and `explain` to trace code, and run `graphify update .` after editing.
+2. **Hooks.** For Claude Code it adds `PreToolUse` hooks to `.claude/settings.json`. When the agent is about to grep or read a file and a graph exists, the hook adds a reminder to use the graph.
+3. **Fresh graph.** Git hooks or a file watcher rebuild the code graph as you work, with no model calls.
+
+The hooks fail open. If anything goes wrong, they print nothing and the tool call goes ahead.
+
+## Set it up
+
+<Steps>
+  <Step title="Build the graph">
+    ```bash
+    graphify extract . --code-only
+    ```
+  </Step>
+  <Step title="Install the project rules and hooks">
+    <Tabs>
+      <Tab title="Claude Code">
+        ```bash
+        graphify claude install
+        ```
+
+        This writes the `## graphify` section to `CLAUDE.md` and these hooks to `.claude/settings.json`:
+
+        ```json
+        {
+          "hooks": {
+            "PreToolUse": [
+              { "matcher": "Bash|Grep",
+                "hooks": [{ "type": "command", "command": "graphify hook-guard search", "timeout": 10 }] },
+              { "matcher": "Read|Glob",
+                "hooks": [{ "type": "command", "command": "graphify hook-guard read", "timeout": 10 }] }
+            ]
+          }
+        }
+        ```
+
+        The installed command uses the absolute path to your `graphify` executable.
+      </Tab>
+      <Tab title="Other agents">
+        ```bash
+        graphify cursor install     # or: codex, gemini, copilot, kiro, opencode, ...
+        ```
+
+        Run `graphify --help` to see every agent with a project install command. Hook support depends on the agent; the rules file works everywhere.
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Keep the graph fresh">
+    <Tabs>
+      <Tab title="Git hooks">
+        ```bash
+        graphify hook install
+        ```
+
+        Rebuilds after `commit`, `checkout`, `merge`, and `rebase`, and registers a merge driver so `graph.json` conflicts resolve automatically.
+      </Tab>
+      <Tab title="Watch mode">
+        ```bash
+        graphify watch .
+        ```
+
+        Rebuilds the code graph as you save files. Needs the `watch` extra: `uv tool install "graphifyy[watch]"`.
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+## Make the graph mandatory
+
+By default the hooks only nudge. For Claude Code you can block the agent's first raw file read in each session until it has run one `graphify query`:
+
+```bash
+graphify install --project --strict
+```
+
+Strict mode blocks once per session, then falls back to nudging, so the agent is never stuck. Searches and directory listings are never blocked, and a graph that is stale for the target file only nudges.
+
+## See it in action
+
+With the hooks installed, ask the agent something like "where do we retry failed uploads?". Instead of a chain of `grep` and `Read` calls, you should see it run:
+
+```bash
+graphify query "retry upload"
+graphify explain "upload_with_retry()"
+```
+
+and then open only the files those commands point to. After it edits code, it runs `graphify update .` (about 6 seconds on a 98-file package) so the next question sees the change.
+
+## Verify and troubleshoot
+
+```bash
+graphify hook status
+```
+
+```text
+post-commit: installed
+post-checkout: installed
+post-merge: installed
+post-rewrite: installed
+merge driver: registered
+```
+
+| Symptom | Fix |
+| --- | --- |
+| The agent never mentions the graph | Check that `CLAUDE.md` has a `## graphify` section and `.claude/settings.json` has the hooks. Restart the agent. |
+| Hooks fire but say nothing | No `graphify-out/graph.json` exists yet. Build one with `graphify extract .`. |
+| Git operations feel slow | The rebuild runs in the background and logs to `~/.cache/graphify-rebuild.log`. Set `GRAPHIFY_SKIP_HOOK=1` to skip it for one command. |
+
+## Best practices
+
+- Commit `graph.json` and `GRAPH_REPORT.md` so every clone starts with a graph. Ignore `graphify-out/cache/`.
+- Keep `--code-only` for the always-on loop. Run a full extraction with documents when they change.
+- Save useful answers with `graphify save-result` so later sessions can learn from them.
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Quickstart (skill)" icon="rocket" href="/open-source/quickstart">
+    Install the skill globally for every repository.
+  </Card>
+  <Card title="MCP server quickstart" icon="plug" href="/open-source/mcp-server">
+    Give agents graph tools over MCP.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

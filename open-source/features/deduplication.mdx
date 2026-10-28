@@ -1,0 +1,116 @@
+---
+title: "Deduplication and symbol resolution"
+sidebarTitle: "Deduplication and resolution"
+description: "How Graphify Local links calls and imports across files, tags every edge with its confidence, and merges duplicate entities without inventing connections."
+keywords: ["graphify deduplication", "symbol resolution", "EXTRACTED INFERRED AMBIGUOUS", "cross-file calls"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Parsing one file at a time only gets you halfway. A call to `load_config()` in `app.py` is useful only when it points at the `load_config` defined in `config.py`, and a concept your docs call "Auth Service" should be the same node as the one another doc calls "auth service". Graphify Local does both before it writes the graph, and it labels how sure it is.
+
+<Note>
+**Read this page when** you want to know whether to trust an edge, why two nodes merged, or why a call you expected isn't in the graph.
+</Note>
+
+## How it works
+
+### Symbol resolution
+
+<Steps>
+  <Step title="Index">
+    Every file's definitions, imports, and exports are indexed with tree-sitter.
+  </Step>
+  <Step title="Resolve across files">
+    Calls and references are matched to definitions through imports, re-exports, and language-specific passes (receiver types, qualified member calls, framework conventions). New languages plug in through a resolver registry.
+  </Step>
+  <Step title="Tag confidence">
+    Each edge gets a tag, so you and your agent know what was read and what was worked out.
+  </Step>
+</Steps>
+
+| Tag | Meaning |
+| --- | --- |
+| `EXTRACTED` | Written explicitly in the source, such as an import or a method on a class. |
+| `INFERRED` | Derived by resolution, such as a call matched to its definition through imports. |
+| `AMBIGUOUS` | Several targets were possible. Kept, but down-weighted in clustering. |
+
+Resolution is conservative. When Graphify can't tell which of several definitions a call means, it records an `AMBIGUOUS` edge or no edge, rather than guessing.
+
+### Deduplication
+
+Entity deduplication runs on every build, before the graph is written:
+
+<Steps>
+  <Step title="Exact match">
+    Labels are normalised (case, punctuation, Unicode marks) and identical ones merge.
+  </Step>
+  <Step title="Candidate pairs">
+    MinHash with locality-sensitive hashing finds labels that might be the same, so Graphify never compares every pair.
+  </Step>
+  <Step title="Verify">
+    Each candidate is scored with Jaro-Winkler similarity. Pairs in the same community get a 5-point bonus. A score of 92 or more merges.
+  </Step>
+  <Step title="Guard rails">
+    Short labels only merge on a single-character typo, and labels that differ only in an embedded number (`ADR 0011` and `ADR 0012`) never merge.
+  </Step>
+  <Step title="Rewire">
+    Edges and hyperedges are moved to the surviving node. Genuine ID collisions across files stay separate and are reported.
+  </Step>
+</Steps>
+
+## See it in action
+
+`explain` shows the tag on every connection:
+
+```bash
+graphify explain "APIRoute"
+```
+
+```text
+  --> RequestValidationError [uses] [INFERRED]
+  --> Dependant [uses] [INFERRED]
+  --> .get() [method] [EXTRACTED]
+  <-- __init__.py [imports] [EXTRACTED]
+```
+
+## Configure
+
+| To | Do this |
+| --- | --- |
+| Treat an extension as another language for resolution | Add `language.<ext>=...` to [`.graphifyrc`](/open-source/configuration/graphifyrc). |
+| Change how much `AMBIGUOUS` edges affect communities | Set `GRAPHIFY_AMBIGUOUS_SCALE` (`1.0` = full weight, `0` = ignore). |
+| Check for edges collapsed between the same two nodes | Run `graphify diagnose multigraph`. |
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| A call is missing | The target was probably ambiguous. Run `graphify explain` on the caller and look for `AMBIGUOUS` edges. |
+| Two different things merged | Rename one label, or report it with both labels on [GitHub](https://github.com/Graphify-Labs/graphify/issues). |
+| Calls between repositories are missing | Merge the graphs. Cross-repository member calls are completed after merging. See [Multiple repositories](/open-source/features/multi-repo). |
+
+<AccordionGroup>
+  <Accordion title="Does deduplication change code nodes?">
+    Code symbols mostly have unique IDs from their file and name, so they rarely merge. Deduplication matters most for concepts pulled from docs and papers.
+  </Accordion>
+  <Accordion title="Can my agent rely on INFERRED edges?">
+    Yes for navigation. For a change that must be correct, confirm the edge by opening the file and line the node points to.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Community detection" icon="circle-nodes" href="/open-source/features/community-detection">
+    How resolved edges become communities.
+  </Card>
+  <Card title="Supported inputs" icon="file-code" href="/open-source/features/languages">
+    Languages and file types.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

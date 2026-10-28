@@ -1,0 +1,103 @@
+---
+title: "Token benchmark"
+sidebarTitle: "Token benchmark"
+description: "Measure how many tokens Graphify Local saves per question compared with sending your whole corpus to a model, using graphify benchmark."
+keywords: ["graphify benchmark", "token reduction", "llm context cost", "graphify tokens"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+The point of a graph is that your agent reads the part of the codebase that matters, not all of it. `graphify benchmark` puts a number on that: it compares the tokens in your full corpus with the tokens in the subgraph Graphify returns for a set of typical questions.
+
+<Note>
+**Use this when** you want to show your team what Graphify saves on your own repository, or to check that a graph is focused enough to be useful.
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="Estimate the naive cost">
+    The corpus size in words is converted to tokens at about 133 tokens per 100 words. If no word count is supplied, it's estimated as 50 words per node.
+  </Step>
+  <Step title="Ask sample questions">
+    Five questions run against the graph exactly as the MCP `query_graph` tool would answer them: authentication, the main entry point, error handling, what connects data to the API, and the core abstractions.
+  </Step>
+  <Step title="Compare">
+    Each answer's size is measured at about 4 characters per token. Questions with no matching nodes are skipped. The reduction is the naive cost divided by the average answer.
+  </Step>
+</Steps>
+
+## See it in action
+
+```bash
+graphify benchmark
+```
+
+```text
+graphify token reduction benchmark
+──────────────────────────────────────────────────
+  Corpus:          193,600 words → ~258,133 tokens (naive)
+  Graph:           3,872 nodes, 8,833 edges
+  Avg query cost:  ~1,887 tokens
+  Reduction:       136.8x fewer tokens per query
+
+  Per question:
+    [159.2x] what is the main entry point
+    [99.1x] how are errors handled
+    [152.7x] what connects the data layer to the api
+    [158.2x] what are the core abstractions
+```
+
+This run is from a mid-sized Python repository. The authentication question is missing because that repository has no auth code. Your numbers depend on your code and your graph.
+
+To benchmark another graph, pass its path:
+
+```bash
+graphify benchmark graphify-out/merged-graph.json
+```
+
+## Read the result
+
+| Line | Meaning |
+| --- | --- |
+| Corpus | What sending everything would cost. Estimated from node count when no word count is supplied. |
+| Graph | Size of the graph that answered. |
+| Avg query cost | Average tokens per answer. |
+| Reduction | Naive cost divided by the average answer. |
+
+<Warning>
+The naive side is an estimate, not a measured prompt. Treat the ratio as a guide to scale, not a billing figure.
+</Warning>
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| `No matching nodes found for sample questions` | Build the graph first, or check it has code nodes. |
+| Very low reduction | Your corpus is small. Graphify warns under about 50,000 words that a graph may not help. |
+| Very high answer cost | A few hub nodes dominate. Look at God Nodes in `GRAPH_REPORT.md`. |
+
+<AccordionGroup>
+  <Accordion title="Does the benchmark call a model?">
+    No. It runs offline against `graph.json`.
+  </Accordion>
+  <Accordion title="Can I use my own questions?">
+    Not from the command line. Run `graphify query` with your question to see the answer and its size.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Ask better graph questions" icon="magnifying-glass" href="/open-source/features/querying">
+    Write questions that return focused answers.
+  </Card>
+  <Card title="MCP tools" icon="plug" href="/open-source/features/mcp-tools">
+    Give your agent the same answers.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

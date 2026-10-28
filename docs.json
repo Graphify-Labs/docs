@@ -99,13 +99,19 @@
             "icon": "sparkles",
             "pages": [
               "open-source/features/languages",
+              "open-source/features/documents-and-media",
+              "open-source/features/databases",
+              "open-source/features/deduplication",
+              "open-source/features/community-detection",
               "open-source/features/querying",
               "open-source/features/incremental-updates",
               "open-source/features/work-memory",
               "open-source/features/pr-impact",
+              "open-source/features/multi-repo",
               "open-source/features/exports",
               "open-source/features/headless-extraction",
-              "open-source/features/mcp-tools"
+              "open-source/features/mcp-tools",
+              "open-source/features/token-benchmark"
             ]
           },
           {

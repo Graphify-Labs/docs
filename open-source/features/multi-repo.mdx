@@ -1,0 +1,121 @@
+---
+title: "Multiple repositories"
+sidebarTitle: "Multiple repositories"
+description: "Combine Graphify Local graphs from several repositories into one cross-repo graph with merge-graphs, or keep a personal global graph of every project."
+keywords: ["graphify multi repo", "graphify global graph", "merge-graphs", "cross-repo calls", "microservices graph"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Real systems rarely live in one repository. A frontend calls an API, the API imports a shared client library, and a worker reads the same tables. Graphify Local can join separate graphs so your agent can follow a path from one repository into another.
+
+There are two ways to do it:
+
+| Approach | Use it for | Output |
+| --- | --- | --- |
+| `merge-graphs` | A fixed set of repositories, such as one product's services | A merged `graph.json` you choose the path for |
+| `global` | Every project you work on, kept up to date over time | `~/.graphify/global-graph.json` |
+
+<Note>
+**Use this when** a change in one repository can break another, or when your agent keeps asking where a shared type is defined.
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="Build each repository">
+    Run `graphify extract .` (or your usual build) in each repository so each has its own `graphify-out/graph.json`.
+  </Step>
+  <Step title="Combine">
+    Nodes are tagged with their repository. Unresolved calls saved during each build are matched against definitions in the other repositories, so cross-repo member calls become real edges.
+  </Step>
+  <Step title="Re-cluster">
+    The combined graph is clustered as a whole, so communities can span repositories.
+  </Step>
+</Steps>
+
+## See it in action
+
+<Tabs>
+  <Tab title="merge-graphs">
+    ```bash
+    graphify merge-graphs ../web/graphify-out/graph.json ../api/graphify-out/graph.json \
+      --out graphify-out/merged-graph.json
+    graphify path "LoginForm" "create_session" --graph graphify-out/merged-graph.json
+    ```
+    The default output is `graphify-out/merged-graph.json`. Pass `--previous <path>` to keep the community IDs from an earlier merge.
+  </Tab>
+  <Tab title="global">
+    ```bash
+    graphify global add graphify-out/graph.json --as api
+    graphify global list
+    ```
+    ```text
+    Added 'api' to global graph: +3872 nodes, -0 pruned. Global: ~/.graphify/global-graph.json
+    Global graph: ~/.graphify/global-graph.json
+      api: 3872 nodes, added 2026-10-28
+    ```
+    Running `global add` again with the same tag replaces that repository's nodes. `--as` defaults to the parent folder's name.
+  </Tab>
+</Tabs>
+
+Query the global graph by passing its path:
+
+```bash
+graphify query "where is the auth token validated" --graph "$(graphify global path)"
+```
+
+To pull in a public repository first, `graphify clone <github-url>` clones it locally and prints its path.
+
+## Manage the global graph
+
+| Command | Does |
+| --- | --- |
+| `graphify global add <graph.json> --as <tag>` | Add or update a repository |
+| `graphify global remove <tag>` | Remove a repository's nodes |
+| `graphify global list` | List repositories with node counts and dates |
+| `graphify global path` | Print the global graph's location |
+
+## Point your agent at it
+
+The MCP server reads any graph file, so you can serve a merged graph:
+
+```bash
+graphify-mcp --graph graphify-out/merged-graph.json
+```
+
+See [MCP tools](/open-source/features/mcp-tools) for the tools it exposes.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| No edges between repositories | Rebuild each repository with the current version so unresolved calls are saved, then merge again. |
+| Duplicate nodes for a shared library | Build the library once and include its graph in the merge, instead of vendoring it. |
+| Stale repository in the global graph | Run `global add` again with the same `--as` tag, or `global remove` it. |
+| Community IDs change after each merge | Pass `--previous` with the last merged graph. |
+
+<AccordionGroup>
+  <Accordion title="Does merging change each repository's graph?">
+    No. Inputs are read, not modified.
+  </Accordion>
+  <Accordion title="Is the global graph shared?">
+    No. It's a file in your home folder.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="PR impact" icon="code-pull-request" href="/open-source/features/pr-impact">
+    Check what a change touches.
+  </Card>
+  <Card title="Deduplication and resolution" icon="code-merge" href="/open-source/features/deduplication">
+    How calls are resolved.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

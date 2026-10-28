@@ -25,6 +25,7 @@
             "pages": [
               "platform/overview",
               "platform/quickstart",
+              "concepts/index-a-repository",
               "platform/console",
               "platform/local-to-cloud"
             ]

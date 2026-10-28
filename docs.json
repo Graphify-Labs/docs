@@ -406,7 +406,7 @@
   "fonts": {
     "heading": {
       "family": "Poppins",
-      "source": "/fonts/bricolage-grotesque-latin.woff2",
+      "source": "/fonts/poppins-600-latin.woff2",
       "format": "woff2",
       "weight": 600
     },

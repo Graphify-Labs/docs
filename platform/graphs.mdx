@@ -1,8 +1,8 @@
 ---
-title: "Graph explorer: browse your code knowledge graph"
+title: "Code knowledge graph: explore, query, combine repos"
 sidebarTitle: "Graph explorer"
-description: "Explore an indexed repository's modules, files, classes and functions, see what a change could affect, and combine repositories into cross-repo graphs."
-keywords: ["graphify graph", "code graph explorer", "cross-repo graph", "impact analysis"]
+description: "Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph."
+keywords: ["code knowledge graph", "code graph explorer", "query code graph", "cross-repo graph", "impact analysis"]
 surface: "cloud"
 ---
 
@@ -65,6 +65,29 @@ Real systems span repositories. A combined graph links entities in different rep
 </Steps>
 
 The combined graph shows **Cross-repo connections** and **Possible cross-repo dependents**. It's saved under **Saved combined graphs**.
+
+### Combined graph limits and states
+
+- A name is 2 to 120 characters.
+- A combined graph holds 1 to 100 repositories from your workspace.
+- Rebuilding with the same repositories and unchanged graphs doesn't start new work.
+
+A combined graph moves through `not_started`, `queued`, `running`, then `ready` or `failed`. If it fails, select **Retry build**.
+
+## Query the graph
+
+The console, Ask, and your [hosted MCP](/platform/hosted-mcp) agent all query the same graph. Each query targets one repository, by ID, full name such as `acme/api`, or short name such as `api`. A combined graph is targeted by its name.
+
+| Code | Status | Fix |
+| --- | --- | --- |
+| `repository_required` | 422 | Name a repository. |
+| `query_repository_ambiguous` | 422 | Two repositories share that short name. "Use the full repository name or ID." |
+| `query_forbidden` | 403 | You can't read that repository. |
+| `rate_limited` | 429 | More than 120 queries a minute in this workspace. Wait and retry. |
+| `query_timeout` | 504 | The query ran past 45 seconds. Narrow it to a module or symbol. |
+| `query_busy` / `query_unavailable` | 503 | Retry after the `Retry-After` header, 1 to 2 seconds. |
+
+See [Troubleshooting](/platform/support/troubleshooting#query-ask-and-reindex-errors).
 
 ## Link to a view
 

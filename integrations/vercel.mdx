@@ -1,5 +1,5 @@
 ---
-title: "Graphify MCP for Vercel"
+title: "Vercel integration: Graphify MCP for projects"
 sidebarTitle: "Graphify MCP for Vercel"
 description: "Connect Vercel projects to Graphify's hosted MCP server through the Marketplace integration or Vercel Connect."
 surface: "cloud"
@@ -279,6 +279,8 @@ try {
 | The Connect token id is rejected | The id is `graphify/` plus the `--name` you passed to `vercel connect create`. `graphify/acme-graphify` matches the example name only. |
 | No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories). |
 | The tools are the ten local ones | This page uses the hosted server. The ten-tool list in the [MCP tool reference](/open-source/features/mcp-tools) is the graph on the machine. |
+
+- **`429 rate_limited`.** The hosted MCP allows 240 requests a minute per client IP for signed-in sessions. Wait, then retry. See [Troubleshooting](/platform/support/troubleshooting).
 
 ## Related
 

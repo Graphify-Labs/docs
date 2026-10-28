@@ -1,7 +1,7 @@
 ---
-title: "Graphify troubleshooting: MCP, OAuth, 429, indexing"
+title: "Graphify troubleshooting: MCP, 429, and error codes"
 sidebarTitle: "Troubleshooting"
-description: "Fix Graphify sign-in and MCP OAuth errors, 429 rate_limited, failed or slow indexing, GitHub and GitLab connect issues, and MCP config mistakes."
+description: "Fix MCP OAuth errors, 429 rate_limited, indexing and reindex failures, query and Ask error codes, and GitHub or GitLab connection issues."
 keywords: ["graphify troubleshooting", "mcp oauth error", "invalid_grant refresh token", "429 rate_limited", "indexing failed", "mcp server not connecting"]
 surface: "cloud"
 ---
@@ -99,6 +99,23 @@ No code was found in the graph. Select **Reindex repository**. If the repository
 Messages such as **Monthly indexing allowance used** or **Daily build limit reached** mean a plan limit, not a fault. See [Rate limits and plan limits](/platform/support/rate-limits#other-limit-responses).
 
 If a build stays stuck, use **Get in touch** under **Settings** in the console.
+
+## Query, Ask, and reindex errors
+
+| Code | Status | Fix |
+| --- | --- | --- |
+| `repository_required` | 422 | Name a repository in the query. |
+| `query_repository_ambiguous` | 422 | Use the full repository name or ID. |
+| `query_timeout` | 504 | Over 45 seconds. Narrow the query. |
+| `query_busy`, `query_unavailable` | 503 | Retry after the `Retry-After` header. |
+| `question_required` | 422 | Ask got an empty question. |
+| `ask_unavailable` | 503 | "Ask is not available yet." |
+| `index_rebuild_debounced` | 409 | Wait `retryAfterSeconds`, then reindex. |
+| `repository_disabled` | 409 | Turn **Indexing** on for the repository. |
+| `provider_disconnected` | 409 | Reconnect GitHub or GitLab, or remove the repository. |
+| `subscription_required` | 402 | Reactivate the plan in **Billing**. |
+
+Per-workspace limits: Ask 30, query 120, and test impact 60 requests a minute. The hosted MCP allows 240 a minute per client IP. See [Rate limits](/platform/support/rate-limits).
 
 ## Repository connect issues
 

@@ -1,0 +1,89 @@
+---
+title: "Rate limits and plan limits"
+sidebarTitle: "Rate limits"
+description: "Per-minute request limits for Ask, query, and MCP, memory limits, plan allowances, and how to handle a 429 from Graphify."
+surface: "cloud"
+hideFooterPagination: true
+---
+
+Graphify limits how fast you can call Ask, query, and the hosted MCP server, and how much each plan can build, review, and verify. A request over a rate limit returns HTTP `429` with the code `rate_limited`. Wait a few seconds and retry.
+
+<Note>
+This page covers Graphify, the hosted product. Graphify Local, the open-source CLI, has no rate limits; it runs on your machine.
+</Note>
+
+## Request rate limits
+
+These are the default limits on every plan. They may change as we tune the service. Teams and Enterprise workspaces can get higher limits; [contact us](/platform/support/pricing#enterprise) if you need more.
+
+| Operation | Limit |
+| --- | --- |
+| Ask requests | 30/minute |
+| Query requests | 120/minute |
+| MCP requests | 240/minute |
+
+## Memory limits
+
+| Operation | Limit |
+| --- | --- |
+| Memory ingestion | 2,000 ingests/day |
+| Stored memory | 10,000 turns/repository |
+| Memory consolidation | 1 concurrent job/workspace |
+
+## Plan allowances
+
+Builds, reviews, and verification runs are counted per repository or per workspace, depending on the allowance. [Plans and pricing](/platform/support/pricing#hosted-plan-allowances) has the full table for each plan.
+
+All hosted plans allow 1 index build at a time per repository and 10 across a workspace.
+
+## What a 429 looks like
+
+```json 429 Too Many Requests
+{
+  "error": {
+    "code": "rate_limited",
+    "message": "Too many requests. Please slow down."
+  },
+  "meta": {
+    "correlationId": "…"
+  }
+}
+```
+
+The response has no `Retry-After` header. Back off and retry:
+
+1. Wait 2 seconds, then retry the same request.
+2. If it fails again, double the wait each time, up to about 60 seconds.
+3. Add a little random jitter, so parallel agents do not retry in step.
+
+The usual cause is an agent calling `query_graph` or Ask in a tight loop. Tell the agent to reuse the answers it already has.
+
+## Other limit responses
+
+| Status and code | Meaning | What to do |
+| --- | --- | --- |
+| `429` `rate_limited` | Too many requests in a short time. | Back off and retry, as above. |
+| `402` `subscription_required` | The feature needs a paid plan. | Check **Billing** in the console. |
+| `409` `seat_limit_reached` | Every Teams seat is assigned. | Buy more seats in **Billing**, or remove a member. |
+
+The console shows plan limits as messages:
+
+| Message | What it means |
+| --- | --- |
+| **Monthly indexing allowance used** | The workspace used this month's indexing allowance. It resets at the start of next month. |
+| **Daily build limit reached** | The repository used today's automatic builds. It resets at 00:00 UTC. |
+| **Repository too large for this plan** | The newest version was not published. The last published version still works. |
+| **Monthly reviews used** | The plan's reviews for this month are used. |
+
+Include the `correlationId` from the response, or the `X-Correlation-ID` header, when you contact support. It lets the team find your request.
+
+## Need more capacity
+
+Pro and Teams raise build, review, and verification allowances; see [Plans and pricing](/platform/support/pricing). For higher request limits, on Teams or Enterprise, or for your own deployment, [contact us](/platform/support/pricing#enterprise).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/support/pricing" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Plans and pricing</span></a>
+  <a href="/platform/support/security" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Security and data handling</span></a>
+</div>

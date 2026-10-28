@@ -68,7 +68,9 @@
             "pages": [
               "platform/support/faqs",
               "platform/support/pricing",
-              "platform/support/enterprise"
+              "platform/support/rate-limits",
+              "platform/support/security",
+              "platform/support/move-from-local"
             ]
           }
         ]
@@ -502,7 +504,7 @@
     },
     {
       "source": "/pricing/enterprise",
-      "destination": "/platform/support/enterprise"
+      "destination": "/platform/support/pricing#enterprise"
     },
     {
       "source": "/platform/when-stuck",
@@ -543,6 +545,10 @@
     {
       "source": "/reference",
       "destination": "/open-source/configuration/cli"
+    },
+    {
+      "source": "/platform/support/enterprise",
+      "destination": "/platform/support/pricing#enterprise"
     }
   ]
 }

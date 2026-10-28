@@ -1,0 +1,85 @@
+---
+title: "Security and data handling"
+sidebarTitle: "Security and data"
+description: "What Graphify stores, how long it keeps it, which GitHub and Google Drive permissions it asks for, and how assistants reach your graphs."
+surface: "both"
+hideFooterPagination: true
+---
+
+Graphify stores the graphs it builds from the repositories you connect, plus the memory your workspace saves. It does not train models on your code. Data is encrypted in transit and at rest, and access is limited to the workspace and repositories you choose.
+
+<Note>
+This page covers Graphify, the hosted product. Graphify Local runs on your machine and sends nothing to Graphify; see [Graphify Local](#graphify-local) below. The [Privacy Policy](https://graphify.com/privacy) is the binding text.
+</Note>
+
+## What Graphify stores
+
+| Data | Where it comes from | How long it is kept |
+| --- | --- | --- |
+| Repository graphs, wiki, and review results | Repositories you connect and index | Until you delete them or close the account; then removed from active systems within 30 days. Backups expire on a rolling 90-day cycle. |
+| Memory notes | Notes saved by members and assistants | Same as above. |
+| Raw memory trails | Tool-call activity that memory distills into notes | Deleted 14 days after it is consolidated. Only the distilled notes persist. |
+| Google Drive graphs | Folders you choose to sync | Same as repository graphs. Ask support to delete the derived graph at any time. |
+| Operational logs and usage telemetry | Running the service | Up to 12 months. |
+
+To export or delete your data, contact the [Graphify team](https://graphify.com/contact).
+
+## Model providers and training
+
+Graphify does not train models on your code. To produce results, the hosted service sends code and content to its LLM subprocessors, OpenAI and Anthropic. Under their API terms, neither Graphify nor they train models on it. The full list is on the [Subprocessors page](https://graphify.com/subprocessors).
+
+An assistant you connect, such as Claude Code or Cursor, sends what it retrieves from Graphify to its own provider. That traffic follows the assistant's terms, not Graphify's.
+
+## GitHub App permissions
+
+Graphify reads repositories through a GitHub App. You choose **All repositories** or **Only select repositories** when you install it, and you can change the selection in GitHub at any time.
+
+| Permission or event | Why Graphify needs it |
+| --- | --- |
+| Repository contents: read | Index the repository and build its graph. |
+| `push` events | Rebuild the graph when the default branch changes. |
+| `pull_request` events | Start a review when a pull request is opened, reopened, or marked ready. |
+| `installation` and `installation_repositories` events | Track which repositories the App can reach. |
+
+Read access lets Graphify index a repository, not change it. Applying a suggested fix needs contents write access. For each webhook, Graphify queues only a sanitized copy of the event, not the raw payload.
+
+## Google Drive
+
+Google Drive uses the read-only Drive permission. Graphify reads file names, contents, links, and modification times in the folders you choose. It never modifies or deletes Drive files. OAuth tokens are encrypted at rest, and the graph is stored on AWS in the United States. When you stop syncing a folder or disconnect Drive, Graphify stops reading it and revokes its token. See [Google Drive](/platform/google-drive).
+
+## Assistant access
+
+Assistants reach Graphify through the hosted MCP server at `https://api.graphify.com/mcp`.
+
+- Each assistant signs in with OAuth in the browser. No API key sits in a config file.
+- An agent that cannot open a browser, such as one in CI, uses an API token from the **MCP** tab of **Connectors**. Store it as a CI secret, never in the repository.
+- An assistant reaches only the workspace it signed in to, and only repositories indexed in that workspace.
+- Some tools save notes or switch workspaces. Approve a tool call only when that is what you meant.
+
+## Graphify Local
+
+The open-source `graphifyy` package runs on your machine, with no account.
+
+- Code is parsed locally with tree-sitter. Source files are never executed.
+- The MCP server uses stdio by default. The HTTP transport is opt-in and binds to `127.0.0.1` unless you pass `--host 0.0.0.0`.
+- Semantic extraction sends content only to the model backend you configure.
+- Credential-shaped strings are redacted from labels before they are written to `graph.json`.
+
+The full threat model is in [SECURITY.md](https://github.com/Graphify-Labs/graphify/blob/v8/SECURITY.md).
+
+## Compliance
+
+Graphify's SOC 2 Type II engagement has started, and no report is available yet. A Data Processing Addendum is available on request. Check the [Trust Center](https://trust.graphify.com) for current evidence. For self-hosting, see [Enterprise](/platform/support/pricing#enterprise).
+
+## Report a vulnerability
+
+Do not open a public issue for a security problem. For the open-source engine, use GitHub's [private vulnerability reporting](https://github.com/Graphify-Labs/graphify/security). For the hosted service, contact the [Graphify team](https://graphify.com/contact).
+
+The only official channels are graphify.com, the [Graphify-Labs GitHub organization](https://github.com/Graphify-Labs), and the `graphifyy` package on PyPI.
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/support/rate-limits" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Rate limits and plan limits</span></a>
+  <a href="/platform/support/move-from-local" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Move from Graphify Local</span></a>
+</div>

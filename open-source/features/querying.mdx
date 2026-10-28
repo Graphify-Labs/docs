@@ -2,7 +2,6 @@
 title: "Ask better graph questions"
 description: "Ask better questions of your code knowledge graph with graphify query, path, and explain, and pick the right command for each kind of question."
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
@@ -44,6 +43,76 @@ This uses the [tutorial’s example project](/open-source/cli-quickstart). In yo
 > Use Graphify to trace how a request reaches persistence. Show the path and source references. Flag inferred or ambiguous edges, and tell me if the graph is missing evidence.
 
 The tool supplies context, and the assistant interprets it. Ask for evidence and avoid treating an absent path as proof that two systems are independent.
+
+## Run it on a real repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```bash
+git clone --depth 1 https://github.com/encode/httpx && cd httpx
+graphify extract . --code-only
+graphify query "how does the client send a request" --budget 600
+```
+
+```text
+Graph: graphify-out/graph.json (1883 nodes) | Traversal: BFS depth=2 | Start: ['Send', 'send()', 'Client', 'Request'] | 550 nodes found
+
+[!] TRUNCATED: showing 26 of 550 nodes (~600-token budget). ... raise the token budget to 14777 to get all 550 (CLI: --budget 14777, MCP: token_budget=14777) or narrow the query
+
+NODE Client [src=httpx/_client.py loc=L594 community=Community 21]
+NODE Request [src=httpx/_models.py loc=L382 community=Community 14]
+NODE BaseClient [src=httpx/_client.py loc=L188 community=Community 5]
+```
+
+The header tells you where the traversal started and how much it found. When the output is truncated, Graphify prints the exact budget that would return everything. Raise `--budget`, or narrow the question.
+
+To start from a node you already know, pass `--seed`. To follow only one kind of edge, pass `--context`:
+
+```bash
+graphify query "what raises timeouts" --seed "TimeoutException" --budget 300
+graphify query "who calls send" --context calls
+```
+
+`path` and `explain` show the confidence of each edge:
+
+```text
+$ graphify path "Client" "HTTPTransport"
+Shortest path (1 hops):
+  Client --uses [INFERRED]--> HTTPTransport
+```
+
+## Flags
+
+| Flag | Applies to | What it does |
+| --- | --- | --- |
+| `--budget N` | `query` | Caps output at N tokens. The default is 2000. |
+| `--dfs` | `query` | Uses depth-first traversal instead of breadth-first. |
+| `--seed X` | `query` | Starts at node X (an ID, label or file path). You can repeat it. |
+| `--context C` | `query` | Filters edges by context. You can repeat it. |
+| `--all` | `explain` | Lists every connection, not just the 20 most connected. |
+| `--directed` / `--undirected` | `path` | Directed is the default. Undirected ignores edge direction. |
+| `--graph PATH` | all three | Reads a different `graph.json`. |
+
+## Exit codes and troubleshooting
+
+`query`, `path` and `explain` exit with `0` when they return an answer, `3` when a name is ambiguous, and `4` when no node matches. Scripts can branch on these codes.
+
+```text
+$ graphify explain send
+Ambiguous: 'send' matches 3 nodes in different files.
+  httpx/_client.py
+    id: httpx_client_asyncclient_send
+  ...
+Retry with path::symbol using one of the paths above (e.g. <path>::.send()) or the full node id.
+```
+
+Retry with one of the listed IDs, or a `path::symbol` form. If you get `No node matching '...' found.` (exit 4), check the spelling or run `graphify god-nodes` to see the main labels.
+
+## FAQ
+
+**Does querying call an LLM?** No. `query`, `path` and `explain` read `graph.json` locally.
+
+**What does INFERRED mean?** The edge came from a resolution step, not a direct syntax match. EXTRACTED edges were read straight from the source. Check INFERRED edges before you rely on them.
 
 ## Next steps
 

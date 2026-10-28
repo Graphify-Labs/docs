@@ -96,6 +96,53 @@ graphify path "orders" "checkout"
   </Accordion>
 </AccordionGroup>
 
+## Flags
+
+| Flag | What it does |
+| --- | --- |
+| `--postgres DSN` | Reads tables, views, functions and foreign keys from a live database. Column-level detail isn't represented in the graph. |
+| `--cargo` | Extracts crate-to-crate dependencies from `Cargo.toml`. |
+| `--code-only` | Skips documents. SQL files are still extracted as code. |
+
+The `postgres` extra installs both `psycopg[binary]` and `tree-sitter-sql`. Introspection rebuilds DDL and parses it with the SQL grammar, and without that grammar it returns 0 nodes. If a `--postgres` run produces no tables, reinstall the extra:
+
+```bash
+pip install "graphifyy[postgres]"
+```
+
+For `.sql` files without a database, install the `sql` extra (`tree-sitter-sql`).
+
+## Try it with a SQL file
+
+You can try this without a database. Install the `sql` extra and extract a schema file:
+
+```sql schema.sql
+CREATE TABLE users (id SERIAL PRIMARY KEY, email TEXT NOT NULL);
+CREATE TABLE orders (id SERIAL PRIMARY KEY, user_id INT REFERENCES users(id), total NUMERIC);
+CREATE VIEW big_orders AS SELECT o.id, u.email FROM orders o JOIN users u ON u.id = o.user_id WHERE o.total > 100;
+```
+
+```text
+$ graphify extract . --code-only
+[graphify extract] wrote ./graphify-out/graph.json: 4 nodes, 6 edges, 1 communities
+
+$ graphify explain orders
+Node: orders
+  Source:    schema.sql L2
+Connections (3):
+  --> users [references] [EXTRACTED] schema.sql:L2
+  <-- schema.sql [contains] [EXTRACTED] schema.sql:L2
+  <-- big_orders [reads_from] [EXTRACTED] schema.sql:L3
+```
+
+The foreign key appears as a `references` edge, and the view as `reads_from` edges to both tables. Column definitions don't become nodes.
+
+## FAQ
+
+**Does Graphify write to the database?** No. The connection is read-only.
+
+**Can I keep the password out of my shell history?** Yes. Pass `--postgres ""` and set the standard `PG*` environment variables.
+
 ## What's next
 
 <Columns cols={2}>

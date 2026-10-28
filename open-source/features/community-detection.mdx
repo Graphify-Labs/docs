@@ -117,6 +117,30 @@ When you run `update`, `watch`, or a git hook, Graphify maps new communities ont
   </Accordion>
 </AccordionGroup>
 
+## Run it on a second repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```text
+$ graphify cluster-only . --no-label --no-viz
+Loading existing graph...
+Graph: 1883 nodes, 3960 edges
+Re-clustering...
+Done - 106 communities. GRAPH_REPORT.md and graph.json updated (--no-viz; graph.html removed).
+```
+
+`graphify label . --missing-only` with no backend configured keeps the placeholders and says why:
+
+```text
+[graphify label] no LLM backend configured; keeping Community N placeholders. Set an API key (e.g. GOOGLE_API_KEY) or pass --backend.
+```
+
+Communities also drive the pull request overlap view. `graphify prs --conflicts` lists pull requests that touch the same community; see [pull request impact](/open-source/features/pr-impact).
+
+## FAQ
+
+**Why did my community names change after `update`?** When the community set changes, Graphify renames communities after their hub node and asks you to run `graphify label`.
+
 ## What's next
 
 <Columns cols={2}>

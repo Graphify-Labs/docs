@@ -2,7 +2,6 @@
 title: "Keep the graph current"
 description: "Keep your code knowledge graph current: refresh only changed files, exclude noisy paths, and recover from stale graphify output."
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
@@ -62,6 +61,62 @@ graphify update . --force
 ```
 
 Keep a copy of the old graph if you need to compare it. Regenerate visualizations with `graphify export html` after a refresh when necessary.
+
+## See the cache at work
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ. The first run of `update` re-extracted only the files that weren't already cached:
+
+```text
+$ graphify update .
+Re-extracting code files in . (no LLM needed)...
+  AST cache: 78/107 files served from cache (72%); 29 to extract
+  AST extraction: 29/29 uncached files (100%) [8 workers]
+[graphify watch] Rebuilt: 2341 nodes, 4537 edges, 189 communities
+[graphify watch] graph.json, graph.html and GRAPH_REPORT.md updated in graphify-out
+Code graph updated. For doc/paper/image changes run /graphify --update in your AI assistant.
+```
+
+After a one-line edit, the next run extracted a single file:
+
+```text
+  AST cache: 107/108 files served from cache (99%); 1 to extract
+[graphify watch] community set changed since labeling (0 saved labels, 170 communities now; renamed 34 community(ies) by their hub). Run `graphify label` to refresh names with the LLM.
+[graphify watch] Rebuilt: 2346 nodes, 4541 edges, 170 communities
+```
+
+When communities shift, Graphify renames them after their hub node. Run `graphify label` if you want an LLM to name them again.
+
+`graphify extract` without `--force` is incremental too:
+
+```text
+[graphify extract] 0 code, 0 docs, 0 papers, 0 images changed; 78 unchanged; 0 deleted
+[graphify extract] incremental summary: 78 files cached/unchanged, 0 re-extracted, 0 deleted
+```
+
+## Flags
+
+| Command | Flag | What it does |
+| --- | --- | --- |
+| `update` | `--force` | Writes `graph.json` even if the rebuild has fewer nodes. Use it after deleting code. You can also set `GRAPHIFY_FORCE=1`. |
+| `update` | `--no-cluster` | Skips clustering and writes the raw extraction only. |
+| `extract` | `--force` | Runs a full re-scan and skips the manifest gate and the semantic cache. |
+| `check-update` | `<path>` | Checks whether a semantic re-extraction is pending. Safe to run from cron. |
+
+## Troubleshooting
+
+**`error: watchdog not installed. Run: pip install watchdog`.** `graphify watch` needs the `watch` extra:
+
+```bash
+pip install "graphifyy[watch]"
+```
+
+**`error: path not found`.** The path you passed doesn't exist. Run `update` from the project root, or pass the root path.
+
+**The node count dropped after a refactor.** If the rebuild has fewer nodes, `update` won't overwrite `graph.json` unless you pass `--force`. That stops a partial checkout from wiping the graph.
+
+## FAQ
+
+**Does `update` re-read documents?** No. It re-extracts code without an LLM. For document, paper and image changes, run `/graphify --update` in your assistant.
 
 ## Next steps
 

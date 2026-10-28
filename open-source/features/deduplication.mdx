@@ -100,6 +100,35 @@ graphify explain "APIRoute"
   </Accordion>
 </AccordionGroup>
 
+## Run it on a second repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ. The dedup step reports what it merged:
+
+```text
+[graphify] Deduplicated 32 node(s) (28 exact, 4 fuzzy).
+[graphify extract] wrote .../graphify-out/graph.json: 1883 nodes, 3960 edges, 106 communities
+```
+
+`diagnose multigraph` on the same graph found no edges collapsed between the same endpoints:
+
+```text
+$ graphify diagnose multigraph
+nodes: 1883
+raw_edges: 3960
+self_loop_edges: 5
+exact_duplicate_edges: 0
+directed_same_endpoint_collapsed_edges: 0
+undirected_same_endpoint_collapsed_edges: 0
+post_build_edges: 3960
+note: normal graph.json is post-build; raw producer loss must be measured earlier.
+```
+
+## FAQ
+
+**Can I see merges as JSON?** Pass `--json` to `diagnose multigraph`, and `--max-examples N` to see more examples.
+
+**Same name in two files?** Those stay separate nodes. Commands such as `explain` report the ambiguity and list each ID, with exit code 3.
+
 ## What's next
 
 <Columns cols={2}>

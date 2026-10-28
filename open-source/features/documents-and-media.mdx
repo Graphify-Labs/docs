@@ -117,6 +117,30 @@ Graphify checks the size of your corpus before extraction. Under about 50,000 wo
   </Accordion>
 </AccordionGroup>
 
+## See what a code-only run skips
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```text
+[graphify extract] --code-only: skipping 41 non-code file(s) (31 docs, 0 papers, 10 images) — no LLM extraction
+```
+
+Leave out `--code-only` and set a backend key to include those documents and images.
+
+## Extras by input
+
+| Input | Extensions | Extra |
+| --- | --- | --- |
+| PDF | `.pdf` | `pdf` (`pypdf`, `markdownify`) |
+| Word and Excel | `.docx` `.xlsx` | `office` (`python-docx`, `openpyxl`) |
+| Google Workspace | `.gdoc` `.gsheet` `.gslides` | `google` (`openpyxl`), plus the `gws` CLI and `--google-workspace` |
+| Video and audio | `.mp4` `.mov` `.mkv` `.webm` `.avi` `.m4v` `.mp3` `.wav` `.m4a` `.ogg` | `video` (`faster-whisper`, `yt-dlp`) |
+| Images | `.png` `.jpg` `.jpeg` `.gif` `.webp` `.svg` | A backend that supports images |
+
+## FAQ
+
+**Can I add a web page?** Yes. `graphify add <url>` saves it to `./raw` and updates the graph. Pass `--author` and `--contributor` to tag it.
+
 ## What's next
 
 <Columns cols={2}>

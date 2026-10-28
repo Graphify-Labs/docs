@@ -87,6 +87,55 @@ The naive side is an estimate, not a measured prompt. Treat the ratio as a guide
   </Accordion>
 </AccordionGroup>
 
+## Run it on a second repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```text
+$ graphify benchmark
+
+graphify token reduction benchmark
+──────────────────────────────────────────────────
+  Corpus:          94,150 words → ~125,533 tokens (naive)
+  Graph:           1,883 nodes, 3,960 edges
+  Avg query cost:  ~1,501 tokens
+  Reduction:       83.6x fewer tokens per query
+
+  Per question:
+    [216.1x] how does authentication work
+    [77.2x] what is the main entry point
+    [76.7x] how are errors handled
+    [61.4x] what connects the data layer to the api
+    [77.5x] what are the core abstractions
+```
+
+This repository has authentication code, so the auth question ran here, unlike on the demo graph. The spread between questions is the useful part: a broad question costs more tokens than a focused one.
+
+## Troubleshooting
+
+**`FileNotFoundError: Graph file not found: /tmp/nope.json`.** Run a build first, or pass the path to an existing `graph.json`:
+
+```bash
+graphify benchmark path/to/graphify-out/graph.json
+```
+
+## Compare runs
+
+| Graph | Words (naive tokens) | Nodes / edges | Avg query cost | Reduction |
+| --- | --- | --- | --- | --- |
+| Demo graph | 193,600 (~258,133) | 3,872 / 8,833 | ~1,887 tokens | 136.8x |
+| httpx, code-only | 94,150 (~125,533) | 1,883 / 3,960 | ~1,501 tokens | 83.6x |
+
+The ratio depends on corpus size: a bigger corpus costs more to read naively, so the graph saves more. Compare runs on the same repository over time, not across repositories.
+
+The command takes one optional argument, the path to `graph.json`. If there's a `.graphify_detect.json` in the current directory, the benchmark uses its `total_words` value instead of estimating.
+
+## FAQ
+
+**Is this a quality benchmark?** No. It compares tokens only. It doesn't check whether the answer is correct.
+
+**Why is the word count estimated?** Without corpus statistics, the benchmark estimates words from the node count.
+
 ## What's next
 
 <Columns cols={2}>

@@ -105,6 +105,60 @@ See [MCP tools](/open-source/features/mcp-tools) for the tools it exposes.
   </Accordion>
 </AccordionGroup>
 
+## Run it on a second repository
+
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+
+```text
+$ graphify global add graphify-out/graph.json --as httpx
+Added 'httpx' to global graph: +2315 nodes, -0 pruned. Global: /home/box/.graphify/global-graph.json
+$ graphify global list
+  httpx: 2315 nodes, added 2026-10-28
+$ graphify global remove httpx
+Removed 'httpx' from global graph (2278 nodes pruned).
+```
+
+To combine graphs into one file without the global graph, use `merge-graphs`:
+
+```text
+$ graphify merge-graphs a/graphify-out/graph.json b/graphify-out/graph.json --out merged.json
+Merged 2 graphs -> 4629 nodes, 9082 edges
+```
+
+Pass `--previous <path>` to keep the earlier merged community IDs. Then a later `cluster-only` run can reuse the labels.
+
+## Add a repository while you extract
+
+`extract` can write a project graph and merge it into the global graph in one step:
+
+```bash
+graphify extract . --code-only --global --as sqldemo
+graphify global path
+```
+
+```text
+/home/box/.graphify/global-graph.json
+```
+
+`--as` sets the tag. Without it, the tag is the target directory's name. Use the same tag later to update or remove that repository:
+
+```text
+$ graphify global remove sqldemo
+Removed 'sqldemo' from global graph (4 nodes pruned).
+```
+
+| Command | What it does |
+| --- | --- |
+| `global add <graph.json> [--as TAG]` | Adds or updates a project graph. |
+| `global remove <tag>` | Removes that repository's nodes. |
+| `global list` | Lists the repositories in the global graph. |
+| `global path` | Prints the global graph's path. |
+| `merge-graphs <g1> <g2> ... [--out PATH] [--previous PATH]` | Writes a merged file. The default is `graphify-out/merged-graph.json`. |
+
+## FAQ
+
+**Where is the global graph?** Run `graphify global path` to print it. By default it's `~/.graphify/global-graph.json`.
+
 ## What's next
 
 <Columns cols={2}>

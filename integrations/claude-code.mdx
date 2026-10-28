@@ -7,7 +7,9 @@ hideFooterPagination: true
 keywords: ["Claude Code MCP", "Claude Code skill", "codebase context"]
 ---
 
-Connect Claude Code to Graphify in one of two ways. **Graphify (hosted)** points Claude Code at `https://api.graphify.com/mcp` and answers from your indexed GitHub or GitLab repositories. **Graphify Local** installs the open-source skill and builds the graph on your machine. Not sure which? See [Graphify vs Local](/platform/graphify-vs-local).
+import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+
+<HostedOrLocal />
 
 <Tabs>
 <Tab title="Graphify (hosted)">
@@ -18,7 +20,7 @@ The server uses Streamable HTTP and OAuth. You sign in once in the browser, so t
 
 ### Before you start
 
-- A Graphify account at [app.graphify.com](https://app.graphify.com). The Free plan covers up to 3 indexed repositories, and no card is required.
+- A Graphify account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
 ### 1. Add the server
@@ -73,7 +75,7 @@ This is the same test prompt the console shows on **Connectors → MCP → Try a
 
 Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
 
-### Ask your first question
+### 4. Ask a question
 
 Pick a repository from the list and name the symbol, file, or area you care about:
 
@@ -114,7 +116,7 @@ Yes, but they answer from different graphs. The hosted server reads your indexed
 </Tab>
 <Tab title="Graphify Local">
 
-### Install and register
+### 1. Install and register
 
 ```bash
 uv tool install graphifyy
@@ -129,7 +131,7 @@ For a repository-local setup, run this from the project root:
 graphify install --project --platform claude
 ```
 
-### Build the graph
+### 2. Build the graph
 
 Open your project in Claude Code. Select the Graphify skill and enter:
 
@@ -139,7 +141,7 @@ Open your project in Claude Code. Select the Graphify skill and enter:
 
 The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
 
-### Ask with context
+### 3. Ask with context
 
 After the graph is built, ask:
 
@@ -151,7 +153,7 @@ You can also query from a terminal:
 graphify query "authentication flow"
 ```
 
-### Keep the integration current
+### Keep it current
 
 ```bash
 uv tool upgrade graphifyy

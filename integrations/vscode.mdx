@@ -6,7 +6,9 @@ surface: "both"
 hideFooterPagination: true
 ---
 
-Connect VS Code and GitHub Copilot to Graphify in one of two ways. **Graphify (hosted)** points VS Code and GitHub Copilot at `https://api.graphify.com/mcp` and answers from your indexed GitHub or GitLab repositories. **Graphify Local** installs the open-source skill and builds the graph on your machine. Not sure which? See [Graphify vs Local](/platform/graphify-vs-local).
+import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+
+<HostedOrLocal />
 
 <Tabs>
 <Tab title="Graphify (hosted)">
@@ -21,7 +23,7 @@ VS Code handles the sign-in, the server trust prompt, and every tool approval. T
 - An agent chat model available in VS Code. The extension does not include one.
 - A repository indexed in your Graphify workspace. Sign in at [app.graphify.com](https://app.graphify.com), connect a repository, and wait for its status to reach **Indexed**. See [Repositories and builds](/platform/repositories).
 
-### 1. Add the MCP server
+### 1. Add the server
 
 **Install the extension**
 
@@ -49,13 +51,13 @@ Use one path or the other. If you keep this entry and also install the extension
 ### 2. Start the server and sign in
 
 <Steps>
-  <Step titleSize="h2" title="Start it">
+  <Step title="Start it">
     Run **MCP: List Servers** from the Command Palette and select **Graphify**, then start the server.
   </Step>
-  <Step titleSize="h2" title="Authorize">
+  <Step title="Authorize">
     Your browser opens so you can sign in to Graphify and grant access. Choose the workspace that holds the repository you want to query.
   </Step>
-  <Step titleSize="h2" title="Confirm the tools loaded">
+  <Step title="Confirm the tools loaded">
     Return to **MCP: List Servers** and check that Graphify is running. Open an agent chat and enable Graphify's tools.
   </Step>
 </Steps>
@@ -87,7 +89,7 @@ Some tools write workspace memory or switch the selected workspace. Read each to
 | **Graphify: Open Dashboard** | Opens your workspace in the browser. |
 | **Graphify: Open MCP Documentation** | Opens the setup instructions and tool reference. |
 
-### If something fails
+### Troubleshooting
 
 | What you see | What to do |
 | --- | --- |
@@ -116,6 +118,8 @@ Every new account starts on a 14-day Pro trial. After the trial, the Free plan k
 
 Copilot CLI and Copilot Chat in VS Code use different integration paths. Choose the environment you actually run.
 
+### 1. Install and register
+
 **Copilot CLI**
 
 ```bash
@@ -136,7 +140,7 @@ This uses the VS Code integration and instructions supported by the Graphify ins
 
 To query repositories indexed in Graphify instead of a local graph, install the [Graphify MCP extension](/integrations/vscode).
 
-### Verify the graph
+### 2. Check the graph
 
 ```bash
 graphify query "application entry points"

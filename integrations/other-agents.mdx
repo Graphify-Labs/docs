@@ -7,7 +7,9 @@ hideFooterPagination: true
 ---
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-Connect any MCP client to Graphify in one of two ways. **Graphify (hosted)** points any MCP client at `https://api.graphify.com/mcp` and answers from your indexed GitHub or GitLab repositories. **Graphify Local** runs the open-source MCP server and builds the graph on your machine. Not sure which? See [Graphify vs Local](/platform/graphify-vs-local).
+import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+
+<HostedOrLocal />
 
 <Tabs>
 <Tab title="Graphify (hosted)">
@@ -39,7 +41,7 @@ After connecting, list my available workspaces and indexed repositories, ask whi
 - A Graphify account, access to a workspace, and a repository whose status is **Indexed**. Start at [app.graphify.com](https://app.graphify.com). See [Repositories and builds](/platform/repositories).
 - An assistant that can add an HTTP or Streamable HTTP MCP server.
 
-### Add the server
+### 1. Add the server
 
 Name the server `graphify` and set the URL to `https://api.graphify.com/mcp`. Leave every other MCP server in place.
 
@@ -53,13 +55,13 @@ Use the dedicated page when the client already has one:
 - [Graphify MCP for OpenClaw](/integrations/openclaw)
 - [Graphify MCP for Vercel](/integrations/vercel)
 
-### Sign in
+### 2. Sign in
 
 Start the server. Your browser opens so you can sign in to Graphify and grant access. Choose the workspace that holds the repository you want to query. Complete that sign-in yourself.
 
 The connection is working when the assistant lists Graphify's tools. Until then, it is not connected.
 
-### Ask a question
+### 3. Ask a question
 
 Ask the assistant to list your workspaces and indexed repositories, then name the repository to use. Ask one question about how the code is structured.
 
@@ -67,11 +69,7 @@ Answers are graph evidence from the files Graphify indexed, with source location
 
 Some tools can save repository memory or change the selected workspace. Approve a tool only when that is what you meant.
 
-### A graph on your machine
-
-This page uses the hosted server. To query a graph file on your computer, follow [Local MCP server](/open-source/mcp-server). The local skill for assistants without their own page is [Other local assistants](/integrations/other-agents).
-
-### If something fails
+### Troubleshooting
 
 | What you see | What to do |
 | --- | --- |
@@ -82,6 +80,8 @@ This page uses the hosted server. To query a graph file on your computer, follow
 
 </Tab>
 <Tab title="Graphify Local">
+
+### 1. Install and register
 
 Install the package once, then select your platform:
 
@@ -112,7 +112,7 @@ Some integrations use skills plus instructions; others also install native rules
 
 The OpenClaw row installs the local skill. To query repositories indexed in Graphify, use [Graphify MCP for OpenClaw](/integrations/openclaw).
 
-### Any MCP client
+### Use any MCP client
 
 An assistant does not need a dedicated skill installer to read an existing graph. If it supports MCP, connect the [Graphify MCP server](/open-source/mcp-server). Build the graph separately with the CLI or a supported assistant.
 

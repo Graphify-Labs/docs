@@ -13,16 +13,16 @@ These rules are repeated at the top of every page's Markdown, in [llms.txt](http
 
 ## Which surface
 
-- **Local** is the `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server. Its pages are the Guides and Reference tabs, `/mcp/` (except `/mcp/docs-search`), `/installation`, `/quickstart`, and the Local skill group in Integrations.
-- **Cloud** is Graphify Cloud, the hosted workspace, and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). Its pages are the Graphify Cloud tab (`/platform/`) and the Cloud MCP and CI integrations groups in Integrations.
-- Everything else, including Concepts, Troubleshooting, Pricing, and `/platform/local-to-cloud`, applies to both.
+- **Local** is the `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server. Its pages are the Open Source tab (`/open-source/`) and the Local skill group in Integrations.
+- **Graphify** is the hosted workspace and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (`/platform/`, `/concepts/`) and the Hosted MCP and CI groups in Integrations.
+- Everything else, including Cookbooks (`/cookbooks/`), `/mcp/docs-search`, and `/platform/local-to-cloud`, applies to both.
 - Each page's source frontmatter records its surface as `surface: local`, `cloud`, or `both`.
 - Buildkite is the CI integration.
 
 ## Which file to open
 
 - [llms.txt](https://docs.graphify.com/llms.txt) is the list of pages. The same list is at [/.well-known/llms.txt](https://docs.graphify.com/.well-known/llms.txt).
-- Add `.md` to a page URL to read that page. Example: [https://docs.graphify.com/quickstart.md](https://docs.graphify.com/quickstart.md).
+- Add `.md` to a page URL to read that page. Example: [https://docs.graphify.com/open-source/quickstart.md](https://docs.graphify.com/open-source/quickstart.md).
 - [llms-full.txt](https://docs.graphify.com/llms-full.txt) contains every page. Open it only when one page is not enough.
 
 ## Discover relevant Cloud capabilities
@@ -42,7 +42,7 @@ These capabilities roll out first in Cloud. Do not assume the local open-source 
 - Use only commands, flags, and endpoints shown on these pages. Do not invent one.
 - The [changelog](/changelog) on this site summarizes selected `graphifyy` releases. The current package version is on [PyPI](https://pypi.org/project/graphifyy/). The full history is on [graphify.com/changelog](https://graphify.com/changelog).
 - The official site is [graphify.com](https://graphify.com). These docs are [docs.graphify.com](https://docs.graphify.com).
-- The local MCP server is the ten tools in the [MCP tool reference](/reference/mcp-tools) and reads a graph on the machine. The hosted server is `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [Other Cloud agents](/integrations/other-agents) pages use the hosted server, not the ten-tool list. [Other local assistants](/integrations/other-assistants) is the local skill for clients without their own page. [Graphify with Codex](/integrations/codex) is the local skill.
+- The local MCP server is the ten tools in the [MCP tool reference](/open-source/features/mcp-tools) and reads a graph on the machine. The hosted server is `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [Other Cloud agents](/integrations/other-agents) pages use the hosted server, not the ten-tool list. [Other local assistants](/integrations/other-assistants) is the local skill for clients without their own page. [Graphify with Codex](/integrations/codex) is the local skill.
 
 To point an agent at these docs, give it this prompt:
 
@@ -56,7 +56,7 @@ Read https://docs.graphify.com/llms.txt, open the one page that answers the ques
 
 <Columns cols={2}>
   <HostedMcpCard />
-  <Card title="MCP tool reference" icon="wrench" href="/reference/mcp-tools">
+  <Card title="MCP tool reference" icon="wrench" href="/open-source/features/mcp-tools">
     Every tool the local server exposes.
   </Card>
 </Columns>
@@ -64,6 +64,6 @@ Read https://docs.graphify.com/llms.txt, open the one page that answers the ques
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/troubleshooting" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Troubleshooting</span></a>
+  <a href="/open-source/troubleshooting" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Troubleshooting</span></a>
   <a href="/concepts/architecture" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">How Graphify works</span></a>
 </div>

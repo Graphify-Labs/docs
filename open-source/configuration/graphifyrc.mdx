@@ -1,0 +1,77 @@
+---
+title: "Configuration"
+description: "Configure graphify: model backends for semantic extraction, output paths, and local logging, with the settings each one reads."
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Code-only extraction works without a provider key. These backend settings matter when you explicitly run semantic extraction or model-assisted CLI workflows.
+
+## Semantic backends
+
+| `--backend` | Main configuration | Optional package extra |
+| --- | --- | --- |
+| `claude` | `ANTHROPIC_API_KEY`; optional `ANTHROPIC_BASE_URL`, `ANTHROPIC_MODEL` | `anthropic` |
+| `gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `gemini` |
+| `openai` | `OPENAI_API_KEY`; optional `OPENAI_BASE_URL`, `OPENAI_MODEL` | `openai` |
+| `deepseek` | `DEEPSEEK_API_KEY` | Use the client dependency required by your version. |
+| `kimi` | `MOONSHOT_API_KEY` | `kimi` |
+| `ollama` | Optional `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | `ollama` |
+| `bedrock` | Standard AWS credential chain | `bedrock` |
+| `azure` | `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT`, deployment setting | `openai` |
+| `claude-cli` | Installed and authenticated Claude Code CLI | No separate model API key. |
+
+Set credentials in your shell, secret manager, or CI environment. Never commit them into the documentation or repository. Use a model available in your account or local runtime rather than assuming a particular model name.
+
+## Output and resource controls
+
+| Variable | Meaning |
+| --- | --- |
+| `GRAPHIFY_OUT` | Output directory, useful for separate worktrees. |
+| `GRAPHIFY_MAX_WORKERS` | Structural extraction worker count. |
+| `GRAPHIFY_MAX_OUTPUT_TOKENS` | Semantic model output cap. |
+| `GRAPHIFY_API_TIMEOUT` | Backend request timeout in seconds. |
+| `GRAPHIFY_MAX_RETRIES` | Retry count for rate-limited requests. |
+| `GRAPHIFY_MAX_RETRY_DEPTH` | Limit recursive recovery of truncated chunks. |
+| `GRAPHIFY_MAX_GRAPH_BYTES` | Override the graph file size guard; default is 512 MiB. |
+| `GRAPHIFY_API_KEY` | Authentication for a shared graph MCP HTTP server. |
+| `GRAPHIFY_TRIAGE_BACKEND` / `GRAPHIFY_TRIAGE_MODEL` | Backend and model for CLI PR triage. |
+
+## Local query logging
+
+The current implementation keeps query logging **off by default**.
+
+| Variable | Effect |
+| --- | --- |
+| `GRAPHIFY_QUERY_LOG_ENABLE=1` | Enable a local JSONL query log at `~/.cache/graphify-queries.log`. |
+| `GRAPHIFY_QUERY_LOG=/path/to/log` | Enable logging to a chosen file. |
+| `GRAPHIFY_QUERY_LOG_DISABLE=1` | Force logging off, overriding enable settings. |
+| `GRAPHIFY_QUERY_LOG_RESPONSES=1` | Include full responses when logging is enabled. |
+
+Logs can contain questions and corpus paths. Full responses are opt-in. Keep access and retention appropriate to your source material.
+
+## Ignore rules
+
+Use `.graphifyignore` to exclude dependency folders, build artifacts, or irrelevant content. See [incremental updates](/open-source/features/incremental-updates) for examples.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/open-source/troubleshooting">
+    Fixes for common local problems.
+  </Card>
+  <Card title="MCP tool reference" icon="wrench" href="/open-source/features/mcp-tools">
+    Every tool the local server exposes.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/configuration/cli#extract" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">graphify extract</span></a>
+  <a href="/open-source/features/mcp-tools" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">MCP tool reference</span></a>
+</div>

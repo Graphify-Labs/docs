@@ -1,0 +1,203 @@
+---
+title: "CLI reference"
+description: "Graphify CLI reference: the commands for building, querying, exploring, exporting, and maintaining a knowledge graph of your code."
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+The package is `graphifyy`; the CLI is `graphify`. Run commands from your project root unless you provide an explicit graph path.
+
+## Core commands
+
+| Command | Purpose |
+| --- | --- |
+| `graphify install` | Register the assistant skill. |
+| [`graphify extract`](/open-source/configuration/cli#extract) | Run the extraction pipeline. |
+| [`graphify query`](/open-source/configuration/cli#query) | Retrieve context around a question. |
+| [`graphify path`](/open-source/configuration/cli#path) | Follow a path between concepts. |
+| [`graphify explain`](/open-source/configuration/cli#explain) | Inspect one node. |
+| `graphify affected "<node>"` | Inspect dependent impact using selected relations and depth. |
+| `graphify god-nodes` | Find highly connected nodes. |
+| `graphify diagnose` | Inspect graph quality and diagnostics. |
+| `graphify tree` | View graph-related project structure. |
+
+## Maintenance and exports
+
+| Command | Guide |
+| --- | --- |
+| `graphify update .`, `graphify watch .`, `graphify check-update .` | [Incremental updates](/open-source/features/incremental-updates) |
+| `graphify hook install`, `graphify hook status`, `graphify hook uninstall` | [Team workflows](/cookbooks/shared-team-graph) |
+| `graphify cluster-only .`, `graphify label .` | [Architecture](/concepts/architecture) |
+| `graphify export <format>` | [Exports](/open-source/features/exports) |
+| `graphify prs` | [Pull requests](/open-source/features/pr-impact) |
+| `graphify save-result`, `graphify reflect` | [Work memory](/open-source/features/work-memory) |
+
+## Multiple graphs
+
+```bash
+graphify merge-graphs first.json second.json --out combined.json
+graphify global add graphify-out/graph.json --as my-project
+graphify global list
+graphify global path
+```
+
+Choose a unique project name when registering a graph globally. `graphify global remove my-project` removes that registration.
+
+## Skill syntax is different
+
+`/graphify .` is an instruction to your coding assistant. `graphify extract . --code-only` is a shell command. Use the [integration guide](/integrations/overview) for your client’s skill invocation.
+
+## Version scope
+
+This reference was checked against source version **0.9.62** on the repository’s `v8` branch. Check your installed version with `graphify --version`; flags and coverage can differ across releases. [Current source](https://github.com/Graphify-Labs/graphify).
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="graphify query" icon="terminal" href="/open-source/configuration/cli#query">
+    Gather context for a question.
+  </Card>
+  <Card title="Configuration" icon="settings" href="/open-source/configuration/graphifyrc">
+    Settings and environment variables.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/configuration/cli#query" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">graphify query</span></a>
+</div>
+
+## graphify query {#query}
+
+Retrieve a compact neighborhood of graph evidence for a question.
+
+
+
+```bash
+graphify query "<question>" [--dfs] [--context <value>] [--budget <tokens>] [--graph <path>]
+```
+
+| Argument | Default | Meaning |
+| --- | --- | --- |
+| Question | Required | Natural-language question or keywords. |
+| `--dfs` | Off | Use depth-first traversal instead of breadth-first. |
+| `--context` | No explicit filter | Filter edge context, such as `call`; repeat for multiple contexts. |
+| `--budget` | `2000` | Approximate output token budget. |
+| `--graph` | `graphify-out/graph.json` | JSON graph to query. |
+
+```bash
+graphify query "request validation" --budget 1500
+graphify query "database access" --dfs --context call
+graphify query "entry points" --graph ./shared/graph.json
+```
+
+The response is graph context, not an independently verified natural-language answer. Review returned nodes, relations, provenance, and source references. Use [explain](/open-source/configuration/cli#explain) or [path](/open-source/configuration/cli#path) to narrow the result.
+
+### Empty results
+
+Check the graph path and refresh changed source. Try a concrete function, class, or subsystem name. The graph can only return relationships present in the analyzed inputs.
+
+## graphify path {#path}
+
+Trace the shortest relationship path between two graph concepts.
+
+
+
+```bash
+graphify path "<source>" "<target>" [--graph <path>] [--directed | --undirected]
+```
+
+| Argument | Meaning |
+| --- | --- |
+| Source and target | Node labels, IDs, or matching keywords. |
+| `--graph` | Use a specific JSON graph. |
+| `--directed` | Respect stored direction; this is the current default. |
+| `--undirected` | Explore connectivity while ignoring direction. |
+
+The direction flags are mutually exclusive.
+
+```bash
+graphify path "login" "normalize_email"
+graphify path "normalize_email" "login" --undirected
+```
+
+These examples use the [tutorial project](/open-source/cli-quickstart). In another repository, use its actual labels or IDs.
+
+### Interpret the path
+
+Follow each relationship and check its evidence. A source-level path does not prove that a particular runtime input executes it. An absent path can mean missing or unresolved relationships; it does not prove independence.
+
+For the MCP version, use `shortest_path`. Its inputs additionally expose `max_hops`; see the [MCP reference](/open-source/features/mcp-tools).
+
+## graphify explain {#explain}
+
+Inspect a concept, its source, and the relationships around it.
+
+
+
+```bash
+graphify explain "<node>" [--graph <path>]
+```
+
+Give the command a label or node identifier from a query result. It returns details about the node and its graph context.
+
+```bash
+graphify explain "normalize_email"
+graphify explain "YourNodeId" --graph ./shared/graph.json
+```
+
+Look for the source file, community, and relationships connected to the node. Available fields depend on the extractor. If several concepts have similar names, use the precise ID returned by the graph.
+
+Optional [work-memory](/open-source/features/work-memory) overlays can add lesson hints. Check for stale-source warnings and re-verify a lesson after code changes.
+
+For native MCP access, use `get_node` followed by `get_neighbors` when you need the surrounding edges.
+
+## graphify extract {#extract}
+
+Run local structural extraction and optional semantic processing.
+
+
+
+```bash
+graphify extract <path> [options]
+```
+
+### Common options
+
+| Option | Purpose |
+| --- | --- |
+| `--code-only` | Skip semantic document and media extraction; no model key needed. |
+| `--backend <name>` | Select a headless semantic backend. |
+| `--model <name>` | Override the model for that backend. |
+| `--mode deep` | Request richer semantic extraction. |
+| `--out <dir>` / `--output <dir>` | Choose an output root. |
+| `--no-cluster` | Skip clustering. |
+| `--no-gitignore` | Ignore Git’s exclusions while still honoring `.graphifyignore`. |
+| `--max-workers <n>` | Structural extraction parallelism. |
+| `--token-budget <n>` | Semantic chunk budget. |
+| `--max-concurrency <n>` | Concurrent model requests. |
+| `--api-timeout <seconds>` | Request timeout. |
+| `--force` | Permit replacement with a smaller graph after intentional changes. |
+| `--timing` | Print stage timings. |
+| `--google-workspace` | Explicitly enable Google Workspace shortcut export. |
+| `--cargo` | Include Cargo workspace dependency information. |
+| `--postgres <DSN>` | Read a PostgreSQL schema with the relevant extra and credentials. |
+
+### Examples
+
+```bash
+graphify extract . --code-only
+graphify extract ./docs --backend ollama --max-concurrency 2
+graphify extract ./src --code-only --timing
+```
+
+### Outputs and failures
+
+Inspect the console summary and generated report before using the graph. Missing grammars, unsupported files, model errors, partial results, and the smaller-graph guard can affect what was written. `--force` is an explicit override, not a routine remedy for an unexplained failure.
+
+See [headless extraction](/open-source/features/headless-extraction) for provider setup and [outputs](/concepts/outputs) for the saved files.

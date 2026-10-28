@@ -1,0 +1,59 @@
+---
+title: "Record useful findings"
+description: "Save useful findings from graph queries in graphify and turn previous investigations into lessons your assistant can reuse."
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Work memory records what you learned while using the graph. It is an optional layer over graph exploration, not a replacement for current source evidence.
+
+## Save a result
+
+```bash
+graphify save-result --question "Where is email normalized?" \
+  --answer "normalize_email handles normalization before lookup." \
+  --nodes normalize_email --outcome useful
+```
+
+Use `useful`, `dead_end`, or `corrected` for the outcome. Replace the example with findings you actually verified in your project.
+
+## Reflect on prior results
+
+```bash
+graphify reflect
+graphify reflect --if-stale
+```
+
+The default lessons file is under `graphify-out/reflections/LESSONS.md`. To relate lessons to the current graph:
+
+```bash
+graphify reflect --graph graphify-out/graph.json
+```
+
+This can produce a learning overlay that marks nodes as preferred, tentative, or contested. Query and explain output can show lesson hints, including a prompt to re-verify when source has changed.
+
+## Keep lessons grounded
+
+A previously useful answer can become stale. Record the nodes involved, keep outcomes specific, and check the current source before using a lesson to justify a change. Share memory files only with people who can access their underlying source context.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Agent memory" icon="brain" href="/platform/memory">
+    Memory your agents share in a Cloud workspace.
+  </Card>
+  <Card title="Export and reuse your graph" icon="share-2" href="/open-source/features/exports">
+    Turn the graph into HTML, JSON, and more.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/features/incremental-updates" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Keep the graph current</span></a>
+  <a href="/open-source/features/exports" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Export and reuse your graph</span></a>
+</div>

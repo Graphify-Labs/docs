@@ -44,7 +44,7 @@ To try it on a public codebase, index a fork of [Graphify-Labs/graphify](https:/
   graphify install
   ```
 
-  `graphify install` sets up Claude Code. Every other assistant has its own command on its [integration page](/integrations/overview). Then send `/graphify .` in your assistant's chat. The graph is written to `graphify-out/graph.json`. See [Your first knowledge graph](/quickstart).
+  `graphify install` sets up Claude Code. Every other assistant has its own command on its [integration page](/integrations/overview). Then send `/graphify .` in your assistant's chat. The graph is written to `graphify-out/graph.json`. See [Your first knowledge graph](/open-source/quickstart).
 </Accordion>
 
 ## What updates the graph
@@ -56,7 +56,7 @@ To try it on a public codebase, index a fork of [Graphify-Labs/graphify](https:/
 | A pull request | No new graph. The review uses the default-branch graph and the pull request's diff. |
 | **Retry** on a failed build | Graphify indexes the current head of the default branch. |
 
-One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/pricing/overview).
+One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/platform/support/pricing).
 
 ## If something fails
 

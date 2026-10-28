@@ -21,7 +21,7 @@ graphify explain "YourService"
 
 `--context call` keeps call relationships. `explain` prints one concept, its source, and its connections.
 
-In the [small example project](/guides/first-graph), asking what calls `normalize_email` prints:
+In the [small example project](/open-source/cli-quickstart), asking what calls `normalize_email` prints:
 
 ```text
 Graph: graphify-out/graph.json (4 nodes) | Traversal: BFS depth=2 | Start: ['normalize_email()'] | Context: call (explicit) | 3 nodes found
@@ -55,10 +55,10 @@ A path needs both nodes and a chain of edges between them. No path is not proof 
 In [Graphify](https://app.graphify.com), open **Graphs**, search for the name, and inspect its neighbors. On a pull request, open **Reviews** and read the findings and the code the change can affect. A graph connection is evidence to investigate. It is not proof that behavior stayed the same.
 
 <Columns cols={2}>
-  <Card title="Ask better graph questions" icon="search" href="/guides/querying">
+  <Card title="Ask better graph questions" icon="search" href="/open-source/features/querying">
     When to use query, path, and explain.
   </Card>
-  <Card title="Query reference" icon="terminal" href="/reference/query">
+  <Card title="Query reference" icon="terminal" href="/open-source/configuration/cli#query">
     Every flag `graphify query` accepts.
   </Card>
 </Columns>

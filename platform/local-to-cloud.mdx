@@ -584,7 +584,7 @@ These features run on the repositories you connect. Open each one after the host
 
 The local graph stays in `graphify-out/` until you delete it, so you can go back at any point.
 
-1. **Restore the entry.** In each assistant, replace the hosted `graphify` entry with the **Local (before)** entry from step 2. [Local MCP server](/mcp/overview) has the command for each client.
+1. **Restore the entry.** In each assistant, replace the hosted `graphify` entry with the **Local (before)** entry from step 2. [Local MCP server](/open-source/mcp-server) has the command for each client.
 2. **Reinstall what you removed.** If you removed the package, run `uv tool install "graphifyy[mcp]"`. If you removed the skill, register it again, for example with `graphify install --platform cursor`. Add `--project` for a registration the repository commits.
 3. **Refresh the graph.** Run `graphify update .`. If you used git hooks, run `graphify hook install`.
 4. **Verify.** Ask the assistant to call `graph_stats`, then `query_graph` with a question about the repository.
@@ -602,7 +602,7 @@ To stop Cloud from indexing the repository, open **Options** for it on **Reposit
     Every screen in the Cloud workspace, and what each one is for.
   </Card>
 
-  <Card title="When something fails" icon="life-buoy" href="/platform/when-stuck">
+  <Card title="When something fails" icon="life-buoy" href="/platform/support/faqs">
     Fix an empty graph, a failed build, or a stuck index.
   </Card>
 </Columns>

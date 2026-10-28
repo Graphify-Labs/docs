@@ -1,0 +1,76 @@
+---
+title: "Build and explore a small graph"
+description: "Build and explore your first code knowledge graph on a tiny Python project, and learn the complete local graphify workflow end to end."
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+<Tip>
+Don't want to install anything? Graphify, the hosted product at app.graphify.com, indexes your GitHub repositories in the browser. We run it for you, so there's nothing to deploy. Start with the [Cloud quickstart](/platform/quickstart).
+</Tip>
+
+This example works without an API key. It makes the first query reproducible, instead of depending on names that may not exist in your repository.
+
+## Create a project
+
+Create a folder containing `app.py`:
+
+```python app.py
+def normalize_email(email: str) -> str:
+    return email.strip().lower()
+
+
+def find_user(email: str) -> dict:
+    return {"email": normalize_email(email)}
+
+
+def login(email: str) -> dict:
+    return find_user(email)
+```
+
+## Build the graph
+
+From that folder, with Graphify installed:
+
+```bash
+graphify extract . --code-only
+graphify cluster-only . --no-label
+graphify export html
+```
+
+Open `graphify-out/graph.html`, or read `graphify-out/GRAPH_REPORT.md`. The graph should contain the three functions and their call relationships. Exact IDs and report formatting can vary by release.
+
+## Ask for context
+
+```bash
+graphify query "how does login normalize an email?"
+graphify explain "normalize_email"
+graphify path "login" "normalize_email"
+```
+
+Look for the relationship from `login` to `find_user`, then to `normalize_email`. Check the associated source references. If a label matches several nodes, use the node ID returned by the query for a more precise lookup.
+
+## Make a change
+
+Add another helper or change a call, then refresh:
+
+```bash
+graphify update .
+graphify export html
+```
+
+Re-run the query and compare the connections. Graphify queries the saved graph, so changing a source file without updating the graph can leave an old answer.
+
+## Move to your repository
+
+Repeat the workflow from your repository root. Use [the assistant skill](/open-source/quickstart) to include model-assisted document context, or connect [MCP](/open-source/mcp-server) for native agent tool calls.
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/local-development" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Run Graphify locally</span></a>
+</div>

@@ -1,0 +1,143 @@
+---
+title: "Turn meeting recordings into a knowledge graph"
+sidebarTitle: "Meetings and videos"
+description: "Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code."
+keywords: ["meeting recordings knowledge graph"]
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify can't read audio directly, so it transcribes recordings to text with [faster-whisper](https://github.com/SYSTRAN/faster-whisper) and adds the transcripts to the graph as documents. Design reviews, incident calls and recorded talks then link to the code they discuss.
+
+## What you'll build
+
+- Text transcripts of your recordings in `graphify-out/transcripts/`.
+- A graph where meeting topics connect to the functions and modules they mention.
+- A domain prompt that makes Whisper spell your project's names correctly.
+
+## Setup
+
+```bash
+uv tool install "graphifyy[video]" --with "av<16"
+mkdir -p meetings && cp ~/Recordings/*.m4a meetings/
+```
+
+The `video` extra installs faster-whisper and yt-dlp. Graphify picks up `.mp4`, `.mov`, `.webm`, `.mkv`, `.avi`, `.m4v`, `.mp3`, `.wav`, `.m4a` and `.ogg`.
+
+<Warning>
+At the time of writing, faster-whisper 1.2.1 fails with PyAV 16 or later: `open() got an unexpected keyword argument 'metadata_errors'`. Pin `av<16`, as above, until this is fixed upstream.
+</Warning>
+
+## Step 1: Let your agent do it
+
+If you use the Graphify skill in an AI coding assistant, point it at the folder:
+
+```text
+/graphify ./meetings
+```
+
+The skill finds the recordings, writes a one-sentence domain hint from the most connected nodes in your graph, transcribes with that hint, and extracts the transcripts with the rest of your files. For better accuracy, use a larger model:
+
+```text
+/graphify ./meetings --whisper-model medium
+```
+
+## Step 2: Or transcribe from a script
+
+Without an agent, call the transcriber yourself. Save this as `transcribe.py`:
+
+```python
+from pathlib import Path
+from graphify.transcribe import transcribe_all
+
+files = [str(p) for p in Path("meetings").iterdir()]
+prompt = ("Engineering meeting about the Graphify extractor, retry queue "
+          "and Postgres schema. Use proper punctuation and paragraph breaks.")
+paths = transcribe_all(files, initial_prompt=prompt)
+print(paths)
+```
+
+Run it in an environment that has the `video` extra:
+
+```bash
+uv run --with "graphifyy[video]" --with "av<16" python transcribe.py
+```
+
+```text
+  transcribing design-review.m4a (model=base) ...
+  transcript saved -> graphify-out/transcripts/design-review.txt (lang=en, N segments)
+['graphify-out/transcripts/design-review.txt']
+```
+
+Transcripts are cached by file name. Run it again and finished files return straight away. Set `GRAPHIFY_WHISPER_MODEL` to `small`, `medium` or `large-v3` to trade speed for accuracy. The default is `base`.
+
+## Step 3: Why the prompt matters
+
+Whisper guesses at names it hasn't heard. In our test with the `tiny` model and no prompt, "retry queue" came out as "retry Q". Passing the project's terms as `initial_prompt` fixed it. Keep the prompt to one sentence of real names from your code, such as module, service and table names.
+
+## Step 4: Add transcripts to the graph
+
+Copy the transcripts next to your code and extract. Transcripts are documents, so extraction needs an LLM backend:
+
+```bash
+mkdir -p docs/meetings
+cp graphify-out/transcripts/*.txt docs/meetings/
+graphify extract . --backend claude
+graphify query "what did we decide about the retry queue?"
+```
+
+To keep everything on your machine, use `--backend ollama`. See [Run Graphify locally with Ollama](/cookbooks/local-with-ollama).
+
+## Step 5: YouTube and other links
+
+```bash
+graphify add "https://www.youtube.com/watch?v=VIDEO_ID"
+```
+
+`add` downloads the audio with yt-dlp into `./raw`. Transcribe it as in Step 2, then extract.
+
+## When it goes wrong
+
+**`open() got an unexpected keyword argument 'metadata_errors'`.** PyAV is too new for faster-whisper. Reinstall with `--with "av<16"`.
+
+**Names are misspelled.** Add them to the prompt, or use a larger model.
+
+**A transcript didn't change after a fix.** The cache is keyed by file name. Delete `graphify-out/transcripts/<name>.txt` and run again.
+
+**It's slow.** Transcription runs on the CPU. Use `base` or `small` for long recordings, or transcribe overnight.
+
+## Production patterns
+
+- Strip personal details from transcripts before you commit them, and keep raw audio out of git.
+- Store transcripts in `docs/meetings/` with the date in the file name, so query answers point to a meeting.
+- Record decisions out loud ("we decided..."), which gives extraction a clear sentence to link.
+
+## Complete example
+
+```bash
+uv tool install "graphifyy[video]" --with "av<16"
+uv run --with "graphifyy[video]" --with "av<16" python transcribe.py
+mkdir -p docs/meetings && cp graphify-out/transcripts/*.txt docs/meetings/
+graphify extract . --backend claude
+graphify query "what did we decide about the retry queue?"
+```
+
+## What you built
+
+Your recordings are searchable text in the same graph as your code, so you can ask what was decided and find the code it touched.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Your first graph" icon="book" href="/guides/first-graph">
+    Build a graph from code, docs and transcripts.
+  </Card>
+  <Card title="Keep docs in sync" icon="utensils" href="/cookbooks/keep-docs-in-sync">
+    Rebuild the graph as recordings and code change.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

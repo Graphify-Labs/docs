@@ -1,0 +1,140 @@
+---
+title: "Post graph impact on every pull request"
+sidebarTitle: "PR impact in CI"
+description: "Build a Graphify code graph in GitHub Actions and post each pull request's graph impact, communities and changed files as a PR comment."
+keywords: ["pull request impact analysis"]
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+A diff shows which lines changed. The graph shows what those lines touch. This recipe builds a code graph in GitHub Actions and posts each pull request's impact (nodes, communities and files) as a comment, so reviewers see how far a change reaches before they open the diff.
+
+## What you'll build
+
+- A workflow that runs on every pull request.
+- A headless code graph built without an LLM or API key.
+- A PR comment from `graphify prs <number>` showing the graph impact.
+
+## Setup
+
+You need a GitHub repository and permission to add workflows. Try the command locally first:
+
+```bash
+uv tool install graphifyy
+graphify extract . --code-only
+graphify prs            # list open pull requests
+graphify prs 123        # detail for one, use a real number
+```
+
+`prs` uses the GitHub CLI, so run `gh auth login` first.
+
+## Step 1: Read the impact locally
+
+`graphify prs` with no number lists open pull requests against the base branch. On the open-source Graphify repository it printed:
+
+```text
+base: v8 · 48 PRs
+```
+
+With a number, it prints the detail for one pull request: status, branch, CI, and its graph impact. For one pull request on the open-source repository:
+
+```text
+Graph impact: 211 nodes / 11 communities
+```
+
+It then lists the communities the change touches and the files it changes. Useful flags:
+
+| Flag | What it does |
+|---|---|
+| `--base`, `-b` | Compare against a different base branch |
+| `--repo`, `-R` | Read pull requests from another repository |
+| `--graph` | Use a graph file other than `graphify-out/graph.json` |
+| `--conflicts` | Show pull requests that may conflict with each other |
+
+## Step 2: Add the workflow
+
+Create `.github/workflows/graph-impact.yml`:
+
+```yaml
+name: Graph impact
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  impact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - name: Build the code graph
+        run: |
+          uv tool install graphifyy
+          graphify extract . --code-only
+      - name: Write the impact report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo "### Graph impact"
+            echo '```text'
+            graphify prs ${{ github.event.pull_request.number }}
+            echo '```'
+          } > impact.md
+      - name: Comment on the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr comment ${{ github.event.pull_request.number }} --body-file impact.md --edit-last --create-if-none
+```
+
+`--code-only` parses source with tree-sitter and needs no LLM, so the job needs no secret beyond the built-in `GITHUB_TOKEN`. `--edit-last --create-if-none` updates one comment rather than adding a new one on every push.
+
+## Step 3: Open a pull request
+
+Push a branch and open a pull request. When the job finishes, the comment shows the impact summary, the communities touched and the changed files. A small, focused change touches one or two communities. A change across many is worth a closer review, or splitting.
+
+## When it goes wrong
+
+**`gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable`.** Add the `env` block with `GH_TOKEN` to each step that calls `gh` or `graphify prs`.
+
+**`Resource not accessible by integration`.** The workflow needs `pull-requests: write`. Pull requests from forks get a read-only token. Run on `pull_request_target` only if you understand the risk of running fork code with write access, or skip the comment for forks.
+
+**`--create-if-none` is unknown.** Your runner has an old GitHub CLI. Drop both flags to post a new comment each time.
+
+**The job is slow on a large repository.** Cache `graphify-out/` with `actions/cache`, keyed on the base branch, and run `graphify update .` instead of a full extract.
+
+## Production patterns
+
+- Fail the job, or add a label, when a pull request touches more communities than your team's limit.
+- Add `graphify prs --conflicts` to a scheduled workflow to list pull requests that may conflict.
+- For test selection from the graph, see the hosted [Buildkite test impact](/integrations/buildkite) integration.
+
+## Complete example
+
+The workflow in Step 2 is complete. Copy it to `.github/workflows/graph-impact.yml`, commit and open a pull request.
+
+## What you built
+
+Every pull request gets a comment showing how much of the graph it touches, built in CI with no API key, so reviewers know the blast radius up front.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Pull requests" icon="book" href="/guides/pull-requests">
+    Triage, conflicts and impact for open pull requests.
+  </Card>
+  <Card title="Review as a team" icon="utensils" href="/cookbooks/review-as-a-team">
+    Use graph impact to plan reviews.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

@@ -1,56 +1,127 @@
 ---
-title: "Keep docs in sync with code using Graphify"
-sidebarTitle: "Keep docs in sync with code"
-description: "Find docs that mention code a pull request changed, keep the generated wiki current with the default branch, and search your Google Drive docs next to the code."
+title: "Keep docs in sync with code using git hooks"
+sidebarTitle: "Keep docs in sync"
+description: "Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale."
+keywords: ["keep docs in sync with code"]
 surface: "both"
 hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Docs drift. A function is renamed or its behavior changes, and the README, the runbook and the design doc still describe the old version. Graphify connects docs to the code they mention, so a pull request can flag the docs it may have made stale.
+To keep docs in sync with code, generate the structural part of them from the code, and regenerate it whenever the code changes. Graphify rebuilds its graph on each commit through git hooks, or on each save with `graphify watch`, and `graphify export wiki` turns that graph into Markdown. Hand-written guides stay hand-written. The map of what calls what never drifts.
 
-This walkthrough uses the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, whose docs sit next to its code.
+## What you'll build
 
-## Walk through it
+- Git hooks that rebuild the graph after commits, checkouts, merges and rebases.
+- A watch process for live rebuilds while you code.
+- A generated wiki in `graphify-out/wiki/` you can publish or read in your editor.
+- A freshness check that tells you when a graph is stale.
 
-<Steps>
-  <Step title="Index the repository">
-    Connect it on **Repositories** and wait for **Indexed**. See [Index your first repository](/concepts/index-a-repository) and [Repositories and builds](/platform/repositories).
-  </Step>
-  <Step title="Turn on stale-docs checks">
-    On **Repositories**, open **Options** for the repository and check that **Stale docs** is on. It is on unless someone turned it off.
-  </Step>
-  <Step title="Change some code">
-    Open a pull request that renames or changes a function the docs mention. The review can include **Docs that may be stale (advisory)**, listing docs that mention the code you changed. See [Pull request reviews](/platform/reviews).
-  </Step>
-  <Step title="Bring in docs outside the repository">
-    Connect a Google Drive folder so your workspace and agents can search those documents next to your code. See [Connect Google Drive](/integrations/google-drive).
-  </Step>
-</Steps>
+## Setup
 
-The list is a prompt to check, not a verdict. A doc can mention a function without describing the part that changed.
+```bash
+uv tool install graphifyy
+cd your-repo
+graphify extract . --code-only
+```
 
-The [Wiki](/platform/wiki) is generated alongside the code graph, so it follows each index of the default branch.
-
-## Do it locally instead
-
-Keep the local graph current as you work, so your assistant reads docs and code from the same state:
+## Step 1: Install the git hooks
 
 ```bash
 graphify hook install
-graphify update .
+graphify hook status
 ```
 
-The hooks refresh the graph after commits and branch switches. Run `graphify update .` after a pull or a merge. Docs and PDFs go through a semantic pass with your assistant's model or a configured backend, such as a local Ollama. See [Keep the graph current](/open-source/features/incremental-updates).
+This installs `post-commit`, `post-checkout`, `post-merge` and `post-rewrite` hooks. Each runs a code-only rebuild, so no API key is needed. The same command registers a merge driver for `graphify-out/graph.json`, covered in [Shared team graph](/cookbooks/shared-team-graph).
+
+Make a commit and check the report's freshness line:
+
+```text
+## Graph Freshness
+- Built from commit: `0a8cd4e1`
+```
+
+The commit should match `git rev-parse HEAD`.
+
+## Step 2: Rebuild on save with watch
+
+When you want the graph to follow you between commits, install the `watch` extra and run watch:
+
+```bash
+uv tool install "graphifyy[watch]"
+graphify watch .
+```
+
+Watch rebuilds the graph when code files change. Each rebuild ends with:
+
+```text
+[graphify watch] graph.json, graph.html and GRAPH_REPORT.md updated in graphify-out
+```
+
+Use hooks or watch, not both, on the same checkout. Hooks suit most people. Watch suits long refactors where you query the graph between saves.
+
+## Step 3: Generate the wiki
+
+```bash
+graphify export wiki
+```
+
+This writes one Markdown article per community, plus `graphify-out/wiki/index.md`. On the open-source Graphify repository it wrote 904 articles. Each article lists the community's key members, how many connections each has, and its source file.
+
+The hooks rebuild the graph in a background process, so the commit returns at once. Don't chain the wiki export onto the hook, because it can run before the rebuild finishes. Regenerate the wiki when you need it, or in CI (see Production patterns).
+
+## Step 4: Name the communities (optional)
+
+Without an LLM, communities are numbered. To give them readable names, run `graphify label` with a model configured. It reruns clustering and always generates names:
+
+```bash
+export ANTHROPIC_API_KEY=...   # or another supported backend
+graphify label .
+graphify export wiki
+```
+
+Labels cost tokens, so run this on a schedule rather than on every commit.
+
+## When it goes wrong
+
+**The hook didn't run.** Run `graphify hook status`. If your repository uses a hooks manager such as Husky or `core.hooksPath`, the hooks may live in a different folder. Check where git looks with `git config core.hooksPath`.
+
+**Docs and diagrams changed but the graph didn't.** `update` and the hooks re-extract code only. For Markdown, PDFs and images, run `/graphify --update` in your AI assistant.
+
+**The wiki is huge.** Large repositories produce hundreds of articles. Publish `index.md` and the communities that hold your [god nodes](/cookbooks/onboard-to-a-codebase), not all of them.
+
+## Production patterns
+
+- Don't hand-edit generated articles. Link to them from your guides instead.
+- Rebuild the wiki in CI on the default branch so the published copy matches what shipped.
+- In Graphify, the hosted product, the wiki is built for each connected repository and stays current as you push. See [Wiki](/platform/wiki).
+
+## Complete example
+
+```bash
+graphify extract . --code-only
+graphify hook install
+git commit --allow-empty -m "test graph hook"
+graphify hook status
+# after the background rebuild finishes:
+graphify export wiki
+```
+
+## What you built
+
+Your graph and wiki now rebuild themselves from the code. Docs that describe structure can't fall behind, because they come from the same commit.
 
 ## Next steps
 
-<TryCloudCard />
+<CardGroup cols={3}>
+  <Card title="Keep the graph current" icon="book" href="/guides/incremental-updates">
+    How update, watch and hooks rebuild the graph.
+  </Card>
+  <Card title="Shared team graph" icon="utensils" href="/cookbooks/shared-team-graph">
+    Commit the graph and merge it cleanly across branches.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/cookbooks/review-as-a-team" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Review code as a team</span></a>
-  <a href="/cookbooks/plan-a-refactor" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Plan a risky refactor</span></a>
-</div>

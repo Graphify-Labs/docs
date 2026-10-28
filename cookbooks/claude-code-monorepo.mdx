@@ -1,0 +1,139 @@
+---
+title: "Give Claude Code a knowledge graph of your monorepo"
+sidebarTitle: "Claude Code on a monorepo"
+description: "Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings."
+keywords: ["claude code monorepo"]
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Claude Code on a large monorepo spends most of its context reading files to find the few lines that matter. Give it a Graphify knowledge graph and it asks the graph first, then reads only what the graph points at. This recipe installs the skill, adds always-on hooks that steer Claude to the graph, connects a local MCP server, and measures the difference.
+
+## What you'll build
+
+- A graph of your monorepo in `graphify-out/`.
+- A `CLAUDE.md` section and PreToolUse hooks that nudge Claude to query before it greps.
+- The `/graphify` skill for building and updating graphs from Claude Code.
+- A local MCP server with graph tools.
+- A token benchmark for your own repository.
+
+## Setup
+
+```bash
+uv tool install "graphifyy[mcp]"
+cd your-monorepo
+graphify extract . --code-only
+```
+
+On the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository this writes 19,602 nodes and 44,439 edges in about 26 seconds, with no API key.
+
+## Step 1: Install the skill
+
+```bash
+graphify install --platform claude
+```
+
+This copies the Graphify skill to `~/.claude/skills/graphify/SKILL.md`. In Claude Code, `/graphify .` builds a full graph, including docs and images, and `/graphify . --update` refreshes it.
+
+## Step 2: Turn on the always-on hooks
+
+```bash
+graphify claude install
+```
+
+This adds a `## graphify` section to `CLAUDE.md`. Its first rule tells Claude to run `graphify query "<question>"` before its first grep or source read, and to use `graphify path` and `graphify explain` for relationships. It also writes PreToolUse hooks to `.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash|Grep",
+        "hooks": [{ "type": "command", "command": "graphify hook-guard search", "timeout": 10 }] },
+      { "matcher": "Read|Glob",
+        "hooks": [{ "type": "command", "command": "graphify hook-guard read", "timeout": 10 }] }
+    ]
+  }
+}
+```
+
+The installed command uses the full path to your `graphify`. When a fresh graph exists, the guard adds a reminder to use it. It never blocks a tool call unless you opt in to strict mode with `hook-guard read --strict`, which blocks the first raw read in a session.
+
+## Step 3: Connect a local MCP server
+
+```bash
+claude mcp add graphify -- graphify-mcp graphify-out/graph.json
+```
+
+`graphify-mcp` serves the graph over stdio by default. Claude Code then has tools such as `query_graph`, `get_node`, `get_neighbors`, `shortest_path` and `god_nodes`. Run `/mcp` in Claude Code to check the server is connected.
+
+## Step 4: Ask Claude a question
+
+Try a prompt that would usually trigger a long search:
+
+```text
+What calls _rebuild_code, and which tests cover it?
+```
+
+Claude should run `graphify query` or call `query_graph` first, then open only the files and lines in the answer.
+
+## Step 5: Measure it
+
+```bash
+graphify benchmark
+```
+
+On the Graphify repository it estimated:
+
+```text
+791.0x fewer tokens per query (~1,652 tokens avg)
+```
+
+This compares a graph query with a naive baseline that reads the whole corpus. It's an estimate, not a measurement of a real Claude session, and your number depends on repository size.
+
+## When it goes wrong
+
+**Claude ignores the graph.** Check that `graphify-out/graph.json` exists at the repository root, and that `.claude/settings.json` has the hooks. The guard only nudges when the graph is fresh, so run `graphify update .` after pulling.
+
+**The MCP server fails to start.** Install the `mcp` extra: `uv tool install "graphifyy[mcp]"`. Pass the graph path relative to where Claude Code starts, or use an absolute path.
+
+**Answers are cut short.** Ask with a larger budget, for example `graphify query "..." --budget 3000`, or name a specific symbol.
+
+## Production patterns
+
+- Commit `CLAUDE.md` and `.claude/settings.json` so the whole team gets the hooks. Each clone needs Graphify installed.
+- Install the git hooks with `graphify hook install` so the graph stays current. See [Keep docs in sync](/cookbooks/keep-docs-in-sync).
+- To remove everything, run `graphify claude uninstall`.
+- For a monorepo too big to rebuild on every laptop, use Graphify, the hosted product: [Cloud coding agents with hosted MCP](/cookbooks/cloud-coding-agents).
+
+## Complete example
+
+```bash
+uv tool install "graphifyy[mcp]"
+cd your-monorepo
+graphify extract . --code-only
+graphify install --platform claude
+graphify claude install
+claude mcp add graphify -- graphify-mcp graphify-out/graph.json
+graphify hook install
+graphify benchmark
+```
+
+## What you built
+
+Claude Code now has a map of your monorepo. It queries the graph before it searches, reads less, and you have a benchmark to show the difference.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Claude Code integration" icon="book" href="/integrations/claude-code">
+    Every Claude Code option, local and hosted.
+  </Card>
+  <Card title="Fully local with Ollama" icon="utensils" href="/cookbooks/local-with-ollama">
+    Keep extraction on your machine too.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

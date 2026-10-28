@@ -1,0 +1,115 @@
+---
+title: "Graph your Postgres schema next to your code"
+sidebarTitle: "Postgres schema graph"
+description: "Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code."
+keywords: ["postgres schema graph"]
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify can read a live PostgreSQL database and add its schema to the same graph as your code. Tables, views, functions and foreign keys become nodes and edges, so you can ask how the code and the schema connect without opening a SQL client.
+
+## What you'll build
+
+- A graph that holds your code and your database schema together.
+- Foreign-key edges between tables.
+- Queries that cross from code to schema.
+
+## Setup
+
+Install the `postgres` extra. It adds `psycopg` and the SQL grammar Graphify uses to parse the schema:
+
+```bash
+uv tool install "graphifyy[postgres]"
+```
+
+Use a role that can read the catalog. It doesn't need write access, because Graphify opens a read-only transaction.
+
+## Step 1: Extract with a DSN
+
+```bash
+cd your-repo
+graphify extract . --code-only --postgres "postgresql://readonly@localhost:5432/app"
+```
+
+Graphify connects, reads the schema from `information_schema` and the Postgres catalog, rebuilds the DDL, and parses it alongside your code. The connection runs `SET TRANSACTION ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE`, so it can't change data.
+
+## Step 2: Use PG environment variables instead
+
+Leave the DSN empty and Graphify uses the standard `PG*` variables, which keeps credentials out of your shell history:
+
+```bash
+export PGHOST=localhost PGPORT=5432 PGDATABASE=app PGUSER=readonly
+export PGPASSWORD="$(your-secret-tool get app-readonly)"
+graphify extract . --code-only --postgres ""
+```
+
+## Step 3: Explore the schema
+
+```bash
+graphify query "which tables reference users" --budget 1500
+graphify explain "orders"
+```
+
+Each table, view and function is a node. Foreign keys become `references` edges between tables, and views get `reads_from` edges to the tables they select from. For a schema with `users`, `orders` (with a foreign key to `users`) and a `recent_orders` view, the graph holds:
+
+```text
+orders --references--> users
+recent_orders --reads_from--> orders
+```
+
+Extract prints the count it added, as `[graphify extract] PostgreSQL: N nodes, M edges`. Columns aren't separate nodes, so ask about tables and their relations rather than single columns.
+
+## Step 4: Connect code to schema
+
+```bash
+graphify path "orders" "create_order()"
+```
+
+Whether a path exists depends on how your code names the table. Where none is found, try `--undirected`, then check how your code references the table. SQL built at runtime won't show up.
+
+## When it goes wrong
+
+**`psycopg is required for --postgres`.** Install the extra: `uv tool install "graphifyy[postgres]"`.
+
+**The schema adds zero nodes.** The SQL grammar is missing, so parsing returns nothing. The `postgres` extra includes it. If you installed `psycopg` on its own, add `tree-sitter-sql`.
+
+**`could not connect to PostgreSQL`.** Graphify trims the error to its first line so credentials don't leak into logs. Check the host, port and role with `psql` using the same settings.
+
+## Production patterns
+
+- Point Graphify at a replica or a schema-only copy, not your primary.
+- Use a dedicated read-only role and pass the password through `PGPASSWORD` from your secret manager.
+- Rebuild the schema graph when migrations land, for example in the CI job that runs them.
+- Export to Neo4j to query code and schema in Cypher: [Load your graph into Neo4j](/cookbooks/neo4j-export).
+
+## Complete example
+
+```bash
+uv tool install "graphifyy[postgres]"
+cd your-repo
+export PGHOST=localhost PGDATABASE=app PGUSER=readonly
+graphify extract . --code-only --postgres ""
+graphify query "which tables reference users" --budget 1500
+graphify path "orders" "create_order()" --undirected
+```
+
+## What you built
+
+One graph that holds your code and your database schema, read over a read-only connection and ready to query from the CLI, MCP or Neo4j.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Supported inputs" icon="book" href="/concepts/supported-inputs">
+    Every source Graphify can read.
+  </Card>
+  <Card title="Load your graph into Neo4j" icon="utensils" href="/cookbooks/neo4j-export">
+    Query code and schema together in Cypher.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

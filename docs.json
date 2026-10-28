@@ -222,7 +222,26 @@
             "group": "Agents",
             "icon": "bot",
             "pages": [
-              "cookbooks/cloud-coding-agents"
+              "cookbooks/claude-code-monorepo",
+              "cookbooks/cloud-coding-agents",
+              "cookbooks/local-with-ollama"
+            ]
+          },
+          {
+            "group": "Data",
+            "icon": "database",
+            "pages": [
+              "cookbooks/postgres-schema-graph",
+              "cookbooks/neo4j-export",
+              "cookbooks/meetings-and-videos"
+            ]
+          },
+          {
+            "group": "CI and Ops",
+            "icon": "server",
+            "pages": [
+              "cookbooks/pr-impact-comment-ci",
+              "cookbooks/self-host-shared-mcp"
             ]
           }
         ]

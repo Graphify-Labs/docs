@@ -1,7 +1,7 @@
 ---
-title: "Hosted MCP"
+title: "Hosted MCP server: connect agents with OAuth"
 sidebarTitle: "Hosted MCP"
-description: "Connect Claude Code, Codex, Cursor, VS Code, Copilot CLI, and other MCP clients to Graphify's hosted MCP server at api.graphify.com/mcp, signed in with OAuth."
+description: "Connect Claude Code, Codex, Cursor, VS Code, and other clients to the Graphify hosted MCP server at api.graphify.com/mcp with OAuth."
 keywords: ["graphify mcp", "hosted mcp server", "claude code mcp", "cursor mcp", "codex mcp"]
 surface: "cloud"
 ---
@@ -157,6 +157,48 @@ Your client builds its tool list from the server's `tools/list` response, so the
 
 Changing workspace changes which repositories the session can see. It doesn't change your code or the graph.
 
+## How hosted MCP sign-in works
+
+You don't paste a key. Your client discovers the sign-in flow from the server:
+
+1. The client's first request has no token. Graphify answers `401` with a `WWW-Authenticate: Bearer resource_metadata="…"` header that points at Graphify's protected-resource metadata.
+2. The client reads that metadata, finds the authorization server, and opens a browser sign-in.
+3. The client exchanges the code for tokens using PKCE. Graphify only supports public clients, so there's no client secret.
+4. Each refresh rotates the refresh token. A client that reuses an old one is asked to sign in again.
+
+If a token doesn't verify, you get the same discovery `401`, and your client starts the sign-in again.
+
+## Workspaces and MCP sessions
+
+Every request runs in one workspace. Graphify picks it in this order: the workspace bound to this MCP session, then your default workspace, then your only workspace if you belong to just one.
+
+- Each client installation gets its own MCP session, so two machines can use different workspaces without overwriting each other.
+- `set_workspace` binds the current session. The binding lasts 24 hours by default. With `make_default: true`, it also becomes your default workspace.
+- Graphify rechecks your membership on every request. Removed members lose access within 60 seconds.
+
+<Warning>
+`set_workspace` changes state. It changes which workspace, and so which repositories, your agent reads from. It doesn't change your code or the graph.
+</Warning>
+
+### Workspace errors
+
+| Code | Message |
+| --- | --- |
+| `no_workspace` | "No workspace is selected for this agent." The message lists your workspaces. Call `set_workspace` with one of them. |
+| `workspace_access_revoked` | "Your access to the bound workspace is no longer valid." Pick another workspace. |
+| `workspace_not_found` | "That workspace was not found." Check the handle with `list_workspaces`. |
+| `mcp_session_required` | "set_workspace can only run inside an established MCP session." Reconnect the client, then retry. |
+| `invalid_arguments` | "set_workspace requires a handle." |
+
+## Hosted MCP limits
+
+| Limit | Default |
+| --- | --- |
+| Requests | 240 per minute |
+| Request body | 256 KB |
+
+The request limit is counted per client IP address for signed-in sessions. Over the limit returns `429 rate_limited`. A request body over 256 KB returns `413 mcp_body_too_large`. See [Rate limits](/platform/support/rate-limits).
+
 ## Verify the connection
 
 1. Check that your client shows `graphify` as connected and lists its tools.
@@ -193,6 +235,12 @@ Seeing the tools doesn't prove repository access. Step 4 does.
   </Card>
   <Card title="Memory" icon="brain" href="/platform/memory">
     What your agents remember.
+  </Card>
+  <Card title="Test impact analysis" icon="flask-conical" href="/platform/test-impact">
+    Run only the tests a change affects.
+  </Card>
+  <Card title="Integrations" icon="blocks" href="/integrations/overview">
+    Setup for each agent.
   </Card>
 </Columns>
 

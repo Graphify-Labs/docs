@@ -1,0 +1,116 @@
+---
+title: "Test impact analysis: run only affected tests"
+sidebarTitle: "Test impact analysis"
+description: "Graphify maps a pull request's changed files to the tests they affect, returns a Buildkite pipeline or JSON, and falls back to the full suite."
+keywords: ["test impact analysis", "affected tests", "test selection", "buildkite test selection", "ci test impact"]
+surface: "cloud"
+---
+
+**Test impact analysis** uses your repository's graph to pick the tests a change can affect. Your CI sends the changed files, or a commit range, and Graphify returns the tests to run. When Graphify isn't sure, it returns the full suite, so CI never skips a test silently.
+
+<Note>
+Test impact analysis is available in enabled Graphify workspaces. For the full Buildkite setup, including the pipeline script, see [Buildkite test selection](/integrations/buildkite).
+</Note>
+
+## How test impact analysis works
+
+1. A workspace owner or admin creates a CI token under **Integrations → BuildKite (Test Impact)**. CI tokens start with `gfy_ci_` and only work on the test impact endpoint.
+2. Your CI calls `POST https://api.graphify.com/v1/repos/{repositoryId}/test-impact` with the token as a bearer token.
+3. Graphify checks that the repository belongs to the token's workspace and that the workspace's subscription is active.
+4. Graphify runs the selection against the repository's latest published graph.
+5. The response is returned as-is: a Buildkite pipeline (`{"steps": [...]}`) or JSON, which you can pipe straight into `buildkite-agent pipeline upload`.
+
+`repositoryId` is the repository's Graphify ID, not its GitHub name.
+
+## Send changed files or a commit range
+
+The request takes one of two diff sources. Sending both returns `422 invalid_diff_source`.
+
+<Tabs>
+  <Tab title="Commit range">
+    Send the PR's merge base and head commit. Graphify reads the diff from GitHub itself, including deletions and renames.
+
+    ```json Request body
+    {
+      "baseSha": "3f2c1a9",
+      "headSha": "9be41d0",
+      "format": "buildkite",
+      "command": "pytest"
+    }
+    ```
+
+    Commit-range mode needs a connected GitHub repository. For any other repository it returns `422 test_impact_range_unsupported`.
+  </Tab>
+  <Tab title="Changed files">
+    Send the paths yourself, for example from `git diff --name-status`.
+
+    ```json Request body
+    {
+      "changedFiles": ["app/billing/invoice.py"],
+      "deletedFiles": ["app/billing/legacy.py"],
+      "renames": [{ "old": "app/tax.py", "new": "app/billing/tax.py" }],
+      "format": "json",
+      "command": "pytest"
+    }
+    ```
+
+    A deleted file forces a full run. A rename moves selection to the new path.
+  </Tab>
+</Tabs>
+
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `changedFiles` | string[] | `[]` | Up to 2,000 paths, each up to 1,024 characters. Duplicates are removed. An empty list runs the full suite. |
+| `deletedFiles` | string[] | `[]` | Up to 2,000 paths. Not allowed with a commit range. |
+| `renames` | `{old, new}`[] | `[]` | Up to 2,000 pairs. Not allowed with a commit range. |
+| `baseSha`, `headSha` | string | none | Hex commit SHAs, 7 to 64 characters. Send both or neither. |
+| `format` | string | `buildkite` | `buildkite` or `json`. |
+| `command` | string | `pytest` | The test command for the generated steps, up to 200 characters. |
+
+Unknown fields are rejected.
+
+## Ignore non-code files
+
+You can set ignore globs for files that never affect tests, such as docs. A repository's setting overrides the workspace default. Graphify keeps up to 200 globs, each up to 256 characters.
+
+## Limits
+
+Each workspace can make **60 test impact requests per minute** by default. The limit applies to the whole workspace, no matter how many tokens or repositories it uses. Over the limit returns `429 rate_limited`. See [Rate limits](/platform/support/rate-limits).
+
+A single selection can take up to about 45 seconds, so give the request a generous timeout. The Buildkite script uses 180 seconds.
+
+## Errors
+
+| Status and code | Meaning | What to do |
+| --- | --- | --- |
+| `401` | The CI token is missing, revoked, or not a test impact token. | Create a new token and update your CI secret. |
+| `402` `subscription_required` | "This organization's subscription is inactive." | Check **Billing** in the console. |
+| `404` `repository_not_found` | The repository ID isn't in the token's workspace. | Use the Graphify ID from the same workspace. |
+| `422` `invalid_diff_source` | Both a file list and a commit range were sent, or only one SHA. | Send one diff source. |
+| `422` `invalid_sha` | "baseSha/headSha must be hex commit SHAs." | Send full or short hex SHAs. |
+| `422` `unknown_format` | "format must be one of: buildkite, json." | Fix `format`. |
+| `422` `test_impact_range_unsupported` | The repository isn't connected through GitHub. | Send `changedFiles` instead. |
+| `429` `rate_limited` | Over 60 requests per minute for the workspace. | Run the full suite, then back off. |
+| `503` `test_impact_range_unavailable` | Graphify couldn't read the commit range from GitHub. | Run the full suite. |
+| `503` `test_impact_unavailable` | "Test selection is not available right now." | Run the full suite. |
+
+<Tip>
+Treat any `429` or `5xx` as "run everything". The [Buildkite script](/integrations/buildkite) already does this.
+</Tip>
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Buildkite test selection" icon="flask-conical" href="/integrations/buildkite">
+    The full pipeline setup.
+  </Card>
+  <Card title="Check impact" icon="git-branch" href="/concepts/check-impact">
+    How Graphify traces what a change touches.
+  </Card>
+  <Card title="Hosted MCP" icon="plug" href="/platform/hosted-mcp">
+    The same graph, for your coding agent.
+  </Card>
+  <Card title="Rate limits" icon="gauge" href="/platform/support/rate-limits">
+    Default limits for every endpoint.
+  </Card>
+</Columns>

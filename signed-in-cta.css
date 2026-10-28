@@ -1,0 +1,6 @@
+/* Hold the CTA until signed-in-cta.js decides; show it anyway after 150ms. */
+html:not(.gfy-cta-ready) #topbar-cta-button {
+  visibility: hidden;
+  animation: gfy-cta-reveal 0s linear 150ms forwards;
+}
+@keyframes gfy-cta-reveal { to { visibility: visible; } }

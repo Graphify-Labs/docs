@@ -27,6 +27,7 @@ Run both from the repo root, where `docs.json` lives. Each PR also gets a Mintli
 | Every nav page exists | a `pages` or `root` entry has no matching `.mdx` or `.md` file |
 | Every redirect destination exists | a local `redirects` destination isn't a real page |
 | No description starts with a tag | a `description:` starts with `[` |
+| Page icons | two icons repeat within one sidebar group (a missing `icon:` is only a warning) |
 | Mintlify broken links | `mint broken-links` finds a broken internal link |
 
 ## Frontmatter
@@ -42,6 +43,26 @@ surface: "cloud"
 - `title`: sentence case.
 - `description`: one plain sentence. It appears under the page title, in search, and in `llms.txt`. No `[Local]`, `[Cloud]`, or `[Both]` prefix.
 - `surface`: `local`, `cloud`, or `both`. It's the source of truth for which product a page covers. Agents tell the surface from the page path, so keep Cloud pages under `platform/` and the Cloud MCP group, and Local pages under `guides/`, `reference/`, `mcp/`, and the Local skill group. If you change that layout, update the surface rules in `docs.json` (`markdown.instructions`) and `for-agents.mdx`.
+
+## Page icons
+
+Every page in the sidebar has an icon, so every new page needs an `icon:` in its frontmatter. You don't need Mintlify access for this; it's one line in the `.mdx` file.
+
+```yaml
+---
+title: "Test impact analysis"
+description: "..."
+surface: "cloud"
+icon: "flask-conical"
+---
+```
+
+- Use a [Lucide](https://lucide.dev/icons) icon name (the site sets `icons.library: "lucide"`). Use the name exactly as Lucide lists it, in kebab-case.
+- Pick by topic. Examples from our pages: `zap` (Quickstart), `gauge` (Rate limits), `lock` (Security and data), `git-pull-request` (Pull request reviews), `database` (Databases), `square-terminal` (CLI reference).
+- Don't repeat an icon within the same sidebar group (a `group` in `docs.json`); the PR check fails if you do. Reusing an icon in a different group is fine, such as `house` on each tab's Overview. mem0's docs work the same way: icons repeat across groups, but almost never within one.
+- Don't add colours or `iconType`. `sidebar-groups.css` makes icons neutral grey (off-white in dark mode) and green only on the active page.
+- Check it renders: run `npx mint@latest dev` and open the page. If the icon is missing from the sidebar, the name is wrong or Lucide renamed it (for example `circle-help` is now `circle-question-mark`). If you edit frontmatter while `mint dev` is running and the sidebar doesn't update, restart `mint dev`.
+- The "Page icons" PR check warns about any nav page without an icon and fails on a duplicate icon within one sidebar group.
 
 ## Terminology
 

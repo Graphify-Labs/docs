@@ -4,6 +4,7 @@ sidebarTitle: "Test impact analysis"
 description: "Pick which tests to run from a diff. Graphify maps changed files to affected tests, returns Buildkite or JSON, and caps at 60 calls a minute."
 keywords: ["test impact analysis", "affected tests", "test selection", "buildkite test selection", "ci test impact"]
 surface: "cloud"
+icon: "flask-conical"
 ---
 
 **Test impact analysis** uses your repository's graph to pick the tests a change can affect. Your CI sends the changed files, or a commit range, and Graphify returns the tests to run. When Graphify isn't sure, it returns the full suite, so CI never skips a test silently.

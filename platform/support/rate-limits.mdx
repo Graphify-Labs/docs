@@ -4,6 +4,7 @@ sidebarTitle: "Rate limits"
 description: "Per-minute request limits for Ask, query, and MCP, memory limits, plan allowances, and how to handle a 429 from Graphify."
 surface: "cloud"
 hideFooterPagination: true
+icon: "gauge"
 ---
 
 Graphify limits how fast you can call Ask, query, and the hosted MCP server, and how much each plan can build, review, and verify. A request over a rate limit returns HTTP `429` with the code `rate_limited`. Wait a few seconds and retry.

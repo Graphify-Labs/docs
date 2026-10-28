@@ -1,0 +1,102 @@
+---
+title: "Graphify Local: open-source code knowledge graph"
+sidebarTitle: "Overview"
+description: "Graphify Local is the open-source graphifyy package. It builds a deterministic code knowledge graph on your machine, with no vector store and no hosted service."
+keywords: ["open source code knowledge graph", "graphifyy", "tree-sitter", "local MCP server"]
+surface: "local"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify Local turns a folder of code, docs, papers, images, or videos into a knowledge graph you can query from a terminal, a coding agent, or an MCP client. It runs on your machine and is published on PyPI as [`graphifyy`](https://pypi.org/project/graphifyy/) under the Apache-2.0 license.
+
+Coding agents spend most of their context re-reading files to rediscover how a codebase fits together. Graphify Local parses the code once, records every function, class, import, and call as a node or an edge, and lets the agent ask the graph instead. On the Graphify repository itself, `graphify benchmark` reports about 127 times fewer tokens per question than reading the corpus.
+
+<Note>
+**Use Graphify Local when:**
+- Your code can't leave your machine, or you want to run everything offline.
+- You want the graph as files (`graph.json`, `graph.html`, `GRAPH_REPORT.md`) that you can commit, diff, and export.
+- You want to script or extend the pipeline yourself.
+
+If you'd rather we build, host, and refresh graphs for your GitHub repositories, use [Graphify](/platform/quickstart).
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="Detect">
+    `graphify/detect.py` walks the folder, honours `.gitignore` and `.graphifyignore`, and sorts files into code, documents, papers, images, and video.
+  </Step>
+  <Step title="Extract">
+    Code is parsed locally with tree-sitter grammars, so the structural graph is deterministic and needs no API key. Documents and media can optionally go through an LLM for semantic extraction.
+  </Step>
+  <Step title="Resolve">
+    Calls, imports, and inheritance are bound across files by per-language resolvers. Edges that can't be bound to exactly one definition are marked `AMBIGUOUS` instead of guessed.
+  </Step>
+  <Step title="Cluster and report">
+    Leiden community detection groups related nodes. Graphify then writes the graph, an interactive HTML view, and a Markdown report of hubs, communities, and suggested questions.
+  </Step>
+</Steps>
+
+Every edge carries a confidence label: `EXTRACTED` (read from the source), `INFERRED` (derived by a resolver or an LLM), or `AMBIGUOUS` (several possible targets). See [How Graphify works](/concepts/architecture) for the full pipeline.
+
+## What you get
+
+```text
+graphify-out/
+├── graph.json        Nodes, edges, and communities, used by the CLI and MCP server
+├── graph.html        Interactive graph you open in a browser
+├── GRAPH_REPORT.md   God nodes, communities, surprising connections, suggested questions
+├── manifest.json     File hashes for incremental updates
+└── cache/            Per-file AST cache
+```
+
+## Three ways to use it
+
+| Path | You run | Best for |
+| --- | --- | --- |
+| [Agent skill](/open-source/quickstart) | `graphify install`, then `/graphify .` in your agent | Claude Code, Codex, Cursor, Gemini CLI, and every assistant `graphify install` supports |
+| [CLI](/open-source/cli-quickstart) | `graphify extract`, `query`, `path`, `explain` | Terminals, scripts, CI |
+| [MCP server](/open-source/mcp-server) | `graphify-mcp` over stdio or HTTP | Any MCP client, or a shared team server |
+
+## Graphify Local and Graphify
+
+Both build the same kind of graph. The difference is who runs it.
+
+| | Graphify Local | Graphify |
+| --- | --- | --- |
+| Where it runs | Your machine | Hosted at [app.graphify.com](https://app.graphify.com) |
+| Setup | `pip install graphifyy` | Sign in and connect GitHub |
+| Keeping graphs fresh | `graphify update`, `watch`, or git hooks | Rebuilt for you on push |
+| Agent access | Local skill or `graphify-mcp` | Hosted MCP at `https://api.graphify.com/mcp` |
+| Team features | Shared `graph.json` and a self-hosted MCP | Pull request reviews, wiki, memory, workspaces |
+
+<AccordionGroup>
+  <Accordion title="Is the package graphify or graphifyy?">
+    The PyPI package is `graphifyy`, with two y's. The command it installs is `graphify`, plus `graphify-mcp` for the MCP server.
+  </Accordion>
+  <Accordion title="Does Graphify Local need an LLM?">
+    No, not for code. Code extraction, resolution, clustering, and queries all run locally. An LLM is only used for documents, papers, images, video transcripts, and community names. Add `--code-only` to skip it entirely.
+  </Accordion>
+  <Accordion title="Does it use embeddings or a vector database?">
+    No. Queries traverse the graph (breadth-first or depth-first) from nodes that match your question, then trim the result to a token budget.
+  </Accordion>
+  <Accordion title="Which Python versions are supported?">
+    Python 3.10 or later.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/open-source/quickstart">
+    Install the skill and map a repository from your agent.
+  </Card>
+  <Card title="MCP server quickstart" icon="plug" href="/open-source/mcp-server">
+    Serve the graph to any MCP client over stdio or HTTP.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

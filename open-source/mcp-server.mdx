@@ -1,28 +1,30 @@
 ---
-title: "Local MCP server for your code knowledge graph"
-sidebarTitle: "Local MCP server"
-description: "Run graphify-mcp, the local MCP server for your code knowledge graph, and give Claude Code, Cursor, or VS Code ten structured graph tools."
+title: "MCP server quickstart: serve your graph to any agent"
+sidebarTitle: "MCP server quickstart"
+description: "Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and nine other graph tools from any MCP client."
+keywords: ["graphify-mcp", "MCP server for codebase", "code graph MCP", "streamable http MCP"]
 surface: "local"
-hideFooterPagination: true
-keywords: ["MCP server for codebase", "graphify-mcp", "code graph MCP"]
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
-import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-The graph MCP server reads a Graphify graph and exposes exploration tools to compatible clients. Start by building `graphify-out/graph.json` using the [quickstart](/open-source/quickstart).
+`graphify-mcp` reads `graphify-out/graph.json` and exposes it as MCP tools. Your agent can then ask for a subgraph, a node, a path, or the pull requests a change affects, instead of reading files to find out.
 
-## Install the MCP extra
+<Note>
+**Use the MCP server when** your client supports MCP but not skills, or when several people or agents should read one graph. For a graph hosted and refreshed for you, use the [hosted MCP server](/integrations/other-agents).
+</Note>
+
+## Before you start
+
+Build a graph first with the [CLI quickstart](/open-source/cli-quickstart), then install the MCP extra:
 
 ```bash
 uv tool install "graphifyy[mcp]"
 ```
 
-This installs the `graphify-mcp` executable into the same tool environment as Graphify. If uv reports an existing installation without the extra, reinstall with `uv tool install --reinstall "graphifyy[mcp]"`.
+## Connect one agent over stdio
 
-## Configure a local client
-
-Use an **absolute path** to the graph. GUI apps often start with a different working directory from your terminal.
+Use an absolute path. GUI clients often start in a different folder from your terminal.
 
 <Tabs>
   <Tab title="Claude Code">
@@ -30,9 +32,7 @@ Use an **absolute path** to the graph. GUI apps often start with a different wor
     claude mcp add --transport stdio graphify -- graphify-mcp /absolute/path/to/repo/graphify-out/graph.json
     ```
   </Tab>
-  <Tab title="Cursor">
-    Add a server entry to your user or project MCP configuration:
-
+  <Tab title="Cursor and JSON clients">
     ```json
     {
       "mcpServers": {
@@ -48,54 +48,86 @@ Use an **absolute path** to the graph. GUI apps often start with a different wor
     ```bash
     codex mcp add graphify -- graphify-mcp /absolute/path/to/repo/graphify-out/graph.json
     ```
-
-    Or configure the equivalent server in Codex’s MCP settings.
-  </Tab>
-  <Tab title="Other clients">
-    Choose the stdio transport, set the command to `graphify-mcp`, and pass the absolute graph path as the first argument. If the client cannot find the executable, replace it with the absolute path to `graphify-mcp` in your installed tool environment.
-
-    For client-specific setup, visit the [Graphify MCP connection guide](https://graphify.com/mcp). Choose your client there for its configuration instructions. That page also covers the hosted Graphify endpoint; the stdio setup above connects to a graph on your own machine.
   </Tab>
 </Tabs>
 
-## Check the connection
-
-Refresh your client’s MCP connections. Ask it to call `graph_stats` first, then `query_graph` with a question about the repository. The [tool reference](/open-source/features/mcp-tools) lists the current schemas.
-
-```json
-{"question": "authentication flow", "token_budget": 1500}
-```
-
-## Python environment alternative
-
-If you installed Graphify into a virtual environment, activate that environment first, then run:
+## Serve a team over HTTP
 
 ```bash
-python -m graphify.serve /absolute/path/to/repo/graphify-out/graph.json
+graphify-mcp graphify-out/graph.json --transport http --port 8099 --api-key "$GRAPHIFY_API_KEY"
 ```
 
-Use the interpreter where the MCP extra is installed. In a GUI client, set the command to that interpreter’s absolute path. Your shell’s Python can differ from uv’s tool environment.
+```text
+graphify MCP server (streamable-http) on http://127.0.0.1:8099/mcp - api-key required
+```
 
-## Scope of the tools
+Clients send the key as `Authorization: Bearer <key>` or `X-API-Key: <key>`. A request without it gets `401`. The server binds to `127.0.0.1` by default and warns if you bind `0.0.0.0` without a key.
 
-Graph exploration tools retrieve the saved graph. The PR tools additionally read GitHub context through `gh`; they are not an entirely offline workflow. MCP `triage_prs` returns data for the calling assistant to reason over.
+| Flag | Default | Purpose |
+| --- | --- | --- |
+| `--transport` | `stdio` | `stdio` or `http` (streamable HTTP) |
+| `--host` | `127.0.0.1` | Interface to bind |
+| `--port` | `8080` | HTTP port |
+| `--path` | `/mcp` | Endpoint path |
+| `--api-key` | `GRAPHIFY_API_KEY` | Required key for HTTP requests |
+| `--stateless` | off | No session state, for load-balanced replicas |
+| `--json-response` | off | Plain JSON responses instead of SSE |
+| `--session-timeout` | `3600` | Seconds before an idle session closes; `0` disables |
 
-To share a graph through a URL, use the [HTTP server guide](/open-source/self-host). To search Graphify’s documentation instead of your code graph, use the [docs search MCP](/mcp/docs-search). To switch from this local server to the hosted one in Graphify, follow [Move from Graphify Local](/platform/support/move-from-local).
+## Tools your agent gets
 
-## Next steps
+| Tool | Use it to |
+| --- | --- |
+| `query_graph` | Get a token-budgeted subgraph for a question (`mode`: `bfs` or `dfs`, `depth` 1–6, `token_budget` default 2000) |
+| `get_node` | Read one node by label or ID |
+| `get_neighbors` | List a node's connections, optionally by relation |
+| `get_community` | Read every node in one community |
+| `god_nodes` | List the most connected nodes |
+| `graph_stats` | Count nodes, edges, communities, and confidence labels |
+| `shortest_path` | Find the path between two nodes (`max_hops` default 8) |
+| `list_prs`, `get_pr_impact`, `triage_prs` | See which open pull requests touch which parts of the graph |
 
-<TryCloudCard />
+The server also publishes resources such as `graphify://report` (the `GRAPH_REPORT.md` text) and `graphify://god-nodes`.
+
+## Verify the connection
+
+Reload MCP servers in your client and ask it to call `graph_stats`. Then try:
+
+```json
+{"question": "cluster leiden", "token_budget": 1500}
+```
+
+For HTTP, check the endpoint from a terminal:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:8099/mcp \
+  -H "Authorization: Bearer $GRAPHIFY_API_KEY" \
+  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"curl","version":"0"}}}'
+```
+
+A `200` means the server is up and your key works.
+
+<AccordionGroup>
+  <Accordion title="graphify-mcp: command not found">
+    The MCP extra isn't installed in the environment on your `PATH`. Run `uv tool install --reinstall "graphifyy[mcp]"`, or use `python -m graphify.serve` from the virtual environment where Graphify is installed.
+  </Accordion>
+  <Accordion title="Does the server see graph updates?">
+    Yes. It reloads `graph.json` when the file changes, so `graphify update .` or a git hook keeps answers current.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
 
 <Columns cols={2}>
-  <HostedMcpCard />
-  <Card title="MCP tool reference" icon="wrench" href="/open-source/features/mcp-tools">
-    Every tool the local server exposes.
+  <Card title="Self-host with Docker" icon="docker" href="/open-source/self-host">
+    Run the HTTP server in a container.
+  </Card>
+  <Card title="Vibe coding with Graphify Local" icon="wand-magic-sparkles" href="/open-source/vibe-coding">
+    Make your agent use the graph by default.
   </Card>
 </Columns>
 
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+<TryCloudCard />
 
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/integrations/buildkite" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Buildkite (Test Impact)</span></a>
-  <a href="/open-source/self-host" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Serve a graph over HTTP</span></a>
-</div>
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

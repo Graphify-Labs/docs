@@ -147,6 +147,22 @@
         ]
       },
       {
+        "tab": "Use cases",
+        "groups": [
+          {
+            "group": "Use cases",
+            "icon": "lightbulb",
+            "pages": [
+              "use-cases/overview",
+              "use-cases/onboard-to-a-codebase",
+              "use-cases/review-as-a-team",
+              "use-cases/keep-docs-in-sync",
+              "use-cases/plan-a-refactor"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Integrations & MCP",
         "groups": [
           {

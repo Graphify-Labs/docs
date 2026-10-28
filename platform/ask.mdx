@@ -1,7 +1,7 @@
 ---
-title: "Ask questions about your codebase"
+title: "Ask your codebase: grounded answers with citations"
 sidebarTitle: "Ask"
-description: "Ask plain-language questions about an indexed repository and get answers that cite real graph nodes and paths, and say so when no path exists."
+description: "Ask your codebase plain-language questions. Graphify answers with cited graph nodes and paths, handles PR questions, and abstains without a path."
 keywords: ["graphify ask", "ask your codebase", "grounded code answers", "plan a change"]
 surface: "cloud"
 ---
@@ -53,6 +53,14 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
   </Tab>
 </Tabs>
 
+## What Ask detects in a question
+
+- **Pull request questions.** Mention `#1234`, `PR 1234`, or a pull request URL. Ask answers from that pull request's completed review.
+- **Task descriptions.** Paste a task, such as a ticket body. Ask returns guidance on where the change goes.
+- **Code questions.** Everything else. Ask searches the graph and cites the nodes it used.
+
+Each answer has prose, citations, and graph paths. When no grounded path exists, the answer abstains. That's a normal answer, not an error.
+
 ## Link straight to a question
 
 Ask reads the URL, so you can share a question or open a mode directly:
@@ -96,7 +104,7 @@ When the box is empty, Ask may show up to four questions under **Suggested from 
 ## Limits
 
 - Each question goes to one repository. To compare repositories, ask each one, or use a [combined graph](/platform/graphs).
-- Your workspace has a per-minute limit on Ask requests. If you hit it, wait a minute and ask again.
+- Your workspace can send 30 Ask requests a minute. Over that returns `429 rate_limited`. Wait a minute and ask again.
 - Ask needs an active plan. New accounts get a 14-day Pro trial, then move to Free (3 repositories, no card required).
 
 ## Verify and troubleshoot
@@ -108,6 +116,8 @@ When the box is empty, Ask may show up to four questions under **Suggested from 
 | Answer cites the wrong module | Open the cited node in the graph and refine the question with the correct name. |
 | "A question is required." | The box was empty. Type a question. |
 | "This organization's subscription is inactive." | Your workspace plan isn't active. Check **Billing**. |
+| "Ask is not available yet." (`ask_unavailable`) | Ask isn't turned on for this environment. Try again later. |
+| "Too many requests. Please slow down." | Over 30 a minute. See [Troubleshooting](/platform/support/troubleshooting#429-rate-limited-too-many-requests-please-slow-down). |
 
 <AccordionGroup>
   <Accordion title="Does Ask change my code?">

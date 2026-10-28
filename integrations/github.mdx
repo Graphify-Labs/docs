@@ -1,7 +1,7 @@
 ---
-title: "Connect GitHub to Graphify"
+title: "GitHub integration: index repos and review PRs"
 sidebarTitle: "GitHub"
-description: "Install the Graphify GitHub App on the repositories you choose. Graphify indexes the default branch on each push and reviews pull requests."
+description: "Install the Graphify GitHub App to index your default branch on every push, sync repositories, and review pull requests. Edge cases and errors."
 surface: "cloud"
 hideFooterPagination: true
 ---
@@ -32,6 +32,14 @@ To add or remove repositories later, change the app's repository access on GitHu
 - **Feedback.** Reply `@graphify wrong <finding>`, `@graphify good <finding>`, or `@graphify suppress <rule>` to tune later reviews. See [Learning](/platform/learning).
 
 Graphify reads repository contents to build the graph. Indexing tokens are short-lived and limited to the repositories you selected. They are never sent to your browser or stored. See [Security and data handling](/platform/support/security).
+
+## Edge cases
+
+- Pushes to other branches and branch deletions are ignored.
+- A repository with indexing turned off ignores pushes.
+- If you uninstall the app or remove a repository from it, reindex returns `409 provider_disconnected`. Reinstall the app, or remove the repository from Graphify.
+
+See [Troubleshooting](/platform/support/troubleshooting#repository-connect-issues).
 
 ## Turn reviews off
 

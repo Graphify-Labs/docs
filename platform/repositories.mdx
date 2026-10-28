@@ -1,6 +1,8 @@
 ---
-title: "Repositories and builds"
-description: "Connect GitHub and GitLab repositories to Graphify, configure analysis, and track, retry, or troubleshoot indexing builds from the console."
+title: "Repository indexing and sync: builds and reindex"
+sidebarTitle: "Repositories and builds"
+description: "How Graphify indexes and syncs GitHub and GitLab repositories: build states, reindex rules, the push allowance, and indexing error codes."
+keywords: ["codebase indexing", "repository sync", "reindex repository", "code graph indexing", "indexing failed"]
 surface: "cloud"
 hideFooterPagination: true
 ---
@@ -48,6 +50,34 @@ Open **Builds** and filter by repository or status. A build row identifies the r
 - If no rows match, clear the filters before concluding that the repository has never built.
 
 The first completed index makes code context available in [Graphs](/platform/graphs). [Wiki](/platform/wiki) is generated alongside the code graph when available for the workspace.
+
+## Build states
+
+| State | Meaning |
+| --- | --- |
+| `queued` | Waiting for a worker. A later push joins this build. |
+| `provisioning` | Graphify is preparing the indexing environment. |
+| `indexing` | The default-branch commit is being parsed into the graph. |
+| `promoting` | The new graph is replacing the one being served. |
+| `ready` | The graph for this commit is live. |
+| `failed` | The build stopped. The previous graph keeps serving. Use **Retry**. |
+| `cancelled` | Someone cancelled the build. |
+
+## Sync and reindex
+
+**Sync** refreshes the list of repositories your GitHub or GitLab connection can see. **Reindex** rebuilds one repository's graph from its default-branch head. You need permission to manage repositories in the workspace.
+
+These events never start an index: a push to a non-default branch, a branch deletion, and any push to a repository whose indexing is off.
+
+| Code | Status | What it means |
+| --- | --- | --- |
+| `repository_disabled` | 409 | "Enable the repository before re-indexing." Turn **Indexing** back on. |
+| `index_rebuild_debounced` | 409 | A rebuild was requested moments ago. The response includes `retryAfterSeconds`. Wait that long. |
+| `provider_disconnected` | 409 | "This repository's provider connection is gone. Reconnect it, or remove it." |
+| `repository_not_found` | 404 | The repository isn't in this workspace. |
+| `subscription_required` | 402 | The workspace plan isn't active. Check **Billing**. |
+
+More fixes are on [Troubleshooting](/platform/support/troubleshooting#indexing-failed-or-stuck).
 
 ## Usage and access
 

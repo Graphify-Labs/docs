@@ -1,5 +1,5 @@
 ---
-title: "Connect GitLab to Graphify"
+title: "GitLab integration: index GitLab.com projects"
 sidebarTitle: "GitLab"
 description: "Connect GitLab.com projects to Graphify with OAuth. Graphify indexes the default branch on each push and reviews merge requests."
 surface: "cloud"
@@ -33,6 +33,12 @@ Indexing uses a token limited to `read_repository`.
 
 - **Missing scope.** Connect again and approve every scope GitLab shows.
 - **Project not listed.** Check that your GitLab account can access the project, then connect again.
+- **Self-managed GitLab.** Only GitLab.com is supported.
+- **`gitlab_not_connected`.** The workspace has no GitLab connection. Connect again.
+- **Push didn't index.** Only Push Hook and Merge Request Hook events on the default branch count. Branch deletions are ignored. A push over the repository's daily index allowance is accepted but not indexed.
+- **`repository_empty`.** The project has no commits on its default branch. Push one.
+
+See [Troubleshooting](/platform/support/troubleshooting#repository-connect-issues).
 
 ## Related
 

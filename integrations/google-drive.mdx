@@ -1,5 +1,6 @@
 ---
-title: "Connect Google Drive"
+title: "Google Drive integration: search docs with code"
+sidebarTitle: "Google Drive"
 description: "Connect a Google Drive folder to Graphify so your workspace and agents can search its documents alongside your code."
 surface: "cloud"
 hideFooterPagination: true
@@ -86,6 +87,17 @@ A workspace owner or admin opens the folder's options and chooses **Stop syncing
 - Adding a folder says only the person who connected the account can add folders. That person adds it, or an owner or admin chooses **Change account**.
 - The folder says **Syncing is paused. Google Drive requires a paid plan.** Open **Billing** and move the workspace to a paid plan.
 - A check says Google Drive did not respond, or the folder took too long. Leave the folder enabled. Graphify retries on its own.
+
+### Error codes
+
+| Code | Status | Fix |
+| --- | --- | --- |
+| `google_drive_paid_only` | 402 | "Google Drive is available on paid plans." Upgrade in **Billing**. |
+| `google_drive_not_connected` | 404 | Connect the Google account first. |
+| `google_drive_reconnect_required` | 409 | "Reconnect Google Drive to continue." |
+| `google_drive_connection_changed` | 409 | The Google account or its access changed. Reconnect. |
+
+When Google rate-limits Graphify, syncs back off and retry on their own, for up to 6 hours between attempts.
 
 ## Next steps
 

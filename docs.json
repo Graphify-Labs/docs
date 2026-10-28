@@ -399,7 +399,7 @@
   },
   "fonts": {
     "heading": {
-      "family": "Bricolage Grotesque",
+      "family": "Poppins",
       "source": "/fonts/bricolage-grotesque-latin.woff2",
       "format": "woff2",
       "weight": 600

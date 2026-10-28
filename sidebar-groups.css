@@ -50,8 +50,8 @@ html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
   inset: -7px 0;
 }
 
-/* Sidebar page and group icons (Lucide, 16px masks): neutral ink, not green,
-   like mem0. Active page keeps the green accent. Scoped to nav icons only. */
+/* Sidebar page and group icons (Lucide, 16px masks): neutral ink, not green.
+   Active page keeps the green accent. Scoped to nav icons only. */
 :is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header) svg {
   background-color: #3f3f46 !important;
   color: #3f3f46 !important;

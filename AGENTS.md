@@ -14,7 +14,7 @@ Follow `CONTRIBUTING.md` at the repository root. It is the source of truth; this
 - `title` in sentence case.
 - `description` as one plain sentence, with no `[Local]`/`[Cloud]`/`[Both]` prefix.
 - `surface: local | cloud | both`.
-- `icon:` on every page: a Lucide name (https://lucide.dev/icons) that fits the topic and isn't repeated within its sidebar group. No colours or `iconType`. See "Page icons" in CONTRIBUTING.md.
+- `icon:` on every page: a Lucide name (https://lucide.dev/icons) that fits the topic and isn't repeated within its sidebar group (CI fails on a repeat). No colours or `iconType`. See "Page icons" in CONTRIBUTING.md.
 
 ## Terminology
 

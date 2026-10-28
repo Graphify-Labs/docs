@@ -67,33 +67,46 @@ jobs:
           print(f"{len(redirects)} redirects OK")
           PY
 
-      - name: Every nav page has an icon
+      - name: Page icons (missing warns, duplicate in a group fails)
         run: |
           python3 - <<'PY'
-          import json, os, re
+          import json, os, re, sys
           cfg = json.load(open("docs.json"))
-          pages = []
-          def walk(n):
+          groups = []  # (label, [page paths])
+          def walk(n, label):
               if isinstance(n, dict):
+                  lab = n.get("group") or label
+                  if "tab" in n: lab = n["tab"]
+                  if "pages" in n and "group" in n:
+                      groups.append((f"{label} > {n['group']}", [p for p in n["pages"] if isinstance(p, str)]))
                   for k, v in n.items():
-                      if k in ("pages", "root"):
-                          for p in (v if isinstance(v, list) else [v]):
-                              if isinstance(p, str): pages.append(p)
-                              else: walk(p)
-                      else: walk(v)
+                      walk(v, f"{label} > {n['group']}" if "group" in n else (n.get("tab") or label))
               elif isinstance(n, list):
-                  for x in n: walk(x)
-          walk(cfg.get("navigation", {}))
-          missing = []
-          for p in pages:
+                  for x in n: walk(x, label)
+          walk(cfg.get("navigation", {}), "")
+          def icon(p):
               f = next((p + e for e in (".mdx", ".md") if os.path.exists(p + e)), None)
-              if not f: continue
+              if not f: return f, None
               m = re.match(r"---\n(.*?)\n---", open(f, encoding="utf-8").read(), re.S)
-              if not m or not re.search(r"^icon:\s*\S", m.group(1), re.M):
-                  missing.append(f)
-          for f in missing:
-              print(f"::warning file={f}::Page has no icon: in its frontmatter. See 'Page icons' in CONTRIBUTING.md.")
-          print(f"{len(pages) - len(missing)}/{len(pages)} nav pages have an icon")
+              i = m and re.search(r"^icon:\s*[\"']?([^\"'\s]+)", m.group(1), re.M)
+              return f, (i.group(1) if i else None)
+          total = missing = 0; dupes = []
+          for label, pages in groups:
+              seen = {}
+              for p in pages:
+                  f, i = icon(p)
+                  if not f: continue
+                  total += 1
+                  if not i:
+                      missing += 1
+                      print(f"::warning file={f}::Page has no icon: in its frontmatter. See 'Page icons' in CONTRIBUTING.md.")
+                  elif i in seen:
+                      dupes.append(f)
+                      print(f"::error file={f}::Icon '{i}' is already used by {seen[i]} in sidebar group '{label.strip(' >')}'. Pick another icon.")
+                  else:
+                      seen[i] = f
+          print(f"{total - missing}/{total} nav pages have an icon; {len(dupes)} duplicate icon(s) within a group")
+          sys.exit(1 if dupes else 0)
           PY
 
       - name: No description starts with a tag

@@ -1,0 +1,92 @@
+---
+title: "Find pull requests that collide before you merge"
+sidebarTitle: "Find colliding pull requests"
+description: "Find open pull requests that change the same part of your code graph, see the merge-order risk with graphify prs, and rank the review queue with a model."
+surface: "both"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Two pull requests can both pass review and still collide when they change the same part of the code. Graphify compares open pull requests against the graph of your repository and shows which ones touch the same area, so you can review and merge them with that in mind.
+
+## Before you start
+
+- An account at [app.graphify.com](https://app.graphify.com). The Free plan covers 3 indexed repositories, and you don't need a card.
+- For the local commands, the open-source CLI. See [Installation](/installation).
+- A repository with the status **Indexed**, or a local graph at `graphify-out/graph.json`.
+- For the local commands, the [GitHub CLI](https://cli.github.com) signed in to the repository. `graphify prs` reads open pull requests through it.
+
+## In Graphify
+
+On a connected repository, Graphify checks each pull request for cross-branch conflicts with the other open pull requests and gives a merge order. It does this along with the [review](/platform/reviews) of each pull request. Like the review, it is advisory and doesn't block a merge.
+
+## With the local CLI
+
+From the repository root, list the open pull requests that share a graph community:
+
+```bash
+graphify prs --conflicts
+```
+
+The output groups pull requests by community, with the number of pull requests that overlap in each. This is a merge-order *risk* signal. It does not give a merge order, and it does not promise a textual conflict or a runtime break. If no open pull requests overlap, the command says so.
+
+To have a model rank the review queue:
+
+```bash
+graphify prs --triage
+```
+
+Triage uses the first model backend it finds configured. Set `GRAPHIFY_TRIAGE_BACKEND`, and optionally `GRAPHIFY_TRIAGE_MODEL`, to choose one.
+
+| Option | Meaning |
+| --- | --- |
+| `--conflicts` | Group open pull requests that share a graph community. |
+| `--triage` | Rank the review queue with a model. |
+| `--base <branch>` | Only pull requests that target this branch. Defaults to the repository's default branch. |
+| `--repo <owner/name>` | Read pull requests from another repository. |
+| `--graph <path>` | The graph file to use. |
+| `<number>` | Show one pull request with its graph impact. |
+
+For example, on a clone of the open-source repository:
+
+```bash
+git clone https://github.com/Graphify-Labs/graphify && cd graphify
+graphify extract . --code-only
+graphify prs --conflicts --repo Graphify-Labs/graphify
+```
+
+## Read the result
+
+Pull requests in the same community change code that is closely connected in the graph. Review them together and agree an order. After each merge, rebase the others and run your tests. A pull request missing from the list can still conflict in ways the graph does not show, such as config or generated files.
+
+## If something fails
+
+| What you see | What to do |
+| --- | --- |
+| "No graph impact data" | Build or point to a graph: run `graphify extract . --code-only`, or pass `--graph`. |
+| No pull requests listed | Check `--base`. Only pull requests that target that branch are compared. |
+| An error from `gh` | Sign in with `gh auth login` and check you can see the repository. |
+| Triage can't find a backend | Set `GRAPHIFY_TRIAGE_BACKEND` and the API key for that backend. |
+
+[Pull request context](/guides/pull-requests) covers the rest of `graphify prs` and the MCP tools for pull requests.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    What Graphify checks on each pull request.
+  </Card>
+  <Card title="Check the impact of a change" icon="radar" href="/concepts/check-impact">
+    See what a change reaches before you open it.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/read-a-result" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Read a review and a verdict</span></a>
+  <a href="/platform/verification" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Formal verification</span></a>
+</div>

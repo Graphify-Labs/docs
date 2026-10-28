@@ -12,12 +12,6 @@ html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-.sidebar-group-header svg {
-  color: #118d4f;
-}
-html.dark .sidebar-group-header svg {
-  color: #4dea9c;
-}
 
 /* Mobile nav drawer (390px, 768px): 44px tap targets, tighter group rhythm. */
 #mobile-nav .sidebar-group a,
@@ -54,4 +48,23 @@ html.dark .sidebar-group-header svg {
   content: "";
   position: absolute;
   inset: -7px 0;
+}
+
+/* Sidebar page and group icons (Lucide, 16px masks): neutral ink, not green,
+   like mem0. Active page keeps the green accent. Scoped to nav icons only. */
+:is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header) svg {
+  background-color: #3f3f46 !important;
+  color: #3f3f46 !important;
+}
+html.dark :is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header) svg {
+  background-color: #d4d4d4 !important;
+  color: #d4d4d4 !important;
+}
+:is(#sidebar, #mobile-nav) .sidebar-group a:is([aria-current="page"], .active) svg {
+  background-color: #118d4f !important;
+  color: #118d4f !important;
+}
+html.dark :is(#sidebar, #mobile-nav) .sidebar-group a:is([aria-current="page"], .active) svg {
+  background-color: #4dea9c !important;
+  color: #4dea9c !important;
 }

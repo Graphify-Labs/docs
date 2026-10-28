@@ -18,10 +18,11 @@
             "icon": "rocket",
             "pages": [
               "platform/overview",
+              "platform/how-it-works",
               "platform/quickstart",
               "concepts/index-a-repository",
               "platform/console",
-              "platform/local-to-cloud"
+              "platform/graphify-vs-local"
             ]
           },
           {
@@ -549,6 +550,10 @@
     {
       "source": "/platform/support/enterprise",
       "destination": "/platform/support/pricing#enterprise"
+    },
+    {
+      "source": "/platform/local-to-cloud",
+      "destination": "/platform/graphify-vs-local"
     }
   ]
 }

@@ -1,0 +1,59 @@
+---
+title: "Graphify vs Graphify Local"
+sidebarTitle: "Graphify vs Local"
+description: "Compare Graphify, the hosted product, with Graphify Local, the open-source graphifyy package. See how each builds, updates, and serves the graph, and which features need the hosted product."
+surface: "both"
+hideFooterPagination: true
+---
+
+Graphify is the hosted product. It indexes your repositories on GitHub or GitLab and serves the graph through `https://api.graphify.com/mcp`. Graphify Local is the open-source [`graphifyy`](https://github.com/Graphify-Labs) package. It builds the graph on your machine and writes it to `graphify-out/`.
+
+Both give your assistant the same kind of code graph. They differ in where the graph is built, how it stays current, and what your team can do with it.
+
+## Which one fits
+
+<CardGroup cols={2}>
+  <Card title="Choose Graphify" icon="cloud" href="/platform/quickstart">
+    Your code is on GitHub or GitLab, and you want the graph kept current on every push, shared with your team, and used for pull request reviews.
+  </Card>
+  <Card title="Choose Graphify Local" icon="laptop" href="/open-source/quickstart">
+    The project exists only on your machine, or you want to build and keep the graph yourself with no account.
+  </Card>
+</CardGroup>
+
+## Side by side
+
+| Area | Graphify Local | Graphify |
+| --- | --- | --- |
+| **Graph build** | `/graphify .` or `graphify extract` on your machine | Indexed from the default branch on GitHub or GitLab |
+| **Updates** | `graphify update .`, `graphify watch .`, or git hooks | Each push to the default branch |
+| **Connection** | `graphify-mcp` over stdio, with a path to `graph.json` | `https://api.graphify.com/mcp` over Streamable HTTP |
+| **Sign-in** | None | OAuth in the browser, or an API token for CI |
+| **Repository** | One `graph.json` for each entry, or `project_path` | `repository_id` on each call |
+| **Tool names** | `get_node`, `get_neighbors`, and `shortest_path` with `source` and `target` | `graphify_node`, `graphify_callers`, and `shortest_path` with `src` and `tgt` |
+| **Pull requests** | `list_prs`, `get_pr_impact`, and `triage_prs` through `gh` | Automatic reviews in **Reviews** |
+| **Saved lessons** | `graphify-out/reflections/LESSONS.md` | **Memory** for each repository, shared with the workspace |
+| **Change impact** | `graphify affected "<node>"` | `graphify_impact` and `impact_and_risk` |
+| **Wiki** | `graphify export wiki` writes Markdown files | **Wiki** for each indexed repository, with search and questions |
+| **Several repositories** | `graphify merge-graphs` or `graphify global add` | **Cross-Repository** in **Graphs** |
+| **Team** | Each clone installs the skill and the hooks | **Members** in the user menu |
+
+## Only in Graphify
+
+- [Pull request reviews](/platform/reviews) against the indexed graph and the diff.
+- [Learning](/platform/learning) from `@graphify wrong`, `good`, and `suppress` replies on reviews.
+- [Formal verification](/platform/verification) of changed functions against their earlier implementation.
+- [Agent memory](/platform/memory) shared by every assistant and teammate in the workspace.
+- `graphify_tests_for` and `impact_and_risk`, which list the tests linked to a symbol and rank the files a change reaches.
+- [Contributors](/platform/contributors), when it is available in your workspace.
+
+## Switch later
+
+You can start with Graphify Local and move a repository to Graphify at any time. It is a configuration change: your application code stays as it is, and the local graph keeps working until you switch each assistant. Follow [Move from Graphify Local](/platform/support/move-from-local).
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/console" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Console tour</span></a>
+  <a href="/platform/trace" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Trace who calls this</span></a>
+</div>

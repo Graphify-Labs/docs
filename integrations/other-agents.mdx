@@ -1,12 +1,18 @@
 ---
-title: "Other Cloud agents"
-sidebarTitle: "Other Cloud agents"
-description: "Connect any MCP client to Graphify's hosted MCP server at api.graphify.com/mcp and query the repositories indexed in your workspace."
-surface: "cloud"
+title: "Graphify for other MCP clients"
+sidebarTitle: "Other MCP clients"
+description: "Connect any MCP client to Graphify over Streamable HTTP, or run the Graphify Local MCP server with a generic mcpServers entry."
+surface: "both"
 hideFooterPagination: true
 ---
-
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
+import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+
+<HostedOrLocal />
+
+<Tabs>
+<Tab title="Graphify (hosted)">
 
 The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), and [Vercel](/integrations/vercel) pages are install packages for one product. They are not the only way to use Graphify.
 
@@ -14,14 +20,14 @@ Any coding assistant or IDE that can add a remote MCP server can use the same ho
 
 The server is `https://api.graphify.com/mcp`. It uses Streamable HTTP. The first connection signs you in with OAuth. There is no API key to paste.
 
-## Copy a setup prompt
+### Copy a setup prompt
 
 The **Copy setup prompt** button on [graphify.com](https://graphify.com) copies this same text. Paste it into the assistant you want to connect. The assistant reads the current guide, keeps your existing MCP servers, and stops so you can sign in yourself.
 
 ```text
 Help me connect Graphify (https://graphify.com) to this assistant so you can answer questions using my codebase's knowledge graph.
 
-Read the current setup guide at https://docs.graphify.com/integrations/cloud first. Use the instructions for this client and preserve any existing MCP servers or configuration.
+Read the current setup guide at https://docs.graphify.com/integrations/overview first. Use the instructions for this client and preserve any existing MCP servers or configuration.
 
 For Graphify, the Streamable HTTP MCP endpoint is https://api.graphify.com/mcp. Guide me through adding Graphify and completing its OAuth sign-in. I need a Graphify account, access to a workspace, and an indexed repository; if those are missing, help me get started at https://app.graphify.com. Let me complete sign-in and authorization myself.
 
@@ -30,12 +36,12 @@ If this client cannot configure a connection directly, show me the manual steps 
 After connecting, list my available workspaces and indexed repositories, ask which repository to use, and answer one architecture question using graph evidence and source locations.
 ```
 
-## Before you start
+### Before you start
 
 - A Graphify account, access to a workspace, and a repository whose status is **Indexed**. Start at [app.graphify.com](https://app.graphify.com). See [Repositories and builds](/platform/repositories).
 - An assistant that can add an HTTP or Streamable HTTP MCP server.
 
-## Add the server
+### 1. Add the server
 
 Name the server `graphify` and set the URL to `https://api.graphify.com/mcp`. Leave every other MCP server in place.
 
@@ -49,13 +55,13 @@ Use the dedicated page when the client already has one:
 - [Graphify MCP for OpenClaw](/integrations/openclaw)
 - [Graphify MCP for Vercel](/integrations/vercel)
 
-## Sign in
+### 2. Sign in
 
 Start the server. Your browser opens so you can sign in to Graphify and grant access. Choose the workspace that holds the repository you want to query. Complete that sign-in yourself.
 
 The connection is working when the assistant lists Graphify's tools. Until then, it is not connected.
 
-## Ask a question
+### 3. Ask a question
 
 Ask the assistant to list your workspaces and indexed repositories, then name the repository to use. Ask one question about how the code is structured.
 
@@ -63,11 +69,7 @@ Answers are graph evidence from the files Graphify indexed, with source location
 
 Some tools can save repository memory or change the selected workspace. Approve a tool only when that is what you meant.
 
-## A graph on your machine
-
-This page uses the hosted server. To query a graph file on your computer, follow [Local MCP server](/open-source/mcp-server). The local skill for assistants without their own page is [Other local assistants](/integrations/other-assistants).
-
-## If something fails
+### Troubleshooting
 
 | What you see | What to do |
 | --- | --- |
@@ -76,7 +78,48 @@ This page uses the hosted server. To query a graph file on your computer, follow
 | The tools are the ten local ones | That connection reads a graph on your machine. This page uses the hosted server. See the [MCP tool reference](/open-source/features/mcp-tools). |
 | The same tools appear twice | A dedicated plugin and a manual server are both configured. Keep one. |
 
-## Next steps
+</Tab>
+<Tab title="Graphify Local">
+
+### 1. Install and register
+
+Install the package once, then select your platform:
+
+```bash
+uv tool install graphifyy
+graphify install --platform opencode
+```
+
+| Assistant | Platform value |
+| --- | --- |
+| OpenCode | `opencode` |
+| Kilo Code | `kilo` |
+| CodeBuddy | `codebuddy` |
+| Aider | `aider` |
+| Amp | `amp` |
+| OpenClaw | `claw` |
+| Factory Droid | `droid` |
+| Trae | `trae` |
+| Trae CN | `trae-cn` |
+| Hermes | `hermes` |
+| Kiro | `kiro` |
+| Pi | `pi` |
+| Devin CLI | `devin` |
+| Google Antigravity | `antigravity` |
+| Shared agent skill convention | `agents` |
+
+Some integrations use skills plus instructions; others also install native rules or hooks. Review the files reported by the installer. Use the assistant’s skill picker or ask it directly to use Graphify if it has no slash-command UI.
+
+The OpenClaw row installs the local skill. To query repositories indexed in Graphify, use [Graphify MCP for OpenClaw](/integrations/openclaw).
+
+### Use any MCP client
+
+An assistant does not need a dedicated skill installer to read an existing graph. If it supports MCP, connect the [Graphify MCP server](/open-source/mcp-server). Build the graph separately with the CLI or a supported assistant.
+
+</Tab>
+</Tabs>
+
+## Related
 
 <HostedMcpCard />
 
@@ -92,6 +135,6 @@ This page uses the hosted server. To query a graph file on your computer, follow
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/integrations/vercel" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify MCP for Vercel</span></a>
-  <a href="/integrations/overview" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Choose your coding assistant</span></a>
+  <a href="/integrations/hermes" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Hermes</span></a>
+  <a href="/integrations/github" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">GitHub</span></a>
 </div>

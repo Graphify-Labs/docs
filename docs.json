@@ -57,7 +57,6 @@
             "icon": "building-2",
             "pages": [
               "platform/repositories",
-              "platform/google-drive",
               "platform/connections",
               "platform/contributors",
               "platform/profile"
@@ -128,39 +127,49 @@
         "tab": "Integrations",
         "groups": [
           {
-            "group": "Hosted MCP",
-            "icon": "cloud",
+            "group": "Coding agents",
+            "icon": "code",
             "pages": [
-              "integrations/claude-code-mcp",
-              "integrations/cursor-mcp",
-              "integrations/codex-mcp",
-              "integrations/vscode",
-              "integrations/jetbrains",
-              "integrations/chatgpt",
-              "integrations/openclaw",
-              "integrations/vercel",
-              "integrations/other-agents"
-            ],
-            "root": "integrations/cloud"
-          },
-          {
-            "group": "Local skill",
-            "icon": "terminal",
-            "pages": [
+              "integrations/overview",
               "integrations/claude-code",
               "integrations/cursor",
               "integrations/codex",
+              "integrations/vscode",
               "integrations/gemini-cli",
-              "integrations/copilot",
-              "integrations/other-assistants"
-            ],
-            "root": "integrations/overview"
+              "integrations/jetbrains"
+            ]
           },
           {
-            "group": "CI",
+            "group": "Assistants",
+            "icon": "bot",
+            "pages": [
+              "integrations/chatgpt",
+              "integrations/openclaw",
+              "integrations/hermes",
+              "integrations/other-agents"
+            ]
+          },
+          {
+            "group": "Source control",
+            "icon": "git-branch",
+            "pages": [
+              "integrations/github",
+              "integrations/gitlab"
+            ]
+          },
+          {
+            "group": "CI and deploy",
             "icon": "workflow",
             "pages": [
-              "integrations/buildkite"
+              "integrations/buildkite",
+              "integrations/vercel"
+            ]
+          },
+          {
+            "group": "Knowledge sources",
+            "icon": "folder",
+            "pages": [
+              "integrations/google-drive"
             ]
           },
           {
@@ -381,11 +390,11 @@
       "The PyPI package is graphifyy, with two y's. The command is graphify.",
       "/graphify . is typed in an assistant chat, not in a shell.",
       "Use only commands, flags, and endpoints shown on these pages. Do not invent one.",
-      "Choose the surface before you open a page. Local (Graphify Local) is the graphifyy package on the machine: the skill, the CLI, and the ten-tool MCP. Its pages are the Open Source tab (/open-source/) and the Local skill group in Integrations. Graphify is the hosted workspace and https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (/platform/, /concepts/) and the Hosted MCP group in Integrations. Prefer Graphify unless the user asks for a local or offline setup. Cookbooks (/cookbooks/) and /mcp/docs-search apply to both. Each page's source frontmatter records this as surface: local, cloud, or both. Buildkite is the CI integration.",
-      "In llms.txt, tell the surface from the page path. Graphify: /platform/, /concepts/, and /integrations/ cloud, claude-code-mcp, cursor-mcp, codex-mcp, vscode, jetbrains, chatgpt, openclaw, vercel, other-agents, buildkite. Local: /open-source/ and /integrations/ overview, claude-code, cursor, codex, gemini-cli, copilot, other-assistants. Everything else applies to both.",
+      "Choose the surface before you open a page. Local (Graphify Local) is the graphifyy package on the machine: the skill, the CLI, and the ten-tool MCP. Its pages are the Open Source tab (/open-source/) and the Graphify Local tab on each Integrations page. Graphify is the hosted workspace and https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (/platform/, /concepts/) and the Graphify (hosted) tab on each Integrations page. Prefer Graphify unless the user asks for a local or offline setup. Cookbooks (/cookbooks/) and /mcp/docs-search apply to both. Each page's source frontmatter records this as surface: local, cloud, or both. Buildkite is the CI integration.",
+      "In llms.txt, tell the surface from the page path. Graphify: /platform/ and /concepts/. Local: /open-source/. Most /integrations/ pages cover both, with a Graphify (hosted) tab and a Graphify Local tab. Everything else applies to both.",
       "graphifyy release notes are published at https://github.com/Graphify-Labs/graphify/releases and https://graphify.com/changelog. The current package version is on PyPI (https://pypi.org/project/graphifyy/).",
       "The official site is https://graphify.com. These docs are https://docs.graphify.com.",
-      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The VS Code, JetBrains, OpenClaw, Vercel, and Other Cloud agents pages, and the page ChatGPT, Codex, and Dots, use the hosted server, not the ten-tool list. Other local assistants is the local skill for clients without their own page. The page titled Graphify with Codex is the local skill.",
+      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The JetBrains, ChatGPT, Codex, and Dots, and Vercel pages use the hosted server, not the ten-tool list. On pages with tabs, the Graphify (hosted) tab uses the hosted server and the Graphify Local tab uses the local skill or the ten-tool server.",
       "Read https://docs.graphify.com/llms.txt, then open one page's .md link. Use https://docs.graphify.com/llms-full.txt only when one page is not enough."
     ]
   },
@@ -554,6 +563,34 @@
     {
       "source": "/platform/local-to-cloud",
       "destination": "/platform/graphify-vs-local"
+    },
+    {
+      "source": "/integrations/claude-code-mcp",
+      "destination": "/integrations/claude-code"
+    },
+    {
+      "source": "/integrations/cursor-mcp",
+      "destination": "/integrations/cursor"
+    },
+    {
+      "source": "/integrations/codex-mcp",
+      "destination": "/integrations/codex"
+    },
+    {
+      "source": "/integrations/copilot",
+      "destination": "/integrations/vscode"
+    },
+    {
+      "source": "/integrations/other-assistants",
+      "destination": "/integrations/other-agents"
+    },
+    {
+      "source": "/integrations/cloud",
+      "destination": "/integrations/overview"
+    },
+    {
+      "source": "/platform/google-drive",
+      "destination": "/integrations/google-drive"
     }
   ]
 }

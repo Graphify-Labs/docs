@@ -18,3 +18,39 @@ html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
 html.dark .sidebar-group-header svg {
   color: #4dea9c;
 }
+
+/* Mobile nav drawer (390px, 768px): 44px tap targets, tighter group rhythm. */
+#mobile-nav .sidebar-group a,
+#mobile-nav #navigation-items li > a {
+  min-height: 44px;
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+#mobile-nav .sidebar-group-header {
+  min-height: 32px;
+  align-items: center;
+}
+#mobile-nav div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+#mobile-nav a.nav-anchor {
+  min-height: 44px;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+#mobile-nav button[aria-haspopup],
+#mobile-nav button[aria-label*="lose" i] {
+  min-height: 44px;
+  min-width: 44px;
+}
+/* Theme switch: grow the hit area to 44px tall without changing the pill. */
+#mobile-nav button[aria-label^="Switch to"] {
+  position: relative;
+}
+#mobile-nav button[aria-label^="Switch to"]::after {
+  content: "";
+  position: absolute;
+  inset: -7px 0;
+}

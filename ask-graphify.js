@@ -38,9 +38,13 @@
   launcherLabel.className = "graphify-ask-label";
   launcherLabel.textContent = "Ask Graphify";
   launcher.append(logoAvatar(), launcherLabel);
+  launcher.setAttribute("aria-haspopup", "dialog");
+  launcher.setAttribute("aria-expanded", "false");
+  launcher.setAttribute("aria-controls", "graphify-ask-panel");
 
   const panel = document.createElement("section");
   panel.className = "graphify-ask-panel";
+  panel.id = "graphify-ask-panel";
   panel.hidden = true;
   panel.setAttribute("role", "dialog");
   panel.setAttribute("aria-modal", "false");
@@ -146,16 +150,27 @@
     return card;
   }
 
+  // Tell the page where the bottom-right overlays start, so the
+  // "On this page" list can stop above them (see ask-graphify.css).
+  function reserveOverlay(top) {
+    const rootStyle = document.documentElement.style;
+    if (top == null) rootStyle.removeProperty("--graphify-overlay-top");
+    else rootStyle.setProperty("--graphify-overlay-top", Math.round(top) + "px");
+  }
+
   function placeLauncher() {
     const card = communityCard();
     if (!card) {
       launcher.style.transform = "";
+      reserveOverlay(null);
       return;
     }
     const top = card.getBoundingClientRect().top;
     const rest = parseFloat(getComputedStyle(launcher).bottom) || 0;
     const lift = window.innerHeight - top + LIFT_GAP - rest;
     launcher.style.transform = lift > 1 ? "translateY(" + Math.round(-lift) + "px)" : "";
+    const launcherTop = launcher.hidden ? top : top - LIFT_GAP - launcher.offsetHeight;
+    reserveOverlay(Math.min(top, launcherTop));
   }
 
   function scheduleLift() {
@@ -1046,6 +1061,8 @@
     lastFocus = document.activeElement;
     panel.hidden = false;
     launcher.hidden = true;
+    launcher.setAttribute("aria-expanded", "true");
+    hidePick();
     requestAnimationFrame(() => panel.classList.add("is-open"));
     if (mode !== "min") input.focus();
   }
@@ -1055,6 +1072,7 @@
     panel.classList.remove("is-open");
     panel.hidden = true;
     launcher.hidden = false;
+    launcher.setAttribute("aria-expanded", "false");
     if (inflight) inflight.abort();
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   }
@@ -1075,6 +1093,8 @@
   const pickKeys = document.createElement("span");
   pickKeys.className = "graphify-ask-pick-keys";
   pickKeys.textContent = apple ? "⌘I" : "Ctrl+I";
+  pick.setAttribute("aria-label", "Ask Graphify about the selected text");
+  pick.setAttribute("aria-keyshortcuts", apple ? "Meta+I" : "Control+I");
   pick.append(pickIcon, pickLabel);
   if (!coarse) pick.append(pickKeys);
   root.append(pick);
@@ -1186,6 +1206,10 @@
   fullButton.addEventListener("click", () => setMode(mode === "full" ? "dock" : "full"));
   minButton.addEventListener("click", () => setMode(mode === "min" ? restoreMode : "min"));
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !pick.hidden) {
+      hidePick();
+      return;
+    }
     if (event.key !== "Escape" || panel.hidden) return;
     if (mode === "full" || mode === "min") {
       setMode("dock");

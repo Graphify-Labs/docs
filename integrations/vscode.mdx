@@ -6,6 +6,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import { InstallButton } from '/snippets/install-button.mdx';
+
 import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
 <HostedOrLocal />
@@ -16,6 +18,10 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 The **Graphify MCP** extension registers Graphify's hosted MCP server in VS Code. Your agent can then search the repositories you have indexed in [Graphify](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
 
 VS Code handles the sign-in, the server trust prompt, and every tool approval. There is no API key to paste and no local process to run.
+
+<InstallButton href="https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp" label="Install in VS Code">
+One click: install the official **Graphify MCP** extension by Graphify Labs from the Visual Studio Marketplace. VS Code handles the sign-in.
+</InstallButton>
 
 ### Before you start
 
@@ -30,6 +36,8 @@ VS Code handles the sign-in, the server trust prompt, and every tool approval. T
 Install [Graphify MCP](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp) from the Visual Studio Marketplace, or search for **Graphify MCP** by **Graphify Labs** in the Extensions view.
 
 The extension registers `https://api.graphify.com/mcp` over Streamable HTTP. It does not read or upload your local files, and it stores no credentials of its own.
+
+#### Manual setup
 
 **Add the endpoint by hand**
 

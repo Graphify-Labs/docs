@@ -6,6 +6,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import { InstallButton } from '/snippets/install-button.mdx';
+
 import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
 <HostedOrLocal />
@@ -17,13 +19,22 @@ Connect Codex to Graphify's hosted MCP server at `https://api.graphify.com/mcp`.
 
 The server uses Streamable HTTP and OAuth. You sign in once in the browser, so there is no API key to paste and no local process to run.
 
+<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Install in Codex">
+One click: install the official **Graphify** plugin by Graphify Labs from the OpenAI plugin directory, then select **Connect** and sign in. The same install works in ChatGPT.
+</InstallButton>
+
 ### Before you start
 
 - A Graphify account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
-### 1. Add the server
+### 1. Install the plugin
 
+Open the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) and select **Install plugin**, or open `/plugins` in Codex CLI and search for **Graphify**. Connect your Graphify account and finish the browser sign-in. The same plugin works in ChatGPT; see [ChatGPT, Codex, and Dots](/integrations/chatgpt).
+
+#### Manual setup
+
+Prefer to keep the setup in your own config? Add the server by hand instead.
 
 **Terminal**
 
@@ -45,10 +56,6 @@ auth = "oauth"
 ```
 
 Then run `codex mcp login graphify` to sign in.
-
-**Graphify plugin**
-
-Open the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) and select **Install plugin**, or open `/plugins` in Codex CLI and search for **Graphify**. Connect your Graphify account and finish the browser sign-in. The same plugin works in ChatGPT; see [ChatGPT, Codex, and Dots](/integrations/chatgpt).
 
 Use one path. Two connections show every Graphify tool twice.
 

@@ -104,7 +104,7 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Graphify Cloud",
+            "group": "Graphify",
             "pages": [
               "guides/cloud-coding-agents"
             ]
@@ -296,7 +296,7 @@
         "header": "Product",
         "items": [
           {
-            "label": "Graphify Cloud",
+            "label": "Graphify",
             "href": "https://app.graphify.com"
           },
           {

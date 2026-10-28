@@ -1,0 +1,121 @@
+---
+title: "Connect Codex to Graphify's MCP server"
+sidebarTitle: "Codex"
+description: "Connect OpenAI Codex to Graphify's hosted MCP server with codex mcp add and codex mcp login, or the Graphify plugin, then query your indexed repositories."
+keywords: ["Codex MCP", "codex mcp add", "Codex config.toml MCP", "remote MCP server", "code knowledge graph"]
+surface: "cloud"
+hideFooterPagination: true
+---
+
+Connect Codex to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Codex can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
+
+The server uses Streamable HTTP and OAuth. You sign in once in the browser, so there is no API key to paste and no local process to run.
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com). The Free plan covers up to 3 indexed repositories, and no card is required.
+- At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
+
+## 1. Add the server
+
+<Tabs>
+  <Tab title="Terminal">
+    ```bash
+    codex mcp add graphify --url https://api.graphify.com/mcp
+    codex mcp login graphify
+    ```
+
+    The second command opens the browser sign-in. Without it the connection is unauthenticated and Graphify rejects it.
+  </Tab>
+  <Tab title="config.toml">
+    Add this to `~/.codex/config.toml` for your user, or to `.codex/config.toml` for one project:
+
+    ```toml ~/.codex/config.toml
+    [mcp_servers.graphify]
+    url = "https://api.graphify.com/mcp"
+    auth = "oauth"
+    ```
+
+    Then run `codex mcp login graphify` to sign in.
+  </Tab>
+  <Tab title="Graphify plugin">
+    Open the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) and select **Install plugin**, or open `/plugins` in Codex CLI and search for **Graphify**. Connect your Graphify account and finish the browser sign-in. The same plugin works in ChatGPT; see [ChatGPT, Codex, and Dots](/integrations/chatgpt).
+  </Tab>
+</Tabs>
+
+Use one path. Two connections show every Graphify tool twice.
+
+## 2. Check the connection
+
+Open a new Codex session and run `/mcp` to check that `graphify` is available. Then paste:
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+```
+
+This is the same test prompt the console shows on **Connectors → MCP → Try a query**. Check that the list matches the workspace you chose when you signed in.
+
+### Optional: set a default repository
+
+Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
+
+## Ask your first question
+
+Pick a repository from the list and name the symbol, file, or area you care about:
+
+- `Who calls the function that validates a session token?`
+- `What would break if I changed this module's public interface?`
+- `Summarize how requests reach the billing service.`
+
+Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| Graphify rejects the connection | You added the server but did not sign in. Run `codex mcp login graphify`. |
+| `graphify` is missing from `/mcp` | Start a new Codex session after adding it, and check the `[mcp_servers.graphify]` entry in `config.toml`. |
+| The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
+| Every Graphify tool appears twice | You have both the plugin and a manual server entry. Remove one. |
+
+## FAQ
+
+### Do I need an API key to connect Codex to Graphify?
+
+No. Codex signs in with OAuth in your browser the first time it connects. There is no key to paste or store.
+
+### Does Graphify read my local files from Codex?
+
+No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine instead, use the open-source package and its local skill.
+
+### Is the Graphify MCP server free?
+
+Yes, on the Free plan, which covers up to 3 indexed repositories with no card required. See [Plans and pricing](/pricing/overview) for Pro and Teams.
+
+### Should I use the plugin or codex mcp add?
+
+Either works and both sign in with OAuth. The plugin is the quickest path. `codex mcp add` keeps the setup in your own `config.toml`.
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Graphify with Codex (local skill)" icon="terminal" href="/integrations/codex">
+    Build the graph on your machine with the open-source local skill instead.
+  </Card>
+  <Card title="How Graphify builds a code knowledge graph" icon="share-2" href="/concepts/architecture">
+    What the graph contains and where its relationships come from.
+  </Card>
+  <Card title="Edges and provenance" icon="git-branch" href="/concepts/provenance">
+    Read what an answer's relationships claim and how certain they are.
+  </Card>
+  <Card title="Code with an agent" icon="bot" href="/guides/cloud-coding-agents">
+    Set up any agent from the console's Connectors → MCP wizard.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/integrations/cursor-mcp" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Connect Cursor to Graphify's MCP server</span></a>
+  <a href="/integrations/vscode" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Connect VS Code to Graphify's MCP server</span></a>
+</div>

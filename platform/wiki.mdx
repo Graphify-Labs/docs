@@ -55,6 +55,31 @@ Select **Ask the wiki** (or **Ask about this project**) and type what you'd like
 
 For a very large graph, the wiki covers only its largest areas, and some cross-links may not resolve. If a wiki is **too large to load**, contact support to raise its size limit.
 
+## Keyboard shortcuts
+
+| Key | Action |
+| --- | --- |
+| <kbd>R</kbd> | Hide the sidebars and read full screen |
+| <kbd>Esc</kbd> | Exit reading mode |
+| <kbd>]</kbd> or <kbd>J</kbd> | Next page |
+| <kbd>[</kbd> or <kbd>K</kbd> | Previous page |
+
+Each page lists its **Relevant source files** and **Key components**. Use **Open the source** to see the code, or **Show in graph** to find it in [Graph explorer](/platform/graphs). When the wiki is **Behind the latest commit**, it shows **Updating to the latest commit** while a new build runs.
+
+## Starter questions
+
+**Ask about this project** opens a panel with starter questions. You don't need code terms:
+
+- "What does this project do? Explain it in plain language."
+- "What are the main parts of this project, and how do they work together?"
+- "Where does a request or user action start in this project?"
+
+Answers use the indexed code and say when evidence is missing.
+
+## Wikis for Google Drive folders
+
+A synced [Google Drive](/platform/connectors) folder gets a wiki too, built from its documents. Its states read **Sync in progress**, **Folder not synced** and **Folder sync failed**, instead of the repository states. **Google Drive syncing requires a paid plan.**
+
 ## Verify and troubleshoot
 
 | Message | What to do |
@@ -64,6 +89,10 @@ For a very large graph, the wiki covers only its largest areas, and some cross-l
 | **Wiki temporarily unavailable** | Try again in a moment. |
 | **Wiki is locked** | Update your subscription to restore wiki access. |
 | **Wiki is too large to load** | Contact support to raise the size limit. |
+| **Indexing paused** | Select **Resume indexing**. |
+| **Repository indexing failed** | The last index didn't finish. Index the repository again. |
+| **Google Drive needs reconnecting** | Select **Reconnect Google Drive**, then sync the folder. |
+| **This is a large graph. The wiki only covers its largest areas.** | Expected for very large repositories. Some cross-links may not resolve. |
 
 <AccordionGroup>
   <Accordion title="How current is the wiki?">
@@ -71,6 +100,9 @@ For a very large graph, the wiki covers only its largest areas, and some cross-l
   </Accordion>
   <Accordion title="Can I generate a wiki locally?">
     Yes. Graphify Local can export a Markdown wiki with `graphify export wiki`. See [Exports](/open-source/features/exports).
+  </Accordion>
+  <Accordion title="What do Verified, Inferred and Needs review mean?">
+    Verified means read directly from the code. Inferred means worked out by analysis. Needs review means a low-confidence guess, so check the source.
   </Accordion>
 </AccordionGroup>
 

@@ -57,6 +57,64 @@ Some integrations, such as a CI pipeline, authenticate with a workspace token in
 Never commit a token to a repository or paste it into a chat. Store it as a CI secret.
 </Warning>
 
+## Connect a code provider
+
+The top of **Integrations** lists your code providers:
+
+| Provider | Tile text | What it does |
+| --- | --- | --- |
+| GitHub | Sync repositories and pull requests. | Installs the Graphify GitHub App. After that, **Manage installation on GitHub** chooses which repositories Graphify can see. |
+| GitLab | Sync repositories and merge requests. | Connects your gitlab.com account. Self-managed GitLab isn't supported. |
+
+Once a provider is connected, its tile shows **Connected** and the button changes to **Manage**. Graphify clones the repositories you grant, indexes them, gets review events, and posts results back.
+
+## Connect Google Drive
+
+<Steps>
+  <Step title="Open the Google Drive tile">
+    In **Integrations**, find **Google Workspace · Google Drive** ("Search documents from Google Drive.") and select **Connect Google Drive**.
+  </Step>
+  <Step title="Sign in with Google">
+    Select **Continue to Google**. Access is read-only: Graphify never edits your files.
+  </Step>
+  <Step title="Choose a folder">
+    Select **Choose a Drive folder**, then **Add this folder**. Its documents become searchable in Graphify, and the tile shows **Connected · Syncs automatically**.
+  </Step>
+</Steps>
+
+Supported files: Google Docs, Sheets and Slides, plus PDF, Word, Excel, PowerPoint, CSV, Markdown, text and image files. Files that can't be read are listed in the folder details. Adding folders needs a paid plan, and only an owner or admin can connect Drive.
+
+If you switch to a different Google account, the folders from the old account stop syncing and you need to add them again.
+
+## Connect Vercel
+
+The Vercel integration connects an existing Graphify workspace to your Vercel projects. Your plan, usage and billing stay with Graphify.
+
+<Steps>
+  <Step title="Install from Vercel">
+    Add the Graphify integration in Vercel. You're sent to **Connect your codebase context**.
+  </Step>
+  <Step title="Choose your Graphify workspace">
+    Pick a workspace where you're an owner or admin. If you don't have one, select **Create a workspace**.
+  </Step>
+  <Step title="Choose projects to connect">
+    Select the projects. Production deployments receive the connection. Turn on **Also allow preview deployments** only for projects whose preview code you trust.
+  </Step>
+</Steps>
+
+Each connected project gets two environment variables:
+
+| Variable | Value |
+| --- | --- |
+| `GRAPHIFY_MCP_URL` | The hosted Graphify MCP endpoint for this project. |
+| `GRAPHIFY_MCP_TOKEN` | A project token. Send it as a Bearer token from server-side code only. |
+
+Disconnecting a project revokes its token right away. Removing the integration in Vercel revokes all of its project tokens.
+
+## Coming soon
+
+Microsoft Workspace, Confluence and Linear show as **Coming soon**. Jira, Sentry, Slack and Buildkite (Test Impact) also show **Coming soon** until they're turned on for your workspace.
+
 ## Verify and troubleshoot
 
 | Symptom | Fix |
@@ -65,6 +123,11 @@ Never commit a token to a repository or paste it into a chat. Store it as a CI s
 | You can't create a token | Ask your team owner or an admin. |
 | Repositories missing after connecting GitHub | Use **Manage installation on GitHub** to grant the repositories. |
 | A draft fix can't be opened | Grant GitHub write access, then select **I've granted access. Re-check**. |
+| **Google access expired. Reconnect to keep folders in sync.** | Select **Reconnect Google Drive**. Existing graphs stay available. |
+| **Add Google Drive folders with a paid plan.** | Folders need a paid plan. Check **Billing**. |
+| **No admin workspaces are available.** (Vercel) | You need to be an owner or admin of a workspace. Create one or ask to be made admin. |
+| **No projects are available.** (Vercel) | Update the integration's project access in Vercel, then reopen **Configure**. |
+| **Access revoked. Vercel variable cleanup is pending** | Retry cleanup, or remove the Graphify variables in Vercel by hand. |
 
 <AccordionGroup>
   <Accordion title="Where is Google Drive set up?">
@@ -72,6 +135,12 @@ Never commit a token to a repository or paste it into a chat. Store it as a CI s
   </Accordion>
   <Accordion title="Where do I manage connected repositories?">
     In **Repositories**. See [Repositories](/platform/repositories).
+  </Accordion>
+  <Accordion title="Does GitLab self-managed work?">
+    Not yet. Only gitlab.com is supported.
+  </Accordion>
+  <Accordion title="Can Graphify change my Drive files?">
+    No. Drive access is read-only.
   </Accordion>
 </AccordionGroup>
 

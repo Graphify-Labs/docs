@@ -63,6 +63,40 @@ A remembered fact and an extracted code relationship are different kinds of evid
 
 Your agent can keep its own preferences and session notes. Graphify adds shared knowledge tied to your repositories that other agents and teammates in the workspace can inspect. Graphify doesn't sync with or replace another memory store.
 
+## Add a memory
+
+<Steps>
+  <Step title="Write it">
+    Write one fact your team should keep. For example: *Retry failed card charges at most three times, and never retry hard declines.*
+  </Step>
+  <Step title="Give it a topic">
+    Add a short topic, such as *Payment retry policy*, so related memories stay together. Graphify suggests one from your text, and you can change it.
+  </Step>
+  <Step title="Save">
+    Select **Save and keep**. The Console shows **Kept. Graphify is processing it.** Memories are attributed to you. Your GitHub files aren't changed.
+  </Step>
+</Steps>
+
+## Suggestions and kept memories
+
+Graphify also picks up memories from recent conversations and from AI agents. These start as suggestions. Ask only uses a suggestion after someone keeps it. Connected agents may already see it, marked as unverified.
+
+| Label | Meaning |
+| --- | --- |
+| **Added automatically, not reviewed** | An agent or recent activity added it, and nobody has reviewed it. |
+| **Saved by an AI agent** | A connected agent saved it. |
+| **From a conversation** | It came from an Ask or agent conversation. |
+
+Keep a suggestion as it is, edit it and keep it, or discard it. If the code a memory refers to changes after it was saved, the memory is flagged: "The code this refers to changed after it was saved. Check that it is still true." When two current versions disagree, Ask and agents use neither until you edit one to say which is right.
+
+## Remove and restore
+
+Removing a memory means Ask and agents stop using it. Its history is kept, and you can restore it.
+
+## Ask what your team knows
+
+Search memory with plain words to find saved decisions, incidents and lessons. Turn on **Only linked to code** to see only memories anchored to code, or turn on **Include suggestions not yet kept** or **Include what was said in conversations** to search more widely. Ask answers each question on its own, so name what you mean in follow-ups.
+
 ## Verify and troubleshoot
 
 | Symptom | Fix |
@@ -70,6 +104,10 @@ Your agent can keep its own preferences and session notes. Graphify adds shared 
 | Memory is empty | Select **Connect an agent** and connect one over MCP. |
 | **Source turns are unavailable** | The original conversation turns can't be loaded. The fact and its anchor remain. |
 | Many facts ungrounded | Expected for process decisions. For code facts, check the code still exists. |
+| **No saved memories match that.** | Try fewer words, or include suggestions in the options. |
+| **Memories will be available once indexing finishes.** | Wait for the repository to finish indexing. |
+| **Indexing failed, so answers may be incomplete.** | Re-index the repository from **Repositories**. |
+| **Ask isn't available right now.** | Memory still lists saved memories that match your question. Try Ask again later. |
 
 <AccordionGroup>
   <Accordion title="Who can see memories?">
@@ -77,6 +115,9 @@ Your agent can keep its own preferences and session notes. Graphify adds shared 
   </Accordion>
   <Accordion title="Is there a local equivalent?">
     Graphify Local keeps work memory in your repository. See [Work memory](/open-source/features/work-memory).
+  </Accordion>
+  <Accordion title="Does saving a memory change my repository?">
+    No. Memories are stored in Graphify and attributed to you. Your GitHub files aren't changed.
   </Accordion>
 </AccordionGroup>
 

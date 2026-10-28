@@ -54,12 +54,39 @@ When some checks didn't finish, the finding says **Some checks incomplete**.
     **Ask about this finding** opens a conversation grounded in the same graph.
   </Tab>
   <Tab title="Decide as a team">
-    Record a **Team decision**, such as **Intentional behavior** or **Finding appears incorrect**, and select **Save team decision**.
+    Set a **Team decision** (**Open**, **Acknowledged**, **Fix proposed** or **Dismissed**), write a **Reason**, and select **Save team decision**.
   </Tab>
   <Tab title="Hide it">
     **Hide or give feedback** hides the finding for you, with a reason and optional feedback. Turn on **Include findings I hid** to see them again.
   </Tab>
 </Tabs>
+
+## Filters and what they mean
+
+| Filter | Options |
+| --- | --- |
+| Show | **Current findings**, **Earlier analysis**, **Hidden by me** |
+| Sort | **Newest first**, **Oldest first**, **Highest priority (PRs)** |
+| Category | **All review findings**, **Bugs**, **Improvements** |
+| Evidence | **Any evidence**, **Not yet verified**, **Supported by code**, **Confirmed by test** |
+| Priority | **Any priority**, **P0 · Critical**, **P1 · High**, **P2 · Medium**, **P3 · Low** |
+
+Searches match a finding's title or file path, up to 200 characters. Use **Clear filters** or **Reset filters** to start over. Findings load a page at a time. Select **More repository findings** or **Next PR findings** to load the next page.
+
+The evidence levels go from weakest to strongest. **Not yet verified** is a claim nobody has checked yet. **Supported by code** means the code backs it up. **Confirmed by test** means a test reproduced it.
+
+## Team decisions and hiding
+
+These do different things:
+
+| | Team decision | Hide this finding |
+| --- | --- | --- |
+| Who sees it | Everyone in the workspace | Only you (**Personal visibility**) |
+| Choices | **Open**, **Acknowledged**, **Fix proposed**, **Dismissed** | **Not useful**, **Intentional behavior**, **Finding appears incorrect** |
+| Reason | Required, up to 1,000 characters | Choose one |
+| Effect on evidence | None. "A team decision does not verify a fix or change the recorded evidence." | None |
+
+After you save, the Console shows **Team decision saved. Verification is unchanged.** After you hide a finding, it shows **Hidden for you. You can undo this below.**
 
 ## Verify and troubleshoot
 
@@ -68,6 +95,9 @@ When some checks didn't finish, the finding says **Some checks incomplete**.
 | **Couldn't refresh. Showing saved results.** | The latest analysis is unavailable. Saved findings stay. Try again later. |
 | **Code findings are not available for this workspace.** | Insights isn't turned on for this workspace. |
 | No PR findings | The repository has no reviewed pull requests yet. |
+| **Could not save the team decision. Refresh and retry.** | Reload the page and save again. |
+| **This report is unavailable. It may no longer be accessible to your workspace.** | The repository was removed or you lost access to it. |
+| **PR findings are not available on this deployment yet.** | Use **Repository findings** instead. |
 
 <AccordionGroup>
   <Accordion title="Do findings block merges?">
@@ -75,6 +105,9 @@ When some checks didn't finish, the finding says **Some checks incomplete**.
   </Accordion>
   <Accordion title="Does hiding a finding hide it for the team?">
     Hiding is personal. A team decision is shared.
+  </Accordion>
+  <Accordion title="Does Dismissed mean the finding was wrong?">
+    No. It records the team's decision and reason. The evidence level stays as it was.
   </Accordion>
 </AccordionGroup>
 

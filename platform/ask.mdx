@@ -70,6 +70,35 @@ Ask reads the URL, so you can share a question or open a mode directly:
 - Ask about one relationship at a time.
 - Check the repository finished indexing. If Ask says it **isn't connected to your code yet**, the repository has no graph.
 
+## An example answer
+
+The Console's demo preview uses a sample graph to show what an answer looks like. Asked "where is retry handled?", it answers:
+
+> Retry is handled in the workers module. retry_with_backoff in workers/dispatch.py is the shared helper: dispatch_job calls it directly, an extracted relationship, and billing's retry_charge (billing/invoices.py) appears to reach it as well, though that edge is inferred from usage rather than parsed.
+
+The answer cites each node with its file and confidence tag:
+
+| Node | File | Confidence |
+| --- | --- | --- |
+| `retry_with_backoff` | `workers/dispatch.py` | extracted |
+| `dispatch_job` | `workers/dispatch.py` | extracted |
+| `retry_charge` | `billing/invoices.py` | extracted |
+| `requeue_stale` | `workers/queue.py` | inferred |
+
+**Traced through** lists each step, such as `dispatch_job` → calls → `retry_with_backoff`. When a step is inferred, the answer says so, for example "treat it as probably right, not proven." The demo data is a sample graph, not your code.
+
+## Ask from anywhere
+
+You don't have to open the Ask page. The Ask bar in the Console reads **Deep research your codebase...**. Select it, or press <kbd>⌘</kbd>+<kbd>I</kbd> on macOS or <kbd>Ctrl</kbd>+<kbd>I</kbd> on Windows and Linux, to ask without leaving the page you're on.
+
+When the box is empty, Ask may show up to four questions under **Suggested from your repository**. They're drawn from that repository. Select one to ask it.
+
+## Limits
+
+- Each question goes to one repository. To compare repositories, ask each one, or use a [combined graph](/platform/graphs).
+- Your workspace has a per-minute limit on Ask requests. If you hit it, wait a minute and ask again.
+- Ask needs an active plan. New accounts get a 14-day Pro trial, then move to Free (3 repositories, no card required).
+
 ## Verify and troubleshoot
 
 | Symptom | Fix |
@@ -77,6 +106,8 @@ Ask reads the URL, so you can share a question or open a mode directly:
 | No repositories to pick | Connect and index a repository from **Repositories**. |
 | Every question has no answer | Indexing may still be running. Wait for **Indexed**. |
 | Answer cites the wrong module | Open the cited node in the graph and refine the question with the correct name. |
+| "A question is required." | The box was empty. Type a question. |
+| "This organization's subscription is inactive." | Your workspace plan isn't active. Check **Billing**. |
 
 <AccordionGroup>
   <Accordion title="Does Ask change my code?">
@@ -84,6 +115,12 @@ Ask reads the URL, so you can share a question or open a mode directly:
   </Accordion>
   <Accordion title="Can my coding agent ask the same questions?">
     Yes. Connect it to the [hosted MCP](/platform/hosted-mcp) and it queries the same graph.
+  </Accordion>
+  <Accordion title="Why does Ask answer each question on its own?">
+    Ask doesn't carry hidden assumptions between questions. Name the symbol or module again in a follow-up so the graph search starts from the right place.
+  </Accordion>
+  <Accordion title="Can Ask be wrong?">
+    Yes. Inferred steps are labelled, and every claim links to the code. Open the cited node and check it before you act on it.
   </Accordion>
 </AccordionGroup>
 

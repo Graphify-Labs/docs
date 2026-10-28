@@ -1,61 +1,135 @@
 ---
-title: "Plan a risky refactor with Graphify"
-sidebarTitle: "Plan a risky refactor"
-description: "Before a large change, use Graphify to see what the code reaches, which files carry the most risk, and which tests cover them, then review the result."
+title: "Plan a refactor with code impact analysis"
+sidebarTitle: "Plan a refactor"
+description: "Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify."
+keywords: ["code impact analysis"]
 surface: "both"
 hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-You need to change something many parts of the code depend on: a core function, a data shape, a module boundary. The risk is the code you don't know about. Graphify shows what a change reaches before you make it, and reviews the pull request against the same graph after.
+Code impact analysis tells you what a change reaches before you make it. With Graphify you list the callers of a function, trace how two modules connect, and find the tests that touch it, all from one graph. This recipe plans a change to `_rebuild_code()` in the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository.
 
-This walkthrough uses the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, with `build_from_json` as the function to change.
+## What you'll build
 
-## Walk through it
+- A list of every direct caller of the function you plan to change.
+- The call path between two parts of the code.
+- A short list of tests to run, taken from the graph.
+- A rebuilt graph after the change, to confirm the impact.
 
-<Steps>
-  <Step title="Map what the change reaches">
-    With the repository **Indexed** ([Index your first repository](/concepts/index-a-repository)) and your agent connected ([Claude Code](/integrations/claude-code), [Cursor](/integrations/cursor), [Codex](/integrations/codex) or [VS Code](/integrations/vscode)), ask:
+## Setup
 
-    ```text
-    Use Graphify on Graphify-Labs/graphify: I want to change build_from_json.
-    What does that reach, which files are riskiest, and which tests cover them?
-    ```
+```bash
+uv tool install graphifyy
+git clone https://github.com/Graphify-Labs/graphify && cd graphify
+graphify extract . --code-only
+```
 
-    See [Check the impact of a change](/concepts/check-impact).
-  </Step>
-  <Step title="Follow the callers">
-    Ask what calls `build_from_json`, and trace how `extract` reaches it. See [Follow calls and trace a path](/concepts/follow-calls).
-  </Step>
-  <Step title="Look for code you can remove">
-    Expand the repository row on **Repositories** to see **Unreferenced code (heuristic)**. Code reached through reflection, a string lookup, or another repository can still appear, so check before you delete it.
-  </Step>
-  <Step title="Split the change and review it">
-    Open the refactor as small pull requests. Each gets a review. Where verification ran, each supported changed function is proved equivalent, shows a behavior change with the input that triggers it, or has no verdict. See [Review a pull request](/concepts/review-a-pull-request) and [Read a review and a verdict](/platform/read-a-result).
-  </Step>
-</Steps>
+If you followed [Onboard to a codebase](/cookbooks/onboard-to-a-codebase), you already have the graph.
 
-Impact results list direct connections. Code called dynamically, or tested in a way the graph does not link, may not appear. Run your tests.
+## Step 1: Check how central the target is
 
-## Do it locally instead
+```bash
+graphify explain "_rebuild_code()"
+```
+
+```text
+Node: _rebuild_code()
+  Source:    graphify/watch.py L1926
+  Degree:    273
+```
+
+A degree of 273 means a lot of code touches this function. Plan for a careful change.
+
+## Step 2: List what the change affects
+
+```bash
+graphify affected "_rebuild_code()" --depth 1
+```
+
+```text
+Affected nodes for _rebuild_code()
+Depth: 1
+- dispatch_command() [calls] graphify/cli.py:L2894
+- watch() [calls] graphify/watch.py:L3218
+- test_update_writes_one_compact_line() [calls] tests/test_compact_graph_json.py:L78
+- test_resolution_survives_incremental_rebuild() [calls] tests/test_elixir_import_resolution.py:L234
+```
+
+`affected` walks edges backwards: calls, imports, inheritance and similar relations. `--depth 1` gives direct callers. Raise it to see callers of callers. The test functions in the list are the tests to run first.
+
+## Step 3: Trace how two modules connect
+
+```bash
+graphify path "graphify/cli.py::dispatch_command()" "graphify/cluster.py::cluster()"
+```
+
+```text
+Shortest path (1 hops):
+  dispatch_command() --calls [EXTRACTED]--> cluster()
+```
+
+Use `path` when you want to know whether a change in one area can reach another. If no directed path exists, add `--undirected` to find any connection.
+
+## Step 4: See the community around it
+
+```bash
+graphify query "what depends on _rebuild_code" --budget 1500
+```
+
+Each node in the answer carries its community. Code in the same community moves together. Code in a different community that still calls your function is where surprises live, so check those callers by hand.
+
+## Step 5: Make the change, then rebuild
+
+```bash
+graphify update .
+graphify affected "_rebuild_code()" --depth 1
+```
+
+`update` re-extracts changed code without an API cost. Compare the new list with the one from Step 2. A caller that vanished or appeared is worth a second look in review.
+
+## When it goes wrong
+
+**`path` exits with code 3 and prints candidates.** The name matched more than one node. Copy one of the `path::symbol` candidates it prints.
+
+**`affected` prints "No unique node match" and exits 0.** The label didn't match. Check the exact label with `graphify explain` or `graphify query`. Because the exit code is 0, a script won't fail on it, so check the output.
+
+**A caller you know about is missing.** Impact results list direct connections the parser can see. Code called dynamically, through reflection, or by string name may not appear. Always run your test suite.
+
+## Production patterns
+
+- Paste the `affected` output into the pull request description so reviewers see the planned blast radius.
+- Run the impact check in CI with [Graph impact comment on every PR](/cookbooks/pr-impact-comment-ci).
+- In Graphify, the hosted product, ask your agent "what breaks if I change `_rebuild_code`?". The hosted MCP answers with the `graphify_impact` and `graphify_tests_for` tools.
+
+## Complete example
 
 ```bash
 graphify extract . --code-only
-graphify explain "build_from_json"
-graphify path "extract" "build_from_json"
-graphify query "what depends on build_from_json" --budget 1500
+graphify explain "_rebuild_code()"
+graphify affected "_rebuild_code()" --depth 1
+graphify path "graphify/cli.py::dispatch_command()" "graphify/cluster.py::cluster()"
+graphify query "what depends on _rebuild_code" --budget 1500
+# make your change
+graphify update .
+graphify affected "_rebuild_code()" --depth 1
 ```
 
-After the refactor, rebuild with `graphify update . --force`. See [Keep the graph current](/open-source/features/incremental-updates).
+## What you built
+
+You have a refactor plan backed by the graph: the callers, the paths between modules, the tests to run, and a before-and-after check.
 
 ## Next steps
 
-<TryCloudCard />
+<CardGroup cols={3}>
+  <Card title="Check impact" icon="book" href="/concepts/check-impact">
+    How Graphify works out what a change reaches.
+  </Card>
+  <Card title="Review PRs as a team" icon="utensils" href="/cookbooks/review-as-a-team">
+    Check the finished refactor against the same graph.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/cookbooks/keep-docs-in-sync" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Keep docs in sync with code</span></a>
-  <a href="/open-source/configuration/cli" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">CLI reference</span></a>
-</div>

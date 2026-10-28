@@ -1,47 +1,137 @@
 ---
-title: "Code with an agent on Graphify"
-sidebarTitle: "Code with an agent"
-description: "Give Claude Code, Codex, Cursor, or another coding agent your indexed repositories through the hosted MCP server."
+title: "Connect cloud coding agents to hosted MCP"
+sidebarTitle: "Cloud coding agents"
+description: "Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories."
+keywords: ["hosted mcp server coding agents"]
 surface: "cloud"
 hideFooterPagination: true
 ---
 
-This guide is for working with a coding agent, sometimes called vibe coding, on top of Graphify, the hosted product at app.graphify.com. We run it for you, so there's nothing to deploy. Your agent asks the hosted MCP server at `https://api.graphify.com/mcp` about your repositories instead of re-reading the same files every session.
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-## Before you start
+Graphify, the hosted product, builds and stores the graph of your repositories and serves it over MCP at `https://api.graphify.com/mcp`. Point your coding agent at that URL, sign in once in the browser, and the agent asks the graph instead of re-reading files every session. There's nothing to install or run.
 
-- An account at [app.graphify.com](https://app.graphify.com).
-- At least one repository with the status **Indexed**. The [Cloud quickstart](/platform/quickstart) walks through connecting GitHub and switching on **Indexing** from a repository's **…** menu.
+## What you'll build
 
-## 1. Connect your agent
+- An indexed repository in Graphify.
+- An agent connected to the hosted MCP server over Streamable HTTP with OAuth.
+- A working first query, and prompts for everyday use.
 
-In the console, go to **Connectors → MCP**. The setup has three steps: **Choose agent**, **Connect**, and **Try a query**. Pick your agent, or open **Browse all agents** for the full list.
+## Setup
 
-If you'd rather let the agent do the setup, choose **Copy quick-start prompt** and paste it into your coding agent. Finish the sign-in when the agent asks.
+- An account at [app.graphify.com](https://app.graphify.com). It's free for up to 3 repositories, no card required.
+- At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) walks through connecting GitHub and switching on **Indexing** from a repository's **…** menu.
 
-Agents such as Claude Code, Codex, and Cursor sign in with OAuth on first use, so there is no API key to paste. Per-agent steps are on [Cloud MCP](/integrations/overview).
+## Step 1: Open the MCP connector
 
-## 2. Check the connection
+In the console, go to **Connectors → MCP**. Setup has three steps: **Choose agent**, **Connect** and **Try a query**. Pick your agent, or open **Browse all agents**.
 
-On **Try a query**, the console gives you a test prompt to paste into your agent. It asks the agent to use Graphify's `list_repositories` tool and show the repositories you can access. Check that the list matches the workspace you picked. If you have more than one workspace, the prompt names the one to use.
+To let the agent do the setup, choose **Copy quick-start prompt** and paste it into your agent.
 
-## 3. Ask about your code
+## Step 2: Add the server to your agent
 
-Ask in plain language and name the symbol, file, or area you care about. For example:
+**Claude Code** (run in a terminal, not inside a session):
+
+```bash
+claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+```
+
+**Cursor, Claude Desktop and other `mcpServers` clients:**
+
+```json
+{
+  "mcpServers": {
+    "graphify": { "url": "https://api.graphify.com/mcp" }
+  }
+}
+```
+
+**VS Code** (`.vscode/mcp.json`):
+
+```json
+{
+  "servers": {
+    "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
+  }
+}
+```
+
+The server is also listed in the MCP registry as `io.github.Graphify-Labs/graphify`. Per-agent details are on [Cloud MCP](/integrations/overview).
+
+## Step 3: Sign in
+
+On first use the agent opens a browser window. In Claude Code, run `/mcp`, pick **graphify** and choose to authenticate. Sign in to Graphify and approve access. There's no API key to paste or store.
+
+## Step 4: Check the connection
+
+Paste the test prompt from **Try a query**, or ask:
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access.
+```
+
+The list should match your workspace. If you belong to more than one, ask the agent to use `list_workspaces` and `set_workspace` first.
+
+## Step 5: Ask about your code
+
+Name the symbol, file or area you care about:
 
 - `Who calls the function that validates a session token?`
 - `What would break if I changed this module's public interface?`
-- `Summarize how requests reach the billing service.`
+- `Which tests cover the billing webhook handler?`
+- `Trace how a request reaches the billing service.`
 
-When an answer needs a closer look, open the same repository in the console:
+The agent picks tools such as `graphify_find`, `graphify_callers`, `graphify_impact`, `graphify_tests_for` and `graphify_trace`. You don't call them by hand.
 
-<CardGroup cols={2}>
-  <Card title="Graphs" icon="share-2" href="/platform/graphs">See the nodes and most connected areas behind an answer.</Card>
-  <Card title="Wiki" icon="book-open" href="/platform/wiki">Read the generated article for an area before you change it.</Card>
-  <Card title="Memory" icon="brain" href="/platform/memory">Inspect the shared context your agents and team have recorded.</Card>
-  <Card title="Reviews" icon="git-pull-request" href="/platform/reviews">Check a pull request your agent opened.</Card>
+## Step 6: Give the agent memory
+
+Ask the agent to record decisions as it works:
+
+```text
+Remember that payments retries are capped at 3 because of the provider's rate limit.
+```
+
+The agent stores this with `remember` and finds it later with `recall`. Inspect and remove entries on the [Memory](/platform/memory) page.
+
+## When it goes wrong
+
+**No browser window opens.** Some agents need a restart after you add a server. Restart it, then run a tool again.
+
+**`list_repositories` returns nothing.** The repository isn't indexed yet, or the agent is in another workspace. Check the status in **Repositories**, then use `set_workspace`.
+
+**The agent answers without Graphify.** Name the tool or say "use Graphify" in the prompt. Some agents only call MCP tools when asked.
+
+## Production patterns
+
+- Add the server at project scope (`.mcp.json` or `.vscode/mcp.json`) and commit it, so teammates connect with one sign-in.
+- Check pull requests your agent opens on the [Reviews](/platform/reviews) page.
+- Open the [Graphs](/platform/graphs) and [Wiki](/platform/wiki) pages when an answer needs a closer look.
+- To keep everything on your own machine, use the open-source CLI instead: [Give Claude Code a graph of your monorepo](/cookbooks/claude-code-monorepo).
+
+## Complete example
+
+```bash
+# 1. Index a repository at app.graphify.com
+# 2. Connect Claude Code
+claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+# 3. In Claude Code, run /mcp and finish the browser sign-in, then ask:
+#    "Use Graphify's list_repositories tool and show my repositories."
+```
+
+## What you built
+
+Your agent queries a graph we build and host. It answers questions about callers, impact and tests from indexed repositories, and remembers decisions across sessions.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Cloud MCP" icon="book" href="/integrations/cloud">
+    Per-agent setup for the hosted MCP server.
+  </Card>
+  <Card title="Plan a refactor" icon="utensils" href="/cookbooks/plan-a-refactor">
+    Ask your agent what a change will reach.
+  </Card>
+  <TryCloudCard />
 </CardGroup>
 
-## Prefer to stay on your machine?
-
-Graphify Local, the open-source `graphifyy` package, builds the graph in your repository and gives your assistant a local skill. See [Choose your coding assistant](/integrations/overview).
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

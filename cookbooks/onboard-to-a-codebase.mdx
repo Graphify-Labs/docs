@@ -1,64 +1,159 @@
 ---
-title: "Onboard to an unfamiliar codebase with Graphify"
+title: "Understand a new codebase in 30 minutes with Graphify"
 sidebarTitle: "Onboard to a codebase"
-description: "Get a map of a repository you didn't write: index it in Graphify, read the generated wiki, and ask your agent where things live."
+description: "Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines."
+keywords: ["understand new codebase"]
 surface: "both"
 hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-You have joined a project, or picked up a repository you didn't write. Reading files one by one is slow, and search only finds names you already know. Graphify gives you a map first: the main areas of the code, how they connect, and answers that cite the definitions they came from.
+To understand a new codebase fast, build a graph of it first, then read the code in the order the graph suggests. Graphify turns a repository into a knowledge graph of files, functions, classes and the calls between them. In 30 minutes you go from `git clone` to a list of the code that matters most, a wiki you can browse, and answers that point at real lines.
 
-This walkthrough uses the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository. Index a fork of it to follow along.
+## What you'll build
 
-## Walk through it
+- A `graphify-out/` folder with `graph.json`, `GRAPH_REPORT.md` and `graph.html`.
+- A ranked list of the hub functions everyone else depends on.
+- A Markdown wiki with one article per community of related code.
+- A habit: ask the graph before you grep.
 
-<Steps>
-  <Step title="Index the repository">
-    Connect the repository on **Repositories**, switch on **Indexing**, and wait for **Indexed**. See [Index your first repository](/concepts/index-a-repository) and [Repositories and builds](/platform/repositories). The Free plan covers 3 repositories, with no card.
-  </Step>
-  <Step title="Read the map">
-    Open **Graphs** to see the nodes and the most connected areas. Then open **Wiki**, which has an article for each area of the repository, linked to the code it describes. See [Wiki](/platform/wiki).
-  </Step>
-  <Step title="Ask where things live">
-    Connect your agent to `https://api.graphify.com/mcp` ([Code with an agent](/cookbooks/cloud-coding-agents)). Setup pages: [Claude Code](/integrations/claude-code), [Cursor](/integrations/cursor), [Codex](/integrations/codex) or [VS Code](/integrations/vscode).
+This recipe uses the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository as the "new" codebase. Swap in your own.
 
-    Then ask:
+## Setup
 
-    ```text
-    Use Graphify on Graphify-Labs/graphify: what happens between extract and build_from_json?
-    Show the files and definitions you used.
-    ```
+You need Python 3.10 or later and [uv](https://docs.astral.sh/uv/).
 
-    See [Ask a question about your code](/concepts/ask-about-your-code).
-  </Step>
-  <Step title="Follow the calls">
-    Pick a function from the answer and ask what calls it and what it calls. See [Follow calls and trace a path](/concepts/follow-calls).
-  </Step>
-</Steps>
+```bash
+uv tool install graphifyy
+git clone https://github.com/Graphify-Labs/graphify
+cd graphify
+```
 
-Answers are graph evidence. Each relationship carries a tag: `EXTRACTED` is written in the source, `INFERRED` is worked out by Graphify, and `AMBIGUOUS` is flagged by the model pass. Open the source before you rely on an answer.
+The package is `graphifyy`. The command it installs is `graphify`.
 
-## Do it locally instead
+## Step 1: Build the graph
+
+```bash
+graphify extract . --code-only
+graphify cluster-only . --no-label
+```
+
+`extract --code-only` parses source with tree-sitter and needs no LLM or API key. On this repository it took about 26 seconds:
+
+```text
+wrote graphify-out/graph.json: 19602 nodes, 44439 edges, 894 communities
+```
+
+`cluster-only` writes the report and the HTML view from that graph. `--no-label` skips LLM community names, so communities show as numbers.
+
+## Step 2: Read the report
+
+Open `graphify-out/GRAPH_REPORT.md`. The top tells you how much to trust the graph:
+
+```text
+## Summary
+- 19602 nodes · 44439 edges · 894 communities (747 shown, 147 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS
+## Graph Freshness
+- Built from commit: `0a8cd4e1`
+```
+
+`EXTRACTED` edges come straight from the syntax tree. `INFERRED` edges were resolved by heuristics and carry a confidence score. The commit line tells you whether the graph matches your checkout.
+
+## Step 3: Find the hub nodes
+
+```bash
+graphify god-nodes --top 5
+```
+
+```text
+God nodes (most connected):
+  1. extract() - 1118 edges
+  2. build_from_json() - 297 edges
+  3. _rebuild_code() - 273 edges
+```
+
+These are the functions to read first. Most of the codebase calls into them, so understanding them explains a large share of everything else.
+
+## Step 4: Explain one node
+
+```bash
+graphify explain "_rebuild_code()"
+```
+
+```text
+Node: _rebuild_code()
+  Source:    graphify/watch.py L1926
+  Community: Community 5
+  Degree:    273
+Connections (273):
+  --> extract() [calls] [EXTRACTED] graphify/watch.py:L2416
+  --> build_from_json() [calls] [EXTRACTED] graphify/watch.py:L2672
+  <-- dispatch_command() [calls] [EXTRACTED] graphify/cli.py:L2894
+```
+
+Arrows show direction: `-->` is what this node calls, `<--` is what calls it. Every edge has a file and line, so you can jump straight to the source.
+
+## Step 5: Ask questions
+
+```bash
+graphify query "how does incremental update work" --budget 1500
+```
+
+The answer is a list of nodes and edges, each with its source location. `--budget` caps the tokens returned. When the result is cut, Graphify says so and tells you the budget that would fit everything:
+
+```text
+[!] TRUNCATED: showing 13 of 41 nodes (~400-token budget). ... raise the token budget to 1439
+```
+
+## Step 6: Export a wiki
+
+```bash
+graphify export wiki
+```
+
+This writes one article per community plus `graphify-out/wiki/index.md` (904 articles for this repository). Start at the index and open the communities that hold your god nodes.
+
+## When it goes wrong
+
+**`graphify explain` says no node matches.** Names are matched against labels like `_rebuild_code()`. If a name exists in several files, `graphify path` and similar commands list the candidates in `path::symbol` form, for example `graphify/cli.py::dispatch_command()`. Use that form.
+
+**`graph.html` shows blobs instead of functions.** Above 5,000 nodes the HTML view is aggregated by community. Use `explain`, `query` and the wiki for detail.
+
+## Production patterns
+
+- Commit nothing yet. Add `graphify-out/` to `.gitignore` while you explore. The [shared team graph](/cookbooks/shared-team-graph) recipe covers committing it.
+- Give the graph to your agent. See [Give Claude Code a graph of your monorepo](/cookbooks/claude-code-monorepo).
+- Keep it fresh with `graphify update .` after you pull. It re-extracts code without an API cost.
+
+## Complete example
 
 ```bash
 uv tool install graphifyy
 git clone https://github.com/Graphify-Labs/graphify && cd graphify
 graphify extract . --code-only
-graphify query "what happens between extract and build_from_json"
-graphify explain "build_from_json"
+graphify cluster-only . --no-label
+graphify god-nodes --top 5
+graphify explain "_rebuild_code()"
+graphify query "how does incremental update work" --budget 1500
+graphify export wiki
 ```
 
-`--code-only` parses the code locally without a model. Open `graphify-out/GRAPH_REPORT.md` for the main areas of the code, and `graphify export html` writes an interactive graph. See [Run Graphify locally](/open-source/local-development).
+## What you built
+
+You have a graph of the repository, a ranked reading list, a wiki, and a way to ask questions that cite real lines. In Graphify, the hosted product, the same graph is built for you when you connect a repository, and your agent queries it over MCP.
 
 ## Next steps
 
-<TryCloudCard />
+<CardGroup cols={3}>
+  <Card title="Query the graph" icon="book" href="/guides/querying">
+    Every way to ask the graph a question, with budgets and filters.
+  </Card>
+  <Card title="Plan a refactor" icon="utensils" href="/cookbooks/plan-a-refactor">
+    Use the same graph to see what a change reaches.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/cookbooks/overview" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Use cases</span></a>
-  <a href="/cookbooks/review-as-a-team" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Review code as a team</span></a>
-</div>

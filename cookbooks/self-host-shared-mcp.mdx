@@ -1,0 +1,158 @@
+---
+title: "Self-host a shared Graphify MCP server"
+sidebarTitle: "Self-host a shared MCP"
+description: "Run the open-source Graphify MCP server over HTTP in Docker with an API key, so your whole team and its agents query one shared code graph."
+keywords: ["self-hosted mcp server"]
+surface: "local"
+hideFooterPagination: true
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+The open-source MCP server usually runs on your machine over stdio, one per developer. Run it over HTTP instead and one server can answer every teammate and agent. This recipe runs it in Docker with an API key, behind TLS, and refreshes the graph without a restart.
+
+## What you'll build
+
+- A Graphify MCP server on HTTP at `/mcp`, protected by an API key.
+- A Docker container that runs as a non-root user and reads a mounted graph.
+- Agents connected to it from Claude Code and other MCP clients.
+
+## Setup
+
+```bash
+git clone https://github.com/Graphify-Labs/graphify
+cd your-repo
+uv tool install graphifyy
+graphify extract . --code-only
+```
+
+You'll serve `graphify-out/graph.json`. Generate a long random key and keep it in your secret manager:
+
+```bash
+export GRAPHIFY_API_KEY="$(openssl rand -hex 32)"
+```
+
+## Step 1: Run it locally over HTTP
+
+```bash
+uv tool install "graphifyy[mcp]"
+graphify-mcp graphify-out/graph.json --transport http --port 8765
+```
+
+The server reads `GRAPHIFY_API_KEY` and logs `api-key required`. It binds to `127.0.0.1` by default. Check that the key is enforced:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:8765/mcp
+# 401
+```
+
+Requests must send the key as `Authorization: Bearer <key>` or `X-API-Key: <key>`. Without one, the server returns `401` with `{"error": "unauthorized"}`.
+
+## Step 2: Build the Docker image
+
+The repository includes a `Dockerfile`. It installs the `mcp` extra on `python:3.12-slim`, runs as user `10001`, and serves `/data/graph.json` on port 8080:
+
+```bash
+cd graphify
+docker build -t graphify-mcp .
+```
+
+## Step 3: Run the container
+
+```bash
+docker run -d --name graphify-mcp \
+  -p 127.0.0.1:8080:8080 \
+  -e GRAPHIFY_API_KEY \
+  -v "$PWD/../your-repo/graphify-out:/data:ro" \
+  graphify-mcp
+```
+
+Inside the container the server binds `0.0.0.0`, so it can take traffic from Docker. Publishing on `127.0.0.1` keeps it off the network until a proxy sits in front. If you start it on `0.0.0.0` without a key, the server prints a warning that the graph is exposed unauthenticated. Don't ignore it.
+
+## Step 4: Put TLS in front
+
+Never send the key over plain HTTP. Put a reverse proxy such as [Caddy](https://caddyserver.com) in front:
+
+```text
+graph.internal.example.com {
+  reverse_proxy 127.0.0.1:8080
+}
+```
+
+For single sign-on, put an identity-aware proxy in front as well, and keep the API key as a second check.
+
+## Step 5: Connect your agents
+
+```bash
+claude mcp add --transport http graphify https://graph.internal.example.com/mcp \
+  --header "Authorization: Bearer $GRAPHIFY_API_KEY"
+```
+
+For clients configured with JSON:
+
+```json
+{
+  "mcpServers": {
+    "graphify": {
+      "type": "http",
+      "url": "https://graph.internal.example.com/mcp",
+      "headers": { "Authorization": "Bearer ${GRAPHIFY_API_KEY}" }
+    }
+  }
+}
+```
+
+Ask your agent: "Use graphify to find what calls the payment retry handler."
+
+## Step 6: Refresh the graph
+
+The server checks the graph file's modification time and size, and reloads when they change. Rebuild in CI and copy the new `graph.json` into the mounted folder. No restart needed.
+
+## When it goes wrong
+
+**Every request returns `401`.** The key doesn't match, or the proxy strips the `Authorization` header. Try `X-API-Key`, or call the container directly to rule out the proxy.
+
+**`HTTP transport needs the mcp extra`.** Install `graphifyy[mcp]`. The Docker image already has it.
+
+**Requests are rejected for the Host header.** When bound to a specific address, the server only accepts that address and localhost as the Host. Bind `0.0.0.0` behind your proxy, as the image does.
+
+**Behind a load balancer, sessions drop.** Start with `--stateless` so any instance can serve any request.
+
+## Production patterns
+
+- Rotate the key like any other secret, and give each team its own server and key.
+- Mount the graph read-only, as in Step 3.
+- Use `--path` to serve at a path other than `/mcp`.
+- Graphify, the hosted product, runs this for you with sign-in, team access and automatic rebuilds. See [Connect cloud coding agents](/cookbooks/cloud-coding-agents).
+
+## Complete example
+
+```bash
+export GRAPHIFY_API_KEY="$(openssl rand -hex 32)"
+(cd your-repo && graphify extract . --code-only)
+(cd graphify && docker build -t graphify-mcp .)
+docker run -d --name graphify-mcp -p 127.0.0.1:8080:8080 -e GRAPHIFY_API_KEY \
+  -v "$PWD/your-repo/graphify-out:/data:ro" graphify-mcp
+curl -s -X POST http://127.0.0.1:8080/mcp \
+  -H "Authorization: Bearer $GRAPHIFY_API_KEY" \
+  -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"curl","version":"1"}}}'
+```
+
+## What you built
+
+One MCP server, behind TLS and an API key, that serves your code graph to every teammate and agent, and picks up new graphs without a restart.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Shared HTTP server" icon="book" href="/mcp/shared-http">
+    Reference for running the MCP server over HTTP.
+  </Card>
+  <Card title="Shared team graph" icon="utensils" href="/cookbooks/shared-team-graph">
+    Keep the graph that you serve up to date.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

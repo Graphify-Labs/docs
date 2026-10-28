@@ -1,35 +1,80 @@
 ---
-title: "Graphify use cases"
+title: "Graphify cookbooks: end-to-end recipes"
 sidebarTitle: "Overview"
-description: "Ways teams use Graphify: onboard to an unfamiliar codebase, review code as a team, keep docs in sync with code, and plan a risky refactor."
+description: "Step-by-step Graphify recipes: onboard to a codebase, share a team graph, connect coding agents, load Neo4j and Postgres, and add graph impact to CI."
+keywords: ["graphify cookbooks", "code knowledge graph recipes"]
 surface: "both"
 hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Each use case starts from a situation you are in and walks through it on the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository. Each one shows the hosted path in Graphify first, then a local alternative with the open-source CLI.
+Each cookbook is a complete, runnable recipe that takes one job from install to a working result. They run on the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) CLI, with notes where Graphify, the hosted product, does the work for you.
+
+## Essentials
 
 <Columns cols={2}>
-  <Card title="Onboard to an unfamiliar codebase" icon="map" href="/cookbooks/onboard-to-a-codebase">
-    Get a map of a repository you didn't write, then ask where things live.
+  <Card title="Understand a new codebase in 30 minutes with Graphify" icon="compass" href="/cookbooks/onboard-to-a-codebase">
+    Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
   </Card>
-  <Card title="Review code as a team" icon="users" href="/cookbooks/review-as-a-team">
-    Share one graph, review every pull request against it, and spot colliding work.
+  <Card title="Plan a refactor with code impact analysis" icon="compass" href="/cookbooks/plan-a-refactor">
+    Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify.
   </Card>
-  <Card title="Keep docs in sync with code" icon="file-text" href="/cookbooks/keep-docs-in-sync">
-    Find docs that mention code a pull request changed.
+  <Card title="Keep docs in sync with code using git hooks" icon="compass" href="/cookbooks/keep-docs-in-sync">
+    Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
   </Card>
-  <Card title="Plan a risky refactor" icon="git-fork" href="/cookbooks/plan-a-refactor">
-    See what a change reaches and which tests cover it before you start.
+</Columns>
+
+## Team
+
+<Columns cols={2}>
+  <Card title="Review pull requests as a team with a code graph" icon="users" href="/cookbooks/review-as-a-team">
+    Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code, and pick a safe merge order early.
+  </Card>
+  <Card title="Share a code graph with your team using git" icon="users" href="/cookbooks/shared-team-graph">
+    Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
+  </Card>
+</Columns>
+
+## Agents
+
+<Columns cols={2}>
+  <Card title="Give Claude Code a knowledge graph of your monorepo" icon="bot" href="/cookbooks/claude-code-monorepo">
+    Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
+  </Card>
+  <Card title="Connect cloud coding agents to hosted MCP" icon="bot" href="/cookbooks/cloud-coding-agents">
+    Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories.
+  </Card>
+  <Card title="Build a fully local code knowledge graph with Ollama" icon="bot" href="/cookbooks/local-with-ollama">
+    Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model.
+  </Card>
+</Columns>
+
+## Data
+
+<Columns cols={2}>
+  <Card title="Graph your Postgres schema next to your code" icon="database" href="/cookbooks/postgres-schema-graph">
+    Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code.
+  </Card>
+  <Card title="Load your code knowledge graph into Neo4j" icon="database" href="/cookbooks/neo4j-export">
+    Export your Graphify code graph to Neo4j as a Cypher script or push it straight to a database, then query callers and dependencies in Cypher.
+  </Card>
+  <Card title="Turn meeting recordings into a knowledge graph" icon="database" href="/cookbooks/meetings-and-videos">
+    Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code.
+  </Card>
+</Columns>
+
+## CI and Ops
+
+<Columns cols={2}>
+  <Card title="Post graph impact on every pull request" icon="server" href="/cookbooks/pr-impact-comment-ci">
+    Build a Graphify code graph in GitHub Actions and post each pull request's graph impact, communities and changed files as a PR comment.
+  </Card>
+  <Card title="Self-host a shared Graphify MCP server" icon="server" href="/cookbooks/self-host-shared-mcp">
+    Run the open-source Graphify MCP server over HTTP in Docker with an API key, so your whole team and its agents query one shared code graph.
   </Card>
 </Columns>
 
 <TryCloudCard />
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/open-source/features/pr-impact" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Review pull requests locally</span></a>
-  <a href="/cookbooks/onboard-to-a-codebase" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Onboard to a codebase</span></a>
-</div>

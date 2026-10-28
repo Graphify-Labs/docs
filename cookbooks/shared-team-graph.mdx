@@ -1,67 +1,65 @@
 ---
-title: "Share context with your team"
-description: "Share a code knowledge graph with your team: choose how to distribute graphify output and keep every checkout up to date."
+title: "Share a code graph with your team using git"
+sidebarTitle: "Shared team graph"
+description: "Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source."
+keywords: ["shared code graph team"]
 surface: "local"
 hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-You can share generated graph files in the repository, build them in each clone, or run a shared MCP server. Choose based on the size of the graph and who may access the source context.
+To share a code graph with your team, commit `graphify-out/graph.json` and let git merge it with Graphify's union merge driver instead of as text. Every clone then starts with the same map, and two branches that both changed the graph merge without a conflict. This recipe sets that up and adds attribution for sources teammates add.
 
-## Repository workflow
+## What you'll build
 
-1. Register the assistant skill in project scope if your team wants shared instructions.
-2. Build and inspect the graph.
-3. Decide which generated artifacts belong in version control.
-4. Install `graphify hook install` once in each clone, or the [pre-commit hook](#commit-the-graph-with-the-code-that-changed-it) if you commit the graph.
-5. Run `graphify update .` after pulls and merges.
+- A committed `graph.json` that matches each commit's code.
+- A `.gitattributes` rule and a merge driver so merges union the graph.
+- A pre-commit hook that rebuilds and stages the graph.
+- Tagged sources, so you know who added which document.
 
-The upstream project recommends committing `graphify-out/` to share a starting map. Review generated files first; they contain source-derived information. Keep local cost reports out of version control:
+## Setup
 
-```gitignore
-graphify-out/cost.json
+```bash
+uv tool install graphifyy
+cd your-repo
+graphify extract . --code-only
 ```
 
-You can also exclude `graphify-out/cache/` to reduce repository size, at the cost of less cache reuse. The portable manifest uses relative paths and is re-anchored on load.
+## Step 1: Track only the graph
 
-## Commit the graph with the code that changed it
-
-`graphify hook install` rebuilds the graph in the background after each commit. If you commit `graphify-out/graph.json`, every commit that changes code then leaves the rebuilt graph behind as an uncommitted change. A `pre-commit` hook avoids that: it rebuilds the graph before the commit and stages it, so each commit carries the graph of its own code.
-
-Track only the graph, so the hook stages exactly what it rebuilt. Each clone rebuilds the other files in `graphify-out/` locally. Replace any existing `graphify-out/` ignore line with these two lines:
+Other files in `graphify-out/` are rebuilt locally. Track just the graph. In `.gitignore`:
 
 ```gitignore
 graphify-out/*
 !graphify-out/graph.json
 ```
 
-If you already track other files in `graphify-out/`, untrack them once with `git rm -r --cached graphify-out` and then run `git add graphify-out/graph.json`. Otherwise each rebuild leaves them modified.
+Review the graph before the first commit. It holds names and paths taken from your source.
 
-Mark the graph as generated output in `.gitattributes`:
+## Step 2: Mark the graph and register the merge driver
+
+In `.gitattributes`:
 
 ```gitattributes
 graphify-out/graph.json merge=graphify linguist-generated=true -diff
 ```
 
-- `linguist-generated=true` collapses the file in GitHub pull requests.
-- `-diff` makes `git diff`, `git log -p`, and `git show` print `Binary files differ` instead of the graph. A patch saved from `git diff` then can't be applied; `git format-patch` still includes the graph.
-- `merge=graphify` merges the graph with graphify's union merge driver instead of as text.
+`linguist-generated=true` collapses the file in GitHub pull requests. `-diff` keeps it out of `git diff`. `merge=graphify` names the driver.
 
-Since graphify 0.9.86, `graph.json` is one line of compact JSON, so GitHub counts a rebuilt graph as one changed line (+1 −1) in a pull request.
-
-`graphify hook install` registers the merge driver. With the pre-commit hook instead, register it once in each clone. If a repository already has it from `graphify hook install`, copy its `merge.graphify.driver` value. Otherwise point the driver at the Python that graphify is installed in, the way `hook install` does, so merges also work when `graphify` is not on `PATH`, as in GUI git clients:
+Register the driver in each clone. `graphify hook install` does this too, but `graphify hook uninstall` removes it again along with the `.gitattributes` entry, so with the pre-commit hook in Step 3 register it by hand: point it at the Python that Graphify runs in, so merges also work in GUI git clients where `graphify` isn't on `PATH`.
 
 ```bash
+PY="$(sed -n '1s/^#!//p' "$(command -v graphify)")"
 git config merge.graphify.name "graphify graph.json union merge"
-git config merge.graphify.driver '"/path/to/python" -m graphify merge-driver %O %A %B'
+git config merge.graphify.driver "\"$PY\" -m graphify merge-driver %O %A %B"
 ```
 
-On Linux and macOS, `sed -n '1s/^#!//p' "$(command -v graphify)"` prints that Python. Keep the double quotes around its path; a Windows path can contain a space.
+The driver takes the base, current and other versions, writes the union of nodes and edges back to the current file, and exits 1 on a corrupt or oversized graph so git shows a conflict instead of accepting it.
 
-Without the driver, a merge, rebase, or cherry-pick that changed the graph on both sides stops with a conflict in `graph.json`. Rebuild it with `rm graphify-out/graph.json && graphify update . && git add graphify-out/graph.json`, then continue.
+## Step 3: Rebuild before each commit
 
-If you use a hook manager such as Husky, pre-commit, or lefthook, add the lines below to its pre-commit step. Otherwise put them where `graphify hook install` puts its post-commit hook: the `pre-commit` file in git's hooks directory, which `git rev-parse --git-path hooks` prints. That is `.git/hooks` unless `core.hooksPath` names another directory. If the file already exists, add the lines before any final `exit` or `exec` line, so they run and your other checks keep running:
+`graphify hook install` rebuilds after each commit, which leaves the rebuilt graph as an uncommitted change. If you commit the graph, use a pre-commit hook instead. Add this to `.git/hooks/pre-commit` (with `#!/bin/sh` first and `chmod +x`):
 
 ```sh
 # graphify: rebuild graphify-out/graph.json and commit it with the code that changed it.
@@ -71,48 +69,78 @@ if [ "${GRAPHIFY_SKIP_HOOK:-0}" != 1 ] && [ -f graphify-out/graph.json ] &&
 fi
 ```
 
-A new file needs `#!/bin/sh` as its first line and must be executable (`chmod +x`). The hook only refreshes an existing graph, so build and commit the first one yourself. `PYTHONHASHSEED=0` keeps the rebuild deterministic, as in the hooks `graphify hook install` writes: clustering walks sets whose order depends on that seed, so without it community ids can change on commits that did not change the code's structure.
+`PYTHONHASHSEED=0` keeps clustering deterministic, so community ids don't churn between machines.
 
-`.git/hooks` is not committed, so each clone adds the hook itself. To share it through the repository, commit it in a directory such as `.githooks/` and run `git config core.hooksPath .githooks` in each clone. Git then runs only the hooks in that directory and ignores `.git/hooks`, so move any hooks you still use from `.git/hooks` into it. If your CI commits to the repository, install graphify there too, or set `GRAPHIFY_SKIP_HOOK=1` for those commits.
+## Step 4: Merge two graphs by hand
 
-Use this hook in place of `graphify hook install`. It replaces all four hooks that `hook install` adds: post-commit, post-checkout, post-merge, and post-rewrite. The committed graph already matches each commit, but the untracked files in `graphify-out/`, such as `GRAPH_REPORT.md` and `graph.html`, are not refreshed after a branch switch. Run `graphify update .` after a branch switch, as after pulls and merges.
+When you need to combine graphs outside git, for example from two services:
 
-Keep these points in mind:
+```bash
+graphify merge-graphs service-a/graphify-out/graph.json service-b/graphify-out/graph.json --out merged.json
+```
 
-- A commit fails when the rebuild fails or `graphify` is not on `PATH`. Set `GRAPHIFY_SKIP_HOOK=1` or pass `--no-verify` to commit without the rebuild; the committed graph is then stale.
-- The rebuild reads your working tree, not the staged files, so unstaged and untracked code ends up in the committed graph. To commit part of your changes, stage them, run `git stash --keep-index --include-untracked`, run a plain `git commit`, and then `git stash pop`. Avoid `git commit <path>`: the hook stages the graph into git's temporary index, so your index keeps the old graph.
-- Git runs no pre-commit hook for a merge it completes without conflicts, or for the commits that `rebase`, `cherry-pick`, and `revert` create. Those commits carry the graph git merged from their parents, not a rebuild, and the merged graph can keep symbols that one side deleted. Run `graphify update .` afterward and commit the graph, or merge with `git merge --no-commit` and then run `git commit` so the hook runs.
-- Everyone should run the same graphify release. The graph records the version that built it, and releases can build different graphs from the same code.
-- Each commit waits for a full rebuild, which takes from seconds to minutes depending on the code. One 2,800-file repository takes about a minute.
+```text
+Merged 2 graphs -> 19673 nodes, 44511 edges
+```
 
-## One graph per worktree
+For a standing cross-repo graph, use `graphify global add graphify-out/graph.json --as my-service` in each repository, then `graphify global list`.
 
-Avoid multiple branches writing into one output location. Set `GRAPHIFY_OUT` to a worktree-specific directory when you use a shared or custom output setup.
+## Step 5: Tag who added a source
 
-## Shared MCP
+When teammates add docs, papers or pages to the graph, record who added them:
 
-Run a [shared HTTP MCP endpoint](/open-source/self-host) if several clients should query one managed graph. Define who refreshes it, which revision it represents, and who is allowed to access it.
+```bash
+graphify add https://example.com/design-notes --author "Ada" --contributor "Lin"
+```
 
-## Review related pull requests
+`add` saves the page to `./raw` and updates the graph. The saved file's frontmatter records the contributor (falling back to the author), so the graph can trace each source back to a person.
 
-[PR context](/open-source/features/pr-impact) helps spot changes that touch the same files or graph communities. Use it to guide review and merge order alongside your tests and normal code review.
+## When it goes wrong
+
+**A merge stops with a conflict in `graph.json`.** The driver isn't registered in this clone, or it rejected a corrupt file. Check `git config merge.graphify.driver`. To recover, rebuild:
+
+```bash
+rm graphify-out/graph.json && graphify update . && git add graphify-out/graph.json
+```
+
+**Every commit shows a huge graph diff.** Since Graphify 0.9.86, `graph.json` is one line of compact JSON, so a rebuilt graph shows as one changed line. Upgrade if you see more.
+
+**CI commits fail the hook.** Install Graphify in CI, or set `GRAPHIFY_SKIP_HOOK=1` for those commits.
+
+## Production patterns
+
+- Commit hooks in `.githooks/` and run `git config core.hooksPath .githooks` in each clone so everyone shares them.
+- Run `graphify update .` after a branch switch to refresh the untracked report and HTML.
+- In Graphify, the hosted product, the graph lives on our servers and every teammate's agent reads the same one over MCP. There's nothing to commit.
+
+## Complete example
+
+```bash
+graphify extract . --code-only
+printf 'graphify-out/*\n!graphify-out/graph.json\n' >> .gitignore
+echo 'graphify-out/graph.json merge=graphify linguist-generated=true -diff' >> .gitattributes
+PY="$(sed -n '1s/^#!//p' "$(command -v graphify)")"
+git config merge.graphify.name "graphify graph.json union merge"
+git config merge.graphify.driver "\"$PY\" -m graphify merge-driver %O %A %B"
+# add the pre-commit hook from Step 3
+git add .gitignore .gitattributes graphify-out/graph.json
+git commit -m "Share the code graph"
+```
+
+## What you built
+
+Your team shares one graph through git. It merges without conflicts, rebuilds with each commit, and records who added each source.
 
 ## Next steps
 
-<TryCloudCard />
-
-<Columns cols={2}>
-  <Card title="Graphify vs Local" icon="cloud-upload" href="/platform/graphify-vs-local">
-    Share one hosted workspace with your team.
+<CardGroup cols={3}>
+  <Card title="Team workflows" icon="book" href="/guides/team-workflows">
+    The full reference for committing and merging the graph.
   </Card>
-  <Card title="Review pull requests" icon="git-pull-request" href="/open-source/features/pr-impact">
-    Use graph context in code review.
+  <Card title="Keep docs in sync" icon="utensils" href="/cookbooks/keep-docs-in-sync">
+    Rebuild the graph and wiki on every commit.
   </Card>
-</Columns>
+  <TryCloudCard />
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
-
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/open-source/features/exports" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Export and reuse your graph</span></a>
-  <a href="/open-source/features/pr-impact" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Review pull requests with graph context</span></a>
-</div>

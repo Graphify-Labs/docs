@@ -1,77 +1,122 @@
 ---
-title: "Configuration"
-description: "Configure graphify: model backends for semantic extraction, output paths, and local logging, with the settings each one reads."
+title: "Project settings with .graphifyrc"
+sidebarTitle: ".graphifyrc"
+description: "Use a .graphifyrc file at your repository root to map ambiguous file extensions to a language and set the HTML node limit your git hooks use."
+keywords: [".graphifyrc", "graphify config file", "language override", "viz_node_limit"]
 surface: "local"
-hideFooterPagination: true
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Code-only extraction works without a provider key. These backend settings matter when you explicitly run semantic extraction or model-assisted CLI workflows.
+`.graphifyrc` is a small, committed file that tells Graphify Local the things it can't work out on its own. Most repositories never need one. You add it when an extension means different languages in different projects, or when your graph is too big for the default HTML view.
 
-## Semantic backends
+<Note>
+**Use `.graphifyrc` when** files land in the wrong language (a `.inc` parsed as Pascal instead of PHP, a `.m` as Objective-C instead of MATLAB), or when git hooks should write `graph.html` with a different node limit. For per-run settings, such as models and output paths, use [environment variables](/open-source/configuration/environment-variables).
+</Note>
 
-| `--backend` | Main configuration | Optional package extra |
-| --- | --- | --- |
-| `claude` | `ANTHROPIC_API_KEY`; optional `ANTHROPIC_BASE_URL`, `ANTHROPIC_MODEL` | `anthropic` |
-| `gemini` | `GEMINI_API_KEY` or `GOOGLE_API_KEY` | `gemini` |
-| `openai` | `OPENAI_API_KEY`; optional `OPENAI_BASE_URL`, `OPENAI_MODEL` | `openai` |
-| `deepseek` | `DEEPSEEK_API_KEY` | Use the client dependency required by your version. |
-| `kimi` | `MOONSHOT_API_KEY` | `kimi` |
-| `ollama` | Optional `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | `ollama` |
-| `bedrock` | Standard AWS credential chain | `bedrock` |
-| `azure` | `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT`, deployment setting | `openai` |
-| `claude-cli` | Installed and authenticated Claude Code CLI | No separate model API key. |
+## How it works
 
-Set credentials in your shell, secret manager, or CI environment. Never commit them into the documentation or repository. Use a model available in your account or local runtime rather than assuming a particular model name.
+Graphify reads `<root>/.graphifyrc` once per scan, where `<root>` is the folder you pass to `extract`, `update`, or `watch`. The format is deliberately plain:
 
-## Output and resource controls
+- One `key=value` per line.
+- `#` starts a comment.
+- Blank lines are ignored.
 
-| Variable | Meaning |
+There are two keys.
+
+## Configure
+
+<ParamField path="language.<ext>" type="string">
+  Treat every file with extension `<ext>` as the named language for classification, extractor choice, and cross-file resolution. Write `<ext>` with or without its leading dot. The value is either a language name or an extension Graphify already understands, such as `.php` or `.ts`.
+</ParamField>
+
+<ParamField path="viz_node_limit" type="integer">
+  Node limit baked into the git hooks that `graphify hook install` writes. Graphs larger than this skip `graph.html`. An explicit `GRAPHIFY_VIZ_NODE_LIMIT` on the command line still wins.
+</ParamField>
+
+### Language names you can use
+
+| Name | Maps to |
 | --- | --- |
-| `GRAPHIFY_OUT` | Output directory, useful for separate worktrees. |
-| `GRAPHIFY_MAX_WORKERS` | Structural extraction worker count. |
-| `GRAPHIFY_MAX_OUTPUT_TOKENS` | Semantic model output cap. |
-| `GRAPHIFY_API_TIMEOUT` | Backend request timeout in seconds. |
-| `GRAPHIFY_MAX_RETRIES` | Retry count for rate-limited requests. |
-| `GRAPHIFY_MAX_RETRY_DEPTH` | Limit recursive recovery of truncated chunks. |
-| `GRAPHIFY_MAX_GRAPH_BYTES` | Override the graph file size guard; default is 512 MiB. |
-| `GRAPHIFY_API_KEY` | Authentication for a shared graph MCP HTTP server. |
-| `GRAPHIFY_TRIAGE_BACKEND` / `GRAPHIFY_TRIAGE_MODEL` | Backend and model for CLI PR triage. |
+| `php` | `.php` |
+| `pascal`, `delphi`, `freepascal` | `.pas` |
+| `sql` | `.sql` |
+| `python` | `.py` |
+| `javascript`, `js` | `.js` |
+| `typescript`, `ts` | `.ts` |
+| `c` | `.c` |
+| `cpp`, `c++`, `cxx` | `.cpp` |
+| `objc`, `objective-c` | `.mm` |
+| `java`, `kotlin`, `scala`, `groovy` | `.java`, `.kt`, `.scala`, `.groovy` |
+| `go`, `golang` | `.go` |
+| `rust` | `.rs` |
+| `ruby` | `.rb` |
+| `csharp`, `c#` | `.cs` |
+| `swift`, `lua`, `zig`, `elixir` | `.swift`, `.lua`, `.zig`, `.ex` |
 
-## Local query logging
+Any extension Graphify supports works as a value too, for example `language.tpl=.ts`. If a value isn't valid, Graphify prints `[graphify] warning: ignoring .graphifyrc: ...` and skips the whole file, so a typo never half-applies.
 
-The current implementation keeps query logging **off by default**.
+## See it in action
 
-| Variable | Effect |
+```ini .graphifyrc
+# Every .inc in this repository is PHP, not Pascal
+language.inc=php
+
+# Templates here are plain TypeScript
+language.tpl=.ts
+
+# Skip graph.html above 2000 nodes when hooks rebuild
+viz_node_limit=2000
+```
+
+Run an extraction and Graphify confirms the override:
+
+```bash
+graphify extract . --code-only
+```
+
+```text
+[graphify extract] AST extraction on 92 code files...
+  language overrides (.graphifyrc): .inc -> .php
+```
+
+## What changes
+
+- Files with an overridden extension are parsed by that language's extractor and resolved against the same language's symbols.
+- Hooks you install **after** adding `viz_node_limit` export it before each rebuild. Re-run `graphify hook install` after changing it.
+- Nothing else reads `.graphifyrc`. Model, output, and logging settings live in environment variables.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
 | --- | --- |
-| `GRAPHIFY_QUERY_LOG_ENABLE=1` | Enable a local JSONL query log at `~/.cache/graphify-queries.log`. |
-| `GRAPHIFY_QUERY_LOG=/path/to/log` | Enable logging to a chosen file. |
-| `GRAPHIFY_QUERY_LOG_DISABLE=1` | Force logging off, overriding enable settings. |
-| `GRAPHIFY_QUERY_LOG_RESPONSES=1` | Include full responses when logging is enabled. |
+| No `language overrides` line in the output | Check that `.graphifyrc` sits in the folder you passed to `extract`, not a subfolder. |
+| Files still use the old language | Look for an `ignoring .graphifyrc` warning, fix the line, then run `graphify extract . --force` for a full re-scan. |
+| The hooks ignore `viz_node_limit` | Re-run `graphify hook install` to rewrite the hooks. |
 
-Logs can contain questions and corpus paths. Full responses are opt-in. Keep access and retention appropriate to your source material.
+<AccordionGroup>
+  <Accordion title="Should I commit .graphifyrc?">
+    Yes. It describes the repository, not your machine, so everyone who builds the graph should get the same result.
+  </Accordion>
+  <Accordion title="Why isn't .h mapped to C++ automatically?">
+    `.h` is C in some projects and C++ in others, and `.inc` can be PHP, Pascal, SQL, or assembly. There's no correct global default, so the repository declares it.
+  </Accordion>
+  <Accordion title="Can I exclude files here?">
+    No. Use [`.graphifyignore`](/open-source/configuration/ignoring-files).
+  </Accordion>
+</AccordionGroup>
 
-## Ignore rules
-
-Use `.graphifyignore` to exclude dependency folders, build artifacts, or irrelevant content. See [incremental updates](/open-source/features/incremental-updates) for examples.
-
-## Next steps
-
-<TryCloudCard />
+## What's next
 
 <Columns cols={2}>
-  <Card title="Troubleshooting" icon="wrench" href="/open-source/troubleshooting">
-    Fixes for common local problems.
+  <Card title="Ignoring files and limits" icon="filter" href="/open-source/configuration/ignoring-files">
+    Control what Graphify scans.
   </Card>
-  <Card title="MCP tool reference" icon="wrench" href="/open-source/features/mcp-tools">
-    Every tool the local server exposes.
+  <Card title="Environment variables" icon="sliders" href="/open-source/configuration/environment-variables">
+    Every setting you can change per run.
   </Card>
 </Columns>
 
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+<TryCloudCard />
 
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/open-source/configuration/cli#extract" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">graphify extract</span></a>
-  <a href="/open-source/features/mcp-tools" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">MCP tool reference</span></a>
-</div>
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

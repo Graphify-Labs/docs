@@ -113,6 +113,9 @@
             "icon": "settings",
             "pages": [
               "open-source/configuration/graphifyrc",
+              "open-source/configuration/environment-variables",
+              "open-source/configuration/llm-providers",
+              "open-source/configuration/ignoring-files",
               "open-source/configuration/cli"
             ]
           },

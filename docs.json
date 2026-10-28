@@ -41,15 +41,19 @@
             "group": "Features",
             "icon": "sparkles",
             "pages": [
+              "platform/ask",
+              "platform/graphs",
               "platform/reviews",
               "concepts/review-a-pull-request",
               "platform/read-a-result",
               "concepts/colliding-pull-requests",
               "platform/verification",
-              "platform/learning",
-              "platform/graphs",
+              "platform/insights",
               "platform/wiki",
-              "platform/memory"
+              "platform/memory",
+              "platform/learning",
+              "platform/connectors",
+              "platform/hosted-mcp"
             ]
           },
           {

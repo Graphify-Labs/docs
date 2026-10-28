@@ -1,0 +1,91 @@
+---
+title: "Connectors"
+sidebarTitle: "Connectors"
+description: "Connect coding agents over MCP and connect source providers, docs, issue trackers, and CI to Graphify from the Connectors page in the Console."
+keywords: ["graphify connectors", "graphify integrations", "connect github", "api token"]
+surface: "cloud"
+---
+
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
+**Connectors** is where you connect Graphify to the rest of your tools. It has two tabs: **MCP**, for coding agents, and **Integrations**, for source providers, knowledge sources, issue trackers, and CI. Connected sources give reviews and answers more context; none of them gives a verdict on their own.
+
+<Note>
+**Use Connectors when** you're setting up an agent, connecting a code provider, or creating a token for a pipeline.
+</Note>
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- For workspace tokens, owner or admin rights. Other members need to ask an owner or admin.
+
+## The MCP tab
+
+Pick your coding agent and follow its setup. The tab fills in your endpoint and shows the config file to edit. See [Hosted MCP](/platform/hosted-mcp) for each client.
+
+## The Integrations tab
+
+Integrations are grouped by category. Use **Filter integrations** to find one.
+
+| Category | Examples on the page |
+| --- | --- |
+| Source control | GitHub and GitLab connections clone for indexing, receive review events, and post results. |
+| Knowledge | Documents from Google Drive and other team doc stores. |
+| Project management | Issue context for pull requests. |
+| Communication | Sharing reviews and questions in channels. |
+| Developer tools | Workspace API tokens, error tracking, and CI test selection. |
+
+Which integrations you can connect depends on your workspace. Tiles that aren't available yet are marked as coming.
+
+## Create a workspace token
+
+Some integrations, such as a CI pipeline, authenticate with a workspace token instead of a sign-in.
+
+<Steps>
+  <Step title="Open API Token">
+    In **Integrations**, open **API Token** and select **Generate a token**.
+  </Step>
+  <Step title="Copy it now">
+    The token is shown once. Copy it straight into your secret store.
+  </Step>
+  <Step title="Rotate when needed">
+    Replacing a token revokes the current one. Update your pipeline secret afterwards.
+  </Step>
+</Steps>
+
+<Warning>
+Never commit a token to a repository or paste it into a chat. Store it as a CI secret.
+</Warning>
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| **Reconnect needed** | The provider's access expired. Reconnect it from the tile. |
+| You can't create a token | Ask your team owner or an admin. |
+| Repositories missing after connecting GitHub | Use **Manage installation on GitHub** to grant the repositories. |
+| A draft fix can't be opened | Grant GitHub write access, then select **I've granted access. Re-check**. |
+
+<AccordionGroup>
+  <Accordion title="Where is Google Drive set up?">
+    See [Google Drive](/platform/google-drive).
+  </Accordion>
+  <Accordion title="Where do I manage connected repositories?">
+    In **Repositories**. See [Repositories](/platform/repositories).
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Hosted MCP" icon="plug" href="/platform/hosted-mcp">
+    Connect a coding agent.
+  </Card>
+  <Card title="Pull request reviews" icon="code-pull-request" href="/platform/reviews">
+    What connected providers make possible.
+  </Card>
+</Columns>
+
+<HostedMcpCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

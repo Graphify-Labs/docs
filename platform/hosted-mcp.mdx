@@ -1,0 +1,141 @@
+---
+title: "Hosted MCP"
+sidebarTitle: "Hosted MCP"
+description: "Connect Claude Code, Codex, Cursor, VS Code, Copilot CLI, and other MCP clients to Graphify's hosted MCP server at api.graphify.com/mcp, signed in with OAuth."
+keywords: ["graphify mcp", "hosted mcp server", "claude code mcp", "cursor mcp", "codex mcp"]
+surface: "cloud"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+The **hosted MCP** server gives your coding agent the same graph you see in the Console. Instead of grepping through files, your agent asks Graphify for the entities, relationships, and paths it needs, and gets grounded answers for a fraction of the tokens.
+
+```text
+https://api.graphify.com/mcp
+```
+
+You sign in with OAuth from your client. There's no API key to paste.
+
+<Note>
+**Use the hosted MCP when** your repositories are indexed in Graphify and you want every agent on your team to use the same graph. To run a server on your own graph, see the [local MCP server](/open-source/mcp-server).
+</Note>
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- At least one indexed repository.
+- An MCP client that supports remote HTTP servers.
+
+## Connect your client
+
+The **MCP** tab under **Connectors** in the Console shows the setup for your client, with your endpoint filled in.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+    ```
+    Then start Claude Code, run `/mcp`, select **graphify**, and choose **Authenticate**. Finish the sign-in in your browser. Until you authenticate, no tool call reaches Graphify.
+
+    To share it with a repository instead, add `.mcp.json`:
+
+    ```json .mcp.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "type": "http",
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex mcp add graphify --url https://api.graphify.com/mcp
+    codex mcp login graphify
+    ```
+    The login step is required. Without it, Graphify rejects the connection.
+  </Tab>
+  <Tab title="Cursor">
+    ```json ~/.cursor/mcp.json
+    {
+      "mcpServers": {
+        "graphify": {
+          "url": "https://api.graphify.com/mcp"
+        }
+      }
+    }
+    ```
+    Use `.cursor/mcp.json` to scope it to one repository. Cursor shows **Needs login** until you finish the one-time sign-in.
+  </Tab>
+  <Tab title="Copilot CLI">
+    ```bash
+    copilot mcp add --transport http graphify https://api.graphify.com/mcp
+    ```
+    Copilot CLI signs in on first connect. If you edit `~/.copilot/mcp-config.json` by hand, include `"tools": ["*"]`, or the tools stay unavailable to the model.
+  </Tab>
+</Tabs>
+
+The Console also has setup for VS Code, Windsurf, Cline, Continue, JetBrains, Zed, Goose, Gemini CLI, Kiro, and other clients, including one-click install links where a client supports them.
+
+## Scope it to one repository
+
+Add `?repo=` with the repository's full name to set a default:
+
+```text
+https://api.graphify.com/mcp?repo=acme/payments
+```
+
+## Test the connection
+
+Ask your agent:
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+```
+
+If you belong to several workspaces, ask it to switch with `set_workspace` first.
+
+## What your agent can do
+
+Every tool is read-only: nothing can modify your code, the graph, or your account. The tools include:
+
+| Tool | Does |
+| --- | --- |
+| `query_graph` | Search entities and relationships across the indexed graph. |
+| `get_node` | Fetch one node with its edges, file span, and confidence tags. |
+| `path` | Trace the grounded path between two entities. |
+| `explain_style` | Summarise the conventions a module actually follows. |
+| `list_repositories` | List the repositories you can access. |
+| `set_workspace` | Switch to another workspace you belong to. |
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| Client shows "needs authentication" | Run the client's sign-in step (`/mcp` → Authenticate, or `codex mcp login graphify`). |
+| `list_repositories` is empty | You're in a workspace with no indexed repositories. Use `set_workspace`. |
+| Copilot connects but has no tools | Add `"tools": ["*"]` to its config. |
+| Copilot on github.com can't connect | Copilot's coding agent and code review only support static header credentials, not OAuth sign-in, so they can't use this endpoint yet. |
+
+<AccordionGroup>
+  <Accordion title="Does the hosted MCP see my local changes?">
+    No. It serves the indexed graph. For uncommitted work, use the [local MCP server](/open-source/mcp-server).
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Ask" icon="comments" href="/platform/ask">
+    The same graph, in the Console.
+  </Card>
+  <Card title="Memory" icon="brain" href="/platform/memory">
+    What your agents remember.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

@@ -1,64 +1,96 @@
 ---
 title: "Agent memory"
-description: "Graphify's shared agent memory: explore the facts your agents remember, the entities they mention, and the source evidence behind each one."
+sidebarTitle: "Memory"
+description: "Explore the facts your coding agents remember about a repository in Graphify, organised by code entity, with provenance and graph anchors behind every fact."
+keywords: ["graphify memory", "agent memory", "shared memory mcp", "code grounded recall"]
 surface: "cloud"
-hideFooterPagination: true
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-**Memory** makes recorded agent context inspectable in [Graphify](https://app.graphify.com). Facts are organized around the entities they describe, with source and grounding information alongside them.
+**Memory** holds your repository's decisions, incidents, and lessons as your coding agents record them, with evidence and history for your team and your agents. Facts are consolidated per code entity, not per conversation, so when an agent edits a function, it recalls what's known about that function.
 
-## How Memory complements your agent
+<Note>
+**Use Memory when** you want to know why something is the way it is, what an agent learned in an earlier session, or which facts are tied to code that still exists.
+</Note>
 
-Your agent can keep its own preferences and session memory. Graphify adds shared knowledge connected to your repositories, with sources and history that authorized agents and teammates can inspect.
+## Before you start
 
-Some knowledge can overlap. Graphify does not automatically synchronize with or replace another memory store. Existing visibility and access controls still apply. Explicit instructions and human decisions take precedence over inferred conventions.
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- An indexed repository.
+- A coding agent connected through the [hosted MCP](/platform/hosted-mcp). Memories are written by agents, so a new repository has none.
 
-Use the record's source and history views to distinguish what code shows, what was delivered to an agent, and what a person explicitly confirmed. Delivery is not proof that an agent followed the guidance. Attribute a design choice to someone only when a recorded decision supports it.
+## How it works
 
-## Explore remembered context
+<Steps>
+  <Step title="Agents record">
+    Connected agents write memories over MCP or the HTTP endpoint. Memories are scoped to your workspace.
+  </Step>
+  <Step title="Distil">
+    A model turns raw memories into candidate facts.
+  </Step>
+  <Step title="Merge by rule">
+    Duplicates fold by rule, never by model, so merging is deterministic.
+  </Step>
+  <Step title="Anchor">
+    Each fact is anchored to the code entity it describes when one resolves. Provenance and anchors survive merging.
+  </Step>
+</Steps>
 
-1. Open **Memory** and select a repository.
-2. Search for a fact or entity, or choose an entity from the list.
-3. Read its remembered facts and inspect the available source references, provenance, and graph anchors.
+## Explore memory
 
-<img src="https://graphify.com/assets/shots/memory.webp" alt="Graphify Memory showing remembered facts, entities, and source grounding" width="1704" height="910" className="block h-auto w-full" />
+<Steps>
+  <Step title="Open Memory">
+    Open **Memory** in the Console and choose a **Repository**.
+  </Step>
+  <Step title="Recall">
+    Use **Recall a fact, entity, or anchor** to search, or pick from **Memory entities**.
+  </Step>
+  <Step title="Inspect a fact">
+    Read the **Remembered facts** for an entity, with their source turns and the graph node they're anchored to.
+  </Step>
+</Steps>
 
-Use memory to recover context from earlier agent work, investigate why a fact was recorded, and connect it to the current code graph. Coverage and grounding metrics help explain how much recorded context has a corresponding graph anchor.
+The **Memory summary** shows **Entities covered**, how many facts are **Grounded**, and **Tokens saved**.
 
-## Grounding and provenance
+## Grounded and ungrounded facts
 
-A remembered statement and an extracted code relationship are different kinds of evidence. Check where a fact came from and whether it is linked to a graph node. Source references and provenance are more useful than treating every stored fact as equally authoritative.
+A fact is **grounded** when it's anchored to a code node that still resolves. Ungrounded facts are normal, not errors: a decision about process, or about code since deleted, has nothing to anchor to.
 
-For current implementation details, follow the graph anchor or open [Graphs](/platform/graphs). Read [provenance labels](/concepts/provenance) when evaluating an inferred connection.
+A remembered fact and an extracted code relationship are different kinds of evidence. For the current behaviour, follow the anchor to [Graph explorer](/platform/graphs) and read the code. Explicit instructions and human decisions take precedence over anything inferred.
 
-## Connect an agent
+## How Memory fits with your agent's own memory
 
-Use **Connect an agent**, or open the workspace's **MCP** page, to connect your coding assistant. See [Connect agents and integrations](/platform/connections).
+Your agent can keep its own preferences and session notes. Graphify adds shared knowledge tied to your repositories that other agents and teammates in the workspace can inspect. Graphify doesn't sync with or replace another memory store.
 
-An empty repository has no recorded memories yet. Connect an agent and use the workspace's memory capabilities before expecting facts to appear.
+## Verify and troubleshoot
 
-## Memory and learning
+| Symptom | Fix |
+| --- | --- |
+| Memory is empty | Select **Connect an agent** and connect one over MCP. |
+| **Source turns are unavailable** | The original conversation turns can't be loaded. The fact and its anchor remain. |
+| Many facts ungrounded | Expected for process decisions. For code facts, check the code still exists. |
 
-Memory stores contextual facts around entities. [Learning](/platform/learning) uses pull request feedback to adjust advisory reviews. Both are Cloud features, with separate purposes and controls.
+<AccordionGroup>
+  <Accordion title="Who can see memories?">
+    Memories are scoped to the workspace they were written in. Workspace access controls apply.
+  </Accordion>
+  <Accordion title="Is there a local equivalent?">
+    Graphify Local keeps work memory in your repository. See [Work memory](/open-source/features/work-memory).
+  </Accordion>
+</AccordionGroup>
 
-## Next steps
-
-<HostedMcpCard />
+## What's next
 
 <Columns cols={2}>
-  <Card title="Learning" icon="graduation-cap" href="/platform/learning">
-    How review feedback reduces noise.
+  <Card title="Hosted MCP" icon="plug" href="/platform/hosted-mcp">
+    Connect the agents that write memory.
   </Card>
-  <Card title="Wiki" icon="book-open" href="/platform/wiki">
-    Generated pages for every repository.
+  <Card title="Learning" icon="graduation-cap" href="/platform/learning">
+    How review feedback tunes reviews.
   </Card>
 </Columns>
 
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+<HostedMcpCard />
 
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-<a href="/platform/wiki" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Wiki</span></a>
-<a href="/platform/reviews" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Pull request reviews</span></a>
-</div>
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

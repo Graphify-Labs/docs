@@ -1,63 +1,90 @@
 ---
 title: "Wiki"
-description: "Read, search, and ask questions about the Wiki Graphify generates for each repository from its code knowledge graph."
+sidebarTitle: "Wiki"
+description: "Read, search, and ask questions about the wiki Graphify generates for each repository from its code knowledge graph, with a confidence trail on every page."
+keywords: ["graphify wiki", "generated code documentation", "codebase wiki", "ask the wiki"]
 surface: "cloud"
-hideFooterPagination: true
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-**Wiki** turns an indexed repository into browsable documentation connected to its code graph. Open **Wiki** in [Graphify](https://app.graphify.com), then select a repository.
+**Wiki** turns an indexed repository into a browsable knowledge base: its subsystems, its load-bearing abstractions, and how they connect. Pages are generated from the code knowledge graph, and each one keeps a confidence trail, so you know which statements were read from the code and which were inferred.
 
-## Read your repository's wiki
+<Note>
+**Use the wiki when** you're onboarding to a repository, explaining it to someone new, or looking for the right place to start reading code.
+</Note>
 
-Start with **Overview**, then use the article index to explore communities and concepts. The table of contents moves between sections of the current article. Links connect related articles and, where a graph reference can be resolved, open the corresponding code context in **Graphs**.
+## Before you start
 
-The wiki is generated alongside the repository's code graph. Articles describe the indexed build, so check the repository's indexing state when comparing them with newer code.
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- An indexed repository. The wiki is generated from a build, so a new repository shows **No wiki for this build yet** until its build finishes.
+- **Wiki** in your workspace navigation. If you don't see it, it isn't turned on for your workspace.
 
-## Search or ask
+## Read the wiki
 
-The wiki provides two ways to investigate a question:
+<Steps>
+  <Step title="Open it">
+    Open **Wiki** in the Console and choose a **Repository**.
+  </Step>
+  <Step title="Pick an article">
+    The **Articles** index lists every page. Use **Search pages** or **Find in the wiki** to jump to a topic.
+  </Step>
+  <Step title="Read">
+    Each article has **Key components**, diagrams you can expand, and **Relevant source files**. **On this page** lists its sections, and **Previous page** and **Next page** move through the wiki in order.
+  </Step>
+  <Step title="Go to the code">
+    **Open the source** opens the file. **Show in the graph** opens the component in [Graph explorer](/platform/graphs).
+  </Step>
+</Steps>
 
-| Mode | Use it for |
+Turn on **Reading mode** to hide the surrounding Console while you read.
+
+## Confidence labels
+
+| Label | Means |
 | --- | --- |
-| **Search** | Find words and phrases inside article bodies. Results identify matching articles and highlight relevant text. |
-| **Ask** | Ask a question that needs connected code context, such as ownership, a call path, or where a behavior lives. |
+| Verified | Read directly from the code. |
+| Inferred | Worked out by analysis. |
+| Needs review | A low-confidence guess. Check the source. |
 
-Search first when you know a name or phrase. Use **Ask the wiki instead** when you need an explanation across relationships. Open the referenced articles and graph nodes to inspect the evidence behind an answer.
+## Ask the wiki
 
-## Share a useful page
+Select **Ask the wiki** (or **Ask about this project**) and type what you'd like to understand. Answers draw on the same graph as the wiki. For questions about one function or call path, [Ask](/platform/ask) is more direct.
 
-The current repository and article are reflected in the page URL. Copy that URL to direct a teammate to the same article. They need access to the corresponding Cloud workspace and repository.
+## Large repositories
 
-If the article no longer exists in the current build, the reader falls back to the wiki Overview.
+For a very large graph, the wiki covers only its largest areas, and some cross-links may not resolve. If a wiki is **too large to load**, contact support to raise its size limit.
 
-## When the wiki is empty
+## Verify and troubleshoot
 
-- **Repository not indexed**: enable indexing and let the next repository build finish.
-- **Indexing in progress**: the wiki appears with the completed code graph.
-- **No wiki artifact for an older build**: re-index the repository to produce a current wiki.
+| Message | What to do |
+| --- | --- |
+| **No repositories yet** | Connect and index a repository to generate its wiki. |
+| **No wiki for this build yet** | Wait for the build to finish. |
+| **Wiki temporarily unavailable** | Try again in a moment. |
+| **Wiki is locked** | Update your subscription to restore wiki access. |
+| **Wiki is too large to load** | Contact support to raise the size limit. |
 
-Wiki availability depends on workspace access. If the page reports an unavailable or oversized artifact, follow its displayed message; that state is different from an empty search result.
+<AccordionGroup>
+  <Accordion title="How current is the wiki?">
+    It reflects the latest build of the repository. Check the build metadata on the page.
+  </Accordion>
+  <Accordion title="Can I generate a wiki locally?">
+    Yes. Graphify Local can export a Markdown wiki with `graphify export wiki`. See [Exports](/open-source/features/exports).
+  </Accordion>
+</AccordionGroup>
 
-For graph navigation, see [Explore your graphs](/platform/graphs). For a local Markdown export, see [Export and reuse your graph](/open-source/features/exports).
-
-## Next steps
-
-<HostedMcpCard />
+## What's next
 
 <Columns cols={2}>
-  <Card title="Repository graphs" icon="network" href="/platform/graphs">
-    Explore the graph behind the wiki.
+  <Card title="Graph explorer" icon="diagram-project" href="/platform/graphs">
+    Explore what a page describes.
   </Card>
-  <Card title="Connect Google Drive" icon="hard-drive" href="/integrations/google-drive">
-    Add documents to the wiki.
+  <Card title="Memory" icon="brain" href="/platform/memory">
+    See what your agents remember.
   </Card>
 </Columns>
 
-<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+<HostedMcpCard />
 
-<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-<a href="/platform/graphs" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Repository graphs</span></a>
-<a href="/platform/memory" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span><span className="text-[15px] font-semibold leading-6">Agent memory</span></a>
-</div>
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

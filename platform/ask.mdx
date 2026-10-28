@@ -1,0 +1,103 @@
+---
+title: "Ask questions about your code"
+sidebarTitle: "Ask"
+description: "Ask Graphify plain-language questions about an indexed repository and get answers that cite real graph nodes, trace real paths, and say so when no path exists."
+keywords: ["graphify ask", "ask your codebase", "grounded code answers", "plan a change"]
+surface: "cloud"
+---
+
+import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+
+**Ask** is where you question a repository in plain language. Graphify answers from the code knowledge graph of that repository, not from a model's guess: every answer cites the nodes it used and the path it followed. When the graph has no path that answers your question, Ask tells you it found no answer instead of inventing one.
+
+<Note>
+**Use Ask when** you want to know who owns some behaviour, how two parts of the code connect, or where something actually lives, before you open an editor.
+</Note>
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com).
+- At least one repository with the status **Indexed**. See [Index a repository](/concepts/index-a-repository).
+
+## How it works
+
+<Steps>
+  <Step title="Pick a repository">
+    Open **Ask** in the Console and choose the repository to query.
+  </Step>
+  <Step title="Ask a question">
+    Type a question about ownership, call paths, or where behaviour lives. While it works, Ask shows **Tracing the graph**.
+  </Step>
+  <Step title="Read the grounded answer">
+    The answer is a short explanation plus the graph nodes it cites. **Traced through** lists the path it followed, so you can check every step.
+  </Step>
+  <Step title="Go deeper">
+    Select **Open the graph** to see the cited nodes in [Graph explorer](/platform/graphs).
+  </Step>
+</Steps>
+
+## Two modes
+
+<Tabs>
+  <Tab title="Ask">
+    Questions and grounded answers. Good starters:
+
+    - "Where is the session token validated?"
+    - "What calls `create_invoice`?"
+    - "How does the upload worker reach the storage client?"
+  </Tab>
+  <Tab title="Plan a change">
+    Select **Plan a change**, then describe what should work differently. For example: *let users retry a failed upload without selecting the file again.* If you know where to start, add a **File or function**.
+
+    Graphify finds the relevant code and suggests a plan with source links. It won't edit your code.
+  </Tab>
+</Tabs>
+
+## Link straight to a question
+
+Ask reads the URL, so you can share a question or open a mode directly:
+
+| URL | Opens |
+| --- | --- |
+| `/<workspace>/ask?q=where%20is%20auth%20handled` | Ask, with the question already submitted |
+| `/<workspace>/ask?mode=change` | Ask, with **Plan a change** open |
+
+## When Ask has no answer
+
+**No answer found for this question** means the graph has no path that supports an answer. This is deliberate: a near-miss is reported as no answer rather than a confident guess. To get an answer:
+
+- Name a real symbol, file, or module.
+- Ask about one relationship at a time.
+- Check the repository finished indexing. If Ask says it **isn't connected to your code yet**, the repository has no graph.
+
+## Verify and troubleshoot
+
+| Symptom | Fix |
+| --- | --- |
+| No repositories to pick | Connect and index a repository from **Repositories**. |
+| Every question has no answer | Indexing may still be running. Wait for **Indexed**. |
+| Answer cites the wrong module | Open the cited node in the graph and refine the question with the correct name. |
+
+<AccordionGroup>
+  <Accordion title="Does Ask change my code?">
+    No. Both modes only read the graph. **Plan a change** produces a plan with links, not edits.
+  </Accordion>
+  <Accordion title="Can my coding agent ask the same questions?">
+    Yes. Connect it to the [hosted MCP](/platform/hosted-mcp) and it queries the same graph.
+  </Accordion>
+</AccordionGroup>
+
+## What's next
+
+<Columns cols={2}>
+  <Card title="Graph explorer" icon="diagram-project" href="/platform/graphs">
+    See the nodes behind an answer.
+  </Card>
+  <Card title="Wiki" icon="book-open" href="/platform/wiki">
+    Read the repository as documentation.
+  </Card>
+</Columns>
+
+<HostedMcpCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

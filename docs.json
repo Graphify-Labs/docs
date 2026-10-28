@@ -262,20 +262,8 @@
   "navbar": {
     "links": [
       {
-        "href": "https://graphify.com",
-        "label": "Product"
-      },
-      {
-        "href": "https://github.com/Graphify-Labs/graphify",
-        "label": "GitHub"
-      },
-      {
         "label": "Support",
         "href": "https://discord.gg/graphify"
-      },
-      {
-        "label": "Log in",
-        "href": "https://app.graphify.com/login"
       }
     ],
     "primary": {

@@ -40,3 +40,18 @@ html:not(.dark) #footer a[class*="text-gray-950/50"]:hover {
 html:not(.dark) a[data-layout-item="toc-item-link"][data-active="true"] {
   color: #0b6b3b; /* 6.1:1 */
 }
+
+/* Accessible green for buttons and badges (was #118d4f: white 4.25:1,
+   green on mint tint 3.75:1). #0e7a43 gives 5.41:1 and 4.71:1. */
+a[href*="app.graphify.com/signup"].group > span:first-child {
+  background-color: var(--g-accent-strong, #0e7a43) !important;
+}
+html:not(.dark) #sidebar-content a.bg-primary\/10,
+html:not(.dark) #sidebar a.bg-primary\/10 {
+  color: var(--g-accent-strong, #0e7a43);
+}
+html:not(.dark) .graphify-ask-form button,
+html:not(.dark) a.graphify-ask-cite:hover {
+  border-color: var(--g-accent-strong, #0e7a43);
+  background-color: var(--g-accent-strong, #0e7a43);
+}

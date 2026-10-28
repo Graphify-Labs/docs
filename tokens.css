@@ -6,6 +6,9 @@
   --g-text-muted: #45594d;
   --g-text-subtle: #586b60;
   --g-accent: #118d4f;
+  /* Accessible green for filled buttons and badges only: white text 5.4:1,
+     on the 10% mint tint 4.7:1. Brand accent stays #118d4f elsewhere. */
+  --g-accent-strong: #0e7a43;
   --g-focus: #4dea9c;
   --g-surface: #ffffff;
   --g-surface-subtle: #f6faf7;

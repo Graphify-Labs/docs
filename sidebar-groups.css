@@ -21,7 +21,8 @@ html.dark .sidebar-group-header svg {
 
 /* Mobile nav drawer (390px, 768px): 44px tap targets, tighter group rhythm. */
 #mobile-nav .sidebar-group a,
-#mobile-nav #navigation-items li > a {
+#mobile-nav #navigation-items li > a,
+#mobile-nav #navigation-items li > button {
   min-height: 44px;
   align-items: center;
   padding-top: 0.5rem;

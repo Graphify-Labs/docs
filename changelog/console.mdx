@@ -1,6 +1,6 @@
 ---
 title: "Console"
-description: "Weekly changes to the Graphify console."
+description: "Changes to the Graphify console."
 sidebarTitle: "Console"
 mode: "wide"
 hideFooterPagination: true
@@ -8,27 +8,24 @@ rss: true
 icon: "layout-dashboard"
 ---
 
-<Update label="2026-10-29" description="Reconnect GitLab from the Overview, and keep Pro during your trial">
-## Reconnect GitLab from the Overview, and keep Pro during your trial
+<Update label="2026-10-29" description="Reconnect GitLab from the Overview">
+## Reconnect GitLab from the Overview
+
+If Graphify loses access to GitLab, **Needs attention** on the Overview now shows a **GitLab disconnected** row. Owners and admins can fix it right there with **Reconnect GitLab**, and members are asked to check with a workspace owner or admin.
 
 ### New
-- **GitLab:** If Graphify loses access to GitLab, **Needs attention** on the Overview shows a **GitLab disconnected** row. Owners and admins can fix it right there with **Reconnect GitLab**, and members are asked to check with a workspace owner or admin.
-- **Billing:** During a Pro trial, **Keep Pro** on the Billing page and in the trial banner lets you add payment details early. Your trial keeps its end date and price, and backing out of checkout changes nothing.
-- **Repositories:** Installed the Graphify GitHub App straight from GitHub? It now shows up on the Repositories page and in onboarding as installed but not connected, with a **Claim** button to bring it into your workspace.
+- **Repositories:** Installed the Graphify GitHub App straight from GitHub? It now shows up on the Repositories page and in onboarding with a **Claim** button, so you can bring it into your workspace.
 
 ### Improved
-- **Overview:** The prompt copied by **Connect agent** no longer names a repository, so your agent asks which one you want to work on.
-- **Overview:** Placeholders keep the page's real layout while it loads, so nothing jumps when your data arrives.
-- **Sidebar:** On shorter screens the sidebar is more compact and fades out at the bottom when there's more to scroll.
-- **Console:** Pages left open stop refreshing in the background and catch up when you come back to the tab.
+- **Connect agent:** The copied prompt no longer names a repository, so your agent asks which one you want to work on.
 </Update>
 
 <Update label="2026-10-28" description="A wiki that reads like an introduction, and a calmer Overview">
 ## A wiki that reads like an introduction, and a calmer Overview
 
 ### Improved
-- **Wiki:** The repository overview now opens with its own write-up of your codebase instead of a generic intro box. Links to other areas are underlined, so it's clear what you can click. **On this page** shows clean area names, and **Ask about this project** now sits at the end of the article. Citations that point to `README.rst` or a `README` with no extension now open the file too.
-- **Overview:** The page no longer jumps around while it refreshes in the background. **Needs attention** only shows up when there's something to act on, like findings, failed reviews or failed indexing. A quick connection blip no longer swaps your trial banner for an error. If three refreshes in a row fail, a single toast tells you changes are paused, and it clears once the connection recovers.
+- **Wiki:** The repository overview now opens with its own write-up of your codebase instead of a generic intro box, and **Ask about this project** sits at the end of the article.
+- **Overview:** The page no longer jumps around while it refreshes, and **Needs attention** only shows up when there's something to act on, like findings, failed reviews or failed indexing.
 </Update>
 
 <Update label="2026-10-27" description="Clearer graph states, and pickers grouped by index">
@@ -37,10 +34,6 @@ icon: "layout-dashboard"
 When the Graph page can't show a graph, it now tells you why and gives you one thing to do next. You'll see states like **Building your graph**, **Indexing stopped**, **Your graph couldn't finish building** and **This graph is too large to display**, plus a clear message when you've hit a repository, size, daily or monthly indexing limit. A combined graph that failed to build no longer retries on its own when you open it. You decide when to rebuild with **Retry build**.
 
 Repository pickers across the console now group repositories under **Indexed** and **Not indexed**. Paused repositories used to be left out of pickers like Ask and Patterns. Now they all show up: paused ones that were indexed before stay under **Indexed**, and ones that haven't finished a first index go under **Not indexed**.
-
-### Improved
-- **Plans:** On Free, upgrade prompts are shorter, and the Pro card calls out **Upstream and downstream dependencies** and **Incident memory for agents**.
-- **Limits:** Graph size limit messages say the size is an estimate.
 
 ### Fixed
 - **Reviews:** Opening a review's architectural impact on a large graph shown as communities no longer fades out every node.
@@ -53,23 +46,15 @@ The console has a new **Dark** theme: a neutral near-black with no tint and stro
 
 Pick your theme from **Theme** in the user menu, or from the new **Appearance** tab in **Settings**. You can choose **System**, **Light**, **Dark** or **Pine**. The choice is saved in your browser, and Dark is the default on a new device. If you'd picked Dark before, you now get the new neutral Dark, so switch to Pine to keep the green look.
 
-Billing is clearer too. On Free, the plan card shows how many of your 3 indexed repositories you've used. If you start Pro checkout from a repository and back out, the console keeps that repository and your monthly or annual choice, so **Resume checkout** picks up where you stopped. Once payment is confirmed, one click takes you back to the repository you were working on.
+On Free, the plan card now shows how many of your 3 indexed repositories you've used.
 
 ### New
-- **Billing:** If you're on a trial, Billing shows its end date and your subscription price, with a **Manage trial** button.
 - **Agent setup:** While you wait for your agent, a status line tells you whether Graphify has seen its call in this workspace, in another one, or not yet.
 - **Agent setup:** Once a repository is indexed, agent setup suggests starter tasks drawn from your code.
 - **Overview:** The **Connect agent** button in the header copies a connection prompt you can paste into Claude Code, Codex, Cursor or another agent.
 
 ### Improved
-- **Themes:** Secondary and error text is easier to read in the dark themes, and error and not-found pages follow your theme.
 - **Wiki:** When a repository has no wiki yet, the page says why (not indexed, indexing, paused or failed) and gives you the right button: **Index now**, **Resume indexing** or **Retry indexing**.
-- **Repository pickers:** Each repository shows a GitHub or GitLab icon.
-- **Console:** Scrollbars are thinner and quieter, and the sidebar no longer shows one.
-
-### Fixed
-- **Overview:** **Needs attention** no longer fails when it loads slowly. If it can't load, the tile hides and comes back when fresh data arrives.
-- **Wiki:** Switching back to your default repository keeps that choice.
 
 [Read about billing](/platform/support/pricing)
 </Update>
@@ -81,8 +66,6 @@ The MCP setup URL can now pin a default repository, for example `https://api.gra
 
 ### Improved
 - **Onboarding:** When you finish setup, you land on agent setup so you can connect your agent right away.
-- **Onboarding:** Repositories with no commits are refused when you select them, not later when you press **Index**.
-- **Onboarding:** If your GitHub installation shares no repositories, the console names the installation and links straight to its settings.
 - **Overview:** A **Connect your agent** card stays on the Overview until your agent makes its first call.
 - **Onboarding and Settings:** You can see which GitHub permissions Graphify has, and whether access is missing or just could not be checked.
 
@@ -98,15 +81,7 @@ Verification results now say in plain language what was checked and what changed
 - **Ask:** The **Applied memory** panel shows which memories informed an answer.
 - **Overview:** A **Latest pull request** card shows the review verdict and verification result for the same commit, side by side.
 - **Repositories:** Repositories that GitHub reports as deleted, transferred to an account without Graphify, or no longer accessible to the Graphify GitHub App show a **No longer on GitHub** label on their row, and owners can remove them.
-- **Sign in:** The sign-in page marks the method you used last with a **Last used** label.
 
-### Improved
-- **Connectors:** **MCP** opens first, before **Integrations**.
-- **Dashboard:** When a rebuild is skipped because nothing changed, the console says so instead of promising a new run.
-- **Console:** Page descriptions and empty states are shorter and clearer.
-
-### Fixed
-- **Graph:** Repeated labels no longer appear, and square markers are back.
 </Update>
 
 <Update label="2026-10-11" description="Add repositories any time">
@@ -124,9 +99,7 @@ The **Repositories** page has an **Add** action in its header, so you can connec
 
 ### Improved
 - **Product tour:** The tour starts once your first graph is ready and shows agent setup second.
-- **Repository connection:** The connection screen is refreshed and Settings is simpler.
 - **Memory:** Memory stays off for a repository until its first index finishes.
-- **Sign up and sign in:** Buttons show a pending state while you wait.
 
 ### Fixed
 - **Repositories:** Paused repositories no longer flip back to **Indexed** after a refresh.
@@ -140,11 +113,9 @@ If your sign-up verification email got lost or expired, you can now request a ne
 
 ### Improved
 - **Members:** **Last active** shows real activity, from console use and agent calls, as a single line.
-- **Keyboard shortcuts:** Hints show `⌘` on macOS and `Ctrl` on Windows and Linux.
 
 ### Fixed
 - **Sign in:** Failed sign-in callbacks show an error you can act on instead of a blank error page.
-- **Notifications:** Toasts appear above open dialogs.
 </Update>
 
 <Update label="2026-09-27" description="Find unreferenced code">
@@ -167,11 +138,9 @@ The connect-agent page has a copy-paste rules card that tells your agent to pref
 
 ### Improved
 - **Overview:** The Overview shows a language breakdown for each repository.
-- **Billing:** The upgrade button no longer mentions a free trial when none applies.
 
 ### Fixed
 - **Access:** The Free plan always grants access to the dashboard.
-- **Memory:** Links to a memory stay on the right repository.
 </Update>
 
 <Update label="2026-09-13" description="A redesigned console">
@@ -187,10 +156,7 @@ The dashboard, sidebar, loading states, Members page and login page have a new d
 ### Improved
 - **Repositories:** When a repository cannot be indexed yet, the graph page and repository tile explain why. On the Free plan, you see Pro pricing and can upgrade from there.
 - **Onboarding:** The onboarding flow has a new layout and a walkthrough.
-- **Contributors:** Rows handle missing GitHub profile details, and a contributor is no longer linked to the wrong GitHub identity.
-
-### Fixed
-- **Graph:** The graph page loads behind a skeleton instead of jumping.
+- **Contributors:** A contributor is no longer linked to the wrong GitHub identity.
 
 [Take the console tour](/platform/console)
 </Update>
@@ -199,12 +165,6 @@ The dashboard, sidebar, loading states, Members page and login page have a new d
 ## Connect 30 agents
 
 The connect-agent page grows from 12 to 30 clients, grouped into **Coding agents** and **Cloud connectors**.
-
-### Improved
-- **Browser tabs:** The tab title names the open repository, so you can tell Graphify tabs apart.
-
-### Fixed
-- **Graph:** Groups that are ready while a member is still building now show correctly.
 
 [See all integrations](/integrations/overview)
 </Update>
@@ -235,11 +195,10 @@ PR reviews render diffs with a new viewer that uses the same syntax colors as Gi
 - **Workspaces:** The workspace switcher separates **Your workspace** from workspaces **Shared with you**.
 </Update>
 
-<Update label="2026-08-09" description="Sign-out and GitHub fixes">
-## Sign-out and GitHub fixes
+<Update label="2026-08-09" description="GitHub connection fix">
+## GitHub connection fix
 
 ### Fixed
-- **Sign out:** Signing out no longer leaves extra parameters in the URL.
 - **GitHub:** Connecting retries when a GitHub installation is out of date.
 </Update>
 
@@ -256,9 +215,6 @@ Once you finish setup, the wizard does not show again.
 ## A shorter, more honest setup
 
 The setup wizard has fewer steps, and features that are not ready show an honest **Coming soon** state.
-
-### Improved
-- **Onboarding:** You can enter your website without `https://`.
 
 ### Fixed
 - **Workspaces:** Signing in after your workspace is removed no longer fails.

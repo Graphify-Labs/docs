@@ -1,6 +1,6 @@
 ---
 title: "Graphify"
-description: "Weekly changes to Graphify's reviews, verification, Memory, MCP and indexing."
+description: "Changes to Graphify's reviews, verification, Memory, MCP and indexing."
 sidebarTitle: "Graphify"
 mode: "wide"
 hideFooterPagination: true
@@ -22,8 +22,6 @@ icon: "cloud"
 Agents can sign in with an MCP URL that pins a default repository, such as `https://api.graphify.com/mcp?repo=acme/api`.
 
 ### Improved
-- **Onboarding:** Graphify checks whether a repository's default branch has any commits before you index it.
-- **MCP:** Discovery and keep-alive requests answer faster.
 - **Indexing:** Rebuilding the same commit keeps your published graph available while it runs.
 
 ### Fixed
@@ -38,12 +36,10 @@ When you rebuild a repository that has not changed, Graphify now tells you the r
 
 ### Improved
 - **Reviews:** When a review is skipped because you reached a limit, the skip is visible. Reviews over the concurrency limit wait in line instead of being dropped.
-- **Verification:** The verification check reports output changes and disproved claims accurately.
 - **Plans:** Builds held back by the Free plan's graph limit publish after you upgrade.
 
 ### Fixed
 - **GitHub:** A repository you transfer to a new owner keeps its builds, reviews, verifications and memories.
-- **Verification:** Runs without a graph no longer warn that the graph may be out of date.
 - **MCP:** Agent sessions stay connected while Graphify deploys.
 </Update>
 
@@ -55,7 +51,6 @@ A review's headline now reflects what was actually checked. When tests did not r
 ### Fixed
 - **GitHub:** Installing the Graphify GitHub App from github.com, instead of from the console, now connects it to your workspace.
 - **Reviews:** Reviews that stalled on our side are recovered instead of discarded.
-- **MCP:** `list_repositories` hides repositories on a suspended GitHub installation.
 - **Sign in:** Sessions stay signed in through token refreshes.
 </Update>
 
@@ -67,8 +62,6 @@ Reviews run when a pull request is opened, reopened or marked ready, not on ever
 ### Improved
 - **Memory:** Automatic memories are written in plain language, without run IDs or commit hashes.
 - **Verification:** Verification compares against the merge base, and reports which changed code it covered.
-- **Members:** **Last active** reflects console use and agent calls.
-- **Sign up:** You can request a new verification email if the first one is lost.
 
 ### Fixed
 - **Ask:** Ask uses your published memories again.
@@ -88,7 +81,6 @@ Developer Memory is on by default for every repository you authorize.
 
 ### Improved
 - **GitHub:** New repositories appear as soon as you create them, and **Sync** re-reads GitHub on demand.
-- **Verification:** The verification list is filtered by repository on the server and pages quickly.
 
 ### Fixed
 - **Reviews:** Slow or failed GitHub deliveries no longer delay reviews for other repositories.
@@ -132,7 +124,6 @@ Repositories that were held back by a plan limit re-index as soon as you upgrade
 
 ### Fixed
 - **Indexing:** A graph that is too large fails with a clear error instead of retrying for hours.
-- **GitHub:** The approval link opens the installation's settings page instead of a missing page.
 </Update>
 
 <Update label="2026-08-23" description="One workspace you own, many you can join">

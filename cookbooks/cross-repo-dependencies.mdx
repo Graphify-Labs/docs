@@ -1,7 +1,7 @@
 ---
 title: "Map dependencies across multiple repositories"
 sidebarTitle: "Cross-repo dependencies"
-description: "Combine up to 100 repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others."
+description: "Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others."
 keywords: ["cross-repo dependency graph", "multi-repo dependencies", "microservices impact analysis", "polyrepo code graph", "what breaks across repositories"]
 surface: "both"
 hideFooterPagination: true
@@ -52,11 +52,11 @@ flowchart LR
 - Each repository you want to combine added and showing **Indexed** in **Repositories**. See [Repository indexing](/platform/repositories).
 - A coding agent that supports remote MCP servers, such as Claude Code, Codex, Cursor or VS Code.
 
-Combining graphs needs an active plan, and 12 repositories is more than the Free plan holds. To share one workspace graph with teammates instead of each person indexing separately, use a team workspace. See [plans and pricing](/platform/support/pricing).
+How many repositories you can index, and whether teammates share one workspace graph, depends on your plan. See [plans and pricing](/platform/support/pricing).
 
 ## Step 1: Pick the repositories that talk to each other
 
-A combined graph holds 1 to 100 repositories from your workspace, but bigger isn't better. Start with the repositories that actually import, call or share types with each other. For the team above:
+A combined graph holds two or more indexed repositories from your workspace, up to 100, but bigger isn't better. Start with the repositories that actually import, call or share types with each other. For the team above:
 
 | Combined graph | Repositories | Question it answers |
 | --- | --- | --- |
@@ -68,14 +68,14 @@ A repository can be in more than one combined graph. Leave out repositories that
 ## Step 2: Combine the graphs
 
 <Steps>
-  <Step title="Open Combine graphs">
-    In the Console, go to the cross-repository view and select **Combine graphs**.
+  <Step title="Open the Combine graphs dialog">
+    In the Console sidebar, open **Graphs** > **Cross-Repository** and select **Combine repositories**. You can also select **Combine graph** on **Overview**.
   </Step>
   <Step title="Pick repositories">
-    Select the repositories from Step 1 under **Repositories to combine**.
+    Under **Repositories**, search for and select the repositories from Step 1. Pick from the **Indexed** group. A repository that isn't indexed yet has no graph to combine.
   </Step>
   <Step title="Name it">
-    Enter a short name you'll type in prompts, such as `product-core`. A name is 2 to 120 characters.
+    Under **Graph name**, enter a short name you'll type in prompts, such as `product-core`, or leave it blank to use the suggested name. A name is 2 to 120 characters. Select **Combine graph**.
   </Step>
 </Steps>
 
@@ -83,7 +83,7 @@ The build moves through `queued`, `running`, then `ready`. When it's ready, the 
 
 ## Step 3: Read the cross-repo connections
 
-Open the combined graph. Two panels matter here:
+Open the combined graph. The stats header shows **Nodes**, **Edges** and a **Cross-repo** count, the number of connections between repositories. Two panels matter here:
 
 - **Cross-repo connections** lists the edges that cross a repository boundary: an import, call or reference in one repository that resolves to code in another.
 - **Possible cross-repo dependents** lists code in other repositories that could be affected by the node you select.

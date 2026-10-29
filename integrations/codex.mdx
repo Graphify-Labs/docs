@@ -7,6 +7,8 @@ hideFooterPagination: true
 icon: "code-xml"
 ---
 
+import { planTrial } from "/snippets/plan-trial.js";
+
 import { InstallButton } from '/snippets/install-button.mdx';
 
 import HostedOrLocal from '/snippets/hosted-or-local.mdx';
@@ -26,7 +28,7 @@ One click: install the official **Graphify** plugin by Graphify Labs from the Op
 
 ## Before you start
 
-- A Graphify account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
+- A Graphify account at [app.graphify.com](https://app.graphify.com). {planTrial}
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
 ## 1. Install the plugin
@@ -105,7 +107,7 @@ No. The hosted server answers from repositories already indexed in your Graphify
 
 ### Is the Graphify MCP server free?
 
-Every new account starts on a 14-day Pro trial. After the trial, the Free plan keeps the hosted server available for up to 3 indexed repositories, with no card required. See [Plans and pricing](/platform/support/pricing) for Pro and Teams.
+{planTrial} See [Plans and pricing](/platform/support/pricing) for Pro and Teams.
 
 ### Should I use the plugin or codex mcp add?
 

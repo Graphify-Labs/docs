@@ -7,6 +7,8 @@ hideFooterPagination: true
 icon: "radar"
 ---
 
+import { planTrial } from "/snippets/plan-trial.js";
+
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 Before you change a function or a file, ask your agent what the change reaches. Graphify reads the graph of your indexed repository and returns the connected code, the files where a change fans out most widely, and the tests linked to them.
@@ -15,7 +17,7 @@ Use this while you plan a change. After you open a pull request, [pull request r
 
 ## Before you start
 
-- An account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
+- An account at [app.graphify.com](https://app.graphify.com). {planTrial}
 - A repository with the status **Indexed**. See [Repositories and builds](/platform/repositories).
 - Your agent connected to the hosted MCP server at `https://api.graphify.com/mcp`. See [Code with an agent](/cookbooks/cloud-coding-agents).
 

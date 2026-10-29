@@ -7,6 +7,8 @@ hideFooterPagination: true
 icon: "git-pull-request-arrow"
 ---
 
+import { planTrial } from "/snippets/plan-trial.js";
+
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 Graphify reviews a pull request against the graph of your repository, so a finding can point past the diff to the callers and dependencies a change reaches. You read the review in **Reviews**, rerun it with a comment, and tell it which findings were right.
@@ -15,7 +17,7 @@ Reviews are advisory. They don't block a merge.
 
 ## Before you start
 
-- An account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then move to Free (up to 3 indexed repositories). No card is required.
+- An account at [app.graphify.com](https://app.graphify.com). {planTrial}
 - A repository with the status **Indexed**. See [Repositories and builds](/platform/repositories).
 - **PR reviews** switched on for the repository. It is on unless someone turned it off in **Repositories** > **Options**.
 

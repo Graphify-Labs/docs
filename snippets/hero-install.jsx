@@ -78,14 +78,27 @@ export const HeroInstall = () => {
   );
 };
 
-export const PromptBlock = ({ text }) => (
-  <div className="gfy-snippet">
-    <div className="gfy-snippet-bar">
-      <span className="gfy-snippet-title">Prompt for your coding agent</span>
-      <CopyButton text={text} label="Copy prompt for your coding agent" />
+export const PromptBlock = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+  const onCopy = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1600);
+      });
+    }
+  };
+  return (
+    <div className="gfy-snippet">
+      <div className="gfy-snippet-bar">
+        <span className="gfy-snippet-title">Prompt for your coding agent</span>
+        <button type="button" className="gfy-copy" onClick={onCopy} aria-label="Copy prompt for your coding agent">
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <div className="gfy-panel">
+        <pre className="gfy-pre"><code>{text}</code></pre>
+      </div>
     </div>
-    <div className="gfy-panel">
-      <pre className="gfy-pre"><code>{text}</code></pre>
-    </div>
-  </div>
-);
+  );
+};

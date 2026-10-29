@@ -7,8 +7,6 @@ surface: "cloud"
 icon: "message-square-text"
 ---
 
-import { planTrial } from "/snippets/plan-trial.js";
-
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 **Ask** is where you question a repository in plain language. Graphify answers from the code knowledge graph of that repository, not from a model's guess: every answer cites the nodes it used and the path it followed. When the graph has no path that answers your question, Ask tells you it found no answer instead of inventing one.
@@ -108,7 +106,7 @@ When the box is empty, Ask may show up to four questions under **Suggested from 
 
 - Each question goes to one repository. To compare repositories, ask each one, or use a [combined graph](/platform/graphs).
 - Your workspace can send 30 Ask requests a minute. Over that returns `429 rate_limited`. Wait a minute and ask again.
-- Ask needs an active plan. {planTrial}
+- Ask needs an active plan. The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required.
 
 ## Verify and troubleshoot
 

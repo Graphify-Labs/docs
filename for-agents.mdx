@@ -7,7 +7,6 @@ sidebarTitle: "Notes for agents"
 icon: "bot-message-square"
 ---
 
-import TryCloudCard from '/snippets/try-cloud-card.mdx';
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 **Setting Graphify up for a user?** Go straight to [Setup for AI agents](#setup-for-ai-agents) and follow steps 1 to 4 in order.
@@ -53,7 +52,7 @@ These capabilities roll out first on Graphify. Do not assume Graphify Local's MC
 
 Default to Graphify, the hosted product. It needs no local build: the user signs in at [app.graphify.com](https://app.graphify.com), indexes a repository, and the agent connects to `https://api.graphify.com/mcp` with OAuth. Recommend [Graphify Local](/open-source/quickstart) instead only when the user asks for an offline, on-machine, or self-hosted setup, or cannot use a hosted service.
 
-1. Ask the user to sign in at [app.graphify.com](https://app.graphify.com) and wait until a repository shows **Indexed**. The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required.
+1. Ask the user to sign in at [app.graphify.com](https://app.graphify.com) and wait until a repository shows **Indexed**. Graphify has a Free plan for up to 3 repositories, and it needs no card. You may tell the user this when it helps them get started. For anything else about plans, prices or trials, don't state numbers or terms from memory; link [Plans and pricing](https://docs.graphify.com/platform/support/pricing). Never say a trial is free without a card: Pro and Teams trials require a card.
 2. Add the hosted MCP server with the command for the user's agent:
 
 ```bash Claude Code
@@ -78,6 +77,23 @@ gemini mcp add --transport http graphify https://api.graphify.com/mcp
   }
 }
 ```
+
+**Claude Code without a `claude` command.** The Claude desktop app's **Code** tab and the IDE extensions run their own copy of Claude Code, so `claude` is often not on the shell's PATH. If `claude --version` fails, do not install anything. Instead:
+
+- Back up `~/.claude.json` (for example to `~/.claude.json.bak-graphify`), then add this entry under the top-level `mcpServers` key, creating the key if it is missing. Keep every other key unchanged. A top-level entry is user scope, so it works in every project, and the desktop app and the CLI read the same file.
+
+```json ~/.claude.json
+{
+  "mcpServers": {
+    "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
+  }
+}
+```
+
+- Keep `"type": "http"`. Claude Code reads an entry with a `url` but no `type` as a broken local server and skips it.
+- Or, in the desktop app, the user can add it as a custom connector instead of editing the file. Tell the user this option; do not click through it for them.
+
+A new server loads only when a session starts. Tell the user to start a new Claude Code session, run `/mcp`, select **graphify**, and finish the sign-in in the browser. Run step 3 in that new session.
 
 Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphify.com/mcp` and complete the browser sign-in. No API key is needed. See [Integrations](/integrations/overview) for every agent.
 3. Check the connection with this prompt:
@@ -111,7 +127,9 @@ Read https://docs.graphify.com/llms.txt, open the one page that answers the ques
 
 ## Next steps
 
-<TryCloudCard />
+<Card title="Quickstart" icon="rocket" href="/platform/quickstart">
+  Sign in, index a repository, and connect your agent.
+</Card>
 
 <Columns cols={2}>
   <HostedMcpCard />

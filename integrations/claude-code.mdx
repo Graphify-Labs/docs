@@ -48,7 +48,7 @@ To share the server with everyone who clones a repository, commit this `.mcp.jso
 
 Each teammate approves the project server once, then signs in as in step 2.
 
-### No `claude` command? Edit `~/.claude.json`
+### No `claude` command? Edit the config file
 
 The Claude desktop app's **Code** tab and the IDE extensions run their own copy of Claude Code, so a terminal may answer `command not found: claude`. You don't need to install the CLI. The desktop app and the CLI read the same `~/.claude.json`, so add the server there:
 
@@ -112,7 +112,7 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | What you see | What to do |
 | --- | --- |
 | `graphify` shows **Needs authentication** | Run `/mcp`, select **graphify**, and choose **Authenticate**. |
-| `command not found: claude` | You are in the desktop app or an IDE extension. Add the entry to `~/.claude.json` as in [No `claude` command?](#no-claude-command-edit-claudejson), then start a new session. |
+| `command not found: claude` | You are in the desktop app or an IDE extension. Add the entry to `~/.claude.json` as in [No `claude` command?](#no-claude-command-edit-the-config-file), then start a new session. |
 | Graphify works in one project but not another | You added it at local scope. Run the add command again with `--scope user`. |
 | **Pending approval** next to `graphify` | It comes from a project `.mcp.json`. Start `claude` in that repository and approve it. |
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |

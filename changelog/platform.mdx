@@ -8,6 +8,14 @@ rss: true
 icon: "cloud"
 ---
 
+<Update label="2026-10-29" description="Reconnect GitLab when access is revoked">
+## Reconnect GitLab when access is revoked
+
+### Fixed
+- **GitLab:** When GitLab revokes Graphify's access, Graphify stops retrying and asks you to reconnect GitLab instead of failing over and over in the background.
+- **GitHub:** If you uninstall and reinstall the Graphify GitHub App on the same account, your repositories move over to the new install, even when GitHub's uninstall event never reached us.
+</Update>
+
 <Update label="2026-10-25" description="Pin a default repository over MCP">
 ## Pin a default repository over MCP
 

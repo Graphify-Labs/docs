@@ -42,6 +42,8 @@ surface: "cloud"
 
 - `title`: sentence case.
 - `description`: one plain sentence. It appears under the page title, in search, and in `llms.txt`. No `[Local]`, `[Cloud]`, or `[Both]` prefix.
+- Keep `title` at 60 characters or fewer and `description` at 155 or fewer. CI fails the build when either is longer.
+- For the trial and Free plan line, import `planTrial` from `/snippets/plan-trial.js` and write `{planTrial}` instead of retyping it.
 - `surface`: `local`, `cloud`, or `both`. It's the source of truth for which product a page covers. Agents tell the surface from the page path, so keep Cloud pages under `platform/` and the Cloud MCP group, and Local pages under `guides/`, `reference/`, `mcp/`, and the Local skill group. If you change that layout, update the surface rules in `docs.json` (`markdown.instructions`) and `for-agents.mdx`.
 
 ## Page icons

@@ -430,7 +430,7 @@
       "In llms.txt, tell the surface from the page path. Graphify: /platform/ and /concepts/. Local: /open-source/. Most /integrations/ pages cover both, with a Graphify (hosted) tab and a Graphify Local tab. Everything else applies to both.",
       "graphifyy release notes are published at https://github.com/Graphify-Labs/graphify/releases and https://graphify.com/changelog. The current package version is on PyPI (https://pypi.org/project/graphifyy/).",
       "The official site is https://graphify.com. These docs are https://docs.graphify.com.",
-      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The JetBrains, ChatGPT, Codex, and Dots, and Vercel pages use the hosted server, not the ten-tool list. On pages with tabs, the Graphify (hosted) tab uses the hosted server and the Graphify Local tab uses the local skill or the ten-tool server.",
+      "The local MCP server is the ten tools in the MCP tool reference and reads a graph on the machine. The hosted server is https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key). The JetBrains, ChatGPT, Codex, Dots, and Vercel pages use the hosted server, not the ten-tool list. On pages with tabs, the Graphify (hosted) tab uses the hosted server and the Graphify Local tab uses the local skill or the ten-tool server.",
       "Read https://docs.graphify.com/llms.txt, then open one page's .md link. Use https://docs.graphify.com/llms-full.txt only when one page is not enough.",
       "To set up Graphify for a user, follow https://docs.graphify.com/for-agents.md#setup-for-ai-agents."
     ]

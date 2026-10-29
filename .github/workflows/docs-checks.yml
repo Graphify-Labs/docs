@@ -67,6 +67,27 @@ jobs:
           print(f"{len(redirects)} redirects OK")
           PY
 
+      - name: Title and description length (title <= 60, description <= 155)
+        run: |
+          python3 - <<'PY'
+          import glob, re, sys
+          bad = []
+          for f in sorted(glob.glob("**/*.mdx", recursive=True)):
+              if f.startswith(("snippets/", "node_modules/")):
+                  continue
+              m = re.match(r"---\n(.*?)\n---", open(f, encoding="utf-8").read(), re.S)
+              if not m:
+                  continue
+              for key, limit in (("title", 60), ("description", 155)):
+                  v = re.search(rf'^{key}:\s*"?(.*?)"?\s*$', m.group(1), re.M)
+                  if v and len(v.group(1)) > limit:
+                      bad.append(f"{f}: {key} is {len(v.group(1))} chars (max {limit})")
+          if bad:
+              print("Frontmatter over the SEO limits:", *bad, sep="\n  ")
+              sys.exit(1)
+          print("Titles and descriptions are within limits")
+          PY
+
       - name: Page icons (missing warns, duplicate in a group fails)
         run: |
           python3 - <<'PY'

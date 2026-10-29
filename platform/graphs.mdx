@@ -37,10 +37,10 @@ Select a code area to see its connections, or use **Filter the canvas by code ar
     Use **Find a node** to search by name, path, or repository. Prefix with a kind, such as `repo:`, to narrow results.
   </Step>
   <Step title="Read its connections">
-    The panel lists **Incoming connections** and **Outgoing connections**. Choose **How many connections to follow** to widen or narrow the view.
+    The panel shows the node's repository, path and code area, then lists its **Outgoing** and **Incoming** connections. In a combined graph, a **Cross-repo** list appears when the node has edges to another repository.
   </Step>
   <Step title="Check impact">
-    **What a change could affect** lists the possible dependents of the node.
+    **What a change could affect** counts the **Possible dependents** of the node. Choose a **Depth** of 1, 2 or 3 to widen or narrow it.
   </Step>
   <Step title="Ask about it">
     **Explain this code** gives a plain-language explanation of the selected node. For a broader question, use [Ask](/platform/ask).
@@ -58,14 +58,14 @@ Real systems span repositories. A combined graph links entities in different rep
     Go to the cross-repository view and select **Combine graphs**.
   </Step>
   <Step title="Pick repositories">
-    Select two or more under **Repositories to combine**.
+    Select two or more repositories.
   </Step>
   <Step title="Name it">
     Enter a name, or leave it blank to use the suggested one.
   </Step>
 </Steps>
 
-The combined graph shows **Cross-repo connections** and **Possible cross-repo dependents**. It's saved under **Saved combined graphs**.
+The combined graph is listed under **Combined graphs** in the graph view's right panel, and you can pick it from the graph selector. When you select a node, its **Cross-repo** list shows edges to other repositories, and **What a change could affect** adds a **Cross-repo dependents** list when dependents are in other repositories.
 
 ### Combined graph limits and states
 
@@ -92,7 +92,7 @@ See [Troubleshooting](/platform/support/troubleshooting#query-ask-and-reindex-er
 
 ## Link to a view
 
-The graph reads its URL, so you can share an exact view. It accepts `?repo=`, `?repos=`, `?node=`, `?impact=`, and `?group=`.
+The graph reads its URL, so you can share an exact view. Selecting a combined graph sets `?group=` and `?title=`. Turning on **Show on canvas** for an impact check sets `?impact=` and `?depth=`. Links can also open a node with `?node=`, or specific repositories with `?repo=` or `?repos=`.
 
 ## Read the legend
 
@@ -106,9 +106,9 @@ Use **Search nodes by name, path, or repository**. You can narrow a search with 
 
 ## What a change could affect
 
-Select a node and open **What a change could affect**. Under **How many connections to follow**, choose a depth of 1, 2 or 3 hops. Graphify highlights everything that calls, imports, cites or implements the node within that range.
+Select a node and find **What a change could affect** in its details. Under **Depth**, choose 1, 2 or 3 connections. The default is 2. **Possible dependents** counts everything that calls, imports, cites or implements the node within that range. Select **Show on canvas** to highlight them, and **Clear overlay** to remove the highlight.
 
-This is a structural over-estimate. It's not a prediction that anything will break, and it doesn't verify anything. **No dependents found in this view** means nothing in the loaded graph depends on the node.
+This is a structural over-estimate. It's not a prediction that anything will break, and it doesn't verify anything. **No dependents found in this view** means nothing in the loaded graph depends on the node within that depth. Dynamic and external callers may not be represented.
 
 ## Plan limits
 
@@ -124,7 +124,7 @@ Combining graphs needs an active plan. The Free plan (up to 3 repositories) need
 | **Could not load combined graphs** | Try again. Your saved graphs aren't deleted. |
 | Banner says **Demo graph** | You're looking at sample data, not your code. Index a repository. |
 | **Combining graphs needs an active plan.** | Check **Billing**. |
-| **We couldn't confirm the combined graph was created.** | Check **Saved combined graphs** before you try again, so you don't create a duplicate. |
+| **We couldn't confirm the combined graph was created.** | Check **Combined graphs** before you try again, so you don't create a duplicate. |
 | **Graph unavailable** | The build hasn't finished or couldn't start. If you see **We couldn't start this build. Try again.**, start it again. |
 
 <AccordionGroup>

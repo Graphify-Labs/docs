@@ -25,7 +25,7 @@ flowchart LR
 
 ## Extract structure
 
-The code pipeline uses tree-sitter and specialized extractors to identify functions, classes, imports, calls, and other relationships. Parsing happens locally and does not require an LLM. Some formats use dedicated or heuristic parsers, so support differs by language and construct.
+The code pipeline uses tree-sitter and specialized extractors to identify functions, classes, imports, calls, and other relationships. Parsing happens locally and does not require an LLM. [How Graphify finds code dependencies](/concepts/how-graphify-finds-dependencies) walks through each step. Some formats use dedicated or heuristic parsers, so support differs by language and construct.
 
 SQL and Terraform have structural extractors too; their optional dependencies are listed in [supported inputs](/open-source/features/languages).
 

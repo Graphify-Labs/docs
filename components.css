@@ -88,3 +88,29 @@
   .gfy-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
   .gfy-agent-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; }
 }
+
+/* Home hero snippet: custom tablist, wrapped code, copy button */
+.gfy-snippet { border: 1px solid #d6e5dc; border-radius: 12px; background: #ffffff; overflow: hidden; }
+.gfy-snippet-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 8px 0 4px; border-bottom: 1px solid #d6e5dc; background: #f6faf7; }
+.gfy-tablist { display: flex; flex-wrap: wrap; }
+.gfy-tab { padding: 10px 10px; font-size: 12px; font-weight: 500; color: #586b60; background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.gfy-tab[aria-selected="true"] { color: #118d4f; border-bottom-color: #118d4f; }
+.gfy-tab:hover { color: #062314; }
+.gfy-tab:focus-visible, .gfy-copy:focus-visible, .gfy-panel:focus-visible { outline: 2px solid #118d4f; outline-offset: -2px; border-radius: 6px; }
+.gfy-snippet-title { padding: 10px 8px; font-size: 12px; font-weight: 500; color: #586b60; }
+.gfy-copy { font-size: 12px; font-weight: 500; color: #254d37; background: transparent; border: 1px solid #c7dbd0; border-radius: 6px; padding: 3px 10px; cursor: pointer; }
+.gfy-copy:hover { background: #edf6f0; }
+.gfy-panel { padding: 14px 16px; }
+.gfy-pre { margin: 0; padding: 0; background: none; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 13px; line-height: 1.65; color: #062314; }
+.gfy-link { color: #118d4f !important; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17,141,79,.45); border-bottom: 0 !important; }
+.gfy-link:hover { text-decoration-color: currentColor; }
+:is(.dark) .gfy-snippet { border-color: #262626; background: #141515; }
+:is(.dark) .gfy-snippet-bar { border-bottom-color: #262626; background: #101111; }
+:is(.dark) .gfy-tab, :is(.dark) .gfy-snippet-title { color: #a3a3a3; }
+:is(.dark) .gfy-tab:hover { color: #ededed; }
+:is(.dark) .gfy-tab[aria-selected="true"] { color: #4dea9c; border-bottom-color: #4dea9c; }
+:is(.dark) .gfy-tab:focus-visible, :is(.dark) .gfy-copy:focus-visible, :is(.dark) .gfy-panel:focus-visible { outline-color: #4dea9c; }
+:is(.dark) .gfy-copy { color: #d4d4d4; border-color: #262626; }
+:is(.dark) .gfy-copy:hover { background: #1c1d1d; }
+:is(.dark) .gfy-pre { color: #ededed; }
+:is(.dark) .gfy-link { color: #4dea9c !important; text-decoration-color: rgba(77,234,156,.45); }

@@ -8,6 +8,8 @@ hideFooterPagination: true
 keywords: ["code knowledge graph", "MCP server for codebase", "AI coding agent context"]
 ---
 
+import { HeroInstall, PromptBlock } from '/snippets/hero-install.jsx';
+
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 
 <section aria-labelledby="hero-title" className="not-prose mx-auto grid w-full max-w-6xl items-center gap-10 px-5 text-left text-[#062314] dark:text-[#ededed] md:px-8 gfy-hero-grid" style={{ paddingTop: "clamp(32px, 5vw, 64px)", paddingBottom: 32 }}>
@@ -21,25 +23,8 @@ keywords: ["code knowledge graph", "MCP server for codebase", "AI coding agent c
     </div>
   </div>
   <div className="min-w-0" role="region" aria-label="Install Graphify: hosted MCP, agent prompt, or local CLI">
-<CodeGroup>
-
-```bash Hosted MCP
-claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
-```
-
-```text Agent prompt
-Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow it.
-```
-
-```bash Local CLI
-uv tool install graphifyy
-graphify install
-# then, in your assistant chat:
-/graphify .
-```
-
-</CodeGroup>
-    <p className="m-0 mt-2 text-xs leading-5 text-[#586b60] dark:text-[#a3a3a3]">The hosted MCP server signs you in with OAuth. No API key needed. Other agents: <a href="/integrations/overview">Integrations</a>.</p>
+<HeroInstall />
+    <p className="m-0 mt-2 text-xs leading-5 text-[#586b60] dark:text-[#a3a3a3]">The hosted MCP server signs you in with OAuth. No API key needed. Other agents: <a href="/integrations/overview" className="gfy-link">Integrations</a>.</p>
   </div>
 </section>
 
@@ -51,9 +36,7 @@ graphify install
     </div>
     <div className="min-w-0">
 
-```text Prompt for your coding agent
-Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow it.
-```
+<PromptBlock text="Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow it." />
 
     </div>
   </div>

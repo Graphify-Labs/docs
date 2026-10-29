@@ -240,6 +240,25 @@ graphify affected "Invoice" --graph "$(graphify global path)" --depth 2
 
 Node IDs are prefixed with the repository tag, so results show which repository each node comes from. The local merge links member calls it can resolve across repositories. An import of a package from another repository can stay unresolved locally, so for full cross-repo connections across a team, use the hosted combined graph. To merge graphs into one file instead, use `graphify merge-graphs`. See [Share a team graph](/cookbooks/shared-team-graph).
 
+## Complete example
+
+The whole loop for one shared-code change, from a fresh agent session:
+
+<Steps>
+  <Step title="Confirm the target">
+    `Use Graphify's list_repositories tool and confirm product-core is ready.`
+  </Step>
+  <Step title="Ask for cross-repo dependents">
+    `Using Graphify on product-core: what in other repositories depends on Invoice.total_cents? Group by repository, cite files and lines, list linked tests. Do not edit yet.`
+  </Step>
+  <Step title="Plan the order">
+    `Write a change plan that edits shared-models first, then each dependent repository, with one pull request per repository and the tests to run in each.`
+  </Step>
+  <Step title="Check the work">
+    Open two or three cited lines, run the listed tests in every named repository, and paste the dependents list into each pull request description.
+  </Step>
+</Steps>
+
 ## What you built
 
 Your repositories now share one graph. Any agent on the team can ask what a change reaches across repository boundaries, and the rule in each repository makes it ask before it edits shared code.

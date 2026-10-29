@@ -280,7 +280,7 @@ An agent that didn't call Graphify says so. An agent that did names the calls, a
 - **Keep the block under 15 lines.** Long instructions get skimmed by agents as much as by people.
 - **Ask for citations.** "Cite the Graphify result" turns a silent skip into something you can see in the answer.
 - **Run the transcript count weekly** for a few weeks after rollout. It's the fastest way to see which tasks the agent still handles with grep.
-- **One graph per repository, one rule per repository.** For changes that cross repositories, combine their graphs. See [Graph explorer](/platform/graphs).
+- **One graph per repository, one rule per repository.** For changes that cross repositories, combine their graphs. See [Map dependencies across multiple repositories](/cookbooks/cross-repo-dependencies).
 
 ## Complete example
 
@@ -305,7 +305,10 @@ Your agent now has a specific rule for when to call Graphify, a reminder at the 
 
 ## Next steps
 
-<CardGroup cols={3}>
+<CardGroup cols={2}>
+  <Card title="Map dependencies across repositories" icon="utensils" href="/cookbooks/cross-repo-dependencies">
+    Combine repositories and ask what a change breaks.
+  </Card>
   <Card title="Hosted MCP" icon="book" href="/platform/hosted-mcp">
     Every hosted tool, limits and client setup.
   </Card>

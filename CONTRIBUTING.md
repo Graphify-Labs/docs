@@ -27,7 +27,7 @@ Run both from the repo root, where `docs.json` lives. Each PR also gets a Mintli
 | Every nav page exists | a `pages` or `root` entry has no matching `.mdx` or `.md` file |
 | Every redirect destination exists | a local `redirects` destination isn't a real page |
 | No description starts with a tag | a `description:` starts with `[` |
-| Page icons | two icons repeat within one sidebar group (a missing `icon:` is only a warning) |
+| Page icons | two icons repeat within one sidebar group, or a product-name page under `integrations/` has an `icon:` (a missing `icon:` elsewhere is only a warning) |
 | Mintlify broken links | `mint broken-links` finds a broken internal link |
 
 ## Frontmatter
@@ -48,7 +48,7 @@ surface: "cloud"
 
 ## Page icons
 
-Every page in the sidebar has an icon, so every new page needs an `icon:` in its frontmatter. You don't need Mintlify access for this; it's one line in the `.mdx` file.
+Concept, guide, and Overview pages have an icon, so a new page of that kind needs an `icon:` in its frontmatter. Pages named after a product, tool, or integration (everything under `integrations/` except its Overview, such as Claude Code, Cursor, GitHub, or GitLab) have no icon: the name already identifies the page, and a generic glyph next to a brand name reads as noise. You don't need Mintlify access for this; it's one line in the `.mdx` file.
 
 ```yaml
 ---
@@ -64,7 +64,7 @@ icon: "flask-conical"
 - Don't repeat an icon within the same sidebar group (a `group` in `docs.json`); the PR check fails if you do. Reusing an icon in a different group is fine, such as `house` on each tab's Overview.
 - Don't add colours or `iconType`. `sidebar-groups.css` makes icons neutral grey (off-white in dark mode) and green only on the active page.
 - Check it renders: run `npx mint@latest dev` and open the page. If the icon is missing from the sidebar, the name is wrong or Lucide renamed it (for example `circle-help` is now `circle-question-mark`). If you edit frontmatter while `mint dev` is running and the sidebar doesn't update, restart `mint dev`.
-- The "Page icons" PR check warns about any nav page without an icon and fails on a duplicate icon within one sidebar group.
+- The "Page icons" PR check warns about any other nav page without an icon, fails on a duplicate icon within one sidebar group, and fails if a product-name page under `integrations/` has an `icon:`.
 
 ## Terminology
 

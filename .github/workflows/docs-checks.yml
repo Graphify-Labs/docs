@@ -111,12 +111,19 @@ jobs:
               m = re.match(r"---\n(.*?)\n---", open(f, encoding="utf-8").read(), re.S)
               i = m and re.search(r"^icon:\s*[\"']?([^\"'\s]+)", m.group(1), re.M)
               return f, (i.group(1) if i else None)
+          # Product-name pages (integrations/*, except the Overview) carry no icon.
+          def product(p): return p.startswith("integrations/") and p != "integrations/overview"
           total = missing = 0; dupes = []
           for label, pages in groups:
               seen = {}
               for p in pages:
                   f, i = icon(p)
                   if not f: continue
+                  if product(p):
+                      if i:
+                          dupes.append(f)
+                          print(f"::error file={f}::Product-name pages have no icon. Remove icon: (see 'Page icons' in CONTRIBUTING.md).")
+                      continue
                   total += 1
                   if not i:
                       missing += 1

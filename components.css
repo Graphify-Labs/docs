@@ -82,3 +82,9 @@
   background: #141515;
   color: #ededed;
 }
+
+/* Home hero: two columns on wide screens */
+@media (min-width: 1024px) {
+  .gfy-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+  .gfy-agent-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; }
+}

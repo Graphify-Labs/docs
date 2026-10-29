@@ -157,7 +157,7 @@ No dependents found in ocr-worker.
 Suggested order: shared-models -> billing-service -> api-gateway -> web-frontend.
 ```
 
-Before you trust it, open two or three of the cited lines. Every location should exist and match. If the agent answered without calling a Graphify tool (in Claude Code, look for `graphify` tool calls in the session), it guessed. Ask again and tell it to use Graphify.
+Before you trust it, open two or three of the cited lines. Every location should exist and match. If the agent answered without calling a Graphify tool (in Claude Code, look for `graphify` tool calls in the session), it guessed. Ask again and tell it to use Graphify. To make that the default, see [Make your coding agent actually use the graph](/cookbooks/make-agents-use-the-graph).
 
 Other questions that work well on a combined graph:
 
@@ -267,7 +267,10 @@ Your repositories now share one graph. Any agent on the team can ask what a chan
 
 ## Next steps
 
-<CardGroup cols={3}>
+<CardGroup cols={2}>
+  <Card title="Make your agent use the graph" icon="utensils" href="/cookbooks/make-agents-use-the-graph">
+    Rules, hooks and a check that your agent calls Graphify.
+  </Card>
   <Card title="Graph explorer" icon="book" href="/platform/graphs">
     Combined graph limits, states and the impact view.
   </Card>

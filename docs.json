@@ -221,7 +221,8 @@
             "icon": "users",
             "pages": [
               "cookbooks/review-as-a-team",
-              "cookbooks/shared-team-graph"
+              "cookbooks/shared-team-graph",
+              "cookbooks/cross-repo-dependencies"
             ]
           },
           {

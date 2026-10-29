@@ -35,3 +35,50 @@
   outline: 2px solid var(--g-focus);
   outline-offset: 4px;
 }
+
+/* Built-in page feedback (thumbs + form): neutral, brand-aligned */
+#feedback-thumbs-up,
+#feedback-thumbs-down {
+  border: 1px solid #d6e5dc;
+  border-radius: 8px;
+  background: transparent;
+  color: #586b60;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+#feedback-thumbs-up:hover,
+#feedback-thumbs-down:hover {
+  border-color: #94b6a2;
+  background: #edf6f0;
+  color: #062314;
+}
+#feedback-thumbs-up:focus-visible,
+#feedback-thumbs-down:focus-visible {
+  outline: 2px solid #118d4f;
+  outline-offset: 2px;
+}
+#feedback-form {
+  border: 1px solid #d6e5dc;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #062314;
+}
+:is(.dark) #feedback-thumbs-up,
+:is(.dark) #feedback-thumbs-down {
+  border-color: #262626;
+  color: #a3a3a3;
+}
+:is(.dark) #feedback-thumbs-up:hover,
+:is(.dark) #feedback-thumbs-down:hover {
+  border-color: #404040;
+  background: #1c1d1d;
+  color: #ededed;
+}
+:is(.dark) #feedback-thumbs-up:focus-visible,
+:is(.dark) #feedback-thumbs-down:focus-visible {
+  outline-color: #4dea9c;
+}
+:is(.dark) #feedback-form {
+  border-color: #262626;
+  background: #141515;
+  color: #ededed;
+}

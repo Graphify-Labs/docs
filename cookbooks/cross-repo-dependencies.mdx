@@ -24,7 +24,7 @@ Each agent session only sees one repository, so each answer is a guess. A combin
 
 ## What you'll build
 
-- One combined graph of your related repositories, with **Cross-repo connections** between them.
+- One combined graph of your related repositories, with the connections between them.
 - A hosted MCP connection that lets every agent on the team query that graph.
 - An agent rule that runs a cross-repo impact check before any change to shared code.
 - A repeatable prompt for "what breaks if I change X", with results you can verify.
@@ -79,22 +79,24 @@ A repository can be in more than one combined graph. Leave out repositories that
   </Step>
 </Steps>
 
-The build moves through `queued`, `running`, then `ready`. When it's ready, the graph is listed under **Saved combined graphs**. When a member repository re-indexes after a push to its default branch, Graphify rebuilds the combined graph from the new build, so you don't need to recombine by hand.
+The build moves through `queued`, `running`, then `ready`. When it's ready, the graph is listed under **Combined graphs** in the graph view's right panel. When a member repository re-indexes after a push to its default branch, Graphify rebuilds the combined graph from the new build, so you don't need to recombine by hand.
 
 ## Step 3: Read the cross-repo connections
 
-Open the combined graph. The stats header shows **Nodes**, **Edges** and a **Cross-repo** count, the number of connections between repositories. Two panels matter here:
+Select the combined graph in the graph selector, or under **Combined graphs** in the right panel. The canvas groups nodes into code areas, and the stats header shows **Nodes**, **Edges** and how each edge was found (**Extracted**, **Inferred**, **Synthesized**, **Observed**). Edges between repositories are drawn in the accent colour. Hover an edge between code areas for a summary, such as `16 cross-community edges · combine · inferred`.
 
-- **Cross-repo connections** lists the edges that cross a repository boundary: an import, call or reference in one repository that resolves to code in another.
-- **Possible cross-repo dependents** lists code in other repositories that could be affected by the node you select.
+To check one piece of shared code:
 
-Select a shared node, such as the `Invoice` model in `shared-models`, open **What a change could affect**, and set **How many connections to follow** to 2. You see every function in other repositories that reaches it within two hops.
+1. Search for it in **Search nodes by name, path, or repository** (press `/`), such as the `Invoice` model in `shared-models`. Chips like `kind:function`, `path:src/` and `prov:inferred` narrow the results.
+2. In the node details, read the repository, path, code area and connection counts. When the node has edges to other repositories, a **Cross-repo** list shows them above **Outgoing** and **Incoming**.
+3. Under **What a change could affect**, choose a **Depth** of 1, 2 or 3 connections. The default is 2. **Possible dependents** shows how many nodes could be affected, and a **Cross-repo dependents** list appears when some of them are in other repositories.
+4. Select **Show on canvas** to highlight them on the graph.
 
 <Note>
-The impact view is a structural over-estimate. It lists what depends on the node, not what will break. Use it to decide where to look and which tests to run.
+The impact view is a structural over-estimate. It lists what depends on the node within the depth you chose, not what will break. When it finds nothing, it says **Dynamic and external callers may not be represented**. Use it to decide where to look and which tests to run.
 </Note>
 
-To share the exact view, copy the URL. The graph accepts `?repos=`, `?node=` and `?impact=`, so a teammate opens the same node and depth.
+To share a view, copy the URL. Selecting a combined graph adds `?group=` and `?title=`. Turning on **Show on canvas** adds `?impact=` and `?depth=`, so a teammate opens the same graph with the same overlay.
 
 ## Step 4: Connect your agent to the hosted MCP server
 
@@ -193,11 +195,11 @@ Now a teammate who asks "rename `total_cents`" gets the cross-repo list first, w
 
 ## When it goes wrong
 
-**The agent says the combined graph doesn't exist.** The build isn't `ready`, or the agent is in another workspace. Check **Saved combined graphs** in the Console, then run `list_workspaces` and `set_workspace`.
+**The agent says the combined graph doesn't exist.** The build isn't `ready`, or the agent is in another workspace. Check **Combined graphs** in the Console, then run `list_workspaces` and `set_workspace`.
 
 **`query_repository_ambiguous`.** Two repositories share a short name. Use the full name, such as `acme/api`, or the combined graph's name.
 
-**No cross-repo connections appear.** The repositories may only talk over the network, for example through HTTP calls built from strings or a message queue, with no shared import. Graphify reads structure from code. A URL assembled at runtime isn't a static link. Add the shared client or schema package to the combined graph, since that's where the link usually lives.
+**No cross-repo connections appear.** A node only shows a **Cross-repo** list when it has edges to another repository. The repositories may only talk over the network, for example through HTTP calls built from strings or a message queue, with no shared import. Graphify reads structure from code. A URL assembled at runtime isn't a static link. Add the shared client or schema package to the combined graph, since that's where the link usually lives.
 
 **Recent changes are missing.** A member repository's newest default-branch commit isn't indexed yet, and its row in **Repositories** shows **Out of date**. Pushes to other branches don't update the graph. Wait for the index to finish, or select **Reindex** on that repository.
 

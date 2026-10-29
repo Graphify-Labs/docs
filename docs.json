@@ -11,6 +11,10 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Get Started",
+        "pages": ["index"]
+      },
+      {
         "tab": "Graphify",
         "groups": [
           {

@@ -7,15 +7,13 @@ hideFooterPagination: true
 icon: "git-merge-conflict"
 ---
 
-import { planTrial } from "/snippets/plan-trial.js";
-
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 Two pull requests can both pass review and still collide when they change the same part of the code. Graphify compares open pull requests against the graph of your repository and shows which ones touch the same area, so you can review and merge them with that in mind.
 
 ## Before you start
 
-- An account at [app.graphify.com](https://app.graphify.com). {planTrial}
+- An account at [app.graphify.com](https://app.graphify.com). New accounts start on a 14-day Pro trial, then Free (up to 3 repositories), no card required.
 - For the local commands, the open-source CLI. See [Installation](/open-source/installation).
 - A repository with the status **Indexed**, or a local graph at `graphify-out/graph.json`.
 - For the local commands, the [GitHub CLI](https://cli.github.com) signed in to the repository. `graphify prs` reads open pull requests through it.

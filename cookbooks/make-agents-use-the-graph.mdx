@@ -1,0 +1,318 @@
+---
+title: "Make your coding agent actually use the graph"
+sidebarTitle: "Make agents use the graph"
+description: "Get Claude Code, Codex and Cursor to query Graphify before they grep, keep the graph fresh as code changes, and prove the agent called the tools."
+keywords: ["coding agent ignores MCP", "Claude Code PreToolUse hook", "AGENTS.md instructions", "keep code graph up to date", "verify MCP tool calls"]
+surface: "both"
+hideFooterPagination: true
+icon: "crosshair"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Connecting Graphify to a coding agent is the easy part. The hard part is that the agent often doesn't use it. It sees a long list of tools, falls back to the `grep` and file reads it knows, and answers from whatever it happened to open. Then a few days later the graph is out of date, and the agent stops trusting it. This recipe fixes both problems: it makes Graphify the agent's first step, keeps the graph current, and gives you a way to check it worked.
+
+## The scenario
+
+A small team builds across 12 repositories, and coding agents write most of the code. They connected Graphify, asked a few questions, and liked the answers. A week later nobody can tell whether the agents still call it. One agent renamed a helper and missed three callers that a single graph query would have listed. The team wants three things:
+
+1. Every agent session starts from the graph, without anyone typing "use Graphify".
+2. The graph matches the code the agent is about to change.
+3. A way to check, after the fact, that the agent really looked.
+
+## What you'll build
+
+- An instruction block in `CLAUDE.md` or `AGENTS.md` that tells the agent when to call Graphify and what to do with the result.
+- For Graphify Local, hooks that remind the agent to query the graph right before it greps or reads a file, and git hooks that rebuild the graph after every commit.
+- A `.graphifyignore` that keeps vendored and generated code out of the graph.
+- A two-minute check that shows which Graphify tools the agent called in a session.
+
+## Setup
+
+Pick the path that matches how you run Graphify. Hosted is Graphify Cloud, where Graphify builds and hosts the graph. Local is the `graphifyy` package on your machine.
+
+<Tabs>
+  <Tab title="Graphify (hosted)">
+    - Repositories connected and showing **Indexed** in the Console. See the [Quickstart](/platform/quickstart).
+    - Your agent connected to the hosted MCP server and signed in. For Claude Code:
+
+      ```bash
+      claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+      ```
+
+      Then run `/mcp` in Claude Code, select **graphify** and choose **Authenticate**. For Codex, Cursor and others, see [Connect cloud coding agents](/cookbooks/cloud-coding-agents).
+  </Tab>
+  <Tab title="Graphify Local">
+    - Graphify Local installed: `uv tool install graphifyy`. See [Installation](/open-source/installation).
+    - A graph built in the repository root:
+
+      ```bash
+      graphify update .
+      ```
+
+      ```text
+      Code graph updated. For doc/paper/image changes run /graphify --update in your AI assistant.
+      ```
+
+      `graphify update .` parses code without an LLM. For docs, papers and images, run a full build from your agent. See [Quickstart](/open-source/quickstart).
+  </Tab>
+</Tabs>
+
+## Step 1: Check the agent can call Graphify
+
+Start a new agent session and paste:
+
+<Tabs>
+  <Tab title="Graphify (hosted)">
+    ```text
+    Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+    ```
+
+    You should see your indexed repositories. If you see `get_node` or `god_nodes` in the tool list instead of `list_repositories`, the agent is talking to a local Graphify server, not the hosted one.
+  </Tab>
+  <Tab title="Graphify Local">
+    ```text
+    Run `graphify query "where are invoices created"` and show me the output. Do not read any files first.
+    ```
+
+    You should see a short list of nodes with file paths. If the agent says `graphify` isn't found, the command isn't on the agent's `PATH`. Open a new terminal after installing, or install with `uv tool install graphifyy`.
+  </Tab>
+</Tabs>
+
+If this step fails, nothing below helps. Fix the connection first. See [Troubleshooting](/platform/support/troubleshooting).
+
+## Step 2: Tell the agent when to use the graph
+
+Agents follow the instruction file they read at the start of every session: `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex and many other agents, and `.cursor/rules/` for Cursor. A tool the instructions never mention is easy to skip. Make the rule specific: when to call, which tool, and what to do with the answer.
+
+<Tabs>
+  <Tab title="Graphify (hosted)">
+    Add this to `CLAUDE.md` or `AGENTS.md` in each repository and commit it. Replace `acme/web-app` with the repository's name in Graphify.
+
+    ```md AGENTS.md
+    ## Graphify
+
+    This repository is indexed in Graphify as `acme/web-app`. Use the
+    graphify MCP tools before you search or read code.
+
+    - Before the first grep, glob or file read in a task, call
+      `query_graph` with `repository_id` set to `acme/web-app` and the
+      task as the question. Open the files it returns first.
+    - Before you change a function, class or route, call `graphify_impact`
+      on it and list its callers. If callers exist outside the files you
+      plan to edit, say so in your plan.
+    - Use `graphify_tests_for` to pick which tests to run.
+    - Cite the Graphify result (symbol and file path) in your answer.
+      If a Graphify call fails, say so. Do not silently fall back to grep.
+    - The graph reflects the default branch. Code you changed in this
+      session isn't in it yet, so read your own edits from disk.
+    ```
+
+    To save the agent a lookup, you can set a default repository on the server URL instead, such as `https://api.graphify.com/mcp?repo=acme/web-app`. See [Hosted MCP](/platform/hosted-mcp).
+  </Tab>
+  <Tab title="Graphify Local">
+    Let Graphify write the block for you. In the repository root:
+
+    ```bash
+    graphify claude install
+    ```
+
+    ```text
+    graphify section written to /home/you/web-app/CLAUDE.md
+      .claude/settings.json  ->  PreToolUse hooks registered (Bash|Grep search + Read/Glob)
+
+    Claude Code will now check the knowledge graph before answering
+    codebase questions and rebuild it after code changes.
+    ```
+
+    The `## graphify` section tells Claude Code to run `graphify query` before its first grep or read, use `graphify path` and `graphify explain` for relationships, and run `graphify update .` after it changes code. Other agents have their own installer:
+
+    | Agent | Command | What it writes |
+    | --- | --- | --- |
+    | Claude Code | `graphify claude install` | `CLAUDE.md` section and PreToolUse hooks in `.claude/settings.json` |
+    | Codex | `graphify codex install` | `AGENTS.md` section and `.codex/hooks.json` |
+    | Cursor | `graphify cursor install` | `.cursor/rules/graphify.mdc` |
+
+    Each has a matching `uninstall`. For the full list of agents, see [Use Graphify with any agent](/open-source/vibe-coding).
+  </Tab>
+</Tabs>
+
+## Step 3: Remind the agent at the moment it reaches for grep
+
+Instructions at the top of a long session fade. Graphify Local's Claude Code hooks fire right before each `grep`, `Bash` search, `Read` or `Glob`, and add a reminder with the graph's answer for that exact search. `graphify claude install` in Step 2 already registered them.
+
+You can see what the agent receives by running the hook yourself:
+
+```bash
+echo '{"tool_name":"Grep","tool_input":{"pattern":"invoice"}}' | graphify hook-guard search
+```
+
+```json
+{"hookSpecificOutput":{"hookEventName":"PreToolUse","additionalContext":"graphify: this project has a knowledge graph at graphify-out/graph.json. `graphify query \"<question>\"` returns the files and relations that matter for a question, usually in far fewer tokens than grepping raw files. ...\nStart with: `graphify query \"invoice\"`\nWhat the graph already has for this call:\n- invoice.py (billing/invoice.py L1)\n- create_invoice() (billing/invoice.py L4)"}}
+```
+
+The hook never blocks by default. It adds context and lets the search run. If you want the graph to be mandatory, use strict mode. It blocks the first raw file read in each session until the agent has run a `graphify query`, then goes back to nudging, so the agent is never stuck:
+
+```bash
+graphify install --project --strict
+```
+
+To switch strict mode on or off without reinstalling, set `GRAPHIFY_HOOK_STRICT=1` or `0`. See [Environment variables](/open-source/configuration/environment-variables).
+
+<Note>
+The hosted MCP server has no hook. On hosted, the instruction block from Step 2 does this job, so keep it short and specific.
+</Note>
+
+## Step 4: Keep the graph fresh
+
+An agent that finds a stale answer once stops trusting the graph. Make updates automatic.
+
+<Tabs>
+  <Tab title="Graphify (hosted)">
+    A push to a repository's default branch starts a new index of that commit. Pushes to other branches don't update the graph, and a pull request doesn't build a second graph. In practice:
+
+    - Merge to the default branch often. Long-lived branches drift from the graph.
+    - If a repository's row in **Repositories** shows **Out of date**, select **Reindex**.
+    - Combined graphs rebuild when a member repository re-indexes.
+
+    Hosted plans limit how many push-triggered indexes run per repository per day. See [Repository indexing](/platform/repositories) and [plans and pricing](/platform/support/pricing).
+  </Tab>
+  <Tab title="Graphify Local">
+    Install git hooks that rebuild the graph after every commit, checkout, merge and rebase:
+
+    ```bash
+    graphify hook install
+    graphify hook status
+    ```
+
+    ```text
+    post-commit: installed
+    post-checkout: installed
+    post-merge: installed
+    post-rewrite: installed
+    merge driver: registered
+    ```
+
+    After a commit you'll see:
+
+    ```text
+    [graphify hook] launching background rebuild (log: ~/.cache/graphify-rebuild.log)
+    ```
+
+    The rebuild runs in the background, so the commit isn't slowed down. For changes the agent hasn't committed yet, the `CLAUDE.md` section tells it to run `graphify update .` after editing code. To rebuild as you save files, run `graphify watch .`. See [Incremental updates](/open-source/features/incremental-updates).
+  </Tab>
+</Tabs>
+
+## Step 5: Keep noise out of the graph
+
+Vendored packages, build output and generated clients fill search results with code nobody on the team wrote. The agent then cites the wrong file. Graphify Local already skips dependency and build folders. Add the rest to `.graphifyignore` in the repository root. It uses gitignore syntax and is read after `.gitignore`.
+
+```gitignore .graphifyignore
+vendor/
+dist/
+generated/
+src/api/client/      # OpenAPI-generated client
+**/*.min.js
+fixtures/large/
+```
+
+Run `graphify update .` and check the node count drops. See [Ignoring files](/open-source/configuration/ignoring-files). On hosted, Graphify indexes what's in the repository's default branch, so keep generated output out of git where you can.
+
+## Step 6: Prove the agent used the graph
+
+Don't rely on the answer sounding right. Check the session.
+
+**In the session.** In Claude Code, Graphify calls appear in the transcript as tool calls named `graphify` (hosted MCP) or as `graphify query` commands (Local). Run `/mcp` to see whether the server is connected and which tools it lists.
+
+**After the session.** Claude Code saves each session as a JSONL file under `~/.claude/projects/`. Count the Graphify calls across your recent sessions:
+
+<Tabs>
+  <Tab title="Graphify (hosted)">
+    ```bash
+    grep -ho '"name":"mcp__graphify__[a-z_]*"' ~/.claude/projects/*/*.jsonl | sort | uniq -c | sort -rn
+    ```
+
+    ```text
+         41 "name":"mcp__graphify__query_graph"
+         17 "name":"mcp__graphify__graphify_impact"
+          9 "name":"mcp__graphify__graphify_tests_for"
+          3 "name":"mcp__graphify__list_repositories"
+    ```
+  </Tab>
+  <Tab title="Graphify Local">
+    ```bash
+    grep -ho 'graphify \(query\|explain\|path\|affected\) [^\\"]*' ~/.claude/projects/*/*.jsonl | cut -d' ' -f2 | sort | uniq -c | sort -rn
+    ```
+
+    ```text
+         38 query
+         12 explain
+          4 path
+    ```
+  </Tab>
+</Tabs>
+
+The counts are illustrative. If a session made many `Grep` or `Read` calls and no Graphify calls, the instructions aren't working for that task. Tighten the rule in Step 2, or turn on strict mode on Local.
+
+**A spot-check prompt.** At the end of a task, ask:
+
+```text
+List every Graphify tool call you made in this session, with the question or symbol you passed and how the result changed what you did. If you made none, say so.
+```
+
+An agent that didn't call Graphify says so. An agent that did names the calls, and they should match the transcript.
+
+## When it goes wrong
+
+**The agent still greps first.** Make the trigger concrete: "before the first grep, glob or file read", not "when helpful". On Local, check `.claude/settings.json` has the `hook-guard` entries, or turn on strict mode.
+
+**The agent says Graphify isn't available.** On hosted, run `/mcp` and authenticate again. On Local, run `graphify --version` in the same terminal the agent uses.
+
+**Answers miss code from today.** On hosted, the change isn't on the default branch yet, or the index is still running. On Local, run `graphify hook status`, then `graphify update .`, and check `~/.cache/graphify-rebuild.log`.
+
+**The agent cites vendored or generated files.** Add them to `.graphifyignore` and rebuild.
+
+**Too many tools, the agent picks the wrong one.** Name the two or three tools you want in the instruction block. The agent doesn't need to know about the rest.
+
+## Production patterns
+
+- **Commit the instruction block and the hook config** so every teammate's agent behaves the same. Local writes `CLAUDE.md`, `AGENTS.md` and `.claude/settings.json` in the repository.
+- **Keep the block under 15 lines.** Long instructions get skimmed by agents as much as by people.
+- **Ask for citations.** "Cite the Graphify result" turns a silent skip into something you can see in the answer.
+- **Run the transcript count weekly** for a few weeks after rollout. It's the fastest way to see which tasks the agent still handles with grep.
+- **One graph per repository, one rule per repository.** For changes that cross repositories, combine their graphs. See [Graph explorer](/platform/graphs).
+
+## Complete example
+
+A Local setup for a repository, from nothing to verified, in one go:
+
+```bash
+cd ~/code/web-app
+graphify update .
+printf 'vendor/\ndist/\ngenerated/\n' >> .graphifyignore
+graphify update .
+graphify claude install
+graphify hook install
+git add .graphifyignore CLAUDE.md .claude/settings.json
+git commit -m "Make agents use the Graphify graph"
+```
+
+Then start Claude Code, ask a real question about the code, and run the transcript count from Step 6.
+
+## What you built
+
+Your agent now has a specific rule for when to call Graphify, a reminder at the moment it reaches for grep, a graph that updates as the code changes, and a check that shows whether it used the graph.
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Hosted MCP" icon="book" href="/platform/hosted-mcp">
+    Every hosted tool, limits and client setup.
+  </Card>
+  <Card title="Give Claude Code a monorepo graph" icon="utensils" href="/cookbooks/claude-code-monorepo">
+    Local skill, hooks and token savings in depth.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

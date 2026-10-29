@@ -213,6 +213,7 @@
               "cookbooks/overview",
               "cookbooks/onboard-to-a-codebase",
               "cookbooks/plan-a-refactor",
+              "cookbooks/read-your-graph",
               "cookbooks/keep-docs-in-sync"
             ]
           },

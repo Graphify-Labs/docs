@@ -1,0 +1,6 @@
+# Verification screenshots: keep them out of the repo root.
+# Asset folders such as images/ and logo/ are not affected.
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp

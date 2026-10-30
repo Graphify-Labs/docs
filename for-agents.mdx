@@ -111,6 +111,17 @@ Want me to add a short rule so I use Graphify's graph before grep for code quest
 
 If the user says no, skip this step. If yes, append the block below to the project's existing instruction file: `AGENTS.md`, `CLAUDE.md` for Claude Code, or `.cursor/rules/graphify.mdc` for Cursor. Create the file only if none exists. Keep the rest of the file unchanged, and tell the user which file you changed.
 
+For Cursor, `.cursor/rules/graphify.mdc` must start with this header, or Cursor applies the rule only when it's @-mentioned. If the file already exists with a header, keep its header. `AGENTS.md` and `CLAUDE.md` need no header.
+
+```md .cursor/rules/graphify.mdc
+---
+description: Use Graphify's code graph before grep for code structure, callers and impact questions
+alwaysApply: true
+---
+```
+
+Then append the block below under the header.
+
 ```md AGENTS.md
 ## Graphify
 

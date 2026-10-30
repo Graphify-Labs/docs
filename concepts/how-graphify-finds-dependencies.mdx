@@ -31,18 +31,18 @@ flowchart LR
 
 ## Step 1: Parse the source
 
-Graphify reads each code file with a [tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar and walks the abstract syntax tree (AST). From the tree it records the declarations (modules, classes, functions, methods) and the relationships between them, such as `imports`, `calls`, `inherits` and `references`. Each node and edge keeps its source file and line.
+The open-source Graphify CLI reads each code file with a [tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar or one of its built-in parsers. From the file it records the declarations (modules, classes, functions, methods) and the relationships between them, such as `imports`, `calls`, `inherits` and `references`. Each node and edge keeps its source file and line.
 
-Graphify and open-source Graphify count supported code in different ways:
+Hosted Graphify and the open-source Graphify CLI count supported code in different ways:
 
-- **Graphify** supports 63 grammars, the list shown in the app's **Supported grammars** dialog. That count includes file formats and variants such as JSON, Gradle, JSX/TSX, CUDA and Metal, template languages such as Vue, Svelte, Astro and EJS, and 20 grammars with generic support. Generic support means Graphify recognizes the files as code but doesn't extract their declarations in depth. Dart, Solidity, Haskell and COBOL are examples.
-- **Graphify CLI** supports 40 programming languages: 33 through tree-sitter grammars and 7 through built-in parsers. Each language counts once, so file formats, templates and variants aren't counted separately.
+- **Hosted Graphify** supports 63 grammars, the list shown in the app's **Supported grammars** dialog. That count includes file formats and variants such as JSON, Gradle, JSX/TSX, CUDA and Metal, and template languages such as Vue, Svelte, Astro and EJS. 20 of the 63 are listed in the app as "recognized as code, with generic support."
+- **The open-source Graphify CLI** supports 40 programming languages: 33 through tree-sitter grammars and 7 through built-in parsers. Each language counts once, so file formats, templates and variants aren't counted separately.
 
-The hosted list is longer because it counts more kinds of entries.
+The two lists also differ in coverage. Hosted Graphify lists Haskell, Perl, Tcl, Make, Puppet, QML, ColdFusion, ArkTS, Apps Script and SCSS, which the CLI doesn't support. The CLI supports Common Lisp, VB.NET and Robot Framework, which aren't in the hosted list.
 
-With open-source Graphify, most languages work with the default install. SQL, Terraform, R, Erlang, Solidity, OCaml, Common Lisp, VB.NET, DreamMaker and Robot Framework need an optional extra. Install all of them with `pip install "graphifyy[all]"`, or add only the one you need, such as `graphifyy[sql]`. See [supported languages](/open-source/features/languages) for the full list.
+With the open-source Graphify CLI, most languages work with the default install. SQL, Terraform, R, Erlang, Solidity, OCaml, Common Lisp, VB.NET, DreamMaker and Robot Framework need an optional extra. Install all of them with `pip install "graphifyy[all]"`, or add only the one you need, such as `graphifyy[sql]`. See [supported languages](/open-source/features/languages) for the full list.
 
-Parsing runs where the graph is built: on your machine with open-source Graphify, or on Graphify's build workers when you use Graphify. It doesn't need a model or an API key.
+With the open-source Graphify CLI, parsing runs on your machine and doesn't need a model or an API key.
 
 ## Step 2: Resolve names to declarations
 

@@ -32,7 +32,7 @@ The hosted server sends instructions on connect that map question types to tools
 | Which repositories or workspaces can I query? | `list_repositories`, `list_workspaces` |
 | How does X work? | `query_graph` |
 | Where is X defined? | `graphify_find`, or `graphify_node` for the body and its neighbors |
-| Find a definition by keyword, then read it | `search`, then `fetch` with a result's `id` |
+| Find a definition by part of its name, then read it | `search`, then `fetch` with a result's `id` |
 | Who calls X? What does X call? | `graphify_callers`, `graphify_callees` |
 | How does A reach B? | `graphify_trace` for a directed call path, `shortest_path` for any connection |
 | What could break if I change X? | `graphify_impact` for the directly connected callers and callees, then `impact_and_risk` to rank the files by linked tests |
@@ -49,6 +49,9 @@ Rules for the results:
 - Check the returned symbol and file before you cite them. If a name matches several symbols, the result lists them under `ambiguous`. Say which one you used. If a name doesn't resolve, you get an error with similar `candidates`, or a `semantic` match instead of an `exact` one. Say so and don't treat it as the symbol the user asked about.
 - Results carry `freshness`: the indexed commit and its age. Mention it when the age matters.
 - An empty caller list means the index returned no callers. It does not prove the symbol is unused.
+- `search` and `graphify_find` match part of a symbol's name, like `ReaSource` or `webhook`, not a question. If a fragment returns nothing, try another name or ask `query_graph` in a full sentence.
+- If `graphify_trace` finds no directed call path, it says so and returns the `frontier` it reached. Dynamic calls can hide a real path, so check the callees from there before you say A never reaches B.
+- An empty `recall` result means nothing is remembered for that repository yet.
 - Impact and test tools read the graph. They don't run tests or prove runtime behavior.
 - Use grep for exact strings, such as error messages or config keys.
 - If a Graphify tool fails or the repository isn't indexed, say so, then fall back to reading files. Don't guess.
@@ -60,7 +63,7 @@ The tools don't edit source files, but two of them change stored state on purpos
 - `remember` saves a note to the workspace's shared [Memory](/platform/memory). Save only what the user asked you to save.
 - `set_workspace` changes which workspace, and so which repositories, the session reads. With `make_default`, it also changes the user's default. See [Hosted MCP](/platform/hosted-mcp#workspaces-and-mcp-sessions).
 
-In workspaces with trail capture turned on, `query_graph`, `graphify_find`, `graphify_trace`, `graphify_rank_files` and an unscoped `recall` can also save the question you asked to workspace memory. They never change source code.
+In workspaces with trail capture turned on, `search`, `query_graph`, `graphify_find`, `graphify_trace`, `graphify_rank_files` and an unscoped `recall` can also save the question you asked to workspace memory. They never change source code.
 
 ## Keep answers fresh
 

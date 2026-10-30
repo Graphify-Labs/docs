@@ -12,7 +12,9 @@
     "tabs": [
       {
         "tab": "Get Started",
-        "pages": ["index"]
+        "pages": [
+          "index"
+        ]
       },
       {
         "tab": "Graphify",
@@ -308,8 +310,18 @@
       "claude",
       "perplexity",
       "mcp",
-      "cursor",
-      "vscode"
+      {
+        "title": "Connect Graphify to Cursor",
+        "description": "Install the hosted Graphify MCP server in Cursor",
+        "icon": "plug",
+        "href": "cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D"
+      },
+      {
+        "title": "Connect Graphify to VS Code",
+        "description": "Install the Graphify MCP extension for VS Code",
+        "icon": "plug",
+        "href": "https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp"
+      }
     ]
   },
   "footer": {

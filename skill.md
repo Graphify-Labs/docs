@@ -63,7 +63,7 @@ Then follow the full steps at [docs.graphify.com/for-agents.md](https://docs.gra
 
 If a Graphify tool fails or the repository is not indexed, say so, then fall back to grep. Do not guess.
 
-For the full question-to-tool map, how fresh the graph is, and what to do while sign-in is pending, read [docs.graphify.com/agents/overview.md](https://docs.graphify.com/agents/overview.md).
+For the full question-to-tool map, how fresh the graph is, and what to do while sign-in is pending, read [docs.graphify.com/agents/overview.md](https://docs.graphify.com/agents/overview.md). Prompts by task: [agents/recipes.md](https://docs.graphify.com/agents/recipes.md). Running without a person at the keyboard: [agents/headless.md](https://docs.graphify.com/agents/headless.md).
 
 ## Graphify CLI
 

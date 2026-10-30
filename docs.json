@@ -204,7 +204,8 @@
               "mcp/docs-search",
               "for-agents",
               "agents/overview",
-              "agents/headless"
+              "agents/headless",
+              "agents/recipes"
             ]
           }
         ]

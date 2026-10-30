@@ -33,6 +33,8 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
 
     The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required. **Pro** and **Teams** have no repository cap. On **Teams**, repositories and Google Drive sources are shared with everyone in the workspace. Switch workspaces from the switcher at the top of the sidebar. See [Plans and pricing](/platform/support/pricing).
 
+    Hosted Graphify lists 63 grammars. Open-source Graphify supports 40 languages (33 tree-sitter, 7 built-in).
+
     Follow the run on **Builds**. When it finishes, the repository's status changes to **Indexed**.
 
     <img src="/images/console/builds.webp" alt="Builds with indexing totals and a list of recent indexing runs" width="1920" height="1080" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
@@ -44,6 +46,8 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
   </Step>
   <Step title="Connect your agent" titleSize="h2">
     Go to **Connectors → MCP**. The wizard has three steps: **Choose agent**, **Connect**, and **Try a query**. It writes setup steps for Claude Code, Codex, Cursor, GitHub Copilot, VS Code, and many more agents (open **Browse all agents** for the full list).
+
+    Prefer one click? Use [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), or the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4). Each one connects to the same hosted server, and you sign in with OAuth.
 
     You can also add the server yourself. Each agent takes one line or one config entry:
 

@@ -1,0 +1,65 @@
+---
+title: "Use Graphify from your agent: prompts that work"
+sidebarTitle: "Use Graphify from your agent"
+description: "Copy-ready prompts for PR review, change impact, finding callers, tests for a symbol and onboarding, with the Graphify MCP tool each one triggers."
+keywords: ["MCP prompts", "code review agent prompt", "impact analysis prompt"]
+surface: "both"
+icon: "list-checks"
+---
+
+import { PromptBlock } from '/snippets/hero-install.jsx';
+
+Paste these prompts into any agent connected to Graphify. Each one names the tool it should trigger, so you can check that the agent used the graph instead of searching files one by one. Not connected yet? Use [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4), or the [hosted MCP setup](/platform/hosted-mcp).
+
+Hosted Graphify lists 63 grammars. Open-source Graphify supports 40 languages (33 tree-sitter, 7 built-in).
+
+<Tip>
+Start each session with "Use Graphify's `list_repositories` tool and pick the repository for this project." Every other tool takes that `repository_id`.
+</Tip>
+
+## Review a pull request
+
+<PromptBlock text="Use Graphify to review this pull request. For each changed function, call graphify_impact to find what depends on it, then impact_and_risk to rank the risky files. Call graphify_tests_for on the changed symbols and tell me which tests to run. Cite file paths." />
+
+**Triggers:** `graphify_impact`, `impact_and_risk`, `graphify_tests_for`. These tools read the graph. They don't run tests.
+
+## Check the impact of a change
+
+<PromptBlock text="Before you change parseConfig, use Graphify's graphify_impact on it and list everything that could break, grouped by file." />
+
+**Triggers:** `graphify_find` to resolve the name, then `graphify_impact`. Check the resolved symbol: a lookup can return a close match instead of an exact one.
+
+## Find where something is called
+
+<PromptBlock text="Use Graphify's graphify_callers to show every place that calls createSession, with file paths and line numbers." />
+
+**Triggers:** `graphify_find`, then `graphify_callers`. An empty list means the index found no callers. It doesn't prove the code is unused, because dynamic calls can be missed.
+
+## Find the tests for a symbol
+
+<PromptBlock text="Use Graphify's graphify_tests_for to find the tests that cover the billing webhook handler. Tell me which ones to run." />
+
+**Triggers:** `graphify_tests_for`.
+
+## Onboard to a new codebase
+
+<PromptBlock text="I'm new to this repository. Use Graphify: call graphify_rank_files for the most important files, then query_graph to explain how a request flows from the API layer to the database. Keep it to one page and cite files." />
+
+**Triggers:** `graphify_rank_files`, `query_graph`, and often `graphify_trace` to follow a path.
+
+## Make it stick
+
+- The graph reflects the last indexed snapshot of the default branch. If your branch has new code, say so and expect gaps. See [Keep answers fresh](/agents/overview#keep-answers-fresh).
+- `remember` saves a note for later sessions. Your agent should ask before calling it.
+- To make your agent use Graphify without being told, add a project rule. See [Make agents use the graph](/cookbooks/make-agents-use-the-graph).
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Agents use Graphify" icon="bot" href="/agents/overview">
+    The full question-to-tool map.
+  </Card>
+  <Card title="Cloud coding agents" icon="cloud" href="/cookbooks/cloud-coding-agents">
+    Step-by-step hosted MCP walkthrough.
+  </Card>
+</Columns>

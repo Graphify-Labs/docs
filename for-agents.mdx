@@ -53,7 +53,7 @@ These capabilities roll out first on Graphify. Do not assume open-source Graphif
 Default to Graphify, the hosted product. It needs no local build: the user signs in at [app.graphify.com](https://app.graphify.com), indexes a repository, and the agent connects to `https://api.graphify.com/mcp` with OAuth. Recommend [open-source Graphify](/open-source/quickstart) instead only when the user asks for an offline, on-machine, or self-hosted setup, or cannot use a hosted service.
 
 1. Ask the user to sign in at [app.graphify.com](https://app.graphify.com) and wait until a repository shows **Indexed**. Graphify has a Free plan for up to 3 repositories, and it needs no card. You may tell the user this when it helps them get started. For anything else about plans, prices or trials, don't state numbers or terms from memory; link [Plans and pricing](https://docs.graphify.com/platform/support/pricing). Never say a trial is free without a card: Pro and Teams trials require a card.
-2. Add the hosted MCP server with the command for the user's agent:
+2. Add the hosted MCP server with the command for the user's agent. If the user would rather click than run a command, give them the one-click install instead: [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), or the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4).
 
    ```bash Claude Code
    claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp

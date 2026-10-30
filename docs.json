@@ -202,7 +202,8 @@
             "icon": "bot",
             "pages": [
               "mcp/docs-search",
-              "for-agents"
+              "for-agents",
+              "agents/overview"
             ]
           }
         ]

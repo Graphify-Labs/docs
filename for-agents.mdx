@@ -9,7 +9,7 @@ icon: "bot-message-square"
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-**Setting Graphify up for a user?** Go straight to [Setup for AI agents](#setup-for-ai-agents) and follow steps 1 to 4 in order.
+**Setting Graphify up for a user?** Go straight to [Setup for AI agents](#setup-for-ai-agents) and follow steps 1 to 7 in order.
 
 This page holds the full rules. Every page's Markdown, [llms.txt](https://docs.graphify.com/llms.txt), and [llms-full.txt](https://docs.graphify.com/llms-full.txt) carry a short version that points here.
 
@@ -102,7 +102,49 @@ Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphif
 Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
 ```
 
-4. Report back to the user: which agent you configured, the command or file you changed, and the repositories `list_repositories` returned. If sign-in or the tool call failed, show the exact error and stop. Do not switch to Graphify Local unless the user asks.
+4. Report back to the user: which agent you configured, the command or file you changed, and the repositories `list_repositories` returned. If you write a project rule in step 5, also name that file. If the tool call failed because sign-in isn't finished or the client hasn't reloaded, still do step 5, then skip steps 6 and 7 and end with the message below. If it failed for any other reason, show the exact error and stop. Do not switch to Graphify CLI unless the user asks.
+
+```text
+Graphify is set up, but I can't use its tools until you finish signing in. Sign in at app.graphify.com and check a repository shows Indexed. Then reload your editor or start a new session, and complete the Graphify sign-in when your client asks. To test it, ask me: "Use Graphify's list_repositories tool and show the repositories I can access."
+```
+5. Offer a project rule. Ask first:
+
+```text
+Want me to add a short rule so I use Graphify's graph before grep for code questions in this project?
+```
+
+If the user says no, skip this step. If yes, append the block below to the project's existing instruction file: `AGENTS.md`, `CLAUDE.md` for Claude Code, or `.cursor/rules/graphify.mdc` for Cursor. Create the file only if none exists. Keep the rest of the file unchanged, and tell the user which file you changed.
+
+For Cursor, `.cursor/rules/graphify.mdc` must start with this header, or Cursor applies the rule only when it's @-mentioned. If the file already exists with a header, keep its header. `AGENTS.md` and `CLAUDE.md` need no header.
+
+```md .cursor/rules/graphify.mdc
+---
+description: Use Graphify's code graph before grep for code structure, callers and impact questions
+alwaysApply: true
+---
+```
+
+Then append the block below under the header.
+
+```md AGENTS.md
+## Graphify
+
+This repo is indexed in Graphify. For questions about code structure, callers, dependencies, or the impact of a change, use Graphify's MCP tools before grep or reading files one by one: query_graph for how something works, graphify_find for where a symbol is defined, graphify_callers / graphify_callees for who calls what, graphify_impact for what a change could affect. Use grep for exact strings, such as error messages or config keys. If a Graphify tool fails or the repository isn't indexed, say so, then fall back to grep.
+```
+
+6. Run one real query on a repository `list_repositories` returned, and show the user the answer:
+
+```text
+Use Graphify to show the main modules in <repo> and what depends on them. Cite file paths.
+```
+
+7. Tell the user in one line that setup is done, for example:
+
+```text
+Graphify is connected. From now on I'll query the code graph before grepping for structure, caller and impact questions. Try asking: "What breaks if I change <function>?"
+```
+
+Then link [Make agents use the graph](https://docs.graphify.com/cookbooks/make-agents-use-the-graph) for hooks, stricter rules and how to check the agent used the tools.
 
 To hand the whole setup to an agent, give it this prompt:
 

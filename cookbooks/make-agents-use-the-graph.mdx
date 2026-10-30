@@ -103,7 +103,8 @@ Agents follow the instruction file they read at the start of every session: `CLA
       plan to edit, say so in your plan.
     - Use `graphify_tests_for` to pick which tests to run.
     - Cite the Graphify result (symbol and file path) in your answer.
-      If a Graphify call fails, say so. Do not silently fall back to grep.
+      Use grep for exact strings, such as error messages or config keys.
+      If a Graphify call fails, say so, then fall back to grep.
     - The graph reflects the default branch. Code you changed in this
       session isn't in it yet, so read your own edits from disk.
     ```

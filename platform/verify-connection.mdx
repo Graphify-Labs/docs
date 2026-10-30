@@ -1,0 +1,68 @@
+---
+title: "Check your agent is using Graphify"
+sidebarTitle: "Check it's working"
+description: "Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix common setup problems."
+keywords: ["verify graphify mcp", "test mcp connection", "graphify not working", "mcp troubleshooting", "agent uses grep"]
+surface: "cloud"
+icon: "circle-check"
+---
+
+Use this page after you [connect your agent](/platform/quickstart). It takes about two minutes. You check three things in order: the server is connected, the agent can call Graphify's tools, and the agent picks them for code questions.
+
+## Step 1: Check the server is connected
+
+Your client should list a server named `graphify` at `https://api.graphify.com/mcp`, signed in, with its tools showing.
+
+| Client | Where to check | Connected looks like |
+| --- | --- | --- |
+| Claude Code | Run `claude mcp list` in a terminal, or `/mcp` inside Claude Code. | `graphify` shows **Connected**. |
+| Cursor | Open **Customize** in the sidebar and find `graphify`. With the Cursor CLI, run `agent mcp list`. | `graphify` is on, with its tools listed. **Needs login** means you haven't signed in yet. |
+| Codex | Start a new session and run `/mcp`. | `graphify` is listed with its tools. |
+| VS Code | Run **MCP: List Servers** from the Command Palette. | **Graphify** is running. In agent chat, its tools are turned on in the tools picker. |
+
+Other clients have their own MCP panel. See [Integrations](/integrations/overview) for each one.
+
+<Note>
+A listed server isn't proof the agent can read your repositories. Step 2 checks that.
+</Note>
+
+## Step 2: Run three test prompts
+
+Open a new agent chat and paste each prompt. Your client shows each tool call in the chat, usually with its name and arguments. Check that a Graphify tool ran, not a file search.
+
+| Prompt | Tool you should see | A good answer |
+| --- | --- | --- |
+| `Use Graphify to list my repositories. If the tool fails, show the error.` | `list_repositories` | Your indexed repositories, with their index status. |
+| `Using Graphify, who calls <function> in <repo>? Cite file paths.` | `graphify_callers`, often after `graphify_find` | Callers with file paths you can open and check. |
+| `Using Graphify, what could break if I change <function>, and which tests cover it?` | `graphify_impact`, `impact_and_risk` or `graphify_tests_for` | Affected files and linked tests. |
+
+Replace `<function>` with a function you know in a repository from the first answer. If you belong to several workspaces and the list looks wrong, ask the agent to run `list_workspaces`, then `set_workspace`.
+
+Then ask a code question without naming Graphify, such as `What calls <function>?`. If the agent searches files instead, add the always-on rule in [Setup for AI agents](/for-agents#setup-for-ai-agents), step 5.
+
+## Step 3: Fix what's wrong
+
+| Symptom | Fix |
+| --- | --- |
+| **Needs login** or **Needs authentication** next to `graphify` | You haven't signed in. Claude Code: `/mcp`, select **graphify**, choose **Authenticate**. Codex: `codex mcp login graphify`. Cursor: select **graphify** and finish the browser sign-in. VS Code: restart the server in **MCP: List Servers** and sign in. |
+| `graphify` is missing from the list | Check the config file is valid JSON (or TOML for Codex) and the URL is `https://api.graphify.com/mcp`. Then reload the client or start a new session. |
+| The agent asks for an API key | Graphify uses OAuth sign-in, not a key. Check the URL is the hosted one above. |
+| `list_repositories` is empty | No repository is indexed in this workspace. Index one in the [Console](https://app.graphify.com), or switch workspace with `set_workspace`. |
+| A repository is listed but answers are empty | It's still indexing, or it's in another workspace. Wait for **Indexed** on **Repositories** in the Console. |
+| The agent used grep or read files instead | Add the always-on rule from [Setup for AI agents](/for-agents#setup-for-ai-agents) to `AGENTS.md`, `CLAUDE.md` or `.cursor/rules/graphify.mdc`. For hooks and stricter rules, see [Make agents use the graph](/cookbooks/make-agents-use-the-graph). |
+| Tools are listed but never run | Turn on Graphify's tools in your client's chat, and use a model that can call tools. |
+| Every tool appears twice | The server is configured twice, for example in `~/.cursor/mcp.json` and `.cursor/mcp.json`. Remove one. |
+| A Cursor cloud agent can't see Graphify | Cloud agents don't read your local `mcp.json`, and they keep their own sign-in. Add and sign in to Graphify for cloud agents at [cursor.com/agents](https://cursor.com/agents). |
+| Answers miss today's changes | Graphify serves the indexed default branch. Uncommitted work isn't in it. |
+
+More fixes are in [Hosted MCP](/platform/hosted-mcp#verify-and-troubleshoot) and [Troubleshooting](/platform/support/troubleshooting).
+
+## Prove it after a session
+
+At the end of a task, ask:
+
+```text
+List every Graphify tool call you made in this session, with what you passed. If you made none, say so.
+```
+
+The calls it names should match the tool calls in the chat. To count calls across Claude Code sessions, see [Make agents use the graph](/cookbooks/make-agents-use-the-graph#step-6-prove-the-agent-used-the-graph).

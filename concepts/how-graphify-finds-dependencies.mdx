@@ -33,17 +33,11 @@ flowchart LR
 
 Graphify reads each code file with a [tree-sitter](https://tree-sitter.github.io/tree-sitter/) grammar and walks the abstract syntax tree (AST). From the tree it records the declarations (modules, classes, functions, methods) and the relationships between them, such as `imports`, `calls`, `inherits` and `references`. Each node and edge keeps its source file and line.
 
-The Console lists 63 supported grammars:
+Graphify supports 40 programming languages: 33 through tree-sitter grammars and 7 through built-in parsers.
 
-| Support | Count | Examples |
-| --- | --- | --- |
-| Tree-sitter grammars | 36 | Python, JavaScript, TypeScript, Go, Rust, Java, C#, Ruby, PHP, SQL, Terraform |
-| Dedicated grammars and extractors | 7 | OCaml, SCSS / Sass, Razor / Blazor, Twig, Blade, Gherkin, dbt SQL |
-| Generic code support | 20 | Dart, Solidity, Haskell, Vue, Svelte, COBOL |
+Most languages work with the default install. SQL, Terraform, R, Erlang, Solidity, OCaml, Common Lisp, VB.NET, DreamMaker and Robot Framework need an optional extra. Install all of them with `pip install "graphifyy[all]"`, or add only the one you need, such as `graphifyy[sql]`. See [supported languages](/open-source/features/languages) for the full list.
 
-Languages with generic support are recognized as code, but Graphify extracts less structure from them. See [supported languages](/open-source/features/languages) for the full list.
-
-Parsing runs where the graph is built: on your machine with Graphify Local, or on Graphify's build workers with Graphify Cloud. It doesn't need a model or an API key.
+Parsing runs where the graph is built: on your machine with open-source Graphify, or on Graphify's build workers when you use Graphify. It doesn't need a model or an API key.
 
 ## Step 2: Resolve names to declarations
 
@@ -53,9 +47,9 @@ The rule is conservative. Graphify only draws an edge when the name resolves to 
 
 ## Step 3: Tag each edge with its provenance
 
-Every edge carries a tag that says how Graphify knows about it. Graphify Local writes one of three confidence labels to `graph.json`. Graphify Cloud shows the same edges with the Console's tags and line styles.
+Every edge carries a tag that says how Graphify knows about it. Open-source Graphify writes one of three confidence labels to `graph.json`. Graphify shows the same edges with the Console's tags and line styles.
 
-| Graphify Local | Console tag | What it means |
+| Graphify CLI | Console tag | What it means |
 | --- | --- | --- |
 | `EXTRACTED` | extracted | Read directly from source or the AST, such as a call to a fully qualified name. Highest certainty, drawn solid. |
 | `INFERRED` | inferred | Derived by static analysis, such as a method call resolved through a local type. Drawn dashed. |
@@ -83,9 +77,9 @@ Graphify doesn't use a model to find structure in code. It does use one in these
 
 | Where | What the model does |
 | --- | --- |
-| Documents, papers, images and transcripts | Extracts concepts and how they relate to the code. This is a separate path from the code parse. With Graphify Local, it runs through your assistant or a backend you configure, and `--code-only` skips it. |
-| Code area names | Gives each code area a readable name. The grouping itself comes from the graph. With Graphify Local, use `--no-label` to skip it. |
-| Duplicate entity tiebreaks | With Graphify Local's opt-in `--dedup-llm`, settles near-matches the deterministic pass can't decide. |
+| Documents, papers, images and transcripts | Extracts concepts and how they relate to the code. This is a separate path from the code parse. With open-source Graphify, it runs through your assistant or a backend you configure, and `--code-only` skips it. |
+| Code area names | Gives each code area a readable name. The grouping itself comes from the graph. With open-source Graphify, use `--no-label` to skip it. |
+| Duplicate entity tiebreaks | With open-source Graphify's opt-in `--dedup-llm`, settles near-matches the deterministic pass can't decide. |
 | Wiki, answers and reviews | Writes wiki articles, answers questions and explains code from the graph. Wiki pages show the model that wrote them, and every statement is marked **Verified**, **Inferred** or **Needs review**. |
 
 See [How Graphify works](/concepts/architecture) for the full pipeline and what each path sends to a provider.
@@ -97,7 +91,7 @@ A graph built from source is a map of what the code says, not of what runs. Expe
 - **Dynamic calls.** Calls by string name, reflection, `getattr`, dependency injection and plugin registries often don't resolve to one declaration.
 - **External callers.** Code outside the indexed repositories, such as another team's service, a cron job or a public API client, isn't in the graph.
 - **Framework wiring.** Routes, decorators and handlers that a framework calls at runtime may show no caller.
-- **Generic support languages.** Files with generic support give less structure than tree-sitter languages.
+- **Optional language extras.** Files in SQL, Terraform, R, Erlang, Solidity, OCaml, Common Lisp, VB.NET, DreamMaker and Robot Framework are parsed only when their extra is installed. Run `pip install "graphifyy[all]"` to cover them.
 
 This is why the Console says "Dynamic and external callers may not be represented" when a check finds no dependents, and why dead code findings ask you to check before you remove anything.
 

@@ -87,7 +87,7 @@
         ]
       },
       {
-        "tab": "Graphify CLI",
+        "tab": "Open Source",
         "groups": [
           {
             "group": "Get started",
@@ -345,7 +345,7 @@
         "header": "Resources",
         "items": [
           {
-            "label": "Graphify CLI quickstart",
+            "label": "Local quickstart",
             "href": "/open-source/quickstart"
           },
           {

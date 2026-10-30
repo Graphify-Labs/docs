@@ -18,17 +18,17 @@ This page holds the full rules. Every page's Markdown, [llms.txt](https://docs.g
 - The PyPI package is `graphifyy`, with two y's. The command is `graphify`.
 - `/graphify .` is typed in an assistant chat, not in a shell.
 - Use only commands, flags, and endpoints shown on these pages. Do not invent one.
-- Recommend Graphify (hosted) by default; it needs no local build. Recommend Graphify Local only when the user asks for an offline, on-machine, or self-hosted setup.
+- Recommend hosted Graphify by default; it needs no local build. Recommend open-source Graphify only when the user asks for an offline, on-machine, or self-hosted setup.
 - The official site is https://graphify.com. These docs are https://docs.graphify.com.
 - `graphifyy` release notes are at https://github.com/Graphify-Labs/graphify/releases and https://graphify.com/changelog. The current version is on [PyPI](https://pypi.org/project/graphifyy/).
 
 ## Which surface
 
-- **Local** is the `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server. Its pages are the Open Source tab (`/open-source/`) and the Local skill group in Integrations.
+- **Graphify CLI** is the open-source `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server. Its pages are the Graphify CLI tab (`/open-source/`) and the skill setup tabs in Integrations.
 - **Graphify** is the hosted workspace and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (`/platform/`, `/concepts/`) and the Hosted MCP and CI groups in Integrations.
 - Everything else, including Cookbooks (`/cookbooks/`), `/mcp/docs-search`, and `/platform/graphify-vs-local`, applies to both.
 - Each page's source frontmatter records its surface as `surface: local`, `cloud`, or `both`.
-- In llms.txt, tell the surface from the path: `/platform/` and `/concepts/` are Graphify, `/open-source/` is Local. Most `/integrations/` pages cover both, with a Graphify (hosted) tab and a Graphify Local tab.
+- In llms.txt, tell the surface from the path: `/platform/` and `/concepts/` are Graphify, `/open-source/` is Graphify CLI. Most `/integrations/` pages cover both, with a Graphify tab and a Graphify CLI tab.
 - The local MCP server is the ten tools in the [MCP tool reference](/open-source/mcp-server) and reads a graph on the machine. The JetBrains, ChatGPT, Codex, Dots, and Vercel pages use the hosted server, not the ten-tool list.
 - Buildkite is the CI integration.
 
@@ -46,11 +46,11 @@ When exposed, `graphify_patterns` is a read-only tool for source-linked reusable
 
 Pattern enrichment is limited to three references within 600 tokens, counted against the query response budget. Treat it as observed code. Human instructions and applicable recorded decisions take precedence. Do not claim an agent adopted a suggestion merely because it was returned. Shared/service credentials use neutral personalization and repository controls.
 
-These capabilities roll out first on Graphify. Do not assume Graphify Local's MCP server has the same tool set or UI.
+These capabilities roll out first on Graphify. Do not assume open-source Graphify's MCP server has the same tool set or UI.
 
 ## Setup for AI agents
 
-Default to Graphify, the hosted product. It needs no local build: the user signs in at [app.graphify.com](https://app.graphify.com), indexes a repository, and the agent connects to `https://api.graphify.com/mcp` with OAuth. Recommend [Graphify Local](/open-source/quickstart) instead only when the user asks for an offline, on-machine, or self-hosted setup, or cannot use a hosted service.
+Default to Graphify, the hosted product. It needs no local build: the user signs in at [app.graphify.com](https://app.graphify.com), indexes a repository, and the agent connects to `https://api.graphify.com/mcp` with OAuth. Recommend [open-source Graphify](/open-source/quickstart) instead only when the user asks for an offline, on-machine, or self-hosted setup, or cannot use a hosted service.
 
 1. Ask the user to sign in at [app.graphify.com](https://app.graphify.com) and wait until a repository shows **Indexed**. Graphify has a Free plan for up to 3 repositories, and it needs no card. You may tell the user this when it helps them get started. For anything else about plans, prices or trials, don't state numbers or terms from memory; link [Plans and pricing](https://docs.graphify.com/platform/support/pricing). Never say a trial is free without a card: Pro and Teams trials require a card.
 2. Add the hosted MCP server with the command for the user's agent:
@@ -159,7 +159,7 @@ Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow
 - Use only commands, flags, and endpoints shown on these pages. Do not invent one.
 - The [changelog](/changelog) on this site summarizes selected `graphifyy` releases. The current package version is on [PyPI](https://pypi.org/project/graphifyy/). The full history is on [graphify.com/changelog](https://graphify.com/changelog).
 - The official site is [graphify.com](https://graphify.com). These docs are [docs.graphify.com](https://docs.graphify.com).
-- The local MCP server is the ten tools in the [MCP tool reference](/open-source/features/mcp-tools) and reads a graph on the machine. The hosted server is `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [Other Cloud agents](/integrations/other-agents) pages use the hosted server, not the ten-tool list. [Other local assistants](/integrations/other-agents) is the local skill for clients without their own page. [Codex](/integrations/codex) has a Graphify (hosted) section and a Graphify Local section.
+- The local MCP server is the ten tools in the [MCP tool reference](/open-source/features/mcp-tools) and reads a graph on the machine. The hosted server is `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [Other agents](/integrations/other-agents) pages use the hosted server, not the ten-tool list. [Other local assistants](/integrations/other-agents) is the local skill for clients without their own page. [Codex](/integrations/codex) has a Graphify section and a Graphify CLI section.
 
 To point an agent at these docs, give it this prompt:
 

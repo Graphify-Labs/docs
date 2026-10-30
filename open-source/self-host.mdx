@@ -1,7 +1,7 @@
 ---
 title: "Self-host the Graphify MCP server with Docker"
 sidebarTitle: "Self-host with Docker"
-description: "Build the Graphify Local Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph."
+description: "Build the open-source Graphify Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph."
 keywords: ["graphify docker", "self-host MCP server", "graphify-mcp http", "team code graph"]
 surface: "local"
 icon: "container"
@@ -9,7 +9,7 @@ icon: "container"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-The Graphify Local repository ships a `Dockerfile` that runs `graphify-mcp` over streamable HTTP. Mount a `graphify-out/` folder into the container and every agent on your network can query the same graph.
+The open-source Graphify repository ships a `Dockerfile` that runs `graphify-mcp` over streamable HTTP. Mount a `graphify-out/` folder into the container and every agent on your network can query the same graph.
 
 <Note>
 **Self-host when** your team wants one shared graph but the code must stay on your own infrastructure. If you don't want to run a server, [Graphify](/integrations/other-agents) hosts the MCP endpoint for you.
@@ -41,7 +41,7 @@ Graphify doesn't publish a prebuilt image, so you build it yourself.
 
 <Steps>
   <Step title="Build a graph">
-    On a machine with Graphify Local installed:
+    On a machine with open-source Graphify installed:
 
     ```bash
     graphify extract . --code-only
@@ -134,7 +134,7 @@ Look for `graphify MCP server (streamable-http) on http://0.0.0.0:8080/mcp - api
   <Card title="MCP server quickstart" icon="plug" href="/open-source/mcp-server">
     Every tool and flag the server exposes.
   </Card>
-  <Card title="Vibe coding with Graphify Local" icon="wand-magic-sparkles" href="/open-source/vibe-coding">
+  <Card title="Vibe coding with Graphify CLI" icon="wand-magic-sparkles" href="/open-source/vibe-coding">
     Make agents reach for the graph first.
   </Card>
 </Columns>

@@ -1,7 +1,7 @@
 ---
-title: "Graphify Local: open-source code knowledge graph"
+title: "Graphify CLI: open-source code knowledge graph"
 sidebarTitle: "Overview"
-description: "Graphify Local, the open-source graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service."
+description: "Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service."
 keywords: ["open source code knowledge graph", "graphifyy", "tree-sitter", "local MCP server"]
 surface: "local"
 icon: "house"
@@ -9,12 +9,12 @@ icon: "house"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Graphify Local turns a folder of code, docs, papers, images, or videos into a knowledge graph you can query from a terminal, a coding agent, or an MCP client. It runs on your machine and is published on PyPI as [`graphifyy`](https://pypi.org/project/graphifyy/) under the Apache-2.0 license.
+Open-source Graphify turns a folder of code, docs, papers, images, or videos into a knowledge graph you can query from a terminal, a coding agent, or an MCP client. It runs on your machine and is published on PyPI as [`graphifyy`](https://pypi.org/project/graphifyy/) under the Apache-2.0 license.
 
-Coding agents spend most of their context re-reading files to rediscover how a codebase fits together. Graphify Local parses the code once, records every function, class, import, and call as a node or an edge, and lets the agent ask the graph instead. On the Graphify repository itself, `graphify benchmark` reports about 127 times fewer tokens per question than reading the corpus.
+Coding agents spend most of their context re-reading files to rediscover how a codebase fits together. Open-source Graphify parses the code once, records every function, class, import, and call as a node or an edge, and lets the agent ask the graph instead. On the Graphify repository itself, `graphify benchmark` reports about 127 times fewer tokens per question than reading the corpus.
 
 <Note>
-**Use Graphify Local when:**
+**Use open-source Graphify when:**
 - Your code can't leave your machine, or you want to run everything offline.
 - You want the graph as files (`graph.json`, `graph.html`, `GRAPH_REPORT.md`) that you can commit, diff, and export.
 - You want to script or extend the pipeline yourself.
@@ -60,11 +60,11 @@ graphify-out/
 | [CLI](/open-source/cli-quickstart) | `graphify extract`, `query`, `path`, `explain` | Terminals, scripts, CI |
 | [MCP server](/open-source/mcp-server) | `graphify-mcp` over stdio or HTTP | Any MCP client, or a shared team server |
 
-## Graphify Local and Graphify
+## Graphify CLI and Graphify
 
 Both build the same kind of graph. The difference is who runs it.
 
-| | Graphify Local | Graphify |
+| | Graphify CLI | Graphify |
 | --- | --- | --- |
 | Where it runs | Your machine | Hosted at [app.graphify.com](https://app.graphify.com) |
 | Setup | `pip install graphifyy` | Sign in and connect GitHub |
@@ -76,7 +76,7 @@ Both build the same kind of graph. The difference is who runs it.
   <Accordion title="Is the package graphify or graphifyy?">
     The PyPI package is `graphifyy`, with two y's. The command it installs is `graphify`, plus `graphify-mcp` for the MCP server.
   </Accordion>
-  <Accordion title="Does Graphify Local need an LLM?">
+  <Accordion title="Does Graphify CLI need an LLM?">
     No, not for code. Code extraction, resolution, clustering, and queries all run locally. An LLM is only used for documents, papers, images, video transcripts, and community names. Add `--code-only` to skip it entirely.
   </Accordion>
   <Accordion title="Does it use embeddings or a vector database?">

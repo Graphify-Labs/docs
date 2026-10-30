@@ -1,17 +1,17 @@
 ---
 title: "Integrations: coding agents and MCP clients"
 sidebarTitle: "Overview"
-description: "See which coding agents and assistants connect to Graphify's hosted MCP server, which support the Graphify Local skill, and which get always-on context."
+description: "See which coding agents and assistants connect to Graphify's hosted MCP server, which support the open-source skill, and which get always-on context."
 surface: "both"
 hideFooterPagination: true
 icon: "layout-grid"
 ---
 
-Every agent below can use Graphify. Start with **Graphify (hosted)**: it answers from repositories you have indexed, through `https://api.graphify.com/mcp`, with no local build. **Graphify Local**, the alternative for offline or self-hosted setups, installs the open-source `graphifyy` skill and builds the graph on your machine. See [Graphify vs Local](/platform/graphify-vs-local) to choose.
+Every agent below can use Graphify. Start with **Graphify**: it answers from repositories you have indexed, through `https://api.graphify.com/mcp`, with no local build. **Graphify CLI**, the alternative for offline or self-hosted setups, installs the open-source `graphifyy` skill and builds the graph on your machine. See [Graphify vs Graphify CLI](/platform/graphify-vs-local) to choose.
 
 ## Agents at a glance
 
-| Agent | One-click install | Graphify (hosted MCP) | Graphify Local skill | Always-on context (Local) |
+| Agent | One-click install | Graphify (hosted MCP) | Graphify CLI skill | Always-on context (Graphify CLI) |
 | --- | --- | --- | --- | --- |
 | [Claude Code](/integrations/claude-code) | — | Yes | Yes | `CLAUDE.md` and a PreToolUse hook |
 | [Cursor](/integrations/cursor) | From the console | Yes | Yes | `.cursor/rules/graphify.mdc` (always applied) |
@@ -26,7 +26,7 @@ Every agent below can use Graphify. Start with **Graphify (hosted)**: it answers
 
 "Always-on context" is what `graphify install` writes so the agent checks the graph before reading source, without being asked. Hooks never grant the agent new permissions.
 
-## Graphify (hosted)
+## Graphify
 
 Sign in at [app.graphify.com](https://app.graphify.com) and wait until the repository status is **Indexed**. Then pick your agent. Each page signs you in with OAuth; no API key is needed.
 
@@ -42,7 +42,7 @@ Sign in at [app.graphify.com](https://app.graphify.com) and wait until the repos
   <a href="/integrations/other-agents" className="flex flex-col gap-5 rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-white dark:bg-[#141515] p-6 text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#118d4f] dark:hover:border-[#4dea9c] hover:!border-b-[#118d4f] dark:hover:!border-b-[#4dea9c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/google-antigravity.png" alt="Antigravity" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/logos/windsurf.svg" alt="Windsurf" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/logos/cline.svg" alt="Cline" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Other Cloud agents</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">Antigravity, Windsurf, Cline, Zed, and any other MCP client.</p></div></a>
 </div>
 
-## Graphify Local
+## Graphify CLI
 
 The package is `graphifyy`. The command is `graphify`. `graphify install` writes the skill into the assistant you name.
 

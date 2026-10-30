@@ -1,7 +1,7 @@
 ---
-title: "Community detection in Graphify Local"
+title: "Community detection in Graphify CLI"
 sidebarTitle: "Community detection"
-description: "How Graphify Local groups your code into communities with Leiden clustering, names them, and keeps their IDs stable as the graph changes."
+description: "How open-source Graphify groups your code into communities with Leiden clustering, names them, and keeps their IDs stable as the graph changes."
 keywords: ["graphify communities", "leiden clustering", "code clustering", "graphify cluster-only", "graphify label"]
 surface: "local"
 icon: "users-round"
@@ -9,7 +9,7 @@ icon: "users-round"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-A large codebase is easier to navigate in neighbourhoods than file by file. After every build, Graphify Local splits the graph into **communities**: groups of functions, classes, files, and concepts that connect to each other more than to the rest of the code. Communities give `GRAPH_REPORT.md` its structure, colour `graph.html`, and let your agent say "this lives in the parsing layer" instead of listing fifty files.
+A large codebase is easier to navigate in neighbourhoods than file by file. After every build, open-source Graphify splits the graph into **communities**: groups of functions, classes, files, and concepts that connect to each other more than to the rest of the code. Communities give `GRAPH_REPORT.md` its structure, colour `graph.html`, and let your agent say "this lives in the parsing layer" instead of listing fifty files.
 
 <Note>
 **Use communities when** you join a new repository and want its real architecture, not the folder layout, or when your agent needs a short map of where a change belongs.
@@ -120,7 +120,7 @@ When you run `update`, `watch`, or a git hook, Graphify maps new communities ont
 
 ## Run it on a second repository
 
-These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify CLI 0.9.97. Your counts will differ.
 
 ```text
 $ graphify cluster-only . --no-label --no-viz

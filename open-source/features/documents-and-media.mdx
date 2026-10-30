@@ -1,7 +1,7 @@
 ---
 title: "Documents, papers, and media"
 sidebarTitle: "Documents and media"
-description: "Add Markdown, PDFs, Office files, images, video, audio, web pages, and Google Workspace files to your Graphify Local graph with semantic extraction."
+description: "Add Markdown, PDFs, Office files, images, video, audio, web pages, and Google Workspace files to your open-source Graphify graph with semantic extraction."
 keywords: ["graphify pdf", "graphify docs", "semantic extraction", "whisper transcription", "graphify add url"]
 surface: "local"
 icon: "file-video-camera"
@@ -9,7 +9,7 @@ icon: "file-video-camera"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Code explains what a system does. Design docs, papers, meeting recordings, and specs explain why. Graphify Local puts both in one graph, so your agent can go from a function to the ADR that justified it. Code is parsed locally with no model. Everything else goes through **semantic extraction**: a model you choose reads each chunk and returns the concepts and relationships in it.
+Code explains what a system does. Design docs, papers, meeting recordings, and specs explain why. Open-source Graphify puts both in one graph, so your agent can go from a function to the ADR that justified it. Code is parsed locally with no model. Everything else goes through **semantic extraction**: a model you choose reads each chunk and returns the concepts and relationships in it.
 
 <Note>
 **Use this when** your repository has a `docs/` folder, research PDFs, or recorded walkthroughs that your agent should know about. For a code-only graph with no API key, use `graphify extract . --code-only`.
@@ -120,7 +120,7 @@ Graphify checks the size of your corpus before extraction. Under about 50,000 wo
 
 ## See what a code-only run skips
 
-These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify CLI 0.9.97. Your counts will differ.
 
 ```text
 [graphify extract] --code-only: skipping 41 non-code file(s) (31 docs, 0 papers, 10 images) — no LLM extraction

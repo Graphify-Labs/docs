@@ -1,7 +1,7 @@
 ---
 title: "LLM providers for semantic extraction"
 sidebarTitle: "LLM providers"
-description: "Choose the model Graphify Local uses for docs, papers and images: Claude, Gemini, OpenAI, Ollama, Kimi, DeepSeek, Azure, Bedrock or your own endpoint."
+description: "Pick the model open-source Graphify uses for docs, papers and images: Claude, Gemini, OpenAI, Ollama, Kimi, DeepSeek, Azure, Bedrock or your own endpoint."
 keywords: ["graphify ollama", "graphify openai", "graphify backend", "custom llm provider", "local llm"]
 surface: "local"
 icon: "cpu"
@@ -9,7 +9,7 @@ icon: "cpu"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Graphify Local builds the code graph without any model. It parses source files with tree-sitter on your machine. A model is only used for **semantic extraction**: reading docs, papers, images, and transcripts, and naming communities. This page shows how Graphify picks that model and how to point it somewhere else.
+Open-source Graphify builds the code graph without any model. It parses source files with tree-sitter on your machine. A model is only used for **semantic extraction**: reading docs, papers, images, and transcripts, and naming communities. This page shows how Graphify picks that model and how to point it somewhere else.
 
 <Note>
 **Use this page when** you want docs and PDFs in the graph, want to run fully offline with Ollama, or need to route calls through Azure, Bedrock, or an OpenAI-compatible gateway. If you only need code, pass `--code-only` and skip it.

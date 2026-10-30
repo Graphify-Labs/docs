@@ -1,7 +1,7 @@
 ---
 title: "Deduplication and symbol resolution"
 sidebarTitle: "Deduplication and resolution"
-description: "How Graphify Local links calls and imports across files, tags every edge with its confidence, and merges duplicate entities without inventing connections."
+description: "How open-source Graphify links calls and imports across files, tags every edge with its confidence, and merges duplicate entities without guessing."
 keywords: ["graphify deduplication", "symbol resolution", "EXTRACTED INFERRED AMBIGUOUS", "cross-file calls"]
 surface: "local"
 icon: "copy-minus"
@@ -9,7 +9,7 @@ icon: "copy-minus"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Parsing one file at a time only gets you halfway. A call to `load_config()` in `app.py` is useful only when it points at the `load_config` defined in `config.py`, and a concept your docs call "Auth Service" should be the same node as the one another doc calls "auth service". Graphify Local does both before it writes the graph, and it labels how sure it is.
+Parsing one file at a time only gets you halfway. A call to `load_config()` in `app.py` is useful only when it points at the `load_config` defined in `config.py`, and a concept your docs call "Auth Service" should be the same node as the one another doc calls "auth service". Open-source Graphify does both before it writes the graph, and it labels how sure it is.
 
 <Note>
 **Read this page when** you want to know whether to trust an edge, why two nodes merged, or why a call you expected isn't in the graph.
@@ -103,7 +103,7 @@ graphify explain "APIRoute"
 
 ## Run it on a second repository
 
-These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ. The dedup step reports what it merged:
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify CLI 0.9.97. Your counts will differ. The dedup step reports what it merged:
 
 ```text
 [graphify] Deduplicated 32 node(s) (28 exact, 4 fuzzy).

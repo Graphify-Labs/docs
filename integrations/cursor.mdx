@@ -1,7 +1,7 @@
 ---
 title: "Graphify for Cursor"
 sidebarTitle: "Cursor"
-description: "Connect Cursor to Graphify's hosted MCP server with OAuth, or install the Graphify Local skill and query a graph built on your machine."
+description: "Connect Cursor to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
 surface: "both"
 hideFooterPagination: true
 ---
@@ -11,7 +11,7 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 <HostedOrLocal />
 
 <Tabs>
-<Tab title="Graphify (hosted)">
+<Tab title="Graphify">
 
 Connect Cursor to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Cursor can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
 
@@ -103,7 +103,7 @@ The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 1
 Yes. Background Agents on cursor.com sign in through Cursor's hosted callback, which Graphify allows.
 
 </Tab>
-<Tab title="Graphify Local">
+<Tab title="Graphify CLI">
 
 ## 1. Install and register
 

@@ -14,11 +14,11 @@ Quick answers to the questions people ask most about Graphify, the hosted produc
 ## Getting started
 
 <AccordionGroup>
-<Accordion title="What is the difference between Graphify and Graphify Local?">
-Graphify is hosted: it indexes your GitHub or GitLab repositories, rebuilds on each push to the default branch, reviews pull requests, and serves every repository through one MCP connection. Graphify Local is the free, open-source `graphifyy` package. It builds a graph on your machine, with no account. See [Move from Graphify Local](/platform/support/move-from-local) to switch.
+<Accordion title="What is the difference between Graphify and Graphify CLI?">
+Graphify is hosted: it indexes your GitHub or GitLab repositories, rebuilds on each push to the default branch, reviews pull requests, and serves every repository through one MCP connection. Open-source Graphify is the free `graphifyy` package. It builds a graph on your machine, with no account. See [Move from Graphify CLI](/platform/support/move-from-local) to switch.
 </Accordion>
 <Accordion title="Which code hosts does Graphify support?">
-GitHub and GitLab. Connect them from **Repositories**. GitHub Enterprise is part of [Enterprise](/platform/support/pricing#enterprise). A project that is only on your machine needs Graphify Local.
+GitHub and GitLab. Connect them from **Repositories**. GitHub Enterprise is part of [Enterprise](/platform/support/pricing#enterprise). A project that is only on your machine needs open-source Graphify.
 </Accordion>
 <Accordion title="Do I need a card to start?">
 No. The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required. See [Plans and pricing](/platform/support/pricing).
@@ -91,7 +91,7 @@ Reply on the pull request with `@graphify wrong <finding>`, `@graphify good <fin
 Add the hosted MCP server, `https://api.graphify.com/mcp`, and sign in with OAuth in the browser. Each integration page has the exact steps; start at [Hosted MCP](/integrations/overview).
 </Accordion>
 <Accordion title="My assistant still uses local tools like get_node">
-A local `graphify` entry is still active and wins over the hosted one. Remove it, then restart the assistant. See [Move from Graphify Local](/platform/support/move-from-local#if-something-fails).
+A local `graphify` entry is still active and wins over the hosted one. Remove it, then restart the assistant. See [Move from Graphify CLI](/platform/support/move-from-local#if-something-fails).
 </Accordion>
 <Accordion title="How does a CI agent sign in without a browser?">
 Use an API token from the **MCP** tab of **Connectors**. Store it as a CI secret, never in the repository.
@@ -111,7 +111,7 @@ No. Code goes to Graphify's LLM subprocessors only to produce results, under ter
 Contact the [Graphify team](https://graphify.com/contact) to request deletion or export. Content is kept until you delete it or close your account, then removed from active systems within 30 days.
 </Accordion>
 <Accordion title="Can I run Graphify on my own infrastructure?">
-Yes, with [Enterprise](/platform/support/pricing#enterprise), which is self-hosted and in early access. Graphify Local also runs entirely on your machine.
+Yes, with [Enterprise](/platform/support/pricing#enterprise), which is self-hosted and in early access. Open-source Graphify also runs entirely on your machine.
 </Accordion>
 </AccordionGroup>
 
@@ -127,7 +127,7 @@ Ask in [Discord](https://discord.gg/graphify). Teams and Enterprise workspaces a
   <Card title="Repositories and builds" icon="git-commit" href="/platform/repositories">
     Index and rebuild repositories.
   </Card>
-  <Card title="Troubleshooting Graphify Local" icon="wrench" href="/open-source/troubleshooting">
+  <Card title="Troubleshooting Graphify CLI" icon="wrench" href="/open-source/troubleshooting">
     Fixes for the open-source package.
   </Card>
 </Columns>

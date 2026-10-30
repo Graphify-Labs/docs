@@ -25,25 +25,29 @@ Before you change a config file, tell the user what you will change and wait for
 
 ## Pick the tool
 
-The hosted server sends instructions on connect that map question types to tools. Your client builds its tool list from the server, so trust the live tool list and its input schemas over this table.
+The hosted server sends instructions on connect that map question types to tools, and it lists 27 tools. Your client builds its tool list from the server, so trust the live tool list and its input schemas over this table.
 
 | The user asks | Call |
 | --- | --- |
 | Which repositories or workspaces can I query? | `list_repositories`, `list_workspaces` |
 | How does X work? | `query_graph` |
-| Where is X defined? | `graphify_find`, then `graphify_node` |
+| Where is X defined? | `graphify_find`, or `graphify_node` for the body and its neighbors |
+| Find a definition by keyword, then read it | `search`, then `fetch` with a result's `id` |
 | Who calls X? What does X call? | `graphify_callers`, `graphify_callees` |
 | How does A reach B? | `graphify_trace` for a directed call path, `shortest_path` for any connection |
-| What could break if I change X? | `graphify_impact`, then `impact_and_risk` to rank the files |
+| What could break if I change X? | `graphify_impact` for the directly connected callers and callees, then `impact_and_risk` to rank the files by linked tests |
+| Where is X used, other than calls? | `graphify_references` |
 | Which tests cover X? | `graphify_tests_for` |
-| What does this file import, and what imports it? | `graphify_file_neighbors` |
+| What does this file import, and what imports it? | `graphify_file_neighbors`, or `graphify_imports_exports` for its import and export edges |
+| Is the repository indexed, and how fresh is it? | `graph_stats` |
 | Which files matter for this task? | `graphify_rank_files` |
 | What did the team decide about X? | `recall`, `memories_about` |
 
 Rules for the results:
 
-- Use the `repository_id` that `list_repositories` returns. Never invent an ID or silently pick a different repository.
-- Check the returned symbol and file before you cite them. A lookup can return a close match instead of an exact one. If it did, say so.
+- Use a `repository_id` from `list_repositories`: the UUID or the `owner/name`. Never invent an ID or silently pick a different repository.
+- Check the returned symbol and file before you cite them. If a name matches several symbols, the result lists them under `ambiguous`. Say which one you used. If a name doesn't resolve, you get an error with similar `candidates`, or a `semantic` match instead of an `exact` one. Say so and don't treat it as the symbol the user asked about.
+- Results carry `freshness`: the indexed commit and its age. Mention it when the age matters.
 - An empty caller list means the index returned no callers. It does not prove the symbol is unused.
 - Impact and test tools read the graph. They don't run tests or prove runtime behavior.
 - Use grep for exact strings, such as error messages or config keys.
@@ -51,10 +55,12 @@ Rules for the results:
 
 ## Ask before you change state
 
-The tools don't edit source files, but two of them change stored state. Ask the user first:
+The tools don't edit source files, but two of them change stored state on purpose. Ask the user first:
 
 - `remember` saves a note to the workspace's shared [Memory](/platform/memory). Save only what the user asked you to save.
 - `set_workspace` changes which workspace, and so which repositories, the session reads. With `make_default`, it also changes the user's default. See [Hosted MCP](/platform/hosted-mcp#workspaces-and-mcp-sessions).
+
+In workspaces with trail capture turned on, `query_graph`, `graphify_find`, `graphify_trace`, `graphify_rank_files` and an unscoped `recall` can also save the question you asked to workspace memory. They never change source code.
 
 ## Keep answers fresh
 
@@ -71,7 +77,7 @@ With Graphify CLI, the graph is a file on the machine. Run `graphify update .` a
 You can add the server, but only the user can finish the OAuth sign-in in a browser. Until they do, every tool call fails and the client shows the server as needing login.
 
 1. Don't retry in a loop, and don't switch to Graphify CLI unless the user asks.
-2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or `codex mcp login graphify` in Codex. The full list is in [Check your agent is using Graphify](/platform/verify-connection#step-3-fix-whats-wrong).
+2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or `codex mcp login graphify` in Codex. The full list is in [Check your agent is using Graphify](/platform/verify-connection).
 3. Remind them that a new server loads only when a session starts, so they may need to reload the editor or start a new session.
 4. Meanwhile, answer from the local files and say that the answer did not come from Graphify.
 5. After sign-in, call `list_repositories` and show the result.

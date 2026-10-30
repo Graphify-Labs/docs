@@ -6,6 +6,8 @@ surface: "both"
 hideFooterPagination: true
 ---
 
+import { InstallButton } from '/snippets/install-button.mdx';
+
 import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
 <HostedOrLocal />
@@ -27,7 +29,11 @@ The server uses Streamable HTTP and OAuth. You sign in once in the browser, so t
 
 **One-click install**
 
-In the console, open **Connectors → MCP**, choose **Cursor**, and select **Install in Cursor**. Cursor opens and asks you to confirm the `graphify` server.
+<InstallButton href="cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D" label="Install in Cursor">
+One click: Cursor opens and asks you to confirm the `graphify` server at `https://api.graphify.com/mcp`. Requires the Cursor desktop app.
+</InstallButton>
+
+Or, in the console, open **Connectors → MCP**, choose **Cursor**, and select **Install in Cursor**. Cursor opens and asks you to confirm the `graphify` server.
 
 **Edit mcp.json**
 

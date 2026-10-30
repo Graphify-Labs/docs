@@ -178,6 +178,7 @@ Use these first when you are an AI agent reading or acting on these docs.
 - [Search the docs from your agent](https://docs.graphify.com/mcp/docs-search.md): Connect the Graphify documentation MCP server so your agent can search these docs. It is separate from the MCP server for your repository graph.
 - [Notes for AI agents using the Graphify docs](https://docs.graphify.com/for-agents.md): Rules for coding agents that answer questions from the Graphify docs: package names, commands, and which surface each page covers.
 - [How AI agents use Graphify: connect, query, refresh](https://docs.graphify.com/agents/overview.md): For coding agents: how to connect to Graphify, which MCP tool answers which code question, how fresh the graph is, and what to do before sign-in.
+- [Headless agents and bots with Graphify's hosted MCP](https://docs.graphify.com/agents/headless.md): Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't.
 
 ## Cookbooks: Essentials
 

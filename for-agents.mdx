@@ -102,7 +102,11 @@ Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphif
 Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
 ```
 
-4. Report back to the user: which agent you configured, the command or file you changed, and the repositories `list_repositories` returned. If you write a project rule in step 5, also name that file. If sign-in or the tool call failed, show the exact error and stop. Do not switch to Graphify CLI unless the user asks.
+4. Report back to the user: which agent you configured, the command or file you changed, and the repositories `list_repositories` returned. If you write a project rule in step 5, also name that file. If the tool call failed because sign-in isn't finished or the client hasn't reloaded, still do step 5, then skip steps 6 and 7 and end with the message below. If it failed for any other reason, show the exact error and stop. Do not switch to Graphify CLI unless the user asks.
+
+```text
+Graphify is set up, but I can't use its tools until you finish signing in. Sign in at app.graphify.com and check a repository shows Indexed. Then reload your editor or start a new session, and complete the Graphify sign-in when your client asks. To test it, ask me: "Use Graphify's list_repositories tool and show the repositories I can access."
+```
 5. Offer a project rule. Ask first:
 
 ```text

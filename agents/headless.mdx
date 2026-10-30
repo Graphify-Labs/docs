@@ -1,0 +1,60 @@
+---
+title: "Headless agents and bots with Graphify's hosted MCP"
+sidebarTitle: "Headless agents and bots"
+description: "Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't."
+keywords: ["headless MCP agent", "MCP OAuth bot", "cloud coding agent MCP"]
+surface: "both"
+icon: "monitor-off"
+---
+
+This page is for agents and bots that run without a person at the keyboard: cloud coding agents, background assistants, scheduled jobs and CI. It lists what works with Graphify today. If something isn't on this page, assume it isn't supported yet.
+
+## The one rule: a person signs in once
+
+The hosted MCP server at `https://api.graphify.com/mcp` uses OAuth. There is no API key for it.
+
+- Sign-in is a browser flow (authorization code with PKCE). A person has to finish it once in a browser.
+- Graphify doesn't offer a device-code flow or a client-credentials flow. An agent can't sign itself in.
+- After the first sign-in, the client keeps working on its own. It asks for `offline_access`, gets a refresh token, and refreshes when the access token expires.
+- Each refresh rotates the refresh token. A client that reuses an old one has to sign in again. See [How hosted MCP sign-in works](/platform/hosted-mcp#how-hosted-mcp-sign-in-works).
+
+If you're an agent and you hit `401`, don't loop. Tell the person which sign-in step to run, then stop. [Agents use Graphify](/agents/overview#while-sign-in-is-pending) lists what to do while you wait.
+
+## What works today
+
+| Where the agent runs | How it connects | Who signs in |
+|---|---|---|
+| Cursor cloud agents | Add `https://api.graphify.com/mcp` as a custom MCP server at [cursor.com/agents](https://cursor.com/agents). Cloud agents don't read a local or committed `mcp.json`. | The person, once, in the cursor.com sign-in prompt. |
+| ChatGPT Dots and background tasks | Add the [Graphify plugin](/integrations/chatgpt). | The person, when they connect the plugin. While a Dot works in the background, connected apps stay read-only, so `remember` and `set_workspace` wait for approval. |
+| Clients without remote OAuth | The [`mcp-remote` bridge](/platform/hosted-mcp#clients-without-remote-oauth) runs the sign-in and stores the credentials on that machine. | The person, once, on that machine. |
+
+Full step-by-step setup for cloud agents: [Connect cloud coding agents](/cookbooks/cloud-coding-agents).
+
+## What doesn't work yet
+
+- **Copilot's coding agent and code review on github.com.** They only support static header credentials, so they can't use the hosted OAuth endpoint.
+- **Agents that must sign in with no person ever involved.** The hosted server has no flow for that.
+
+## When nobody can sign in
+
+Use open-source Graphify instead. Your own infrastructure holds the graph, and you choose the credentials:
+
+- [Self-host a shared MCP server](/cookbooks/self-host-shared-mcp): run the open-source MCP server over HTTP in Docker behind an API key you control.
+- [Post impact on pull requests from CI](/cookbooks/pr-impact-comment-ci): build the graph and comment on PRs from a CI job, with no MCP sign-in.
+
+## Limits to plan for
+
+- 240 requests a minute per client IP and a 256 KB request body. Back off on `429`. See [Hosted MCP limits](/platform/hosted-mcp#hosted-mcp-limits).
+- `set_workspace` binds a session for 24 hours by default. A bot that runs longer should call `list_workspaces` to check which workspace is active.
+- The graph reflects the last indexed snapshot of the default branch. See [Keep answers fresh](/agents/overview#keep-answers-fresh).
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Agents use Graphify" icon="bot" href="/agents/overview">
+    Connect, pick the right tool, and handle sign-in.
+  </Card>
+  <Card title="Hosted MCP server" icon="server" href="/platform/hosted-mcp">
+    Setup, sign-in, workspaces and limits.
+  </Card>
+</Columns>

@@ -203,7 +203,8 @@
             "pages": [
               "mcp/docs-search",
               "for-agents",
-              "agents/overview"
+              "agents/overview",
+              "agents/headless"
             ]
           }
         ]

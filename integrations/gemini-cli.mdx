@@ -1,7 +1,7 @@
 ---
 title: "Graphify for Gemini CLI"
 sidebarTitle: "Gemini CLI"
-description: "Connect Gemini CLI to Graphify's hosted MCP server with OAuth, or install the Graphify Local skill and query a graph built on your machine."
+description: "Connect Gemini CLI to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
 surface: "both"
 hideFooterPagination: true
 keywords: ["Gemini CLI MCP", "codebase context"]
@@ -12,7 +12,7 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 <HostedOrLocal />
 
 <Tabs>
-<Tab title="Graphify (hosted)">
+<Tab title="Graphify">
 
 Connect Gemini CLI to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Gemini CLI can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches.
 
@@ -60,7 +60,7 @@ Use Graphify's list_repositories tool and show the repositories I can access. If
 Name the symbol, file, or area you care about, for example `Who calls the function that validates a session token?` Open the source lines an answer cites before you rely on it.
 
 </Tab>
-<Tab title="Graphify Local">
+<Tab title="Graphify CLI">
 
 ## 1. Install and register
 

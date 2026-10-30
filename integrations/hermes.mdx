@@ -1,15 +1,15 @@
 ---
 title: "Graphify for Hermes Agent"
 sidebarTitle: "Hermes"
-description: "Connect Nous Research's Hermes Agent to Graphify's hosted MCP server with browser OAuth, or install the Graphify Local skill for Hermes."
+description: "Connect Nous Research's Hermes Agent to Graphify's hosted MCP server with browser OAuth, or install the open-source Graphify skill for Hermes."
 surface: "both"
 hideFooterPagination: true
 ---
 
-Connect [Hermes Agent](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp/) to Graphify in one of two ways. **Graphify (hosted)** uses Hermes's native remote MCP and OAuth support. No API key, wrapper, or local server is needed. **Graphify Local** installs the open-source skill. See [Graphify vs Local](/platform/graphify-vs-local) to choose.
+Connect [Hermes Agent](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp/) to Graphify in one of two ways. **Graphify** uses Hermes's native remote MCP and OAuth support. No API key, wrapper, or local server is needed. **Graphify CLI** installs the open-source skill. See [Graphify vs Graphify CLI](/platform/graphify-vs-local) to choose.
 
 <Tabs>
-<Tab title="Graphify (hosted)">
+<Tab title="Graphify">
 
 ## Before you start
 
@@ -54,7 +54,7 @@ Ask Hermes to list your Graphify workspaces and repositories, select a repositor
 - **An answer looks stale.** The graph follows the default branch. Results can lag behind a push until the next index finishes.
 
 </Tab>
-<Tab title="Graphify Local">
+<Tab title="Graphify CLI">
 
 ```bash
 uv tool install graphifyy

@@ -1,7 +1,7 @@
 ---
 title: "Graphify for Claude Code"
 sidebarTitle: "Claude Code"
-description: "Connect Claude Code to Graphify's hosted MCP server with OAuth, or install the Graphify Local skill and query a graph built on your machine."
+description: "Connect Claude Code to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
 surface: "both"
 hideFooterPagination: true
 keywords: ["Claude Code MCP", "Claude Code skill", "codebase context"]
@@ -12,7 +12,7 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 <HostedOrLocal />
 
 <Tabs>
-<Tab title="Graphify (hosted)">
+<Tab title="Graphify">
 
 Connect Claude Code to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Claude Code can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
 
@@ -137,7 +137,7 @@ The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 1
 Yes, but they answer from different graphs. The hosted server reads your indexed workspace. The local skill reads `graphify-out/` in the repository. Pick one per question so answers stay consistent.
 
 </Tab>
-<Tab title="Graphify Local">
+<Tab title="Graphify CLI">
 
 ## 1. Install and register
 

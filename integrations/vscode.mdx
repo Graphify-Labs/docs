@@ -1,7 +1,7 @@
 ---
 title: "Graphify for VS Code and GitHub Copilot"
 sidebarTitle: "VS Code and GitHub Copilot"
-description: "Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with OAuth, or install the Graphify Local skill and query a graph on your machine."
+description: "Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph on your machine."
 surface: "both"
 hideFooterPagination: true
 ---
@@ -13,7 +13,7 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 <HostedOrLocal />
 
 <Tabs>
-<Tab title="Graphify (hosted)">
+<Tab title="Graphify">
 
 The **Graphify MCP** extension registers Graphify's hosted MCP server in VS Code. Your agent can then search the repositories you have indexed in [Graphify](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
 
@@ -122,7 +122,7 @@ No. It registers `https://api.graphify.com/mcp` and stores no credentials of its
 The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required. See [Plans and pricing](/platform/support/pricing).
 
 </Tab>
-<Tab title="Graphify Local">
+<Tab title="Graphify CLI">
 
 Copilot CLI and Copilot Chat in VS Code use different integration paths. Choose the environment you actually run.
 

@@ -1,7 +1,7 @@
 ---
 title: "Multiple repositories"
 sidebarTitle: "Multiple repositories"
-description: "Combine Graphify Local graphs from several repositories into one cross-repo graph with merge-graphs, or keep a personal global graph of every project."
+description: "Combine open-source Graphify graphs from several repositories into one cross-repo graph with merge-graphs, or keep a global graph of every project."
 keywords: ["graphify multi repo", "graphify global graph", "merge-graphs", "cross-repo calls", "microservices graph"]
 surface: "local"
 icon: "folders"
@@ -9,7 +9,7 @@ icon: "folders"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Real systems rarely live in one repository. A frontend calls an API, the API imports a shared client library, and a worker reads the same tables. Graphify Local can join separate graphs so your agent can follow a path from one repository into another.
+Real systems rarely live in one repository. A frontend calls an API, the API imports a shared client library, and a worker reads the same tables. Open-source Graphify can join separate graphs so your agent can follow a path from one repository into another.
 
 There are two ways to do it:
 
@@ -108,7 +108,7 @@ See [MCP tools](/open-source/features/mcp-tools) for the tools it exposes.
 
 ## Run it on a second repository
 
-These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify Local 0.9.97. Your counts will differ.
+These examples come from a code-only graph of the open-source [httpx](https://github.com/encode/httpx) repository, built with Graphify CLI 0.9.97. Your counts will differ.
 
 ```text
 $ graphify global add graphify-out/graph.json --as httpx

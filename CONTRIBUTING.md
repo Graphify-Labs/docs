@@ -44,7 +44,7 @@ surface: "cloud"
 - `description`: one plain sentence. It appears under the page title, in search, and in `llms.txt`. No `[Local]`, `[Cloud]`, or `[Both]` prefix.
 - Keep `title` at 60 characters or fewer and `description` at 155 or fewer. CI fails the build when either is longer.
 - Write the Free plan and trial line as plain text: "The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required." On the homepage card use "Free to start, no card required." Don't import JS variables into pages; the hosted build and the `.md`/`llms.txt` output don't render them. Search for the sentence with `git grep "14-day Pro trial"` when it changes.
-- `surface`: `local`, `cloud`, or `both`. It's the source of truth for which product a page covers. Agents tell the surface from the page path, so keep Cloud pages under `platform/` and the Cloud MCP group, and Local pages under `guides/`, `reference/`, `mcp/`, and the Local skill group. If you change that layout, update the surface rules in `docs.json` (`markdown.instructions`) and `for-agents.mdx`.
+- `surface`: `local`, `cloud`, or `both`. It's the source of truth for which product a page covers. Agents tell the surface from the page path, so keep Graphify pages under `platform/` and the hosted MCP group, and Graphify CLI pages under `open-source/` and the Graphify CLI tabs in Integrations. If you change that layout, update the surface rules in `docs.json` (`markdown.instructions`) and `for-agents.mdx`.
 
 ## Page icons
 
@@ -68,8 +68,8 @@ icon: "flask-conical"
 
 ## Terminology
 
-- **Graphify Cloud**: the hosted product. On first mention in an entry page, define it: "Graphify Cloud, the hosted version of Graphify. We run it for you, so there's nothing to deploy." "Cloud" alone is fine after that.
-- **Graphify Local**: the open-source package on your machine. The PyPI package is `graphifyy` (two y's); the command is `graphify`.
+- **Graphify**: the hosted product. Never write "Graphify Cloud" or "Graphify Console". Say "hosted Graphify" only where you contrast it with Graphify CLI.
+- **Graphify CLI**: the open-source package on your machine. Use "Graphify CLI" in headings, nav, tab labels, setup steps and comparison tables, and "open-source Graphify" in running text. The PyPI package is `graphifyy` (two y's); the command is `graphify`.
 - **Console**: the web UI at [app.graphify.com](https://app.graphify.com). Not "dashboard", "Graphify app", or "Platform".
 - **Workspace**: where work lives in the console, either personal or a team workspace.
 - **Graphify GitHub App**: the GitHub integration.
@@ -85,8 +85,8 @@ icon: "flask-conical"
 
 Every claim about product behaviour (labels, menus, limits, plan caps, commands, flags, MCP setup) must match the source:
 
-- Local: the [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repo and `graphify --help`.
-- Cloud: the console source. Quote UI text as written.
+- Graphify CLI: the [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repo and `graphify --help`.
+- Graphify: the console source. Quote UI text as written.
 - Pricing: [graphify.com/pricing](https://graphify.com/pricing).
 
 If you can't verify something, leave it out or flag it in the PR.

@@ -29,7 +29,7 @@ export const HeroInstall = () => {
     },
     {
       id: "local",
-      label: "Local CLI",
+      label: "Graphify CLI",
       code: "uv tool install graphifyy\ngraphify install\n# then, in your assistant chat:\n/graphify .",
     },
   ];

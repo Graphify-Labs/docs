@@ -1,7 +1,7 @@
 ---
 title: "Graphify for Codex"
 sidebarTitle: "Codex"
-description: "Connect Codex to Graphify's hosted MCP server with OAuth, or install the Graphify Local skill and query a graph built on your machine."
+description: "Connect Codex to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
 surface: "both"
 hideFooterPagination: true
 ---
@@ -13,7 +13,7 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 <HostedOrLocal />
 
 <Tabs>
-<Tab title="Graphify (hosted)">
+<Tab title="Graphify">
 
 Connect Codex to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Codex can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
 
@@ -111,7 +111,7 @@ The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 1
 Either works and both sign in with OAuth. The plugin is the quickest path. `codex mcp add` keeps the setup in your own `config.toml`.
 
 </Tab>
-<Tab title="Graphify Local">
+<Tab title="Graphify CLI">
 
 This page installs the local skill. Codex builds the graph on your machine. To query a repository already indexed in Graphify, use [ChatGPT, Codex, and Dots](/integrations/chatgpt).
 

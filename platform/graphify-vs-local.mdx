@@ -1,13 +1,13 @@
 ---
-title: "Graphify vs Graphify Local: hosted or open source"
-sidebarTitle: "Graphify vs Local"
-description: "Compare hosted Graphify with Graphify Local, the open-source graphifyy package: how each builds, updates and serves the graph, and what needs hosted."
+title: "Graphify vs Graphify CLI: hosted or open source"
+sidebarTitle: "Graphify vs Graphify CLI"
+description: "Compare hosted Graphify with Graphify CLI, the open-source graphifyy package: how each builds, updates and serves the graph, and what needs hosted."
 surface: "both"
 hideFooterPagination: true
 icon: "scale"
 ---
 
-Graphify is the hosted product. It indexes your repositories on GitHub or GitLab and serves the graph through `https://api.graphify.com/mcp`. Graphify Local is the open-source [`graphifyy`](https://github.com/Graphify-Labs) package. It builds the graph on your machine and writes it to `graphify-out/`.
+Graphify is the hosted product. It indexes your repositories on GitHub or GitLab and serves the graph through `https://api.graphify.com/mcp`. Open-source Graphify is the [`graphifyy`](https://github.com/Graphify-Labs) package. It builds the graph on your machine and writes it to `graphify-out/`.
 
 Both give your assistant the same kind of code graph. They differ in where the graph is built, how it stays current, and what your team can do with it.
 
@@ -17,14 +17,14 @@ Both give your assistant the same kind of code graph. They differ in where the g
   <Card title="Choose Graphify" icon="cloud" href="/platform/quickstart">
     Your code is on GitHub or GitLab, and you want the graph kept current on every push, shared with your team, and used for pull request reviews.
   </Card>
-  <Card title="Choose Graphify Local" icon="laptop" href="/open-source/quickstart">
+  <Card title="Choose Graphify CLI" icon="laptop" href="/open-source/quickstart">
     The project exists only on your machine, or you want to build and keep the graph yourself with no account.
   </Card>
 </CardGroup>
 
 ## Side by side
 
-| Area | Graphify Local | Graphify |
+| Area | Graphify CLI | Graphify |
 | --- | --- | --- |
 | **Graph build** | `/graphify .` or `graphify extract` on your machine | Indexed from the default branch on GitHub or GitLab |
 | **Updates** | `graphify update .`, `graphify watch .`, or git hooks | Each push to the default branch |
@@ -50,7 +50,7 @@ Both give your assistant the same kind of code graph. They differ in where the g
 
 ## Switch later
 
-You can start with Graphify Local and move a repository to Graphify at any time. It is a configuration change: your application code stays as it is, and the local graph keeps working until you switch each assistant. Follow [Move from Graphify Local](/platform/support/move-from-local).
+You can start with open-source Graphify and move a repository to Graphify at any time. It is a configuration change: your application code stays as it is, and the local graph keeps working until you switch each assistant. Follow [Move from Graphify CLI](/platform/support/move-from-local).
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

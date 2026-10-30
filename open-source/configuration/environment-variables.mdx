@@ -1,7 +1,7 @@
 ---
-title: "Environment variables for Graphify Local"
+title: "Environment variables for Graphify CLI"
 sidebarTitle: "Environment variables"
-description: "Every GRAPHIFY_ environment variable that changes where Graphify Local writes, how it calls models, how hooks behave, and what it logs."
+description: "Every GRAPHIFY_ environment variable that changes where open-source Graphify writes, how it calls models, how hooks behave, and what it logs."
 keywords: ["GRAPHIFY_OUT", "graphify environment variables", "GRAPHIFY_BACKEND", "graphify configuration"]
 surface: "local"
 icon: "variable"
@@ -9,7 +9,7 @@ icon: "variable"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Graphify Local reads its per-run settings from environment variables. Set them in your shell, CI job, or MCP client config. Nothing here is needed for a code-only build; you reach for these when you change the output folder, tune model calls, or quiet the hooks.
+Open-source Graphify reads its per-run settings from environment variables. Set them in your shell, CI job, or MCP client config. Nothing here is needed for a code-only build; you reach for these when you change the output folder, tune model calls, or quiet the hooks.
 
 <Note>
 **Use environment variables when** a setting depends on the machine or the run (a CI output path, a model name, a timeout). For settings that describe the repository itself, use [`.graphifyrc`](/open-source/configuration/graphifyrc).
@@ -93,7 +93,7 @@ Provider keys such as `ANTHROPIC_API_KEY` are covered on [LLM providers](/open-s
 | `GRAPHIFY_DEBUG` | off | Print extra diagnostics. |
 | `GRAPHIFY_NO_TIPS`, `GRAPHIFY_NO_CTA` | off | Hide tips and the hosted-product message in CLI output. |
 
-Query logging is off unless you turn it on. Graphify Local sends no telemetry.
+Query logging is off unless you turn it on. Open-source Graphify sends no telemetry.
 
 ## See it in action
 

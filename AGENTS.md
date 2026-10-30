@@ -18,8 +18,8 @@ Follow `CONTRIBUTING.md` at the repository root. It is the source of truth; this
 
 ## Terminology
 
-- **Graphify Cloud** is the hosted version. Define it on first mention in entry pages: "Graphify Cloud, the hosted version of Graphify. We run it for you, so there's nothing to deploy."
-- **Graphify Local** is the open-source `graphifyy` package (two y's). The command is `graphify`.
+- **Graphify** is the hosted product. Never write "Graphify Cloud" or "Graphify Console". Say "hosted Graphify" only where you contrast it with Graphify CLI.
+- **Graphify CLI** is the open-source `graphifyy` package (two y's). Use "Graphify CLI" in headings, nav, tab labels, setup steps and comparison tables, and "open-source Graphify" in running text. The command is `graphify`.
 - **Console** is the web UI at app.graphify.com. Don't call it the dashboard, Graphify app, or Platform.
 - **Workspace** is personal or team.
 - **Graphify GitHub App** is the GitHub integration.
@@ -31,5 +31,5 @@ Follow `CONTRIBUTING.md` at the repository root. It is the source of truth; this
 
 ## Accuracy and screenshots
 
-- Verify product behaviour against source (the graphify repo for Local, the console source for Cloud, graphify.com/pricing for plans). Don't invent commands, flags, or limits.
+- Verify product behaviour against source (the graphify repo for Graphify CLI, the console source for Graphify, graphify.com/pricing for plans). Don't invent commands, flags, or limits.
 - Screenshots: use the open-source Graphify-Labs/graphify repo, never personal repo names. Reuse `images/console/` first. No inline base64 images.

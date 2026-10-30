@@ -26,6 +26,7 @@
               "platform/overview",
               "platform/how-it-works",
               "platform/quickstart",
+              "platform/verify-connection",
               "concepts/index-a-repository",
               "platform/console",
               "platform/graphify-vs-local"

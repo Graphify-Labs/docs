@@ -55,52 +55,53 @@ Default to Graphify, the hosted product. It needs no local build: the user signs
 1. Ask the user to sign in at [app.graphify.com](https://app.graphify.com) and wait until a repository shows **Indexed**. Graphify has a Free plan for up to 3 repositories, and it needs no card. You may tell the user this when it helps them get started. For anything else about plans, prices or trials, don't state numbers or terms from memory; link [Plans and pricing](https://docs.graphify.com/platform/support/pricing). Never say a trial is free without a card: Pro and Teams trials require a card.
 2. Add the hosted MCP server with the command for the user's agent:
 
-```bash Claude Code
-claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
-```
+   ```bash Claude Code
+   claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
+   ```
 
-```bash Codex
-codex mcp add graphify --url https://api.graphify.com/mcp
-codex mcp login graphify
-```
+   ```bash Codex
+   codex mcp add graphify --url https://api.graphify.com/mcp
+   codex mcp login graphify
+   ```
 
-```bash Gemini CLI
-gemini mcp add --transport http graphify https://api.graphify.com/mcp
-```
+   ```bash Gemini CLI
+   gemini mcp add --transport http graphify https://api.graphify.com/mcp
+   ```
 
-```json Cursor (~/.cursor/mcp.json)
-{
-  "mcpServers": {
-    "graphify": {
-      "url": "https://api.graphify.com/mcp"
-    }
-  }
-}
-```
+   ```json Cursor (~/.cursor/mcp.json)
+   {
+     "mcpServers": {
+       "graphify": {
+         "url": "https://api.graphify.com/mcp"
+       }
+     }
+   }
+   ```
 
-**Claude Code without a `claude` command.** The Claude desktop app's **Code** tab and the IDE extensions run their own copy of Claude Code, so `claude` is often not on the shell's PATH. If `claude --version` fails, do not install anything. Instead:
+   **Claude Code without a `claude` command.** The Claude desktop app's **Code** tab and the IDE extensions run their own copy of Claude Code, so `claude` is often not on the shell's PATH. If `claude --version` fails, do not install anything. Instead:
 
-- Back up `~/.claude.json` (for example to `~/.claude.json.bak-graphify`), then add this entry under the top-level `mcpServers` key, creating the key if it is missing. Keep every other key unchanged. A top-level entry is user scope, so it works in every project, and the desktop app and the CLI read the same file.
+   - Back up `~/.claude.json` (for example to `~/.claude.json.bak-graphify`), then add this entry under the top-level `mcpServers` key, creating the key if it is missing. Keep every other key unchanged. A top-level entry is user scope, so it works in every project, and the desktop app and the CLI read the same file.
 
-```json ~/.claude.json
-{
-  "mcpServers": {
-    "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
-  }
-}
-```
+   ```json ~/.claude.json
+   {
+     "mcpServers": {
+       "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
+     }
+   }
+   ```
 
-- Keep `"type": "http"`. Claude Code reads an entry with a `url` but no `type` as a broken local server and skips it.
-- Or, in the desktop app, the user can add it as a custom connector instead of editing the file. Tell the user this option; do not click through it for them.
+   - Keep `"type": "http"`. Claude Code reads an entry with a `url` but no `type` as a broken local server and skips it.
+   - Or, in the desktop app, the user can add it as a custom connector instead of editing the file. Tell the user this option; do not click through it for them.
 
-A new server loads only when a session starts. Tell the user to start a new Claude Code session, run `/mcp`, select **graphify**, and finish the sign-in in the browser. Run step 3 in that new session.
+   A new server loads only when a session starts. Tell the user to start a new Claude Code session, run `/mcp`, select **graphify**, and finish the sign-in in the browser. Run step 3 in that new session.
 
-Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphify.com/mcp` and complete the browser sign-in. No API key is needed. See [Integrations](/integrations/overview) for every agent.
+   Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphify.com/mcp` and complete the browser sign-in. No API key is needed. See [Integrations](/integrations/overview) for every agent.
+
 3. Check the connection with this prompt:
 
-```text
-Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
-```
+   ```text
+   Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+   ```
 
 4. Report back to the user: which agent you configured, the command or file you changed, and the repositories `list_repositories` returned. If you write a project rule in step 5, also name that file. If the tool call failed because sign-in isn't finished or the client hasn't reloaded, still do step 5, then skip steps 6 and 7 and end with the message below. If it failed for any other reason, show the exact error and stop. Do not switch to Graphify CLI unless the user asks.
 

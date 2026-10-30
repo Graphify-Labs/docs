@@ -45,7 +45,7 @@ Start each session with "Use Graphify's `list_repositories` tool and pick the re
 
 <PromptBlock text="I'm new to this repository. Use Graphify: call graphify_rank_files for the most important files, then query_graph to explain how a request flows from the API layer to the database. Keep it to one page and cite files." />
 
-**Triggers:** `graphify_rank_files`, `query_graph`, and often `graphify_trace` to follow a path. In workspaces with trail capture turned on, these calls can save the question to workspace memory. For a lighter, read-only first look, ask for `graph_stats` and `graphify_find_seeds`.
+**Triggers:** `graphify_rank_files`, which ranks files for the question and shows the matching symbols in each, then `query_graph`, which returns the relevant definitions to explain from. Agents often add `graphify_trace` to follow a path. If it finds no direct call path, it returns where it stopped instead. In workspaces with trail capture turned on, these calls can save the question to workspace memory. For a lighter, read-only first look, ask for `graph_stats` and `graphify_find_seeds`.
 
 ## Make it stick
 

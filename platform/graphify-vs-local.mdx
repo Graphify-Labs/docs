@@ -38,6 +38,7 @@ Both give your assistant the same kind of code graph. They differ in where the g
 | **Wiki** | `graphify export wiki` writes Markdown files | **Wiki** for each indexed repository, with search and questions |
 | **Several repositories** | `graphify merge-graphs` or `graphify global add` | **Cross-Repository** in **Graphs** |
 | **Team** | Each clone installs the skill and the hooks | **Members** in the user menu |
+| **Search hooks** | Claude Code hooks add graph context right before each grep, with an optional strict mode | No hook. An instruction block in your assistant's rules file tells it to query the graph first |
 
 ## Only in Graphify
 
@@ -47,6 +48,10 @@ Both give your assistant the same kind of code graph. They differ in where the g
 - [Agent memory](/platform/memory) shared by every assistant and teammate in the workspace.
 - `graphify_tests_for` and `impact_and_risk`, which list the tests linked to a symbol and rank the files a change reaches.
 - [Contributors](/platform/contributors), when it is available in your workspace.
+
+## Does hosted Graphify have a search hook?
+
+No. The open-source CLI installs Claude Code hooks that add graph context right before each grep, and strict mode can require a graph query first. The hosted MCP server at `https://api.graphify.com/mcp` has no hook. On hosted, an instruction block in your assistant's rules file does that job. Follow [Step 2 of Make agents use the graph](/cookbooks/make-agents-use-the-graph#step-2-tell-the-agent-when-to-use-the-graph) and keep the block short and specific.
 
 ## Switch later
 

@@ -82,7 +82,7 @@ A two-person team ships most changes through Claude Code. Graphify reviews every
 
 ## How it works
 
-Graphify doesn't message your agent when a review lands, and the hosted MCP server has no review tool. The review lives on GitHub: a review comment from the Graphify app and a check run named **Graphify** on the reviewed commit. That's why the loop starts with `gh pr checks --watch`. It blocks until the checks finish, so the agent reads the review only once it exists.
+Graphify doesn't message your agent when a review lands, and the hosted MCP server has no review tool. The review lives on GitHub: a review comment from the Graphify app and a check run named **Graphify** on the reviewed commit. That's why the loop starts with `gh pr checks --watch`. It blocks until the checks finish, so the agent reads the review only once it exists. After a push, the new commit has no **Graphify** check until someone comments `@graphify review`, so on a re-review the agent should comment first and then watch.
 
 The MCP tools then answer the question a finding raises: is this real here? A finding about a changed function is worth more once the agent has seen who calls it and which tests cover it.
 

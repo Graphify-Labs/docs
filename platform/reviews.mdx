@@ -13,7 +13,7 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 ## When a review runs
 
-Graphify reviews a pull request when it is opened, reopened, or marked ready for review. A draft is skipped until it is marked ready. A later push to the pull request does not start another review.
+Graphify reviews a pull request when it is opened, reopened, or marked ready for review. A draft is skipped until it is marked ready. A later push to the pull request does not start another review. After a push, the new commit has no **Graphify** check run until someone asks for a review.
 
 To review the current head after new commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. The review uses the indexed default-branch graph plus that pull request's diff. It does not index the head branch. [Repositories and builds](/platform/repositories) explains which branch the graph follows.
 
@@ -33,7 +33,7 @@ gh pr view 123 --comments
 
 ## Review again after a fix
 
-When you push fixes and comment `@graphify review`, Graphify reviews the new head as a fresh pass over the current diff. The new review doesn't list which earlier findings were fixed. Check each earlier finding against your fix. If a finding is wrong or no longer applies, tell Graphify with `@graphify wrong <finding>` so it learns from it. See [Improve future reviews](#improve-future-reviews).
+When you push fixes and comment `@graphify review`, Graphify reviews the new head as a fresh pass over the current diff. The new review doesn't list which earlier findings were fixed, and it doesn't carry them over. Check each earlier finding against your fix. If a finding is wrong or no longer applies, tell Graphify with `@graphify wrong <finding>` so it learns from it. See [Improve future reviews](#improve-future-reviews).
 
 ## Turn reviews off
 

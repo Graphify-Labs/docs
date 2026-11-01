@@ -9,8 +9,21 @@ icon: "wrench"
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import { PromptBlock } from '/snippets/hero-install.jsx';
 
 Graphify reviews a pull request and leaves findings. Someone still has to read them, decide which are real, and fix them. A coding agent can do most of that work, as long as it knows when the review is ready, checks each finding against the code before changing anything, and asks for a new review when it's done. This recipe sets up that loop.
+
+<Info>
+**Works with:** Graphify (hosted), with Claude Code, Codex or any agent that can run the GitHub CLI.
+</Info>
+
+## The short version
+
+Already connected? Paste this into your agent:
+
+<PromptBlock text="Handle the Graphify review on PR 123. Run gh pr checks 123 --watch, then read the review with gh pr view 123 --comments. For each finding, check it with graphify_callers, graphify_impact and graphify_tests_for before you change code. Fix what holds up, list what you skipped and why, and ask me before you comment @graphify review." />
+
+The rest of this page sets it up so it happens every time.
 
 ## The scenario
 

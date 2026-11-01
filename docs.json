@@ -241,6 +241,7 @@
               "cookbooks/cloud-coding-agents",
               "cookbooks/make-agents-use-the-graph",
               "cookbooks/fix-review-findings",
+              "cookbooks/reuse-existing-code",
               "cookbooks/local-with-ollama"
             ]
           },

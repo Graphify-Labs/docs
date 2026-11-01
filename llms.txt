@@ -218,6 +218,7 @@ Use for databases, graph exports and meeting or video sources.
 - [Graph your Postgres schema next to your code](https://docs.graphify.com/cookbooks/postgres-schema-graph.md): Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code.
 - [Load your code knowledge graph into Neo4j](https://docs.graphify.com/cookbooks/neo4j-export.md): Export your Graphify code graph to Neo4j as a Cypher script or push it straight to a database, then query callers and dependencies in Cypher.
 - [Turn meeting recordings into a knowledge graph](https://docs.graphify.com/cookbooks/meetings-and-videos.md): Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code.
+- [Check code against your policy documents](https://docs.graphify.com/cookbooks/policy-docs-next-to-code.md): Connect a Google Drive folder of policies or regulations, then have your agent read the rule and the code that has to follow it, side by side.
 
 ## Cookbooks: CI and Ops
 

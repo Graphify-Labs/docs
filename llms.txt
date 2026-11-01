@@ -40,6 +40,7 @@ Use when explaining how the graph answers questions about code, and how to read 
 - [Edges and provenance](https://docs.graphify.com/concepts/provenance.md): How to read a Graphify edge: what a relationship claims, where it came from, and the EXTRACTED, INFERRED, and AMBIGUOUS confidence tags.
 - [How Graphify finds code dependencies, without guessing](https://docs.graphify.com/concepts/how-graphify-finds-dependencies.md): How Graphify builds a code dependency graph: tree-sitter parsing, symbol resolution, cross-repo linking and provenance tags, and where a model is used.
 - [Graph files and outputs](https://docs.graphify.com/concepts/outputs.md): The files Graphify writes to graphify-out/, including graph.json, what each one contains, and the parts you can reuse in other tools.
+- [What is formal verification? A plain guide for code](https://docs.graphify.com/concepts/what-is-formal-verification.md): Formal verification proves code behavior for every input in scope, not just tested ones. How it differs from tests and review, and what a proof covers.
 
 ## Graphify: Features
 

@@ -240,6 +240,7 @@
               "cookbooks/claude-code-monorepo",
               "cookbooks/cloud-coding-agents",
               "cookbooks/make-agents-use-the-graph",
+              "cookbooks/fix-review-findings",
               "cookbooks/local-with-ollama"
             ]
           },

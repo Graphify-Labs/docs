@@ -206,6 +206,7 @@ Use when making coding agents use the graph, including cloud agents and local mo
 - [Give Claude Code a knowledge graph of your monorepo](https://docs.graphify.com/cookbooks/claude-code-monorepo.md): Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
 - [Connect cloud coding agents to hosted MCP](https://docs.graphify.com/cookbooks/cloud-coding-agents.md): Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories.
 - [Make your coding agent actually use the graph](https://docs.graphify.com/cookbooks/make-agents-use-the-graph.md): Get Claude Code, Codex and Cursor to query Graphify before they grep, keep the graph fresh as code changes, and prove the agent called the tools.
+- [Fix Graphify review findings with a coding agent](https://docs.graphify.com/cookbooks/fix-review-findings.md): Have Claude Code or Codex wait for a Graphify review, check each finding against the graph, fix it, and ask for a fresh review.
 - [Build a fully local code knowledge graph with Ollama](https://docs.graphify.com/cookbooks/local-with-ollama.md): Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model.
 
 ## Cookbooks: Data

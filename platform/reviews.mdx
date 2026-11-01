@@ -17,6 +17,24 @@ Graphify reviews a pull request when it is opened, reopened, or marked ready for
 
 To review the current head after new commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. The review uses the indexed default-branch graph plus that pull request's diff. It does not index the head branch. [Repositories and builds](/platform/repositories) explains which branch the graph follows.
 
+## Know when a review is ready
+
+A review shows up in two places on the pull request: a review comment from the Graphify app, and a check run named **Graphify** on the reviewed commit. Formal verification posts its own check run, **Graphify Formal Verification**, and runs on every push.
+
+Graphify doesn't push a message to your coding agent when a review lands, and the hosted MCP server has no review tool. To have an agent wait for the review and then read it, point it at GitHub:
+
+```bash
+# Wait for the pull request's checks, including the Graphify check, to finish
+gh pr checks 123 --watch
+
+# Read the review comments
+gh pr view 123 --comments
+```
+
+## Review again after a fix
+
+When you push fixes and comment `@graphify review`, Graphify reviews the new head as a fresh pass over the current diff. The new review doesn't list which earlier findings were fixed. Check each earlier finding against your fix. If a finding is wrong or no longer applies, tell Graphify with `@graphify wrong <finding>` so it learns from it. See [Improve future reviews](#improve-future-reviews).
+
 ## Turn reviews off
 
 On **Repositories**, open **Options** for the repository and switch **PR reviews** off. Automatic reviews stop, and `@graphify review` does not start one. Indexing stays on. Formal verification stays on until its own switch is turned off.

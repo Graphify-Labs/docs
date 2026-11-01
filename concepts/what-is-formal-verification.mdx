@@ -34,12 +34,14 @@ Proving things about real programs is hard, so verifiers set limits. They might 
 
 That's why an honest verifier has more answers than "pass" and "fail":
 
-| Answer | What it tells you |
-| --- | --- |
-| Proved | No input in scope makes the old and new versions differ. |
-| Counterexample | Here is an input where they differ. |
-| Sampled, not proven | Many inputs were tried and none differed. That's evidence, not a proof. |
-| Couldn't decide | The function was outside what the verifier can model, or ran out of budget. |
+| Answer | What it tells you | In Graphify |
+| --- | --- | --- |
+| Proved | No input in scope makes the old and new versions differ. | **= Proven same** |
+| Counterexample | Here is an input where they differ. | **≠ Behavior changed** |
+| Sampled, not proven | Many inputs were tried and none differed. That's evidence, not a proof. | **≈ No change found** |
+| Couldn't decide | The function was outside what the verifier can model, or ran out of budget. | **? Not checked** |
+
+There's a fifth result in Graphify, **! Couldn't run**: the check itself failed, which says nothing about your code.
 
 A verifier that turns "couldn't decide" into "pass" is hiding something from you. Graphify reports each of these separately.
 

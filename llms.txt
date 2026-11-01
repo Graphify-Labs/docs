@@ -180,6 +180,7 @@ Use these first when you are an AI agent reading or acting on these docs.
 - [How AI agents use Graphify: connect, query, refresh](https://docs.graphify.com/agents/overview.md): For coding agents: how to connect to Graphify, which MCP tool answers which code question, how fresh the graph is, and what to do before sign-in.
 - [Headless agents and bots with Graphify's hosted MCP](https://docs.graphify.com/agents/headless.md): Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't.
 - [Use Graphify from your agent: prompts that work](https://docs.graphify.com/agents/recipes.md): Copy-ready prompts for PR review, change impact, finding callers, tests for a symbol and onboarding, with the Graphify MCP tool each one triggers.
+- [What your agent can do with Graphify](https://docs.graphify.com/agents/capabilities.md): Every hosted Graphify MCP tool, grouped by the job it does, with a prompt to paste for each one and what it can't do.
 
 ## Cookbooks: Essentials
 

@@ -1,8 +1,8 @@
 ---
-title: "Keep docs in sync with code using git hooks"
+title: "Keep a code wiki in sync using git hooks"
 sidebarTitle: "Keep docs in sync"
 description: "Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale."
-keywords: ["keep docs in sync with code"]
+keywords: ["keep docs in sync with code", "code wiki", "git hooks", "watch mode"]
 surface: "both"
 hideFooterPagination: true
 icon: "refresh-ccw"
@@ -112,6 +112,20 @@ graphify export wiki
 ## What you built
 
 Your graph and wiki now rebuild themselves from the code. Docs that describe structure can't fall behind, because they come from the same commit.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do the git hooks need an API key?" icon="key-round">
+    No. Each hook runs a code-only rebuild.
+  </Accordion>
+  <Accordion title="Should I use git hooks or watch mode?" icon="git-branch">
+    Use one, not both, on a checkout. Hooks suit most people. Watch suits long refactors where you query between saves.
+  </Accordion>
+  <Accordion title="Does the wiki rebuild on every commit?" icon="book-open">
+    No. Regenerate it when you need it, or in CI on the default branch. Don't chain it onto the hook.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

@@ -1,8 +1,8 @@
 ---
-title: "Review pull requests as a team with a code graph"
+title: "Review PRs as a team and avoid merge conflicts"
 sidebarTitle: "Review PRs as a team"
-description: "Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code, and pick a safe merge order early."
-keywords: ["review pull requests as a team"]
+description: "Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code and agree a safe merge order early."
+keywords: ["review pull requests as a team", "team code review", "merge conflicts", "code review best practices"]
 surface: "both"
 hideFooterPagination: true
 icon: "users"
@@ -110,6 +110,26 @@ graphify prs 4836 --repo Graphify-Labs/graphify
 ## What you built
 
 Your team has a shared, graph-backed view of the PR queue: what each PR reaches, which ones collide, and a merge order that keeps the default branch green.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can two PRs collide without a git conflict?" icon="git-merge">
+    Yes. Two PRs that change different callers of the same function won't conflict in git but can still break each other.
+  </Accordion>
+  <Accordion title="Which PR should we review first?" icon="list-ordered">
+    Run triage. It asks an LLM to order the queue, and can fall back to a local Ollama model.
+  </Accordion>
+  <Accordion title="In what order should colliding PRs merge?" icon="git-pull-request">
+    Merge the smaller-impact PR first. Then the other author rebases and reruns their tests, and you rebuild the graph with `graphify update .` to check the second PR's impact again.
+  </Accordion>
+  <Accordion title="Can AI agents see the PR queue too?" icon="bot">
+    Yes. The local MCP server exposes `list_prs`, `get_pr_impact` and `triage_prs`, so agents get the same views as the command line.
+  </Accordion>
+  <Accordion title="What do I need?" icon="terminal">
+    The GitHub CLI signed in with `gh auth login`, and a graph of the repository.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

@@ -1,8 +1,8 @@
 ---
-title: "Map dependencies across multiple repositories"
+title: "Map a dependency graph across multiple repos"
 sidebarTitle: "Cross-repo dependencies"
-description: "Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others."
-keywords: ["cross-repo dependency graph", "multi-repo dependencies", "microservices impact analysis", "polyrepo code graph", "what breaks across repositories"]
+description: "Build a dependency graph across multiple repos with Graphify, then ask your coding agent what a change in one repository breaks in the others."
+keywords: ["dependency graph", "cross-repo dependency graph", "multi-repo dependencies", "change impact analysis", "what breaks across repositories"]
 surface: "both"
 hideFooterPagination: true
 icon: "network"
@@ -264,6 +264,23 @@ The whole loop for one shared-code change, from a fresh agent session:
 ## What you built
 
 Your repositories now share one graph. Any agent on the team can ask what a change reaches across repository boundaries, and the rule in each repository makes it ask before it edits shared code.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How many repositories can a combined graph hold?" icon="layers">
+    Two or more, up to 100. Start with the ones that import, call or share types with each other.
+  </Accordion>
+  <Accordion title="Do I need to recombine after a push?" icon="refresh-cw">
+    No. When a member repository re-indexes, Graphify rebuilds the combined graph.
+  </Accordion>
+  <Accordion title="Does the impact list show what will break?" icon="triangle-alert">
+    No. It's a structural over-estimate of what depends on the code. Use it to decide where to look and which tests to run.
+  </Accordion>
+  <Accordion title="Can I do this without an account?" icon="laptop">
+    Yes. Open-source Graphify can merge graphs locally, but some cross-repo imports may stay unresolved.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

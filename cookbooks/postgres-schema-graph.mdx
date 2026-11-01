@@ -1,8 +1,8 @@
 ---
-title: "Graph your Postgres schema next to your code"
+title: "Map your PostgreSQL schema next to your code"
 sidebarTitle: "Postgres schema graph"
 description: "Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code."
-keywords: ["postgres schema graph"]
+keywords: ["postgresql schema", "database schema diagram", "postgres schema graph", "postgres foreign keys"]
 surface: "local"
 hideFooterPagination: true
 icon: "table"
@@ -100,6 +100,20 @@ graphify path "orders" "create_order()" --undirected
 ## What you built
 
 One graph that holds your code and your database schema, read over a read-only connection and ready to query from the CLI, MCP or Neo4j.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can it change my data?" icon="lock">
+    No. Graphify opens a read-only transaction.
+  </Accordion>
+  <Accordion title="What does it read?" icon="table">
+    Tables, views, functions and foreign keys. Columns aren't separate nodes.
+  </Accordion>
+  <Accordion title="Should I point it at production?" icon="server">
+    Use a replica or a schema-only copy, with a dedicated read-only role.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

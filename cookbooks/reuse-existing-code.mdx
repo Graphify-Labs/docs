@@ -1,8 +1,8 @@
 ---
-title: "Make coding agents reuse code you already have"
+title: "Stop AI coding agents writing duplicate code"
 sidebarTitle: "Reuse existing code"
-description: "Stop agents from writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first."
-keywords: ["ai agent duplicate code", "reuse existing components", "claude code writes duplicate functions", "find existing helper", "graphify_find"]
+description: "Stop AI coding agents writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first."
+keywords: ["ai agent duplicate code", "ai coding agent", "code reuse", "reuse existing components", "find existing helper"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "recycle"
@@ -89,6 +89,20 @@ Ask the agent at the end of the session which Graphify tools it called and what 
 - **The agent skips the search.** Put the block near the top of the instruction file, and keep it short. [Make your coding agent actually use the graph](/cookbooks/make-agents-use-the-graph) covers this in depth.
 - **Search returns nothing useful.** Try a shorter name fragment with `graphify_find`, or describe the behavior instead of the name with `graphify_rank_files`.
 - **The result looks out of date.** Check when the repository was last indexed with `graph_stats`.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Why do AI coding agents duplicate code?" icon="copy">
+    Nothing tells them a shared helper exists, so each session writes its own.
+  </Accordion>
+  <Accordion title="How does the agent find existing helpers?" icon="search">
+    `graphify_find` matches names. `graphify_rank_files` finds code from a plain description.
+  </Accordion>
+  <Accordion title="Does unmerged code show up?" icon="git-branch">
+    No. The tools read the last index of your default branch.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

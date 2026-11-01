@@ -120,6 +120,12 @@ Your team has a shared, graph-backed view of the PR queue: what each PR reaches,
   <Accordion title="Which PR should we review first?" icon="list-ordered">
     Run triage. It asks an LLM to order the queue, and can fall back to a local Ollama model.
   </Accordion>
+  <Accordion title="In what order should colliding PRs merge?" icon="git-pull-request">
+    Merge the smaller-impact PR first. Then the other author rebases and reruns their tests, and you rebuild the graph with `graphify update .` to check the second PR's impact again.
+  </Accordion>
+  <Accordion title="Can AI agents see the PR queue too?" icon="bot">
+    Yes. The local MCP server exposes `list_prs`, `get_pr_impact` and `triage_prs`, so agents get the same views as the command line.
+  </Accordion>
   <Accordion title="What do I need?" icon="terminal">
     The GitHub CLI signed in with `gh auth login`, and a graph of the repository.
   </Accordion>

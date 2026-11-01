@@ -246,6 +246,7 @@
               "cookbooks/make-agents-use-the-graph",
               "cookbooks/fix-review-findings",
               "cookbooks/reuse-existing-code",
+              "cookbooks/document-the-why",
               "cookbooks/agent-team-one-graph",
               "cookbooks/local-with-ollama"
             ]

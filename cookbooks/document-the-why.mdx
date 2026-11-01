@@ -1,0 +1,174 @@
+---
+title: "How to stop AI coding agents breaking your code"
+sidebarTitle: "Document the why"
+description: "Stop AI coding agents from 'fixing' code that's odd on purpose. Explain the why with code comments, decision records, AGENTS.md files and tests."
+keywords: ["ai coding agent", "stop ai coding agents breaking code", "code comments", "what is a code comment", "how to write good comments in code", "architecture decision record", "adr template", "agents.md", "agents.md file", "code documentation best practices", "coupling hot spots"]
+surface: "both"
+hideFooterPagination: true
+icon: "message-square-quote"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+**Code tells an AI coding agent what it does. It never says why.** So when an agent sees code that looks wrong but is deliberate, it "fixes" it, confidently, and breaks something.
+
+**The fix:** write the reason down where the agent reads it. Use a code comment for one spot, an architecture decision record for a bigger choice, an AGENTS.md file for team rules, and a test to lock it all in.
+
+<CardGroup cols={2}>
+  <Card title="Code comment" icon="message-square-quote" href="#write-code-comments-that-explain-why">
+    The reason for one line, right above it.
+  </Card>
+  <Card title="Decision record" icon="file-text" href="#record-big-choices-in-an-architecture-decision-record">
+    The reason for a choice that spans files.
+  </Card>
+  <Card title="AGENTS.md file" icon="bot" href="#put-team-rules-in-an-agents-md-file">
+    Rules every agent reads before it edits.
+  </Card>
+  <Card title="Test" icon="pin" href="#lock-the-behaviour-in-with-a-test">
+    Fails loudly if the behaviour changes.
+  </Card>
+</CardGroup>
+
+## Before you start
+
+- A repository indexed in [Graphify](https://app.graphify.com), with your coding agent connected to the [hosted MCP server](/platform/hosted-mcp). The open-source [Graphify CLI](/open-source/overview) works too.
+- Access to your git history and issue tracker.
+
+## Why AI coding agents "fix" code that isn't broken
+
+Agents read the code, not the history behind it. A line that's odd on purpose, like a status mapped the "wrong" way to work around a provider, reads like a bug. Without the reason next to it, the agent cleans it up.
+
+To find the reason, run `git blame` on the odd lines, then read the commit, pull request and ticket behind them.
+
+```bash
+git blame -L 40,60 src/payments/status.py
+git show <commit>
+```
+
+## Write code comments that explain why
+
+A good comment says why the code works this way, not what it does. Put it right above the code, keep it to the reason, and link the ticket or decision record.
+
+```python
+def map_status(upstream: str) -> Status:
+    # WHY: the provider reports PENDING for a short window after a charge
+    # has already been captured. Treating it as a failure caused retries
+    # and double charges. Map it to SUCCESS; settlement reconciles later.
+    # Decision record: docs/adr/0007-pending-is-success.md
+    if upstream in ("CAPTURED", "PENDING"):
+        return Status.SUCCESS
+    if upstream == "DECLINED":
+        return Status.FAILED
+    return Status.UNKNOWN
+```
+
+This is an illustrative example. Without the comment, `PENDING → SUCCESS` looks like a bug.
+
+## Record big choices in an architecture decision record
+
+When the reason spans files, teams or trade-offs, write a short architecture decision record (ADR) in `docs/adr/` and link it from the comment. This template is enough:
+
+```markdown
+# 0007: Treat upstream PENDING as success
+
+Status: Accepted
+Context: The provider reports PENDING after capture. Failing it caused retries.
+Decision: Map PENDING to SUCCESS. Reconcile during settlement.
+Consequences: A rare real failure is caught at settlement, not at checkout.
+```
+
+| Use | When | Where it lives |
+| --- | --- | --- |
+| Code comment | The reason fits in a few lines and is about one spot | Right above the code |
+| Decision record (ADR) | The reason spans files, teams or trade-offs | `docs/adr/`, linked from a comment |
+| Test | Always, for either one | Your test suite, named after the behaviour |
+
+## Put team rules in an AGENTS.md file
+
+An AGENTS.md file at the root of your repo holds rules your coding agents read before they work. Add one line:
+
+```markdown
+Before changing code that has a WHY comment, read it and any linked decision record.
+If you change deliberate behaviour, update the comment, the record and its test in the same change.
+```
+
+The reason for one specific line still belongs next to that line. AGENTS.md tells the agent to look for it.
+
+## Lock the behaviour in with a test
+
+Add a test that asserts the deliberate behaviour and points back to the reason. If anyone, person or agent, changes it, CI fails.
+
+```python
+def test_pending_maps_to_success():
+    # Pins the WHY in map_status (ADR 0007). If this fails, update the
+    # decision record before changing the behaviour.
+    assert map_status("PENDING") == Status.SUCCESS
+```
+
+## Find the risky spots first with Graphify
+
+You don't need to document everything. Start where a wrong "fix" would hurt most.
+
+- **Coupling hot spots from your PR reviews.** Every [Graphify review](/platform/reviews) has an **Impact & health** section under **Analysis details**. When a change makes coupling worse, it says so, for example: **Health** — this change adds coupling hotspots: worse: `load_cached()` — 66 callers, 10 callees. Those functions are your first candidates.
+- **The most-called code.** Open [Graph explorer](/platform/graphs) and check **Most connected**, or select a node and read **What a change could affect**.
+
+From your agent, ask:
+
+```text
+Which functions in this repo have the most callers? For the top five, show what a change to each could affect.
+```
+
+The agent answers with the `graphify_callers` and `graphify_impact` tools. With the CLI, run `graphify explain "<name>"` and check the degree, or use the `god_nodes` MCP tool.
+
+<Note>Hot spots here come from how code connects, not from how often files change. Graphify doesn't rank files by git churn.</Note>
+
+## When it goes wrong
+
+<AccordionGroup>
+  <Accordion title="The blame points to a huge refactor commit" icon="git-commit-horizontal">
+    Run `git log --follow -p` on the file, or `git blame --ignore-rev <commit>` to skip formatting and move-only commits.
+  </Accordion>
+  <Accordion title="No ticket explains the reason" icon="search">
+    Ask the people in the commit history. If nobody knows, write what you found, mark it unconfirmed, and still lock the current behaviour with a test.
+  </Accordion>
+  <Accordion title="A caller you expected is missing" icon="unlink">
+    Graphify shows the connections it can see. Code called dynamically or by string name may not appear. See [Check impact](/concepts/check-impact).
+  </Accordion>
+  <Accordion title="You want a CI check" icon="git-pull-request">
+    Once the habit sticks, add a CI step that flags changes to files with WHY comments when the matching test or decision record didn't change. Pair it with [test impact analysis](/platform/test-impact) to run the tests a change touches.
+  </Accordion>
+</AccordionGroup>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="What is a code comment, and when should it explain why?" icon="circle-question-mark">
+    A code comment is a note in the source that the program ignores but people and agents read. Explain why whenever the code does something deliberate that looks wrong, such as a workaround, an odd mapping or a hard limit.
+  </Accordion>
+  <Accordion title="What is an architecture decision record?" icon="circle-question-mark">
+    A short file that records one decision: the context, the choice and its consequences. Teams keep them in `docs/adr/` so the reason outlives the people who made it.
+  </Accordion>
+  <Accordion title="What goes in an AGENTS.md file?" icon="circle-question-mark">
+    Project-wide rules for coding agents: how to build and test, conventions, and instructions like "read WHY comments before editing". Keep line-specific reasons in comments, not here.
+  </Accordion>
+  <Accordion title="What are code documentation best practices for AI agents?" icon="circle-question-mark">
+    Put the reason next to the code, link bigger decisions to a record, give agents rules in AGENTS.md, and lock deliberate behaviour with tests. Start with the most-connected code.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Make agents use the graph" icon="bot" href="/cookbooks/make-agents-use-the-graph">
+    Tell your agent when to ask Graphify first.
+  </Card>
+  <Card title="Plan a refactor" icon="list-checks" href="/cookbooks/plan-a-refactor">
+    List callers and tests before a change.
+  </Card>
+  <Card title="Review a pull request" icon="git-pull-request" href="/concepts/review-a-pull-request">
+    See where coupling hot spots come from.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

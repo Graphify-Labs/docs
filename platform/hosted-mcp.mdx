@@ -171,6 +171,23 @@ You don't paste a key. Your client discovers the sign-in flow from the server:
 
 If a token doesn't verify, you get the same discovery `401`, and your client starts the sign-in again.
 
+## Server card
+
+Graphify publishes an [MCP Server Card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards). It's a public JSON document that tells a client where the server is and how to connect, before the client connects. Clients, registries and IDE extensions that support server cards can set up Graphify from it.
+
+| Document | URL |
+| --- | --- |
+| Server card | `https://api.graphify.com/mcp/server-card` |
+| AI Catalog that lists it | `https://api.graphify.com/.well-known/ai-catalog.json` |
+
+The card names the server `io.github.Graphify-Labs/graphify`, as in the MCP Registry, and lists one remote: `https://api.graphify.com/mcp` over Streamable HTTP. It doesn't list tools. Your client still gets those from `tools/list` after you sign in, because they depend on your workspace.
+
+To check the card yourself:
+
+```bash
+curl -H "Accept: application/mcp-server-card+json" https://api.graphify.com/mcp/server-card
+```
+
 ## Workspaces and MCP sessions
 
 Every request runs in one workspace. Graphify picks it in this order: the workspace bound to this MCP session, then your default workspace, then your only workspace if you belong to just one.

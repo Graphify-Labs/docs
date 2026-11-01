@@ -222,6 +222,7 @@
               "cookbooks/onboard-to-a-codebase",
               "cookbooks/plan-a-refactor",
               "cookbooks/read-your-graph",
+              "cookbooks/govern-codebase-non-engineer",
               "cookbooks/keep-docs-in-sync"
             ]
           },

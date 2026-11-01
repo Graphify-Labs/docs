@@ -9,118 +9,119 @@ icon: "shield-check"
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-Graphify formally verifies the functions a pull request changes. For each one, it proves the new version still behaves like the previous version, or it shows you an input where the two give different results. The result appears as a separate GitHub check named **Graphify Formal Verification**, and on the **Formal Verification** page (Behavior checks) in [Graphify](https://app.graphify.com).
+**Know your change kept its behavior.** Graphify checks every function a pull request changes against its previous version. It either proves the two behave the same, or shows you an input where they differ.
+
+<CardGroup cols={2}>
+  <Card title="Prove it behaves the same" icon="shield-check">
+    Each changed function is compared with its previous version, not a written spec.
+  </Card>
+  <Card title="See the exact input that differs" icon="crosshair">
+    A behavior change comes with the input, the old result and the new result.
+  </Card>
+  <Card title="Merge on your terms" icon="git-merge">
+    The **Graphify Formal Verification** check is advisory: `success` or `neutral`, never `failure`.
+  </Card>
+  <Card title="Use it on every plan" icon="badge-check">
+    Daily run limits depend on your plan. See [pricing](https://graphify.com/pricing).
+  </Card>
+</CardGroup>
 
 ## How it works
 
 <Steps>
-  <Step title="Find the changed functions">
-    Graphify compares the pull request's head commit with its base and picks out the functions the pull request changed.
+  <Step title="Find changed functions">
+    Graphify compares the head commit with the base.
   </Step>
   <Step title="Compare old and new">
-    For each changed function, Graphify checks whether the new version returns the same result as the previous version for the inputs in scope. The previous version is the reference, not a written spec.
+    It checks that the new version returns the same result as the old one for the inputs in scope.
   </Step>
-  <Step title="Report a verdict per function">
-    Each function gets one result: **Behavior changed** (with the input that differs), **Proven same**, **No change found**, **Not checked**, or **Couldn't run**. The check title sums them up. See [Read a formal verification check](/platform/verification-check-results) for what each one means and what to do next.
+  <Step title="Report one result per function">
+    The GitHub check and the **Formal Verification** page in the Console show the results.
+  </Step>
+</Steps>
+
+## Five plain answers
+
+| Result | Means |
+| --- | --- |
+| **≠ Behavior changed** | Old and new give different results on the same input. |
+| **= Proven same** | Same result for every input in the range checked. |
+| **≈ No change found** | Same results on every input tried. Evidence, not proof. |
+| **? Not checked** | Couldn't compare this function. Tells you nothing. |
+| **! Couldn't run** | The check failed. Says nothing about your code. |
+
+GitHub names, check titles and next steps: [Read a verification check](/platform/verification-check-results).
+
+## What a pass proves
+
+A check passes only when every changed function is **Proven same**, within the bounds the proof covers.
+
+<Warning>
+"Same as before" isn't "correct". If the old version had a bug, an equivalent new version has the same bug.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Fine print" icon="info">
+    - A function the check never ran counts as not verified.
+    - Each run checks a limited number of functions within a time limit. Functions over the limit are listed as not verified.
+    - Unchanged functions checked alongside the change are listed as context and don't count toward the score.
+    - **Completed** is a run's lifecycle status. It doesn't mean every function was Proven same.
+  </Accordion>
+</AccordionGroup>
+
+## Supported languages
+
+| Language | Extensions |
+| --- | --- |
+| Python | `.py` |
+| JavaScript, TypeScript | `.js` `.mjs` `.cjs` `.jsx` `.ts` `.tsx` `.mts` `.cts` |
+| Go | `.go` |
+| Java | `.java` |
+| C, C++, CUDA, Metal | `.c` `.h` `.cc` `.cpp` `.cxx` `.hh` `.hpp` `.hxx` `.cu` `.cuh` `.metal` |
+| Rust | `.rs` |
+| COBOL | `.cbl` `.cob` `.cpy` `.cobol` |
+
+A supported function can still come back **Not checked** if it's outside what the verifier can analyze or over budget.
+
+## When it doesn't run
+
+Graphify posts a neutral **Formal verification did not run** check when the pull request changes no supported files, or only test files (`tests/`, `__tests__/`, `test_*.py`, `*_test.go`, `*.test.ts`, `*.spec.ts`).
+
+Expected a run? Check that **Formal verification** is on in [Repositories and builds](/platform/repositories).
+
+## Dig into a run
+
+<Steps>
+  <Step title="Pick a repository">
+    Use the **Repository** filter, or **All repositories**.
+  </Step>
+  <Step title="Expand a run">
+    See the pull request, commit and per-function results. A run can mix results.
+  </Step>
+  <Step title="Follow the evidence">
+    A behavior change can include the input and the old and new values. **Technical details** shows the raw verdict.
+  </Step>
+  <Step title="Act on it">
+    Use **Open pull request**, or **Re-run check** once the run has finished. Turn a distinguishing input into a regression test.
   </Step>
 </Steps>
 
 <Note>
-**What a pass means.** A passing check means every function this pull request changed was **Proven same** as its previous version, within the bounds the proof covers. It does not mean the code meets your requirements: if the old version had a bug, an equivalent new version has the same bug.
-
-- **It never blocks a merge.** The check is advisory. It shows `success` only when every changed function is Proven same, and `neutral` in every other case, including a behavior change. It never shows `failure`.
-- **No change found is not proof.** It means every input we tried gave the same result. Good evidence, but not proof. On GitHub this shows as "no divergence found (sampled, not a proof)".
-- **A check that never ran the function doesn't count.** If verification never exercised a function, that function is counted as not verified.
-- **Each run has a budget.** A run checks a limited number of functions within a time limit. Functions over the limit are listed as not verified, with the reason in the check title.
-- **Only changed functions count.** Unchanged functions checked alongside the change are listed separately as context and are not part of the score.
+[Learning](/platform/learning) tunes review feedback only. It can't change verdicts. The enterprise CLI's `verify-edit` is documented separately in the [verification reference](https://graphify.com/docs/verification).
 </Note>
-
-## Supported languages
-
-| Language | File extensions |
-| --- | --- |
-| Python | `.py` |
-| JavaScript and TypeScript | `.js` `.mjs` `.cjs` `.jsx` `.ts` `.tsx` `.mts` `.cts` |
-| Go | `.go` |
-| Java | `.java` |
-| C, C++, CUDA and Metal | `.c` `.h` `.cc` `.cpp` `.cxx` `.hh` `.hpp` `.hxx` `.cu` `.cuh` `.metal` |
-| Rust | `.rs` |
-| COBOL | `.cbl` `.cob` `.cpy` `.cobol` |
-
-A function in a supported language can still come back **Not checked** when the verifier can't analyze it within its supported domain or budget.
-
-## When it doesn't run
-
-Graphify posts a neutral **Formal verification did not run** check, with the reason, when:
-
-- the pull request changes no files in a supported language, or
-- the pull request only changes test files, such as files in `tests/` or `__tests__/`, `test_*.py`, `*_test.go`, or `*.test.ts` and `*.spec.ts`.
-
-In both cases there is no changed product code to compare. If you expected a run and see nothing, check that **Formal verification** is turned on for the repository in [Repositories and builds](/platform/repositories).
-
-## Inspect a verification run
-
-<Steps>
-  <Step titleSize="h2" title="Choose the repository">
-    Use the **Repository** filter or select **All repositories** to see workspace runs.
-  </Step>
-  <Step titleSize="h2" title="Open a run">
-    Check the pull request and commit, then expand the run to inspect its outcome and per-function results. A finished run can contain a mixture of outcomes.
-  </Step>
-  <Step titleSize="h2" title="Follow the evidence">
-    Inspect the source file, function, and verdict. For a behavior change, the detail can include the distinguishing input and the old and new values. An abstention or failure includes its reason when available.
-  </Step>
-  <Step titleSize="h2" title="Return to the change">
-    Use **Open pull request** or the commit link to investigate the implementation. Open **Technical details** for the raw verdict. When a run has finished, **Re-run check** can queue another attempt; queued and running attempts cannot be rerun simultaneously.
-  </Step>
-</Steps>
-
-## Understand the result
-
-The **How to read results** legend in Graphify uses these labels. The second column is the name the GitHub check and the API use.
-
-| Result in Graphify | GitHub / API name | What it means |
-| --- | --- | --- |
-| **≠ Behavior changed** | Behavior change / `distinguished` | We ran the old and new versions on the same input and got different results. The detail shows whether that input was reproduced in a sandbox or is unconfirmed. |
-| **= Proven same** | Proved equivalent / `equivalent` | Proven to give the same result for every input in the range we checked. |
-| **≈ No change found** | No divergence sampled (not a proof) / `may_equivalent` | Same results on every input we tried. Good evidence, but not proof. Add tests that cover more inputs to make this stronger. |
-| **? Not checked** | Abstained / `unsupported` | We couldn't compare this function, so it tells you nothing either way. |
-| **! Couldn't run** | Errored / `error` | The check itself failed. This says nothing about your code. |
-
-You may also see **No changed functions to compare**, when the pull request only added, deleted or renamed functions, so there is no previous version to compare against, and **Skipped**, when Graphify didn't run this check.
-
-**Completed** describes a run's lifecycle; it does not mean every function was Proven same. Queued, verifying, failed, cancelled, skipped, and expired runs also retain their own status. A run that verified no functions does not imply the change passed.
-
-## Limits by plan
-
-Formal verification is included on every plan, with a daily run limit and a limit on runs at the same time that depend on the plan. See [graphify.com/pricing](https://graphify.com/pricing) for current limits.
-
-## Configure and use verification
-
-Repository controls include a **Formal verification** setting for pull requests. Use [Repositories and builds](/platform/repositories) to check repository configuration and indexing before investigating missing runs.
-
-When Graphify supplies a distinguishing input, use it to reproduce the difference and create a regression test. Review whether the changed behavior was intentional before deciding what to change.
-
-[Learning](/platform/learning) tunes advisory review feedback only. It cannot change proof verdicts or hide a witness from the verifier.
-
-## Scope of a proof
-
-Verification is function-level and differential: the previous implementation is the reference. It does not establish that the application meets its intended requirements. Read bounds, unsupported cases, and reproduction status with the result.
-
-For the separately installed enterprise CLI, the website's [verification reference](https://graphify.com/docs/verification) documents `verify-edit` and gate configuration. Those commands are distinct from the hosted console workflow and the public open-source CLI.
 
 ## Next steps
 
 <HostedMcpCard />
 
-<Columns cols={2}>
-  <Card title="Read a review and a verdict" icon="file-check" href="/platform/read-a-result">
-    What each verdict means.
+<CardGroup cols={2}>
+  <Card title="What is formal verification?" icon="sigma" href="/concepts/what-is-formal-verification">
+    The idea in plain words.
   </Card>
-  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
-    Where verification runs.
+  <Card title="Read a verification check" icon="list-checks" href="/platform/verification-check-results">
+    Every check title and what to do.
   </Card>
-</Columns>
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

@@ -7,39 +7,39 @@ sidebarTitle: "Read a review and a verdict"
 icon: "clipboard-check"
 ---
 
-A review and a verification answer different questions. Read both before you treat a pull request as safe.
+**Two signals, two questions.** A review finding is a concern to investigate. A verification verdict says what was proved. Read both before you call a pull request safe.
 
-## What a review is telling you
+<CardGroup cols={2}>
+  <Card title="Investigate a review finding" icon="message-square-warning">
+    Open **Reviews**, pick the repository and run, and check the commit. Findings are advisory and describe that revision. With repository settings on, you also see **Risky patterns (advisory)** and **Docs that may be stale (advisory)**.
+  </Card>
+  <Card title="Check a verification verdict" icon="shield-check">
+    Open **Formal Verification** and expand the run. The run status says if processing finished. Each function's result says what was established.
+  </Card>
+</CardGroup>
 
-Open **Reviews**, choose the repository, and select the run. Check the commit. The findings on that run describe that revision.
+## Read the verdict
 
-A finding is advisory. It is a concern to investigate, with the code the change can affect. It is not proof that every changed function still behaves the same way.
-
-When the repository settings are on, the run can also include **Risky patterns (advisory)** and **Docs that may be stale (advisory)**.
-
-## What a verdict is telling you
-
-Open **Formal Verification** and expand the run. The run status tells you whether processing finished. The per-function result tells you what was established:
-
-These are the labels Graphify shows. The second column is the name on the GitHub check and in the API.
-
-| Result in Graphify | GitHub / API name | What it means |
+| Result | GitHub / API | Means |
 | --- | --- | --- |
-| **≠ Behavior changed** | Behavior change / `distinguished` | The old and new versions gave different results on the same input. Check whether that input was reproduced in a sandbox or is unconfirmed. |
-| **= Proven same** | Proved equivalent / `equivalent` | Proven to give the same result for every input in the range we checked. |
-| **≈ No change found** | No divergence sampled (not a proof) / `may_equivalent` | Same results on every input we tried. Good evidence, but not proof. |
-| **? Not checked** | Abstained / `unsupported` | We couldn't compare this function, so it tells you nothing either way. |
-| **! Couldn't run** | Errored / `error` | The check itself failed. This says nothing about your code. |
+| **≠ Behavior changed** | Behavior change / `distinguished` | Different results on the same input. Check if it was reproduced or is unconfirmed. |
+| **= Proven same** | Proved equivalent / `equivalent` | Same result for every input in the range checked. |
+| **≈ No change found** | No divergence sampled / `may_equivalent` | Same on every input tried. Evidence, not proof. |
+| **? Not checked** | Abstained / `unsupported` | Couldn't compare. Tells you nothing. |
+| **! Couldn't run** | Errored / `error` | The check failed. Says nothing about your code. |
 
-See [Read a formal verification check](/platform/verification-check-results) for what to do next with each result.
+<Note>
+**Completed** is the run's lifecycle status. It doesn't mean every function was Proven same. A run can mix results.
+</Note>
 
-**Completed** describes the run's lifecycle. It does not mean every function was Proven same. A finished run can contain a mixture of these results.
-
-Use the [formal verification guide](/platform/verification) before you act on a verdict.
-
-<Card title="Review settings" icon="settings" href="/platform/reviews">
-  Turn risky patterns and stale docs on or off for a repository.
-</Card>
+<CardGroup cols={2}>
+  <Card title="What to do with each result" icon="list-checks" href="/platform/verification-check-results">
+    Check titles and next steps.
+  </Card>
+  <Card title="Review settings" icon="settings" href="/platform/reviews">
+    Turn risky patterns and stale docs on or off.
+  </Card>
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

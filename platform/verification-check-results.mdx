@@ -7,64 +7,73 @@ hideFooterPagination: true
 icon: "list-checks"
 ---
 
-The **Graphify Formal Verification** check on a pull request tells you, in its title, how many of the functions this pull request changed were verified. Open the check to see a verdict for each function. The check is advisory: it shows `success` only when every changed function is Proven same, `neutral` otherwise, and never `failure`.
+**Read the title, know the outcome.** The check title says how many changed functions were verified. Open the check for one result per function. It's advisory: `success` only when every changed function is Proven same, otherwise `neutral`, never `failure`.
 
-## Check titles
+## Every check title, decoded
 
-The GitHub checks list only shows the title, so it carries the summary.
+<AccordionGroup>
+  <Accordion title="Proven: N/N PR-changed function(s) behavior-preserving" icon="circle-check">
+    Every changed function was Proven same. The check is `success`. Nothing to do, but a proof means "same as before", not "correct".
+  </Accordion>
+  <Accordion title="Behavior change detected in N function(s)" icon="circle-alert">
+    At least one changed function returns a different result for some input. Open the check, find the input, and decide if the change was intended.
+  </Accordion>
+  <Accordion title="Distinguishing input found (unconfirmed)" icon="circle-help">
+    An input looks like it differs, but replaying it didn't confirm it. Run both versions on it before acting. It may be a false alarm.
+  </Accordion>
+  <Accordion title="X/Y verified · no divergence found (sampled, not a proof)" icon="circle-dot">
+    No differences, but at least one function is **No change found**, not Proven same. Good evidence. Add tests that cover more inputs.
+  </Accordion>
+  <Accordion title="X/Y verified · Z not verified (reasons)" icon="circle-minus">
+    Some functions weren't verified. Review them by hand or with tests. See [not verified reasons](#not-verified-reasons).
+  </Accordion>
+  <Accordion title="X/Y verified · formal verification incomplete" icon="circle-x">
+    A function hit an error. Use **Re-run check** in the Console. If it keeps failing, contact support.
+  </Accordion>
+  <Accordion title="No PR-changed functions were verified" icon="circle-off">
+    The run verified none of the changed functions. This isn't a pass. Check the function list for reasons.
+  </Accordion>
+  <Accordion title="Formal verification did not run" icon="circle-slash">
+    No supported files changed, or only test files did. See [when it doesn't run](/platform/verification#when-it-doesnt-run).
+  </Accordion>
+</AccordionGroup>
 
-| Check title | What it means | What to do |
+## Act on each result
+
+| Result | GitHub / API | Next step |
 | --- | --- | --- |
-| **Proven: N/N PR-changed function(s) behavior-preserving** | Every changed function was Proven same as its previous version. The check is `success`. | Nothing. Remember a proof covers "same as before", not "correct". |
-| **Behavior change detected in N function(s)** | At least one changed function returns a different result for some input. | Open the check, find the distinguishing input, and decide if the change was intended. |
-| **Distinguishing input found (unconfirmed)** | Graphify found an input that looks like it differs, but replaying it didn't confirm the difference. | Run both versions on the input yourself before acting. It may be a false alarm. |
-| **X/Y PR-changed function(s) verified · no divergence found (sampled, not a proof)** | No differences were found, but at least one function is **No change found** rather than Proven same. | Treat it as good evidence, not proof. Add tests that cover more inputs to make this stronger. |
-| **X/Y PR-changed function(s) verified · Z not verified (reasons)** | Some changed functions weren't verified. The reasons are listed: `vacuous`, `unsupported`, `error`, `witness not reproduced`, `over cap`, `budget` or `not reported`. | Review those functions by hand or with tests. See [Not verified reasons](#not-verified-reasons). |
-| **X/Y PR-changed function(s) verified · formal verification incomplete** | At least one function hit an error, so the run is incomplete. | Use **Re-run check** in Graphify. If it keeps failing, contact support. |
-| **No PR-changed functions were verified** | The run finished but verified none of the functions this pull request changed. | Don't read this as a pass. Check the function list in the check for reasons. |
-| **Formal verification did not run** | The pull request changes no files in a supported language, or only changes test files. | Nothing, unless you expected product code to be checked. See [when it doesn't run](/platform/verification#when-it-doesnt-run). |
+| **≠ Behavior changed** | Behavior change (`distinguished`) | Intended? Add a test for it. Not? Fix and push. The input is shown as **reproduced** or **unconfirmed**. |
+| **= Proven same** | Proved equivalent (`equivalent`) | None. |
+| **≈ No change found** | No divergence sampled (`may_equivalent`) | Evidence, not proof. Add tests for more inputs. |
+| **? Not checked** | Abstained (`unsupported`) | Review or test it as usual. |
+| **! Couldn't run** | Errored (`error`) | **Re-run check**. See **Technical details**. |
 
-## Results for each function
-
-Inside the check, and on the **Formal Verification** page in Graphify, each function has one result. Graphify shows the plain label; the GitHub check uses the name in the second column.
-
-| Result in Graphify | GitHub / API name | Meaning | Next step |
-| --- | --- | --- | --- |
-| **≠ Behavior changed** | Behavior change (`distinguished`) | We ran the old and new versions on the same input and got different results. The check shows whether the input was **reproduced** in a sandbox or is **unconfirmed**. | If the change was intended, add a test for the new behavior. If not, fix the code and push. Either way, the input makes a good regression test. |
-| **= Proven same** | Proved equivalent (`equivalent`) | Proven to give the same result for every input in the range we checked. | None needed. |
-| **≈ No change found** | No divergence sampled, not proven (`may_equivalent`) | Same results on every input we tried. Good evidence, but not proof. | Add tests that cover more inputs to make this stronger. |
-| **? Not checked** | Abstained (`unsupported`) | We couldn't compare this function, so it tells you nothing either way. | Review or test the function as you normally would. |
-| **! Couldn't run** | Errored (`error`) | The check itself failed. This says nothing about your code. | Use **Re-run check** in Graphify. Open **Technical details** for the reason. |
-
-Two more states can appear in Graphify:
-
-- **No changed functions to compare**: the pull request only added, deleted or renamed functions, so there is no previous version to compare against.
-- **Skipped**: Graphify didn't run this check.
+You may also see **No changed functions to compare** (functions were only added, deleted or renamed) or **Skipped** (the check didn't run).
 
 ## Not verified reasons
 
-A changed function counts as **not verified** when:
+| Reason | Means |
+| --- | --- |
+| `vacuous` | The check never exercised the function. |
+| `unsupported`, `error` | **Not checked** or **Couldn't run**. |
+| `witness not reproduced` | A differing input didn't reproduce in the sandbox. |
+| `over cap`, `budget` | The run hit its function or time limit first. |
+| `not reported` | No result came back. |
 
-- **vacuous**: the check never actually exercised the function, so a "no difference" result would mean nothing.
-- **unsupported** or **error**: the function was **Not checked** or **Couldn't run**, as in the table above.
-- **witness not reproduced**: an input looked like it differed but didn't reproduce in the sandbox.
-- **over cap** or **budget**: the run reached its limit on functions or time before getting to it.
-- **not reported**: no result came back for the function.
-
-## Context functions
-
-The check can also list **context functions**: functions checked alongside the change that this pull request didn't modify. They are shown separately and never count toward the X/Y score. One exception: a behavior change found in a context function still keeps the check `neutral`.
+<Note>
+**Context functions** are unchanged functions checked alongside the change. They never count toward X/Y, but a behavior change in one still keeps the check `neutral`.
+</Note>
 
 ## Next steps
 
-<Columns cols={2}>
+<CardGroup cols={2}>
   <Card title="Formal verification" icon="shield-check" href="/platform/verification">
-    How the check works and what a pass means.
+    How the check works.
   </Card>
   <Card title="What is formal verification?" icon="sigma" href="/concepts/what-is-formal-verification">
-    The idea explained from scratch.
+    The idea from scratch.
   </Card>
-</Columns>
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

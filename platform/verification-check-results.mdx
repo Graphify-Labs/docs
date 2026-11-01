@@ -1,0 +1,74 @@
+---
+title: "Read a formal verification check on GitHub"
+sidebarTitle: "Read a verification check"
+description: "What each Graphify Formal Verification check title and verdict means, and the next step for proven, changed, sampled and abstained functions."
+surface: "cloud"
+hideFooterPagination: true
+icon: "list-checks"
+---
+
+The **Graphify Formal Verification** check on a pull request tells you, in its title, how many of the functions this pull request changed were verified. Open the check to see a verdict for each function. The check is advisory: it shows `success` only when every changed function is Proven same, `neutral` otherwise, and never `failure`.
+
+## Check titles
+
+The GitHub checks list only shows the title, so it carries the summary.
+
+| Check title | What it means | What to do |
+| --- | --- | --- |
+| **Proven: N/N PR-changed function(s) behavior-preserving** | Every changed function was Proven same as its previous version. The check is `success`. | Nothing. Remember a proof covers "same as before", not "correct". |
+| **Behavior change detected in N function(s)** | At least one changed function returns a different result for some input. | Open the check, find the distinguishing input, and decide if the change was intended. |
+| **Distinguishing input found (unconfirmed)** | Graphify found an input that looks like it differs, but replaying it didn't confirm the difference. | Run both versions on the input yourself before acting. It may be a false alarm. |
+| **X/Y PR-changed function(s) verified · no divergence found (sampled, not a proof)** | No differences were found, but at least one function is **No change found** rather than Proven same. | Treat it as good evidence, not proof. Add tests that cover more inputs to make this stronger. |
+| **X/Y PR-changed function(s) verified · Z not verified (reasons)** | Some changed functions weren't verified. The reasons are listed: `vacuous`, `unsupported`, `error`, `witness not reproduced`, `over cap`, `budget` or `not reported`. | Review those functions by hand or with tests. See [Not verified reasons](#not-verified-reasons). |
+| **X/Y PR-changed function(s) verified · formal verification incomplete** | At least one function hit an error, so the run is incomplete. | Use **Re-run check** in Graphify. If it keeps failing, contact support. |
+| **No PR-changed functions were verified** | The run finished but verified none of the functions this pull request changed. | Don't read this as a pass. Check the function list in the check for reasons. |
+| **Formal verification did not run** | The pull request changes no files in a supported language, or only changes test files. | Nothing, unless you expected product code to be checked. See [when it doesn't run](/platform/verification#when-it-doesnt-run). |
+
+## Results for each function
+
+Inside the check, and on the **Formal Verification** page in Graphify, each function has one result. Graphify shows the plain label; the GitHub check uses the name in the second column.
+
+| Result in Graphify | GitHub / API name | Meaning | Next step |
+| --- | --- | --- | --- |
+| **≠ Behavior changed** | Behavior change (`distinguished`) | We ran the old and new versions on the same input and got different results. The check shows whether the input was **reproduced** in a sandbox or is **unconfirmed**. | If the change was intended, add a test for the new behavior. If not, fix the code and push. Either way, the input makes a good regression test. |
+| **= Proven same** | Proved equivalent (`equivalent`) | Proven to give the same result for every input in the range we checked. | None needed. |
+| **≈ No change found** | No divergence sampled, not proven (`may_equivalent`) | Same results on every input we tried. Good evidence, but not proof. | Add tests that cover more inputs to make this stronger. |
+| **? Not checked** | Abstained (`unsupported`) | We couldn't compare this function, so it tells you nothing either way. | Review or test the function as you normally would. |
+| **! Couldn't run** | Errored (`error`) | The check itself failed. This says nothing about your code. | Use **Re-run check** in Graphify. Open **Technical details** for the reason. |
+
+Two more states can appear in Graphify:
+
+- **No changed functions to compare**: the pull request only added, deleted or renamed functions, so there is no previous version to compare against.
+- **Skipped**: Graphify didn't run this check.
+
+## Not verified reasons
+
+A changed function counts as **not verified** when:
+
+- **vacuous**: the check never actually exercised the function, so a "no difference" result would mean nothing.
+- **unsupported** or **error**: the function was **Not checked** or **Couldn't run**, as in the table above.
+- **witness not reproduced**: an input looked like it differed but didn't reproduce in the sandbox.
+- **over cap** or **budget**: the run reached its limit on functions or time before getting to it.
+- **not reported**: no result came back for the function.
+
+## Context functions
+
+The check can also list **context functions**: functions checked alongside the change that this pull request didn't modify. They are shown separately and never count toward the X/Y score. One exception: a behavior change found in a context function still keeps the check `neutral`.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Formal verification" icon="shield-check" href="/platform/verification">
+    How the check works and what a pass means.
+  </Card>
+  <Card title="What is formal verification?" icon="sigma" href="/concepts/what-is-formal-verification">
+    The idea explained from scratch.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/platform/verification" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Formal verification</span></a>
+  <a href="/platform/learning" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Learning</span></a>
+</div>

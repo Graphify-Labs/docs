@@ -1,0 +1,103 @@
+---
+title: "Run several coding agents on one shared graph"
+sidebarTitle: "Agent team on one graph"
+description: "Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so they all read the same graph and the same team memory."
+keywords: ["multiple coding agents", "solo founder ai agents", "shared context for agents", "claude code codex cursor same context", "agent team memory"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "workflow"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import { PromptBlock } from '/snippets/hero-install.jsx';
+
+If you build alone with a handful of coding agents, each one starts every session knowing nothing. One agent learns that a webhook handler must stay idempotent, and the next agent, in another tool, breaks it the following day. This recipe connects all of your agents to one Graphify workspace, so they read the same code graph and the same notes about your code.
+
+<Info>
+**Works with:** Graphify (hosted), with any mix of Claude Code, Codex, Cursor, VS Code and cloud coding agents.
+</Info>
+
+## The short version
+
+Connect each agent to `https://api.graphify.com/mcp`, then paste this into any of them:
+
+<PromptBlock text="Call list_workspaces and list_repositories and tell me which Graphify workspace you're in and which repositories you can query. Then call memories_about on the file we're about to change." />
+
+Every agent should report the same workspace and repositories.
+
+## The scenario
+
+A solo founder runs one product across three repositories: a web app, an API and a mobile app. Claude Code does most feature work, Codex handles background tasks, and Cursor is open for quick edits. Each agent has its own memory file, and none of them agree. The founder wants one place that every agent reads before it changes code.
+
+## What you'll build
+
+- Every agent connected to the same Graphify workspace through the hosted MCP server.
+- One shared instruction block, committed to each repository, that every agent reads.
+- A habit of recording decisions once, in Graphify memory, so the next agent finds them.
+
+## Before you start
+
+- Your repositories indexed in one [Graphify](https://app.graphify.com) workspace.
+- The agents you use. Setup for each client is in [Hosted MCP](/platform/hosted-mcp).
+
+## Setup
+
+<Steps>
+  <Step title="Connect every agent to the same endpoint">
+    Add `https://api.graphify.com/mcp` to each agent and sign in with the same Graphify account. For cloud agents, follow [Connect cloud coding agents to hosted MCP](/cookbooks/cloud-coding-agents).
+  </Step>
+  <Step title="Pin the workspace">
+    If you belong to more than one Graphify workspace, ask each agent to call `list_workspaces`. If the wrong one is active, `set_workspace` switches it for the session, and `make_default` makes it stick across sessions.
+  </Step>
+  <Step title="Optionally pin a repository">
+    For an agent that only ever works in one repository, add `?repo=` to its endpoint, for example `https://api.graphify.com/mcp?repo=acme/api`. It can then leave out the repository in each call.
+  </Step>
+  <Step title="Commit one instruction block to every repository">
+    Add this to `AGENTS.md` (read by Codex and many other agents) and `CLAUDE.md` (read by Claude Code) in each repository:
+
+    ```md AGENTS.md
+    ## Shared context: Graphify
+
+    This repository is indexed in Graphify. Other agents work on it too.
+
+    - Before editing a file, call `memories_about` on its path.
+    - Before changing a function, call `graphify_callers` and
+      `graphify_tests_for` on it. Check other repositories too with
+      `list_repositories` if it's an API other code calls.
+    - When we make a decision, ask me, then save it with `remember`
+      in one sentence that says why.
+    ```
+  </Step>
+</Steps>
+
+## How it works
+
+Graphify keeps the graph and memory in the workspace, not in any one agent. Every agent connected to that workspace reads the same index of your default branches and the same kept memories. A decision one agent saves with `remember` starts as a suggestion. Other agents may already see it, marked as unverified. Once you keep it in **Memory**, it's a reviewed memory every agent gets from `recall` and `memories_about`.
+
+The agents don't talk to each other through Graphify, and Graphify doesn't divide up work between them. It gives them a shared, current picture of the code and of what you've decided.
+
+## Verify it worked
+
+- Ask two different agents the short-version prompt. They report the same workspace and repositories.
+- Keep one memory in **Memory**, then ask a different agent `memories_about` on that file. It returns the memory.
+
+## Troubleshooting
+
+- **One agent sees different repositories.** It's in another workspace. Check with `list_workspaces` and switch with `set_workspace`.
+- **A saved fact shows up as unverified, or not at all.** It's still a suggestion. Keep it in **Memory**. See [Memory](/platform/memory).
+- **Answers look out of date.** The graph follows each repository's default branch. Check freshness with `graph_stats`.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Memory" icon="brain" href="/platform/memory">
+    What agents remember, and how it's reviewed.
+  </Card>
+  <Card title="What your agent can do" icon="map" href="/agents/capabilities">
+    Every hosted tool, with a prompt for each.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

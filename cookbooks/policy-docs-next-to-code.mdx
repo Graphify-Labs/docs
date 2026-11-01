@@ -1,0 +1,102 @@
+---
+title: "Check code against your policy documents"
+sidebarTitle: "Policy docs next to code"
+description: "Connect a Google Drive folder of policies or regulations, then have your agent read the rule and the code that has to follow it, side by side."
+keywords: ["compliance documents and code", "policy docs ai agent", "regulation code check", "google drive mcp", "graphify google drive"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "file-text"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import { PromptBlock } from '/snippets/hero-install.jsx';
+
+Some code has to follow rules written somewhere else: a data retention policy, a security standard, a regulator's guidance, a contract. The rules live in documents, the code lives in a repository, and an agent changing the code usually never sees the rules. This recipe puts both in Graphify, so the agent can read the rule and the code in the same session.
+
+<Info>
+**Works with:** Graphify (hosted) on a paid plan, with any agent connected to the hosted MCP server.
+</Info>
+
+## The short version
+
+Already connected both? Paste this into your agent:
+
+<PromptBlock text="Call list_repositories. In our Google Drive policy folder, use query_graph to find what the data retention policy requires. Then use query_graph and graphify_find on our code repository to find where we delete or archive user data. Compare the two, quote the policy document by name, cite code file paths, and list any gaps." />
+
+## The scenario
+
+A small team builds software for a regulated industry. Their policies sit in a shared Drive folder, and an outside reviewer asks how the code enforces one of them. Today that means someone reads the policy, then hunts through the code by hand. They want the agent to do the first pass and show its sources, so a person only has to check the answer.
+
+## What you'll build
+
+- A Drive folder of policy documents, indexed in the same workspace as your code.
+- A prompt pattern that reads the rule from the documents and the matching code from the repository, with sources for both.
+
+## Before you start
+
+- A paid Graphify plan. Adding Drive folders needs one.
+- An owner or admin to connect Google Drive.
+- A code repository already indexed in [Graphify](https://app.graphify.com).
+- A coding agent connected to the hosted MCP server. See [Connect cloud coding agents to hosted MCP](/cookbooks/cloud-coding-agents).
+
+## Setup
+
+<Steps>
+  <Step title="Put the documents in one folder">
+    Collect the policies, standards or guidance in one Google Drive folder. Supported files include Google Docs, Sheets and Slides, plus PDF, Word, Excel, PowerPoint, CSV, Markdown, text and image files.
+  </Step>
+  <Step title="Connect the folder">
+    In **Integrations**, open **Google Workspace · Google Drive**, sign in with Google, and add the folder. Access is read-only. See [Connect Google Drive](/platform/connectors#connect-google-drive).
+  </Step>
+  <Step title="Check that your agent can see it">
+    Ask your agent to call `list_repositories`. The Drive folder shows up next to your code repositories, with its own name and id.
+  </Step>
+</Steps>
+
+## How it works
+
+Graphify indexes the Drive folder the same way it indexes a repository, so the same search tools work on both. The agent asks two separate questions: one against the folder, one against the code. `query_graph` returns the matching passages with the document they came from, and `graphify_rank_files` ranks documents by relevance to a question.
+
+Graphify doesn't draw links between a document and the code that implements it. The agent makes that comparison, and you check it. Treat the result as a first draft for a person to review, not as a compliance sign-off.
+
+## Make it part of changes
+
+Add a block like this to `AGENTS.md` or `CLAUDE.md`, with your own folder and repository names:
+
+```md AGENTS.md
+## Policies
+
+Policy documents are indexed in Graphify as "Google Drive/Policies".
+
+When you change code that stores, deletes, exports or shares user data,
+call query_graph on "Google Drive/Policies" with what the change does.
+Quote any rule that applies, by document name, and say how the change
+follows it. If you can't tell, say so and ask.
+```
+
+## Verify it worked
+
+- `list_repositories` shows the Drive folder as ready.
+- The agent's answer names the policy document it quoted and cites code file paths.
+- When you open the cited document and file, they say what the agent said.
+
+## Troubleshooting
+
+- **The folder isn't listed.** Check that Drive shows **Connected** in **Integrations** and that the folder finished syncing. Files that can't be read are listed in the folder details.
+- **Answers miss a document.** Ask with words the document itself uses, or use `graphify_rank_files` to see which documents rank for your question.
+- **The agent mixes up the folder and the code.** Pass the exact name from `list_repositories` as `repository_id` in each call.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Connectors" icon="plug" href="/platform/connectors">
+    Connect Google Drive and other tools.
+  </Card>
+  <Card title="What your agent can do" icon="map" href="/agents/capabilities">
+    Every hosted tool, with a prompt for each.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

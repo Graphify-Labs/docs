@@ -252,7 +252,8 @@
             "pages": [
               "cookbooks/postgres-schema-graph",
               "cookbooks/neo4j-export",
-              "cookbooks/meetings-and-videos"
+              "cookbooks/meetings-and-videos",
+              "cookbooks/policy-docs-next-to-code"
             ]
           },
           {

@@ -42,7 +42,8 @@
               "concepts/check-impact",
               "concepts/provenance",
               "concepts/how-graphify-finds-dependencies",
-              "concepts/outputs"
+              "concepts/outputs",
+              "concepts/what-is-formal-verification"
             ]
           },
           {

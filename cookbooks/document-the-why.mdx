@@ -1,0 +1,155 @@
+---
+title: "Document the why so agents keep intended code"
+sidebarTitle: "Document the why"
+description: "Stop coding agents fixing code that is wrong on purpose: find heavily used code with Graphify, write down why it works, and pin it with a test."
+keywords: ["why comments", "architecture decision record", "ai agent context", "intended behavior", "coding agent guardrails"]
+surface: "both"
+hideFooterPagination: true
+icon: "message-square-quote"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+**Code tells an agent what it does. It never says why.** So when an agent sees code that looks wrong but is deliberate, it "fixes" it, confidently. This recipe writes the reasoning down where agents read it, and pins it with a test so it can't quietly go stale.
+
+<CardGroup cols={3}>
+  <Card title="Find" icon="search">
+    The code that the most other code depends on.
+  </Card>
+  <Card title="Explain" icon="message-square-quote">
+    A short WHY comment or decision record next to it.
+  </Card>
+  <Card title="Pin" icon="pin">
+    A test that fails if the behavior changes.
+  </Card>
+</CardGroup>
+
+## Before you start
+
+- A repository indexed in [Graphify](https://app.graphify.com), with your coding agent connected to the [hosted MCP server](/platform/hosted-mcp). The open-source [Graphify CLI](/open-source/overview) works too.
+- Access to your git history and issue tracker.
+
+## The workflow
+
+<Steps>
+  <Step title="Find the code that matters most">
+    Start where a wrong "fix" would hurt most: code that much of the system depends on. Open [Graph explorer](/platform/graphs) and check **Most connected**, or select a node and read **What a change could affect**. From your agent, ask:
+
+    ```text
+    Which functions in this repo have the most callers? For the top five, show what a change to each could affect.
+    ```
+
+    The agent answers with the `graphify_callers` and `graphify_impact` tools. With the CLI, run `graphify explain "<name>"` and check the degree, or use the `god_nodes` MCP tool.
+  </Step>
+  <Step title="Trace each odd line back to its commit">
+    For lines that look wrong, run `git blame` to find the commit, then the pull request and ticket behind it.
+
+    ```bash
+    git blame -L 40,60 src/payments/status.py
+    git show <commit>
+    ```
+  </Step>
+  <Step title="Read the tickets and docs">
+    Read the linked ticket, pull request discussion and any design doc. You're looking for one thing: the reason.
+  </Step>
+  <Step title="Write the WHY down">
+    Put a short WHY comment right above the code. If the reason spans several files, write a short decision record (ADR) and link it from the comment.
+  </Step>
+  <Step title="Pin it with a test">
+    Add a test that asserts the deliberate behavior and points back to the WHY. If someone changes the behavior, the test fails loudly, and the comment can't silently drift from the code.
+  </Step>
+  <Step title="Keep it current">
+    Ask your agent to add a WHY whenever it changes deliberate behavior. Later, add a CI check. See [Keep it current](#keep-it-current).
+  </Step>
+</Steps>
+
+## Example: a status that maps PENDING to Success
+
+This is an illustrative example. Say an upstream payment provider reports `PENDING` for a few seconds after a charge goes through, and your system treats that as success on purpose.
+
+<Tabs>
+  <Tab title="The code with a WHY">
+    ```python
+    def map_status(upstream: str) -> Status:
+        # WHY: the provider reports PENDING for a short window after a charge
+        # has already been captured. Treating it as a failure caused retries
+        # and double charges. Map it to SUCCESS; settlement reconciles later.
+        # Decision record: docs/adr/0007-pending-is-success.md
+        if upstream in ("CAPTURED", "PENDING"):
+            return Status.SUCCESS
+        if upstream == "DECLINED":
+            return Status.FAILED
+        return Status.UNKNOWN
+    ```
+  </Tab>
+  <Tab title="The pinning test">
+    ```python
+    def test_pending_maps_to_success():
+        # Pins the WHY in map_status (ADR 0007). If this fails, update the
+        # decision record before changing the behavior.
+        assert map_status("PENDING") == Status.SUCCESS
+    ```
+  </Tab>
+  <Tab title="The decision record">
+    ```markdown
+    # 0007: Treat upstream PENDING as success
+
+    Status: Accepted
+    Context: The provider reports PENDING after capture. Failing it caused retries.
+    Decision: Map PENDING to SUCCESS. Reconcile during settlement.
+    Consequences: A rare real failure is caught at settlement, not at checkout.
+    ```
+  </Tab>
+</Tabs>
+
+Without the comment, `PENDING → SUCCESS` looks like a bug, and an agent will "fix" it. With the comment and test, the agent reads the reason, and a careless change fails CI.
+
+## WHY comment or decision record?
+
+| Use | When | Where it lives |
+| --- | --- | --- |
+| WHY comment | The reason fits in a few lines and is about one spot | Right above the code |
+| Decision record (ADR) | The reason spans files, teams or trade-offs | `docs/adr/`, linked from a comment |
+| Pinning test | Always, for either one | Your test suite, named after the behavior |
+
+## Keep it current
+
+<AccordionGroup>
+  <Accordion title="Ask the agent for a WHY" icon="bot">
+    Add a line to your agent's rules file, such as `CLAUDE.md` or `AGENTS.md`: "Before changing code that has a WHY comment, read it. If you change deliberate behavior, update the WHY and its test in the same change."
+  </Accordion>
+  <Accordion title="Use your agent's hooks" icon="webhook">
+    Some coding agents run hooks around tool calls. Claude Code, for example, has hooks that can run a script before or after an edit. You can use one to remind the agent to add a WHY when it edits a file with deliberate behavior. Hooks are your agent tool's feature, not Graphify's. The Graphify CLI installs its own [Claude Code hooks](/integrations/claude-code), but those add graph context to searches, not WHY checks.
+  </Accordion>
+  <Accordion title="Add a CI check later" icon="git-pull-request">
+    Once the habit sticks, add a CI step that flags changes to files with WHY comments when the matching test or decision record didn't change. Pair it with [test impact analysis](/platform/test-impact) to run the tests a change touches.
+  </Accordion>
+</AccordionGroup>
+
+## When it goes wrong
+
+<AccordionGroup>
+  <Accordion title="The blame points to a huge refactor commit">
+    Run `git log --follow -p` on the file, or `git blame --ignore-rev <commit>` to skip formatting and move-only commits.
+  </Accordion>
+  <Accordion title="No ticket explains the reason">
+    Ask the people in the commit history. If nobody knows, write what you found, mark it unconfirmed, and still pin the current behavior with a test.
+  </Accordion>
+  <Accordion title="A caller you expected is missing">
+    Graphify shows the connections it can see. Code called dynamically or by string name may not appear. See [Check impact](/concepts/check-impact).
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Make agents use the graph" icon="bot" href="/cookbooks/make-agents-use-the-graph">
+    Tell your agent when to ask Graphify first.
+  </Card>
+  <Card title="Plan a refactor" icon="list-checks" href="/cookbooks/plan-a-refactor">
+    List callers and tests before a change.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

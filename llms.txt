@@ -23,10 +23,10 @@ Use when setting up hosted Graphify: sign in, index a repository, and connect an
 
 - [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Explore graphs, Wiki, pull request reviews, formal verification, Learning and shared agent memory in your hosted Graphify workspace.
 - [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
-- [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
+- [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
 - [Check your agent is using Graphify](https://docs.graphify.com/platform/verify-connection.md): Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix common setup problems.
 - [Index your first repository in Graphify](https://docs.graphify.com/concepts/index-a-repository.md): Connect a GitHub or GitLab repository to Graphify, switch on indexing, and confirm the build finished so your agent can query the graph.
-- [Console tour: the Graphify web app](https://docs.graphify.com/platform/console.md): A tour of the Graphify console: Overview, repository graphs, pull request reviews, Wiki, agent memory, and connectors.
+- [Console tour: the Graphify web app](https://docs.graphify.com/platform/console.md): A tour of the Graphify web app at app.graphify.com: Overview, repository graphs, pull request reviews, formal verification, Wiki, memory and connectors.
 - [Graphify vs Graphify CLI: hosted or open source](https://docs.graphify.com/platform/graphify-vs-local.md): Compare hosted Graphify with Graphify CLI, the open-source graphifyy package: how each builds, updates and serves the graph, and what needs hosted.
 
 ## Graphify: Core concepts
@@ -35,7 +35,7 @@ Use when explaining how the graph answers questions about code, and how to read 
 
 - [How Graphify builds a code knowledge graph](https://docs.graphify.com/concepts/architecture.md): How Graphify works: from source files parsed with tree-sitter to a persistent knowledge graph your coding assistant can traverse and query.
 - [Ask a question about your code](https://docs.graphify.com/concepts/ask-about-your-code.md): Ask your agent a plain-English question and get back the definitions and files from your indexed repository that answer it.
-- [Follow calls and trace a path between symbols](https://docs.graphify.com/concepts/follow-calls.md): Ask your agent what calls a function, what it calls, and how one symbol reaches another in your indexed repository.
+- [Follow calls and trace a path between symbols](https://docs.graphify.com/concepts/follow-calls.md): Ask your agent what calls a function, what it calls, and how one symbol reaches another. Hosted Graphify answers from real call edges in your indexed repo.
 - [Check the impact of a change before you make it](https://docs.graphify.com/concepts/check-impact.md): Ask your agent what a change to a symbol or file reaches in your indexed repository, which files carry the most risk, and which tests cover them.
 - [Edges and provenance](https://docs.graphify.com/concepts/provenance.md): How to read a Graphify edge: what a relationship claims, where it came from, and the EXTRACTED, INFERRED, and AMBIGUOUS confidence tags.
 - [How Graphify finds code dependencies, without guessing](https://docs.graphify.com/concepts/how-graphify-finds-dependencies.md): How Graphify builds a code dependency graph: tree-sitter parsing, symbol resolution, cross-repo linking and provenance tags, and where a model is used.
@@ -50,7 +50,7 @@ Use when the user asks about a hosted feature: Ask, graphs, reviews, verificatio
 - [Code knowledge graph: explore, query, combine repos](https://docs.graphify.com/platform/graphs.md): Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph.
 - [AI pull request reviews with code graph context](https://docs.graphify.com/platform/reviews.md): How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how to read findings with code graph context.
 - [Review a pull request with Graphify](https://docs.graphify.com/concepts/review-a-pull-request.md): Get a Graphify review on a pull request, rerun it after new commits with @graphify review, and teach it with @graphify wrong, good and suppress.
-- [Read a review and a verdict](https://docs.graphify.com/platform/read-a-result.md): Tell a review finding from a verification verdict, and what each one is allowed to mean.
+- [Read a review and a verdict](https://docs.graphify.com/platform/read-a-result.md): Tell a Graphify review finding from a formal verification verdict: what each result label means, what it proves, and what to read before calling a PR safe.
 - [Find pull requests that collide before you merge](https://docs.graphify.com/concepts/colliding-pull-requests.md): Find open pull requests that change the same part of your code graph, see the merge-order risk with graphify prs, and rank the review queue with a model.
 - [Test impact analysis: run only the affected tests](https://docs.graphify.com/platform/test-impact.md): Pick which tests to run from a diff. Graphify maps changed files to affected tests, returns Buildkite or JSON, and caps at 60 calls a minute.
 - [Formal verification: prove a change keeps behavior](https://docs.graphify.com/platform/verification.md): Graphify proves changed functions behave like the previous version, or shows the input that differs. What a pass means, languages and limits.
@@ -67,9 +67,9 @@ Use when the user asks about a hosted feature: Ask, graphs, reviews, verificatio
 Use for repository indexing and sync, connected agents, contributors and profiles.
 
 - [Repository indexing and sync: builds and reindex](https://docs.graphify.com/platform/repositories.md): How Graphify indexes and syncs GitHub and GitLab repositories: build states, reindex rules, the push allowance, and indexing error codes.
-- [Agents and integrations](https://docs.graphify.com/platform/connections.md): Connect coding agents to your Graphify workspace and manage its integrations.
+- [Agents and integrations](https://docs.graphify.com/platform/connections.md): Connect Claude Code, Codex, Cursor or another coding agent to your hosted Graphify workspace over MCP, add shared knowledge and manage your integrations.
 - [Contributors: code authorship and reach](https://docs.graphify.com/platform/contributors.md): See who wrote what in a repository: authorship, the reach of each contributor's code in the graph, and any available commit signing evidence.
-- [Profile: achievements and Power Ranking](https://docs.graphify.com/platform/profile.md): Achievements, the last seven days of Performance, and how Power Ranking is scored.
+- [Profile: achievements and Power Ranking](https://docs.graphify.com/platform/profile.md): Your Profile page in hosted Graphify: lifetime achievements and badge tiers, the last seven days of Performance, and how your Power Ranking is scored.
 
 ## Graphify: Support
 
@@ -94,8 +94,8 @@ Use only when the user wants open-source Graphify on their machine: install grap
 - [Self-host the Graphify MCP server with Docker](https://docs.graphify.com/open-source/self-host.md): Build the open-source Graphify Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph.
 - [Vibe coding with Graphify CLI](https://docs.graphify.com/open-source/vibe-coding.md): Set up open-source Graphify so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code.
 - [Run Graphify locally](https://docs.graphify.com/open-source/local-development.md): Run Graphify entirely on your machine: a code-only workflow, or semantic extraction with a local model backend such as Ollama.
-- [Ask your agent one question](https://docs.graphify.com/open-source/ask-your-agent.md): Install Graphify, map the repository, and check the files a successful run writes.
-- [Trace callers and paths between symbols](https://docs.graphify.com/platform/trace.md): Find a symbol, see who calls it, and check whether two names connect in the code graph.
+- [Ask your agent one question](https://docs.graphify.com/open-source/ask-your-agent.md): The shortest path with the open-source Graphify CLI: install graphifyy, add the skill for your assistant, map the repo and check the files it writes.
+- [Trace callers and paths between symbols](https://docs.graphify.com/platform/trace.md): Use open-source Graphify CLI commands to find a symbol, see who calls it, and check whether two names connect in the code graph, or ask a hosted agent.
 
 ## Graphify CLI: Features
 
@@ -142,14 +142,14 @@ Use when connecting a specific coding agent. Each page has a Graphify tab and a 
 - [Graphify for Codex](https://docs.graphify.com/integrations/codex.md): Connect Codex to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.
 - [Graphify for VS Code and GitHub Copilot](https://docs.graphify.com/integrations/vscode.md): Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph on your machine.
 - [Graphify for Gemini CLI](https://docs.graphify.com/integrations/gemini-cli.md): Connect Gemini CLI to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.
-- [Graphify MCP for JetBrains](https://docs.graphify.com/integrations/jetbrains.md): Connect JetBrains AI Assistant to your indexed repositories through Graphify's hosted MCP server.
+- [Graphify MCP for JetBrains](https://docs.graphify.com/integrations/jetbrains.md): Install the Graphify MCP plugin to connect JetBrains AI Assistant to your indexed repositories through hosted Graphify's MCP server. No API key to paste.
 
 ## Integrations: Assistants
 
 Use when connecting a chat assistant or an MCP client without its own page.
 
 - [Graphify for ChatGPT, Codex, and Dots](https://docs.graphify.com/integrations/chatgpt.md): Connect ChatGPT, Codex, and Dots to your indexed repositories with one OpenAI plugin that uses Graphify's hosted MCP server.
-- [Graphify MCP for OpenClaw](https://docs.graphify.com/integrations/openclaw.md): Connect OpenClaw to your indexed repositories through Graphify's hosted MCP server.
+- [Graphify MCP for OpenClaw](https://docs.graphify.com/integrations/openclaw.md): Install the Graphify MCP plugin from ClawHub to connect OpenClaw to hosted Graphify, then search indexed repos and follow callers and dependencies.
 - [Graphify for Hermes Agent](https://docs.graphify.com/integrations/hermes.md): Connect Nous Research's Hermes Agent to Graphify's hosted MCP server with browser OAuth, or install the open-source Graphify skill for Hermes.
 - [Graphify for other MCP clients](https://docs.graphify.com/integrations/other-agents.md): Connect any MCP client to Graphify over Streamable HTTP, or run the open-source Graphify MCP server with a generic mcpServers entry.
 
@@ -164,14 +164,14 @@ Use when connecting GitHub or GitLab repositories to hosted Graphify.
 
 Use when adding Graphify to CI or a deploy platform.
 
-- [Buildkite test selection](https://docs.graphify.com/integrations/buildkite.md): Connect Buildkite to Graphify to select affected tests, upload a dynamic pipeline, and fall back to the full suite.
-- [Vercel integration: Graphify MCP for projects](https://docs.graphify.com/integrations/vercel.md): Connect Vercel projects to Graphify's hosted MCP server through the Marketplace integration or Vercel Connect.
+- [Buildkite test selection](https://docs.graphify.com/integrations/buildkite.md): Connect Buildkite to hosted Graphify to run only the tests a pull request affects, upload a dynamic pipeline, and fall back to the full test suite.
+- [Vercel integration: Graphify MCP for projects](https://docs.graphify.com/integrations/vercel.md): Connect Vercel projects to hosted Graphify's MCP server through the Marketplace integration or Vercel Connect, and choose how each path issues its token.
 
 ## Integrations: Knowledge sources
 
 Use when adding documents from Google Drive.
 
-- [Google Drive integration: search docs with code](https://docs.graphify.com/integrations/google-drive.md): Connect a Google Drive folder to Graphify so your workspace and agents can search its documents alongside your code.
+- [Google Drive integration: search docs with code](https://docs.graphify.com/integrations/google-drive.md): Connect a Google Drive folder to hosted Graphify with read-only access, so your workspace and agents can search its documents alongside your code.
 
 ## Integrations: For agents
 
@@ -182,7 +182,7 @@ Use these first when you are an AI agent reading or acting on these docs.
 - [How AI agents use Graphify: connect, query, refresh](https://docs.graphify.com/agents/overview.md): For coding agents: how to connect to Graphify, which MCP tool answers which code question, how fresh the graph is, and what to do before sign-in.
 - [Headless agents and bots with Graphify's hosted MCP](https://docs.graphify.com/agents/headless.md): Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't.
 - [Use Graphify from your agent: prompts that work](https://docs.graphify.com/agents/recipes.md): Copy-ready prompts for PR review, change impact, finding callers, tests for a symbol and onboarding, with the Graphify MCP tool each one triggers.
-- [What your agent can do with Graphify](https://docs.graphify.com/agents/capabilities.md): Every hosted Graphify MCP tool, grouped by the job it does, with a prompt to paste for each one and what it can't do.
+- [What your agent can do with Graphify](https://docs.graphify.com/agents/capabilities.md): Every hosted Graphify MCP tool, grouped by the job it does, with a prompt to paste for each one, a quick lookup table, and what each tool can't do.
 
 ## Cookbooks: Essentials
 
@@ -235,9 +235,9 @@ Use for CI comments on pull requests and self-hosting a shared MCP server.
 
 Use for what changed and when.
 
-- [Highlights](https://docs.graphify.com/changelog/highlights.md): The biggest changes to Graphify, explained.
-- [Console](https://docs.graphify.com/changelog/console.md): Changes to the Graphify console.
-- [Graphify](https://docs.graphify.com/changelog/platform.md): Changes to Graphify's reviews, verification, Memory, MCP and indexing.
+- [Highlights](https://docs.graphify.com/changelog/highlights.md): The biggest changes to hosted Graphify, explained in plain language, such as the new Overview with code findings, with the newest changes listed first.
+- [Console](https://docs.graphify.com/changelog/console.md): Release notes for the Graphify web app at app.graphify.com: new screens, Overview and Billing changes, connector fixes and other updates, newest first.
+- [Graphify](https://docs.graphify.com/changelog/platform.md): Release notes for hosted Graphify's reviews, formal verification, Memory, MCP server and indexing, including fixes for GitHub and GitLab, newest first.
 - [Local](https://docs.graphify.com/changelog/local.md): Where to find graphifyy open-source release notes: GitHub releases for the Graphify-Labs/graphify repo and the changelog on graphify.com.
 
 ## Optional

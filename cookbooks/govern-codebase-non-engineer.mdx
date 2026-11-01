@@ -1,0 +1,96 @@
+---
+title: "Oversee a codebase when you don't write code"
+sidebarTitle: "Oversee code as a non-engineer"
+description: "A weekly routine for founders and managers: read what changed, decide which findings matter, and hand fixes to an agent, all in the Graphify app."
+keywords: ["non-technical founder codebase", "manage developers without coding", "code oversight for managers", "ai code review for founders", "understand my codebase"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "shield-check"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+You're responsible for software you didn't write and can't read line by line. Agents and contractors open pull requests faster than you can follow them. This recipe is a weekly routine in the Graphify app (app.graphify.com) that lets you understand the product, see what changed, decide what matters, and hand the fixes to someone who writes code. You never open a code editor.
+
+<Info>
+**Works with:** Graphify (hosted), with a GitHub repository indexed in your workspace. No coding tools needed.
+</Info>
+
+## The scenario
+
+A founder runs a product built mostly by coding agents and one freelance developer. Pull requests merge every day. The founder can't tell whether the product is getting healthier or worse, and doesn't want to approve changes blindly or slow everyone down by asking for explanations.
+
+## What you'll build
+
+- A plain-language picture of how your product works, from the wiki.
+- A short list of findings you've decided on, with a reason for each.
+- A habit: decide once, record it, and let agents pick up the fix.
+
+## Before you start
+
+- Your repository indexed in [Graphify](https://app.graphify.com). See [Quickstart](/platform/quickstart).
+- Reviews on for the repository. They are unless someone turned **PR reviews** off in **Options** on **Repositories**.
+
+## Setup
+
+<Steps>
+  <Step title="Learn how the product works">
+    Open **Wiki** and choose a **Repository**. Select **Ask about this project** and start with *"What does this project do? Explain it in plain language."* Each article shows a confidence label. **Verified** was read directly from the code, **Inferred** was worked out by analysis, and **Needs review** is a low-confidence guess to check with your developer.
+  </Step>
+  <Step title="See what needs attention">
+    Open **Insights**. Under **Sort**, choose **Highest priority (PRs)**. Under **Priority**, start with **P0 · Critical** and **P1 · High**. Under **Evidence**, **Confirmed by test** and **Supported by code** are the strongest. **Not yet verified** means nobody has checked the claim yet.
+  </Step>
+  <Step title="Ask until you understand">
+    On a finding, select **Ask about this finding** and ask what you need, such as *"What would a customer notice if this went wrong?"* Answers come from the same graph and cite the code they used.
+  </Step>
+  <Step title="Decide, and say why">
+    Set a **Team decision**: **Open**, **Acknowledged**, **Fix proposed** or **Dismissed**. Write a **Reason** and select **Save team decision**. Everyone in the workspace sees it.
+  </Step>
+  <Step title="Hand off the fix">
+    Select **Copy task for my agent** and send the task to your developer or paste it into a coding agent. Use **Preview or edit the task** to add what matters to you. For the full loop, see [Fix review findings with a coding agent](/cookbooks/fix-review-findings).
+  </Step>
+  <Step title="Write down the rules you care about">
+    When you decide something that should always hold, such as *"Never email customers from a test environment"*, add it in **Memory** and select **Save and keep**. Connected agents and **Ask** use kept memories. See [Memory](/platform/memory).
+  </Step>
+</Steps>
+
+## A weekly routine
+
+| When | Where | What you do |
+| --- | --- | --- |
+| Once, then when the product changes | **Wiki** | Read how it works, in plain language. |
+| Each week | **Insights** | Decide on new **P0 · Critical** and **P1 · High** findings. |
+| When a pull request matters to you | **Reviews** | Read the review and the code it can affect. |
+| When you decide a rule | **Memory** | Save it so agents follow it. |
+
+## How it works
+
+Graphify builds a code knowledge graph of each repository and reviews pull requests against it. The wiki, Insights and Ask all read that graph, so every answer can point at the code behind it. Your team decisions and kept memories sit in the workspace, where developers and agents can see them.
+
+Graphify reviews don't block a merge, and a **Team decision** doesn't change the code. Someone still has to make the fix. What you get is a clear record of what you were told, what you decided and why.
+
+## Verify it worked
+
+- Findings you've decided on show your **Team decision** and **Reason**.
+- A coding agent asked about a rule you saved in **Memory** quotes it back.
+
+## Troubleshooting
+
+- **Insights says "Code findings are not available for this workspace."** Insights isn't turned on for your workspace. See [Insights](/platform/insights).
+- **A wiki article is marked Needs review.** Ask your developer to check it against the code before you rely on it.
+- **There's too much to read.** Filter **Priority** to **P0 · Critical** only, and choose **Repository** one at a time.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Insights" icon="lightbulb" href="/platform/insights">
+    Every filter, status and decision.
+  </Card>
+  <Card title="Wiki" icon="book-open" href="/platform/wiki">
+    Read your codebase in plain language.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

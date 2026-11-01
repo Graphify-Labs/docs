@@ -190,6 +190,7 @@ Use for step-by-step recipes: onboarding, refactors, reading the graph and keepi
 - [Understand a new codebase in 30 minutes with Graphify](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
 - [Plan a refactor with code impact analysis](https://docs.graphify.com/cookbooks/plan-a-refactor.md): Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify.
 - [Read your code graph and clean up your repos](https://docs.graphify.com/cookbooks/read-your-graph.md): Turn a messy code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.
+- [Oversee a codebase when you don't write code](https://docs.graphify.com/cookbooks/govern-codebase-non-engineer.md): A weekly routine for founders and managers: read what changed, decide which findings matter, and hand fixes to an agent, all in the Graphify Console.
 - [Keep docs in sync with code using git hooks](https://docs.graphify.com/cookbooks/keep-docs-in-sync.md): Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
 
 ## Cookbooks: Team

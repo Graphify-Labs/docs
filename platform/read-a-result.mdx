@@ -21,15 +21,19 @@ When the repository settings are on, the run can also include **Risky patterns (
 
 Open **Formal Verification** and expand the run. The run status tells you whether processing finished. The per-function result tells you what was established:
 
-| Result | What it means |
-| --- | --- |
-| Proved equivalent (bounded) | The proof method established equivalence within its supported bounds. |
-| Behavior change | An input distinguishes the old and new implementations. Check whether that witness was reproduced or remains unconfirmed. |
-| No divergence sampled (not proven) | The inputs that ran showed no difference. This is empirical evidence, not a proof. |
-| Abstained | The method could not analyze the function within its supported domain or budget. |
-| Errored | Verification failed to produce a valid result for the function. |
+These are the labels Graphify shows. The second column is the name on the GitHub check and in the API.
 
-**Completed** describes the run's lifecycle. It does not mean every function was proved equivalent. A finished run can contain a mixture of these results.
+| Result in Graphify | GitHub / API name | What it means |
+| --- | --- | --- |
+| **≠ Behavior changed** | Behavior change / `distinguished` | The old and new versions gave different results on the same input. Check whether that input was reproduced in a sandbox or is unconfirmed. |
+| **= Proven same** | Proved equivalent / `equivalent` | Proven to give the same result for every input in the range we checked. |
+| **≈ No change found** | No divergence sampled (not a proof) / `may_equivalent` | Same results on every input we tried. Good evidence, but not proof. |
+| **? Not checked** | Abstained / `unsupported` | We couldn't compare this function, so it tells you nothing either way. |
+| **! Couldn't run** | Errored / `error` | The check itself failed. This says nothing about your code. |
+
+See [Read a formal verification check](/platform/verification-check-results) for what to do next with each result.
+
+**Completed** describes the run's lifecycle. It does not mean every function was Proven same. A finished run can contain a mixture of these results.
 
 Use the [formal verification guide](/platform/verification) before you act on a verdict.
 

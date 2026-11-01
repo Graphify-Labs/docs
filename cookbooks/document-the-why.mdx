@@ -1,8 +1,8 @@
 ---
-title: "Stop AI Agents Fixing Intentional Code"
+title: "How to Stop AI Coding Agents Breaking Your Code"
 sidebarTitle: "Document the why"
-description: "Stop AI coding agents fixing code that is wrong on purpose. Find hot spots with Graphify, write WHY comments or ADRs, and pin them with tests."
-keywords: ["document why in code", "why comments", "architecture decision records for ai agents", "adr for coding agents", "stop ai agents changing intentional code", "code comments for ai", "AGENTS.md", "CLAUDE.md", "code hotspots", "regression test pin behavior"]
+description: "Stop AI coding agents from 'fixing' code that's odd on purpose. Explain the why with code comments, decision records, AGENTS.md files and tests."
+keywords: ["ai coding agent", "stop ai coding agents breaking code", "code comments", "what is a code comment", "how to write good comments in code", "architecture decision record", "adr template", "agents.md", "agents.md file", "code documentation best practices", "coupling hot spots"]
 surface: "both"
 hideFooterPagination: true
 icon: "message-square-quote"
@@ -10,19 +10,22 @@ icon: "message-square-quote"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-**Code tells an agent what it does. It never says why.** So when an agent sees code that looks wrong but is deliberate, it "fixes" it, confidently.
+**Code tells an AI coding agent what it does. It never says why.** So when an agent sees code that looks wrong but is deliberate, it "fixes" it, confidently, and breaks something.
 
-**The fix:** write the reason next to the code as a short WHY comment or decision record (ADR), and pin the behavior with a test. Agents read the reason before they edit, and a careless change fails CI. Start with the coupling hot spots Graphify flags in your PR reviews.
+**The fix:** write the reason down where the agent reads it. Use a code comment for one spot, an architecture decision record for a bigger choice, an AGENTS.md file for team rules, and a test to lock it all in.
 
-<CardGroup cols={3}>
-  <Card title="Find" icon="search">
-    Coupling hot spots and the most-called code.
+<CardGroup cols={2}>
+  <Card title="Code comment" icon="message-square-quote" href="#write-code-comments-that-explain-why">
+    The reason for one line, right above it.
   </Card>
-  <Card title="Explain" icon="message-square-quote">
-    A short WHY comment or decision record next to it.
+  <Card title="Decision record" icon="file-text" href="#record-big-choices-in-an-architecture-decision-record">
+    The reason for a choice that spans files.
   </Card>
-  <Card title="Pin" icon="pin">
-    A test that fails if the behavior changes.
+  <Card title="AGENTS.md file" icon="bot" href="#put-team-rules-in-an-agents-md-file">
+    Rules every agent reads before it edits.
+  </Card>
+  <Card title="Test" icon="pin" href="#lock-the-behaviour-in-with-a-test">
+    Fails loudly if the behaviour changes.
   </Card>
 </CardGroup>
 
@@ -31,138 +34,125 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 - A repository indexed in [Graphify](https://app.graphify.com), with your coding agent connected to the [hosted MCP server](/platform/hosted-mcp). The open-source [Graphify CLI](/open-source/overview) works too.
 - Access to your git history and issue tracker.
 
-## How do you document why code works the way it does?
+## Why AI coding agents "fix" code that isn't broken
 
-<Steps>
-  <Step title="Find the code that matters most">
-    Start where a wrong "fix" would hurt most.
+Agents read the code, not the history behind it. A line that's odd on purpose, like a status mapped the "wrong" way to work around a provider, reads like a bug. Without the reason next to it, the agent cleans it up.
 
-    - **Coupling hot spots from your PR reviews.** Every [Graphify review](/platform/reviews) has an **Impact & health** section under **Analysis details**. When a change makes coupling worse, it says so, for example: **Health** — this change adds coupling hotspots: worse: `load_cached()` — 66 callers, 10 callees. Those functions are your first candidates.
-    - **The most-called code.** Open [Graph explorer](/platform/graphs) and check **Most connected**, or select a node and read **What a change could affect**.
+To find the reason, run `git blame` on the odd lines, then read the commit, pull request and ticket behind them.
 
-    From your agent, ask:
+```bash
+git blame -L 40,60 src/payments/status.py
+git show <commit>
+```
 
-    ```text
-    Which functions in this repo have the most callers? For the top five, show what a change to each could affect.
-    ```
+## Write code comments that explain why
 
-    The agent answers with the `graphify_callers` and `graphify_impact` tools. With the CLI, run `graphify explain "<name>"` and check the degree, or use the `god_nodes` MCP tool.
+A good comment says why the code works this way, not what it does. Put it right above the code, keep it to the reason, and link the ticket or decision record.
 
-    <Note>Hot spots here come from how code connects, not from how often files change. Graphify doesn't rank files by git churn.</Note>
-  </Step>
-  <Step title="Trace each odd line back to its commit">
-    For lines that look wrong, run `git blame` to find the commit, then the pull request and ticket behind it.
+```python
+def map_status(upstream: str) -> Status:
+    # WHY: the provider reports PENDING for a short window after a charge
+    # has already been captured. Treating it as a failure caused retries
+    # and double charges. Map it to SUCCESS; settlement reconciles later.
+    # Decision record: docs/adr/0007-pending-is-success.md
+    if upstream in ("CAPTURED", "PENDING"):
+        return Status.SUCCESS
+    if upstream == "DECLINED":
+        return Status.FAILED
+    return Status.UNKNOWN
+```
 
-    ```bash
-    git blame -L 40,60 src/payments/status.py
-    git show <commit>
-    ```
-  </Step>
-  <Step title="Read the tickets and docs">
-    Read the linked ticket, pull request discussion and any design doc. You're looking for one thing: the reason.
-  </Step>
-  <Step title="Write the WHY down">
-    Put a short WHY comment right above the code. If the reason spans several files, write a short decision record (ADR) and link it from the comment.
-  </Step>
-  <Step title="Pin it with a test">
-    Add a test that asserts the deliberate behavior and points back to the WHY. If someone changes the behavior, the test fails loudly, and the comment can't silently drift from the code.
-  </Step>
-  <Step title="Keep it current">
-    Ask your agent to add a WHY whenever it changes deliberate behavior. Later, add a CI check. See [Keep it current](#how-do-you-keep-why-comments-current).
-  </Step>
-</Steps>
+This is an illustrative example. Without the comment, `PENDING → SUCCESS` looks like a bug.
 
-## Example: a status that maps PENDING to Success
+## Record big choices in an architecture decision record
 
-This is an illustrative example. Say an upstream payment provider reports `PENDING` for a few seconds after a charge goes through, and your system treats that as success on purpose.
+When the reason spans files, teams or trade-offs, write a short architecture decision record (ADR) in `docs/adr/` and link it from the comment. This template is enough:
 
-<Tabs>
-  <Tab title="The code with a WHY">
-    ```python
-    def map_status(upstream: str) -> Status:
-        # WHY: the provider reports PENDING for a short window after a charge
-        # has already been captured. Treating it as a failure caused retries
-        # and double charges. Map it to SUCCESS; settlement reconciles later.
-        # Decision record: docs/adr/0007-pending-is-success.md
-        if upstream in ("CAPTURED", "PENDING"):
-            return Status.SUCCESS
-        if upstream == "DECLINED":
-            return Status.FAILED
-        return Status.UNKNOWN
-    ```
-  </Tab>
-  <Tab title="The pinning test">
-    ```python
-    def test_pending_maps_to_success():
-        # Pins the WHY in map_status (ADR 0007). If this fails, update the
-        # decision record before changing the behavior.
-        assert map_status("PENDING") == Status.SUCCESS
-    ```
-  </Tab>
-  <Tab title="The decision record">
-    ```markdown
-    # 0007: Treat upstream PENDING as success
+```markdown
+# 0007: Treat upstream PENDING as success
 
-    Status: Accepted
-    Context: The provider reports PENDING after capture. Failing it caused retries.
-    Decision: Map PENDING to SUCCESS. Reconcile during settlement.
-    Consequences: A rare real failure is caught at settlement, not at checkout.
-    ```
-  </Tab>
-</Tabs>
-
-Without the comment, `PENDING → SUCCESS` looks like a bug, and an agent will "fix" it. With the comment and test, the agent reads the reason, and a careless change fails CI.
-
-## Should you write a WHY comment or an ADR?
+Status: Accepted
+Context: The provider reports PENDING after capture. Failing it caused retries.
+Decision: Map PENDING to SUCCESS. Reconcile during settlement.
+Consequences: A rare real failure is caught at settlement, not at checkout.
+```
 
 | Use | When | Where it lives |
 | --- | --- | --- |
-| WHY comment | The reason fits in a few lines and is about one spot | Right above the code |
+| Code comment | The reason fits in a few lines and is about one spot | Right above the code |
 | Decision record (ADR) | The reason spans files, teams or trade-offs | `docs/adr/`, linked from a comment |
-| Pinning test | Always, for either one | Your test suite, named after the behavior |
+| Test | Always, for either one | Your test suite, named after the behaviour |
 
-## How do you keep WHY comments current?
+## Put team rules in an AGENTS.md file
 
-<AccordionGroup>
-  <Accordion title="Ask the agent for a WHY" icon="bot">
-    Add a line to your agent's rules file, such as `CLAUDE.md` or `AGENTS.md`: "Before changing code that has a WHY comment, read it. If you change deliberate behavior, update the WHY and its test in the same change."
-  </Accordion>
-  <Accordion title="Use your agent's hooks" icon="webhook">
-    Some coding agents run hooks around tool calls. Claude Code, for example, has hooks that can run a script before or after an edit. You can use one to remind the agent to add a WHY when it edits a file with deliberate behavior. Hooks are your agent tool's feature, not Graphify's. The Graphify CLI installs its own [Claude Code hooks](/integrations/claude-code), but those add graph context to searches, not WHY checks.
-  </Accordion>
-  <Accordion title="Add a CI check later" icon="git-pull-request">
-    Once the habit sticks, add a CI step that flags changes to files with WHY comments when the matching test or decision record didn't change. Pair it with [test impact analysis](/platform/test-impact) to run the tests a change touches.
-  </Accordion>
-</AccordionGroup>
+An AGENTS.md file at the root of your repo holds rules your coding agents read before they work. Add one line:
+
+```markdown
+Before changing code that has a WHY comment, read it and any linked decision record.
+If you change deliberate behaviour, update the comment, the record and its test in the same change.
+```
+
+The reason for one specific line still belongs next to that line. AGENTS.md tells the agent to look for it.
+
+## Lock the behaviour in with a test
+
+Add a test that asserts the deliberate behaviour and points back to the reason. If anyone, person or agent, changes it, CI fails.
+
+```python
+def test_pending_maps_to_success():
+    # Pins the WHY in map_status (ADR 0007). If this fails, update the
+    # decision record before changing the behaviour.
+    assert map_status("PENDING") == Status.SUCCESS
+```
+
+## Find the risky spots first with Graphify
+
+You don't need to document everything. Start where a wrong "fix" would hurt most.
+
+- **Coupling hot spots from your PR reviews.** Every [Graphify review](/platform/reviews) has an **Impact & health** section under **Analysis details**. When a change makes coupling worse, it says so, for example: **Health** — this change adds coupling hotspots: worse: `load_cached()` — 66 callers, 10 callees. Those functions are your first candidates.
+- **The most-called code.** Open [Graph explorer](/platform/graphs) and check **Most connected**, or select a node and read **What a change could affect**.
+
+From your agent, ask:
+
+```text
+Which functions in this repo have the most callers? For the top five, show what a change to each could affect.
+```
+
+The agent answers with the `graphify_callers` and `graphify_impact` tools. With the CLI, run `graphify explain "<name>"` and check the degree, or use the `god_nodes` MCP tool.
+
+<Note>Hot spots here come from how code connects, not from how often files change. Graphify doesn't rank files by git churn.</Note>
 
 ## When it goes wrong
 
 <AccordionGroup>
-  <Accordion title="The blame points to a huge refactor commit">
+  <Accordion title="The blame points to a huge refactor commit" icon="git-commit-horizontal">
     Run `git log --follow -p` on the file, or `git blame --ignore-rev <commit>` to skip formatting and move-only commits.
   </Accordion>
-  <Accordion title="No ticket explains the reason">
-    Ask the people in the commit history. If nobody knows, write what you found, mark it unconfirmed, and still pin the current behavior with a test.
+  <Accordion title="No ticket explains the reason" icon="search">
+    Ask the people in the commit history. If nobody knows, write what you found, mark it unconfirmed, and still lock the current behaviour with a test.
   </Accordion>
-  <Accordion title="A caller you expected is missing">
+  <Accordion title="A caller you expected is missing" icon="unlink">
     Graphify shows the connections it can see. Code called dynamically or by string name may not appear. See [Check impact](/concepts/check-impact).
+  </Accordion>
+  <Accordion title="You want a CI check" icon="git-pull-request">
+    Once the habit sticks, add a CI step that flags changes to files with WHY comments when the matching test or decision record didn't change. Pair it with [test impact analysis](/platform/test-impact) to run the tests a change touches.
   </Accordion>
 </AccordionGroup>
 
 ## FAQ
 
 <AccordionGroup>
-  <Accordion title="Why do AI coding agents change code that is intentional?" icon="circle-question-mark">
-    Agents read the code, not the history behind it. Deliberate code that looks odd reads like a bug, so the agent "fixes" it. A WHY comment puts the reason where the agent reads.
+  <Accordion title="What is a code comment, and when should it explain why?" icon="circle-question-mark">
+    A code comment is a note in the source that the program ignores but people and agents read. Explain why whenever the code does something deliberate that looks wrong, such as a workaround, an odd mapping or a hard limit.
   </Accordion>
-  <Accordion title="What is a WHY comment?" icon="circle-question-mark">
-    A short comment above the code that says why it works this way, not what it does. Keep it to the reason and a link to the ticket or decision record.
+  <Accordion title="What is an architecture decision record?" icon="circle-question-mark">
+    A short file that records one decision: the context, the choice and its consequences. Teams keep them in `docs/adr/` so the reason outlives the people who made it.
   </Accordion>
-  <Accordion title="Do AGENTS.md or CLAUDE.md replace WHY comments?" icon="circle-question-mark">
-    No. Rules files hold project-wide guidance, such as "read WHY comments before editing". The reason for one specific line belongs next to that line.
+  <Accordion title="What goes in an AGENTS.md file?" icon="circle-question-mark">
+    Project-wide rules for coding agents: how to build and test, conventions, and instructions like "read WHY comments before editing". Keep line-specific reasons in comments, not here.
   </Accordion>
-  <Accordion title="What are code hot spots in Graphify?" icon="circle-question-mark">
-    Coupling hot spots: functions with many callers and callees whose coupling a pull request made worse. Graphify lists them in the **Impact & health** part of each [review](/concepts/review-a-pull-request).
+  <Accordion title="What are code documentation best practices for AI agents?" icon="circle-question-mark">
+    Put the reason next to the code, link bigger decisions to a record, give agents rules in AGENTS.md, and lock deliberate behaviour with tests. Start with the most-connected code.
   </Accordion>
 </AccordionGroup>
 

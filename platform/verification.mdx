@@ -9,7 +9,7 @@ icon: "shield-check"
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-Graphify formally verifies the functions a pull request changes. For each one, it proves the new version still behaves like the previous version, or it shows you an input where the two give different results. The result appears as a separate GitHub check named **Graphify Formal Verification**, and in the **Formal Verification** view in [Graphify](https://app.graphify.com).
+Graphify formally verifies the functions a pull request changes. For each one, it proves the new version still behaves like the previous version, or it shows you an input where the two give different results. The result appears as a separate GitHub check named **Graphify Formal Verification**, and on the **Formal Verification** page (Behavior checks) in [Graphify](https://app.graphify.com).
 
 ## How it works
 
@@ -21,15 +21,15 @@ Graphify formally verifies the functions a pull request changes. For each one, i
     For each changed function, Graphify checks whether the new version returns the same result as the previous version for the inputs in scope. The previous version is the reference, not a written spec.
   </Step>
   <Step title="Report a verdict per function">
-    Each function gets a verdict: proved equivalent, behavior change (with the input that differs), sampled but not proven, abstained, or errored. The check title sums them up. See [Understand the result](#understand-the-result) for what each one means.
+    Each function gets one result: **Behavior changed** (with the input that differs), **Proven same**, **No change found**, **Not checked**, or **Couldn't run**. The check title sums them up. See [Understand the result](#understand-the-result) for what each one means.
   </Step>
 </Steps>
 
 <Note>
-**What a pass means.** A passing check means every function this pull request changed was proved to behave like its previous version, within the bounds the proof covers. It does not mean the code meets your requirements: if the old version had a bug, an equivalent new version has the same bug.
+**What a pass means.** A passing check means every function this pull request changed was **Proven same** as its previous version, within the bounds the proof covers. It does not mean the code meets your requirements: if the old version had a bug, an equivalent new version has the same bug.
 
-- **It never blocks a merge.** The check is advisory. It shows `success` only when every changed function is proved equivalent, and `neutral` in every other case, including a behavior change. It never shows `failure`.
-- **Sampled is not proven.** "No divergence found (sampled, not a proof)" means the tried inputs matched. It is evidence, not a proof.
+- **It never blocks a merge.** The check is advisory. It shows `success` only when every changed function is Proven same, and `neutral` in every other case, including a behavior change. It never shows `failure`.
+- **No change found is not proof.** It means every input we tried gave the same result. Good evidence, but not proof. On GitHub this shows as "no divergence found (sampled, not a proof)".
 - **A check that never ran the function doesn't count.** If verification never exercised a function, that function is counted as not verified.
 - **Each run has a budget.** A run checks a limited number of functions within a time limit. Functions over the limit are listed as not verified, with the reason in the check title.
 - **Only changed functions count.** Unchanged functions checked alongside the change are listed separately as context and are not part of the score.
@@ -47,7 +47,7 @@ Graphify formally verifies the functions a pull request changes. For each one, i
 | Rust | `.rs` |
 | COBOL | `.cbl` `.cob` `.cpy` `.cobol` |
 
-A function in a supported language can still get an **Abstained** verdict when the verifier can't analyze it within its supported domain or budget.
+A function in a supported language can still come back **Not checked** when the verifier can't analyze it within its supported domain or budget.
 
 ## When it doesn't run
 
@@ -71,21 +71,29 @@ In both cases there is no changed product code to compare. If you expected a run
     Inspect the source file, function, and verdict. For a behavior change, the detail can include the distinguishing input and the old and new values. An abstention or failure includes its reason when available.
   </Step>
   <Step titleSize="h2" title="Return to the change">
-    Use **Open pull request** or the commit link to investigate the implementation. When a run has finished, **Re-run verification** can queue another attempt; queued and running attempts cannot be rerun simultaneously.
+    Use **Open pull request** or the commit link to investigate the implementation. Open **Technical details** for the raw verdict. When a run has finished, **Re-run check** can queue another attempt; queued and running attempts cannot be rerun simultaneously.
   </Step>
 </Steps>
 
 ## Understand the result
 
-| Result | What it means |
-| --- | --- |
-| **Proved equivalent (bounded)** / `equivalent` | The proof method established equivalence within its supported model or analysis bounds. |
-| **Behavior change** / `distinguished` | An input distinguishes the implementations. Inspect whether the witness was reproduced in the sandbox or remains unconfirmed. |
-| **No divergence sampled (not proven)** / `may_equivalent` | The exercised inputs showed no difference. This is empirical evidence, not a proof. |
-| **Abstained** / `unsupported` | The method could not analyze the function within its supported domain or budget. |
-| **Errored** / `error` | Verification failed to produce a valid result for the function. |
+The **How to read results** legend in Graphify uses these labels. The second column is the name the GitHub check and the API use.
 
-**Completed** describes a run's lifecycle; it does not mean every function was proved equivalent. Queued, verifying, failed, cancelled, skipped, and expired runs also retain their own status. A run that verified no functions does not imply the change passed.
+| Result in Graphify | GitHub / API name | What it means |
+| --- | --- | --- |
+| **≠ Behavior changed** | Behavior change / `distinguished` | We ran the old and new versions on the same input and got different results. The detail shows whether that input was reproduced in a sandbox or is unconfirmed. |
+| **= Proven same** | Proved equivalent / `equivalent` | Proven to give the same result for every input in the range we checked. |
+| **≈ No change found** | No divergence sampled (not a proof) / `may_equivalent` | Same results on every input we tried. Good evidence, but not proof. Add tests that cover more inputs to make this stronger. |
+| **? Not checked** | Abstained / `unsupported` | We couldn't compare this function, so it tells you nothing either way. |
+| **! Couldn't run** | Errored / `error` | The check itself failed. This says nothing about your code. |
+
+You may also see **No changed functions to compare**, when the pull request only added, deleted or renamed functions, so there is no previous version to compare against, and **Skipped**, when Graphify didn't run this check.
+
+**Completed** describes a run's lifecycle; it does not mean every function was Proven same. Queued, verifying, failed, cancelled, skipped, and expired runs also retain their own status. A run that verified no functions does not imply the change passed.
+
+## Limits by plan
+
+Formal verification is included on every plan, with a daily run limit and a limit on runs at the same time that depend on the plan. See [graphify.com/pricing](https://graphify.com/pricing) for current limits.
 
 ## Configure and use verification
 

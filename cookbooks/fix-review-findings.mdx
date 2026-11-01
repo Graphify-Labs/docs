@@ -1,0 +1,134 @@
+---
+title: "Fix Graphify review findings with a coding agent"
+sidebarTitle: "Fix review findings"
+description: "Have Claude Code or Codex wait for a Graphify review, check each finding against the graph, fix it, and ask for a fresh review."
+keywords: ["fix code review findings with ai", "claude code pull request review loop", "graphify review", "gh pr checks watch", "rerun code review"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "wrench"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import { PromptBlock } from '/snippets/hero-install.jsx';
+
+Graphify reviews a pull request and leaves findings. Someone still has to read them, decide which are real, and fix them. A coding agent can do most of that work, as long as it knows when the review is ready, checks each finding against the code before changing anything, and asks for a new review when it's done. This recipe sets up that loop.
+
+<Info>
+**Works with:** Graphify (hosted), with Claude Code, Codex or any agent that can run the GitHub CLI.
+</Info>
+
+## The short version
+
+Already connected? Paste this into your agent:
+
+<PromptBlock text="Handle the Graphify review on PR 123. Run gh pr checks 123 --watch, then read the review with gh pr view 123 --comments. For each finding, check it with graphify_callers, graphify_impact and graphify_tests_for before you change code. Fix what holds up, list what you skipped and why, and ask me before you comment @graphify review." />
+
+The rest of this page sets it up so it happens every time.
+
+## The scenario
+
+A two-person team ships most changes through Claude Code. Graphify reviews every pull request, and the findings are useful, but they pile up while both people are busy. They want the agent that opened the pull request to pick up the review, fix what's real, explain what it skipped, and get a fresh review, without anyone copying findings into a chat.
+
+## What you'll build
+
+- A short instruction block that tells the agent how to run the loop.
+- A loop the agent runs on a pull request: wait for the review, read the findings, check each one with Graphify's MCP tools, fix, push, and ask for a fresh review.
+- A habit of teaching Graphify which findings were wrong, so later reviews get quieter.
+
+## Before you start
+
+- A repository indexed in [Graphify](https://app.graphify.com) with **PR reviews** on. See [Pull request reviews](/platform/reviews).
+- A coding agent connected to the hosted MCP server. See [Connect cloud coding agents to hosted MCP](/cookbooks/cloud-coding-agents).
+- The GitHub CLI (`gh`) signed in on the machine where the agent runs.
+- You're an owner, member or collaborator on the repository. Only they can start a review with a comment.
+
+## Setup
+
+<Steps>
+  <Step title="Add the loop to the agent's instructions">
+    Add this to `CLAUDE.md` or `AGENTS.md` and commit it. Replace `acme/web-app` with the repository's name in Graphify.
+
+    ```md AGENTS.md
+    ## Graphify review loop
+
+    Repository in Graphify: acme/web-app
+
+    When asked to handle the Graphify review on a pull request:
+
+    1. Run `gh pr checks <number> --watch` until the Graphify check finishes.
+    2. Run `gh pr view <number> --comments` and find the Graphify review.
+    3. For each finding, check it before changing code:
+       - `graphify_callers` and `graphify_impact` for who depends on the code.
+       - `graphify_tests_for` for the tests that cover it.
+       - Read the code with `graphify_node` or open the file.
+    4. Fix the findings that hold up. Run the linked tests.
+    5. List the findings you didn't fix and why.
+    6. Push, then ask me before commenting `@graphify review`.
+    ```
+  </Step>
+  <Step title="Open a pull request">
+    Open a pull request as usual. Graphify reviews it when it's opened, reopened or marked ready for review. Drafts are skipped until they're marked ready.
+  </Step>
+  <Step title="Hand the review to the agent">
+    In the agent session, ask:
+
+    ```text
+    Handle the Graphify review on PR 123.
+    ```
+
+    The agent waits for the **Graphify** check run, reads the review, and works through the findings.
+  </Step>
+</Steps>
+
+## How it works
+
+Graphify doesn't message your agent when a review lands, and the hosted MCP server has no review tool. The review lives on GitHub: a review comment from the Graphify app and a check run named **Graphify** on the reviewed commit. That's why the loop starts with `gh pr checks --watch`. It blocks until the checks finish, so the agent reads the review only once it exists.
+
+The MCP tools then answer the question a finding raises: is this real here? A finding about a changed function is worth more once the agent has seen who calls it and which tests cover it.
+
+## Review again
+
+A push doesn't start a new review. When the fixes are in, comment on the pull request:
+
+```text
+@graphify review
+```
+
+Graphify reviews the current head as a fresh pass over the diff. The new review doesn't list which earlier findings were fixed, so the agent's list from step 5 is your record of what changed and what was skipped.
+
+## Teach Graphify what was wrong
+
+When the agent decides a finding doesn't apply, and you agree, reply on the pull request with the finding's exact name:
+
+```text
+@graphify wrong <finding>
+```
+
+Use `@graphify good <finding>` for findings that were right, and `@graphify suppress <rule>` to mute a rule. The [Learn](/platform/learning) view shows what Graphify has learned. Learning changes which advisory findings show up. It never changes formal verification results.
+
+## Verify it worked
+
+- The pull request has a **Graphify** check run on the latest commit, from after your `@graphify review` comment.
+- The agent's summary names each finding as fixed or skipped, with a reason.
+- **Reviews** in Graphify shows the new run for the pull request.
+
+## Troubleshooting
+
+- **No Graphify review on the pull request.** Check that **PR reviews** is on for the repository, and that the pull request isn't a draft.
+- **`@graphify review` did nothing.** The comment has to come from an owner, member or collaborator.
+- **The agent can't find the repository.** Call `list_repositories` and use the exact name it returns.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    When reviews run and how to read them.
+  </Card>
+  <Card title="Learning" icon="graduation-cap" href="/platform/learning">
+    Tune which findings Graphify raises.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

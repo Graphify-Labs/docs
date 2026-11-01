@@ -7,66 +7,69 @@ hideFooterPagination: true
 icon: "sigma"
 ---
 
-Formal verification uses math to show that code behaves a certain way for **every** input in scope, not only the inputs someone thought to test. When it can't show that, a good verifier hands you a concrete input that breaks the claim. Graphify uses it to check that the functions a pull request changes still behave like they did before.
+**Stop guessing which inputs to test.** Formal verification uses math to show code behaves a certain way for **every** input in scope, not just the ones you tested. When it can't, a good verifier gives you an input that breaks the claim.
 
-## Tests, review and proof answer different questions
+## Tests sample. Reviews judge. Proofs cover.
 
 Say you change a function that rounds prices.
 
-- **A test** runs the function on a few inputs you picked, like `9.995` and `0`, and checks the answers. It tells you those inputs work. It says nothing about the inputs you didn't pick.
-- **A review**, by a person or an AI, reads the code and judges whether it looks right. It catches design problems and risky patterns, but it's an opinion, not a guarantee.
-- **A proof** reasons about all inputs at once. If it succeeds, there is no input in scope that breaks the claim. If it fails, it can give you the input that does.
-
-You still want all three. Tests document what you expect, reviews catch what a proof wouldn't look for, and a proof covers the cases nobody thought of.
-
-## What gets proved: "same behavior as before"
-
-A proof needs something to prove the code against. There are two common choices:
-
-- **A spec**: a written description of what the code must do, like "the result is never negative". Writing good specs takes work, and most codebases don't have them.
-- **The previous version**: the claim is "the new function returns the same result as the old one for every input". This is called **equivalence checking**. It needs no spec, which makes it practical on any pull request.
-
-Graphify uses equivalence checking. That fits refactors, performance work and code written by coding agents, where the point is "change how it's written, not what it does". The flip side is that a proof only shows the new code matches the old code. If the old code had a bug, an equivalent new version has the same bug.
-
-## Why proofs are bounded
-
-Proving things about real programs is hard, so verifiers set limits. They might reason only about inputs up to a certain size, only about the parts of the language they can model, or only within a time budget. A **bounded proof** is a proof within those limits.
-
-That's why an honest verifier has more answers than "pass" and "fail":
-
-| Answer | What it tells you | In Graphify |
+| | Tells you | Misses |
 | --- | --- | --- |
-| Proved | No input in scope makes the old and new versions differ. | **= Proven same** |
-| Counterexample | Here is an input where they differ. | **≠ Behavior changed** |
-| Sampled, not proven | Many inputs were tried and none differed. That's evidence, not a proof. | **≈ No change found** |
-| Couldn't decide | The function was outside what the verifier can model, or ran out of budget. | **? Not checked** |
+| <Icon icon="flask-conical" /> **Test** | The inputs you picked, like `9.995` and `0`, work. | Every input you didn't pick. |
+| <Icon icon="eye" /> **Review** | Whether the code looks right, from a person or an AI. | It's an opinion, not a guarantee. |
+| <Icon icon="sigma" /> **Proof** | No input in scope breaks the claim, or the one that does. | Anything outside its bounds. |
 
-There's a fifth result in Graphify, **! Couldn't run**: the check itself failed, which says nothing about your code.
+Use all three. Tests document intent, reviews catch design problems, and proofs cover cases nobody thought of.
 
-A verifier that turns "couldn't decide" into "pass" is hiding something from you. Graphify reports each of these separately.
+## Prove against what you already have
 
-## Why the counterexample matters
+<CardGroup cols={2}>
+  <Card title="Write a spec" icon="file-text">
+    A written rule, like "the result is never negative". Takes work, and most codebases don't have one.
+  </Card>
+  <Card title="Reuse the previous version" icon="history">
+    "New returns the same as old for every input." Called **equivalence checking**. Needs no spec. **Graphify uses this.**
+  </Card>
+</CardGroup>
 
-When old and new code differ, the most useful thing a verifier can give you is the **distinguishing input**: the exact arguments, the old result and the new result. With it you can:
+It fits refactors, performance work and agent-written code. The catch: if the old code had a bug, an equivalent new version has it too.
 
-1. Run both versions on that input and see the difference yourself.
-2. Decide if the change was intended. Sometimes it is, like a bug fix.
-3. Turn the input into a regression test, so the behavior is pinned from now on.
+## Know where a proof stops
 
-A counterexample turns "something might be wrong" into a bug report you can act on.
+Verifiers limit input size, language features or time. A **bounded proof** holds within those limits, so there are more answers than pass and fail:
 
-## How this shows up in Graphify
+| Answer | In Graphify |
+| --- | --- |
+| Proved: no input in scope differs | **= Proven same** |
+| Counterexample: this input differs | **≠ Behavior changed** |
+| Sampled, none differed: evidence, not proof | **≈ No change found** |
+| Couldn't decide: out of scope or budget | **? Not checked** |
+| The check itself failed | **! Couldn't run** |
 
-On a pull request, Graphify checks each changed function against its previous version and posts a **Graphify Formal Verification** check on GitHub. The check is advisory and never blocks a merge.
+Graphify reports each one separately. It never turns "couldn't decide" into a pass.
 
-<Columns cols={2}>
+## Turn a counterexample into a test
+
+The distinguishing input gives you the exact arguments plus the old and new results. Use it to:
+
+<Steps>
+  <Step title="Reproduce">Run both versions on it.</Step>
+  <Step title="Decide">Was the change intended, like a bug fix?</Step>
+  <Step title="Pin it">Turn it into a regression test.</Step>
+</Steps>
+
+## In Graphify
+
+Each pull request gets an advisory **Graphify Formal Verification** check on GitHub. It never blocks a merge.
+
+<CardGroup cols={2}>
   <Card title="Formal verification" icon="shield-check" href="/platform/verification">
-    How the check works, what a pass means and supported languages.
+    How the check works and supported languages.
   </Card>
   <Card title="Read a review and a verdict" icon="file-check" href="/platform/read-a-result">
-    How a review finding differs from a verification verdict.
+    Review findings vs verification verdicts.
   </Card>
-</Columns>
+</CardGroup>
 
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
 

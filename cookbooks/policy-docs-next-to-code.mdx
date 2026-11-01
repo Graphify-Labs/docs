@@ -2,7 +2,7 @@
 title: "Check code against your policy documents"
 sidebarTitle: "Policy docs next to code"
 description: "Connect a Google Drive folder of policies or regulations, then have your agent read the rule and the code that has to follow it, side by side."
-keywords: ["compliance documents and code", "policy docs ai agent", "regulation code check", "google drive mcp", "graphify google drive"]
+keywords: ["policy as code", "compliance documents and code", "policy docs ai agent", "regulation code check", "google drive mcp"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "file-text"
@@ -85,6 +85,20 @@ follows it. If you can't tell, say so and ask.
 - **The folder isn't listed.** Check that Drive shows **Connected** in **Integrations** and that the folder finished syncing. Files that can't be read are listed in the folder details.
 - **Answers miss a document.** Ask with words the document itself uses, or use `graphify_rank_files` to see which documents rank for your question.
 - **The agent mixes up the folder and the code.** Pass the exact name from `list_repositories` as `repository_id` in each call.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which documents can I connect?" icon="folder-open">
+    Google Docs, Sheets and Slides, plus PDF, Word, Excel, PowerPoint, CSV, Markdown, text and image files in a Google Drive folder.
+  </Accordion>
+  <Accordion title="Is this a compliance sign-off?" icon="shield-alert">
+    No. The agent compares the rule and the code, and a person checks it. Treat it as a first draft.
+  </Accordion>
+  <Accordion title="Which plan do I need?" icon="credit-card">
+    A paid Graphify plan. An owner or admin connects Google Drive, read-only.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

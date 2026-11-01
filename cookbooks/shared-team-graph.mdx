@@ -2,7 +2,7 @@
 title: "Share a code graph with your team using git"
 sidebarTitle: "Shared team graph"
 description: "Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source."
-keywords: ["shared code graph team"]
+keywords: ["shared code graph team", "git merge driver", "merge conflicts", "commit graph.json"]
 surface: "local"
 hideFooterPagination: true
 icon: "share-2"
@@ -131,6 +131,20 @@ git commit -m "Share the code graph"
 ## What you built
 
 Your team shares one graph through git. It merges without conflicts, rebuilds with each commit, and records who added each source.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Which files should I commit?" icon="file-check">
+    Only `graphify-out/graph.json`. The rest is rebuilt locally.
+  </Accordion>
+  <Accordion title="How does the merge driver avoid conflicts?" icon="git-merge">
+    It writes the union of nodes and edges, and shows a conflict only for a corrupt or oversized graph.
+  </Accordion>
+  <Accordion title="Can I merge two graphs by hand?" icon="combine">
+    Yes, outside git. See Step 4.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

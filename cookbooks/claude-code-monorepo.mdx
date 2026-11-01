@@ -1,8 +1,8 @@
 ---
-title: "Claude Code knowledge graph for your monorepo"
+title: "Claude Code MCP and hooks for your monorepo"
 sidebarTitle: "Claude Code on a monorepo"
-description: "Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings."
-keywords: ["claude code monorepo"]
+description: "Set up Claude Code MCP and hooks for a monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings."
+keywords: ["claude code mcp", "claude code hooks", "claude.md", "claude code monorepo", "reduce claude code token usage"]
 surface: "local"
 hideFooterPagination: true
 icon: "boxes"
@@ -124,6 +124,23 @@ graphify benchmark
 ## What you built
 
 Claude Code now has a map of your monorepo. It queries the graph before it searches, reads less, and you have a benchmark to show the difference.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I check the MCP server is connected?" icon="plug">
+    Run `/mcp` in Claude Code. You should see the Graphify server and tools such as `query_graph` and `get_node`.
+  </Accordion>
+  <Accordion title="Do the hooks block Claude?" icon="shield">
+    No. They add a reminder when a fresh graph exists. Only strict mode (`hook-guard read --strict`) blocks the first raw read in a session.
+  </Accordion>
+  <Accordion title="Is the token saving exact?" icon="gauge">
+    No. The benchmark compares a graph query with reading the whole corpus. It's an estimate, and your number depends on repository size.
+  </Accordion>
+  <Accordion title="How do I remove it?" icon="trash-2">
+    Run `graphify claude uninstall`.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

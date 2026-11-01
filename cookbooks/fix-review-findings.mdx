@@ -1,8 +1,8 @@
 ---
-title: "Fix Graphify review findings with a coding agent"
+title: "Fix code review findings with a coding agent"
 sidebarTitle: "Fix review findings"
-description: "Have Claude Code or Codex wait for a Graphify review, check each finding against the graph, fix it, and ask for a fresh review."
-keywords: ["fix code review findings with ai", "claude code pull request review loop", "graphify review", "gh pr checks watch", "rerun code review"]
+description: "Have Claude Code or Codex fix code review findings: wait for the Graphify review, check each finding against the graph, fix it and ask for a fresh review."
+keywords: ["fix code review findings with ai", "ai code review", "automated code review", "coding agent", "rerun code review"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "wrench"
@@ -117,6 +117,23 @@ Use `@graphify good <finding>` for findings that were right, and `@graphify supp
 - **No Graphify review on the pull request.** Check that **PR reviews** is on for the repository, and that the pull request isn't a draft.
 - **`@graphify review` did nothing.** The comment has to come from an owner, member or collaborator.
 - **The agent can't find the repository.** Call `list_repositories` and use the exact name it returns.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does a push start a new review?" icon="git-commit-horizontal">
+    No. Comment `@graphify review` on the pull request to review the current head.
+  </Accordion>
+  <Accordion title="How does the agent decide a finding is real?" icon="search-check">
+    It checks the code with `graphify_callers`, `graphify_impact` and `graphify_tests_for` before it changes anything.
+  </Accordion>
+  <Accordion title="What if a finding is wrong?" icon="thumbs-down">
+    Reply on the pull request with the finding's name so Graphify learns. Learning never changes formal verification results.
+  </Accordion>
+  <Accordion title="Who can start a review with a comment?" icon="user-check">
+    Only an owner, member or collaborator on the repository.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

@@ -1,8 +1,8 @@
 ---
-title: "Run several coding agents on one shared graph"
+title: "Run multiple AI coding agents on one graph"
 sidebarTitle: "Agent team on one graph"
-description: "Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so they all read the same graph and the same team memory."
-keywords: ["multiple coding agents", "solo founder ai agents", "shared context for agents", "claude code codex cursor same context", "agent team memory"]
+description: "Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so every AI coding agent reads the same code graph and team memory."
+keywords: ["multiple ai coding agents", "ai coding agent", "ai agent memory", "shared context for agents", "claude code codex cursor same context"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "workflow"
@@ -86,6 +86,20 @@ The agents don't talk to each other through Graphify, and Graphify doesn't divid
 - **One agent sees different repositories.** It's in another workspace. Check with `list_workspaces` and switch with `set_workspace`.
 - **A saved fact shows up as unverified, or not at all.** It's still a suggestion. Keep it in **Memory**. See [Memory](/platform/memory).
 - **Answers look out of date.** The graph follows each repository's default branch. Check freshness with `graph_stats`.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Can Claude Code, Codex and Cursor share one graph?" icon="users">
+    Yes. Connect each one to `https://api.graphify.com/mcp` and sign in with the same Graphify account. They all read the same workspace.
+  </Accordion>
+  <Accordion title="How do AI coding agents share memory?" icon="brain">
+    An agent saves a decision with `remember`. It starts as a suggestion. Once you keep it in **Memory**, every agent gets it from `recall` and `memories_about`.
+  </Accordion>
+  <Accordion title="Do the agents talk to each other?" icon="message-circle-off">
+    No. Graphify doesn't pass messages or split up work. It gives every agent the same current picture of the code and your decisions.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

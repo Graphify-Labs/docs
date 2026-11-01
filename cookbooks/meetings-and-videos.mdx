@@ -1,8 +1,8 @@
 ---
-title: "Turn meeting recordings into a knowledge graph"
+title: "Transcribe meetings into a knowledge graph"
 sidebarTitle: "Meetings and videos"
 description: "Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code."
-keywords: ["meeting recordings knowledge graph"]
+keywords: ["meeting transcription", "whisper transcription", "transcribe youtube video", "meeting recordings knowledge graph"]
 surface: "local"
 hideFooterPagination: true
 icon: "video"
@@ -128,6 +128,20 @@ graphify query "what did we decide about the retry queue?"
 ## What you built
 
 Your recordings are searchable text in the same graph as your code, so you can ask what was decided and find the code it touched.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Where does transcription run?" icon="cpu">
+    On your CPU, with faster-whisper. Use `base` or `small` for long recordings.
+  </Accordion>
+  <Accordion title="Can I transcribe a YouTube video?" icon="video">
+    Yes. `add` downloads the audio with yt-dlp into `./raw`. Transcribe it, then extract.
+  </Accordion>
+  <Accordion title="Why are names misspelled?" icon="spell-check">
+    Whisper guesses names it hasn't heard. Pass your project's terms as the prompt, or use a larger model.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

@@ -1,8 +1,8 @@
 ---
-title: "Plan a refactor with code impact analysis"
+title: "Plan a safe refactor with change impact analysis"
 sidebarTitle: "Plan a refactor"
-description: "Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify."
-keywords: ["code impact analysis"]
+description: "Run change impact analysis before a refactor: list the callers of a function, trace paths between modules and find the tests to run, with Graphify."
+keywords: ["change impact analysis", "code impact analysis", "refactoring", "find callers of a function"]
 surface: "both"
 hideFooterPagination: true
 icon: "list-checks"
@@ -120,6 +120,20 @@ graphify affected "_rebuild_code()" --depth 1
 ## What you built
 
 You have a refactor plan backed by the graph: the callers, the paths between modules, the tests to run, and a before-and-after check.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="What is change impact analysis?" icon="radar">
+    Working out what a change reaches before you make it: its callers, the paths to other code and the tests that touch it.
+  </Accordion>
+  <Accordion title="How do I list every caller?" icon="list-tree">
+    Run `graphify affected` with `--depth 1` for direct callers. Raise the depth for callers of callers.
+  </Accordion>
+  <Accordion title="Can a caller be missing?" icon="circle-alert">
+    Yes. Code called dynamically, through reflection or by string name may not appear. Always run your tests.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

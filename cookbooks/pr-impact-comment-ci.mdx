@@ -1,8 +1,8 @@
 ---
-title: "Post graph impact on every pull request"
+title: "Post change impact comments on every PR"
 sidebarTitle: "PR impact in CI"
-description: "Build a Graphify code graph in GitHub Actions and post each pull request's graph impact, communities and changed files as a PR comment."
-keywords: ["pull request impact analysis"]
+description: "Build a Graphify code graph in GitHub Actions and post each pull request's change impact, communities touched and changed files as a PR comment."
+keywords: ["pull request impact analysis", "github actions pr comment", "change impact analysis", "github actions"]
 surface: "local"
 hideFooterPagination: true
 icon: "message-square-code"
@@ -125,6 +125,20 @@ The workflow in Step 2 is complete. Copy it to `.github/workflows/graph-impact.y
 ## What you built
 
 Every pull request gets a comment showing how much of the graph it touches, built in CI with no API key, so reviewers know the blast radius up front.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does it need an API key?" icon="key-round">
+    No. `--code-only` needs no LLM, so the job only uses the built-in `GITHUB_TOKEN`.
+  </Accordion>
+  <Accordion title="Does it add a new comment on every push?" icon="message-square">
+    No. `--edit-last --create-if-none` updates one comment.
+  </Accordion>
+  <Accordion title="Why does impact show a dash?" icon="minus">
+    The PR changed files that aren't in the graph, such as docs or config, or the graph is stale.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

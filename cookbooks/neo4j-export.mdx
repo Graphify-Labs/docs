@@ -1,8 +1,8 @@
 ---
-title: "Load your code knowledge graph into Neo4j"
+title: "Load your code graph into Neo4j with Cypher"
 sidebarTitle: "Load into Neo4j"
 description: "Export your Graphify code graph to Neo4j as a Cypher script or push it straight to a database, then query callers and dependencies in Cypher."
-keywords: ["code knowledge graph neo4j"]
+keywords: ["neo4j cypher", "neo4j import", "code knowledge graph neo4j", "export graph to neo4j"]
 surface: "local"
 hideFooterPagination: true
 icon: "share"
@@ -121,6 +121,20 @@ cypher-shell -u neo4j -p "$NEO4J_PASSWORD" \
 ## What you built
 
 Your code graph lives in Neo4j, indexed and queryable in Cypher, and you can refresh it after every rebuild.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Script or direct push?" icon="git-compare">
+    Use `--push` when you want file and line in results. The script only sets `id` and `label`.
+  </Accordion>
+  <Accordion title="Can I push again after a rebuild?" icon="refresh-cw">
+    Yes. `--push` upserts with `MERGE`, so there are no duplicates.
+  </Accordion>
+  <Accordion title="Which Neo4j version do I need?" icon="database">
+    Neo4j 5, local or hosted.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

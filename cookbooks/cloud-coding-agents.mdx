@@ -1,8 +1,8 @@
 ---
-title: "Connect cloud coding agents to hosted MCP"
+title: "Connect cloud coding agents to remote MCP"
 sidebarTitle: "Cloud coding agents"
-description: "Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories."
-keywords: ["hosted mcp server coding agents"]
+description: "Add Graphify's remote MCP server to Claude Code, Codex, Cursor or VS Code, sign in with OAuth, and let your coding agent query your indexed repos."
+keywords: ["remote mcp server", "mcp oauth", "hosted mcp server coding agents", "codex mcp", "cursor mcp", "vs code mcp"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "cloud-cog"
@@ -122,6 +122,23 @@ claude mcp add --transport http --scope user graphify https://api.graphify.com/m
 ## What you built
 
 Your agent queries a graph we build and host. It answers questions about callers, impact and tests from indexed repositories, and remembers decisions across sessions.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an API key?" icon="key-round">
+    No. On first use the agent opens a browser window. Sign in to Graphify and approve access. There's nothing to paste or store.
+  </Accordion>
+  <Accordion title="Is there anything to install?" icon="cloud">
+    No. Graphify builds and hosts the graph and serves it at `https://api.graphify.com/mcp`.
+  </Accordion>
+  <Accordion title="What can the agent ask once connected?" icon="messages-square">
+    Who calls a function, what a change would break, which tests cover a file, and how a request reaches a service.
+  </Accordion>
+  <Accordion title="Why does list_repositories return nothing?" icon="circle-alert">
+    The repository isn't indexed yet, or the agent is in another workspace. Check **Repositories**, then use `set_workspace`.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

@@ -188,49 +188,49 @@ Use these first when you are an AI agent reading or acting on these docs.
 
 Use for step-by-step recipes: onboarding, refactors, reading the graph and keeping docs current.
 
-- [Graphify cookbooks: end-to-end recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: onboard to a codebase, share a team graph, connect coding agents, load Neo4j and Postgres, and add graph impact to CI.
-- [Understand a new codebase in 30 minutes](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
-- [Plan a refactor with code impact analysis](https://docs.graphify.com/cookbooks/plan-a-refactor.md): Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify.
-- [Read your code graph and clean up your repos](https://docs.graphify.com/cookbooks/read-your-graph.md): Turn a messy code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.
-- [Oversee a codebase when you don't write code](https://docs.graphify.com/cookbooks/govern-codebase-non-engineer.md): A weekly routine for founders and managers: read what changed, decide which findings matter, and hand fixes to an agent, all in the Graphify app.
-- [Keep docs in sync with code using git hooks](https://docs.graphify.com/cookbooks/keep-docs-in-sync.md): Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
+- [Graphify cookbooks: step-by-step recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: onboard to a codebase, share a team graph, connect coding agents, load Neo4j and Postgres, and add graph impact to CI.
+- [How to understand a new codebase in 30 minutes](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
+- [Plan a safe refactor with change impact analysis](https://docs.graphify.com/cookbooks/plan-a-refactor.md): Run change impact analysis before a refactor: list the callers of a function, trace paths between modules and find the tests to run, with Graphify.
+- [Find dead and duplicate code in your repos](https://docs.graphify.com/cookbooks/read-your-graph.md): Turn your code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.
+- [Track code quality when you don't write code](https://docs.graphify.com/cookbooks/govern-codebase-non-engineer.md): A weekly routine for founders and managers to track code quality: read what changed, decide which findings matter and hand fixes to an agent.
+- [Keep a code wiki in sync using git hooks](https://docs.graphify.com/cookbooks/keep-docs-in-sync.md): Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
 
 ## Cookbooks: Team
 
 Use for team workflows: reviews, a shared graph and cross-repo dependencies.
 
-- [Review pull requests as a team with a code graph](https://docs.graphify.com/cookbooks/review-as-a-team.md): Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code, and pick a safe merge order early.
+- [Review PRs as a team and avoid merge conflicts](https://docs.graphify.com/cookbooks/review-as-a-team.md): Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code and agree a safe merge order early.
 - [Share a code graph with your team using git](https://docs.graphify.com/cookbooks/shared-team-graph.md): Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
-- [Map dependencies across multiple repositories](https://docs.graphify.com/cookbooks/cross-repo-dependencies.md): Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others.
+- [Map a dependency graph across multiple repos](https://docs.graphify.com/cookbooks/cross-repo-dependencies.md): Build a dependency graph across multiple repos with Graphify, then ask your coding agent what a change in one repository breaks in the others.
 
 ## Cookbooks: Agents
 
 Use when making coding agents use the graph, including cloud agents and local models.
 
-- [Claude Code knowledge graph for your monorepo](https://docs.graphify.com/cookbooks/claude-code-monorepo.md): Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
-- [Connect cloud coding agents to hosted MCP](https://docs.graphify.com/cookbooks/cloud-coding-agents.md): Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories.
-- [Make your coding agent actually use the graph](https://docs.graphify.com/cookbooks/make-agents-use-the-graph.md): Get Claude Code, Codex and Cursor to query Graphify before they grep, keep the graph fresh as code changes, and prove the agent called the tools.
-- [Fix Graphify review findings with a coding agent](https://docs.graphify.com/cookbooks/fix-review-findings.md): Have Claude Code or Codex wait for a Graphify review, check each finding against the graph, fix it, and ask for a fresh review.
-- [Make coding agents reuse code you already have](https://docs.graphify.com/cookbooks/reuse-existing-code.md): Stop agents from writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first.
+- [Claude Code MCP and hooks for your monorepo](https://docs.graphify.com/cookbooks/claude-code-monorepo.md): Set up Claude Code MCP and hooks for a monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
+- [Connect cloud coding agents to remote MCP](https://docs.graphify.com/cookbooks/cloud-coding-agents.md): Add Graphify's remote MCP server to Claude Code, Codex, Cursor or VS Code, sign in with OAuth, and let your coding agent query your indexed repos.
+- [Make your AI coding agent use the graph](https://docs.graphify.com/cookbooks/make-agents-use-the-graph.md): Get Claude Code, Codex and Cursor to query Graphify before they grep, using CLAUDE.md, AGENTS.md and Cursor rules, then prove the agent used it.
+- [Fix code review findings with a coding agent](https://docs.graphify.com/cookbooks/fix-review-findings.md): Have Claude Code or Codex fix code review findings: wait for the Graphify review, check each finding against the graph, fix it and ask for a fresh review.
+- [Stop AI coding agents writing duplicate code](https://docs.graphify.com/cookbooks/reuse-existing-code.md): Stop AI coding agents writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first.
 - [How to stop AI coding agents breaking your code](https://docs.graphify.com/cookbooks/document-the-why.md): Stop AI coding agents from 'fixing' code that's odd on purpose. Explain the why with code comments, decision records, AGENTS.md files and tests.
-- [Run several coding agents on one shared graph](https://docs.graphify.com/cookbooks/agent-team-one-graph.md): Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so they all read the same graph and the same team memory.
-- [Fully local code knowledge graph with Ollama](https://docs.graphify.com/cookbooks/local-with-ollama.md): Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model.
+- [Run multiple AI coding agents on one graph](https://docs.graphify.com/cookbooks/agent-team-one-graph.md): Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so every AI coding agent reads the same code graph and team memory.
+- [Run a local code knowledge graph with Ollama](https://docs.graphify.com/cookbooks/local-with-ollama.md): Run Graphify with a local LLM in Ollama: parse code offline, then extract docs and name communities on a model that runs on your own machine.
 
 ## Cookbooks: Data
 
 Use for databases, graph exports and meeting or video sources.
 
-- [Graph your Postgres schema next to your code](https://docs.graphify.com/cookbooks/postgres-schema-graph.md): Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code.
-- [Load your code knowledge graph into Neo4j](https://docs.graphify.com/cookbooks/neo4j-export.md): Export your Graphify code graph to Neo4j as a Cypher script or push it straight to a database, then query callers and dependencies in Cypher.
-- [Turn meeting recordings into a knowledge graph](https://docs.graphify.com/cookbooks/meetings-and-videos.md): Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code.
+- [Map your PostgreSQL schema next to your code](https://docs.graphify.com/cookbooks/postgres-schema-graph.md): Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code.
+- [Load your code graph into Neo4j with Cypher](https://docs.graphify.com/cookbooks/neo4j-export.md): Export your Graphify code graph to Neo4j as a Cypher script or push it straight to a database, then query callers and dependencies in Cypher.
+- [Transcribe meetings into a knowledge graph](https://docs.graphify.com/cookbooks/meetings-and-videos.md): Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code.
 - [Check code against your policy documents](https://docs.graphify.com/cookbooks/policy-docs-next-to-code.md): Connect a Google Drive folder of policies or regulations, then have your agent read the rule and the code that has to follow it, side by side.
 
 ## Cookbooks: CI and Ops
 
 Use for CI comments on pull requests and self-hosting a shared MCP server.
 
-- [Post graph impact on every pull request](https://docs.graphify.com/cookbooks/pr-impact-comment-ci.md): Build a Graphify code graph in GitHub Actions and post each pull request's graph impact, communities and changed files as a PR comment.
-- [Self-host a shared Graphify MCP server](https://docs.graphify.com/cookbooks/self-host-shared-mcp.md): Run the open-source Graphify MCP server over HTTP in Docker with an API key, so your whole team and its agents query one shared code graph.
+- [Post change impact comments on every PR](https://docs.graphify.com/cookbooks/pr-impact-comment-ci.md): Build a Graphify code graph in GitHub Actions and post each pull request's change impact, communities touched and changed files as a PR comment.
+- [Self-host a shared MCP server for your team](https://docs.graphify.com/cookbooks/self-host-shared-mcp.md): Run the open-source Graphify MCP server over HTTP in Docker with an API key, so your whole team and its agents query one shared code graph.
 
 ## Changelog
 

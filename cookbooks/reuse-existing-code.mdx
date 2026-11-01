@@ -1,0 +1,93 @@
+---
+title: "Make coding agents reuse code you already have"
+sidebarTitle: "Reuse existing code"
+description: "Stop agents from writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first."
+keywords: ["ai agent duplicate code", "reuse existing components", "claude code writes duplicate functions", "find existing helper", "graphify_find"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "recycle"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Coding agents are quick to write a new helper and slow to look for the one you already have. Over a few months a codebase ends up with three date formatters, two modal components and a retry wrapper per service. Each copy drifts, and every bug fix has to be made more than once. This recipe makes "look for it first" part of the agent's routine, using the graph Graphify already has of your repository.
+
+## The scenario
+
+A product team builds its web app mostly with coding agents. A designer notices that the app has several slightly different confirmation dialogs. Engineering finds the cause: each agent session wrote its own, because nothing told it a shared one existed. The team wants agents to find and use the existing component, and to say so when they truly need a new one.
+
+## What you'll build
+
+- An instruction block that tells the agent to search the graph before it writes a new function, class or component.
+- A short check you can run to see whether the agent searched.
+
+## Before you start
+
+- A repository indexed in [Graphify](https://app.graphify.com).
+- A coding agent connected to the hosted MCP server. See [Connect cloud coding agents to hosted MCP](/cookbooks/cloud-coding-agents).
+
+## Setup
+
+<Steps>
+  <Step title="Add the rule to the agent's instructions">
+    Add this to `CLAUDE.md` or `AGENTS.md` and commit it. Replace `acme/web-app` with the repository's name in Graphify.
+
+    ```md AGENTS.md
+    ## Reuse before you write
+
+    Repository in Graphify: acme/web-app
+
+    Before you add a new function, class, hook or component:
+
+    1. Call `graphify_rank_files` with a plain description of what you need,
+       for example "confirmation dialog" or "format a date for display".
+    2. Call `graphify_find` with likely name fragments, such as `Dialog`,
+       `Confirm` or `formatDate`.
+    3. Read the best candidates with `graphify_node`, and check who uses them
+       with `graphify_callers`.
+    4. If one fits, use it. If it almost fits, extend it rather than copying it.
+    5. If you still write something new, say which existing code you looked
+       at and why it didn't fit.
+    ```
+  </Step>
+  <Step title="Try it">
+    In a new agent session, ask for something your codebase already has:
+
+    ```text
+    Add a confirmation dialog before deleting a project.
+    ```
+
+    The agent should name the existing dialog it found, or explain why none fit.
+  </Step>
+</Steps>
+
+## How it works
+
+`graphify_find` matches symbol names, so it's good when you can guess part of a name. `graphify_rank_files` ranks files against a plain-language description, so it finds a helper even when it's named something you wouldn't guess. `graphify_callers` shows how widely a candidate is already used, which is a good hint that it's the shared one.
+
+These tools read the graph from the last index of your default branch. Code added on a branch that isn't merged yet won't show up.
+
+## Verify it worked
+
+Ask the agent at the end of the session which Graphify tools it called and what it found. You can also check the agent's tool log. A session that wrote a new component without a `graphify_find` or `graphify_rank_files` call skipped the rule.
+
+## Troubleshooting
+
+- **The agent skips the search.** Put the block near the top of the instruction file, and keep it short. [Make your coding agent actually use the graph](/cookbooks/make-agents-use-the-graph) covers this in depth.
+- **Search returns nothing useful.** Try a shorter name fragment with `graphify_find`, or describe the behavior instead of the name with `graphify_rank_files`.
+- **The result looks out of date.** Check when the repository was last indexed with `graph_stats`.
+
+## Next steps
+
+<TryCloudCard />
+
+<Columns cols={2}>
+  <Card title="Make agents use the graph" icon="crosshair" href="/cookbooks/make-agents-use-the-graph">
+    Get agents to query Graphify before they grep.
+  </Card>
+  <Card title="Hosted MCP" icon="book" href="/platform/hosted-mcp">
+    Every hosted tool and client setup.
+  </Card>
+</Columns>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

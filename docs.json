@@ -58,6 +58,7 @@
               "concepts/colliding-pull-requests",
               "platform/test-impact",
               "platform/verification",
+              "platform/verification-check-results",
               "platform/insights",
               "platform/wiki",
               "platform/memory",

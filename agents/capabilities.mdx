@@ -1,0 +1,91 @@
+---
+title: "What your agent can do with Graphify"
+sidebarTitle: "What your agent can do"
+description: "Every hosted Graphify MCP tool, grouped by the job it does, with a prompt to paste for each one and what it can't do."
+keywords: ["graphify mcp tools", "what can my agent do", "mcp capability list", "agent prompts", "hosted mcp tools"]
+surface: "cloud"
+icon: "map"
+---
+
+import { PromptBlock } from '/snippets/hero-install.jsx';
+
+When your coding agent connects to the [hosted MCP server](/platform/hosted-mcp), it gets a set of Graphify tools. This page maps each job you might want done to the tool that does it, with a prompt you can paste. You don't have to name tools in your prompts. Naming them makes it easier to check that the agent used the graph.
+
+## At a glance
+
+| You want to | Ask your agent to use |
+| --- | --- |
+| See which repositories it can query | `list_repositories` |
+| Find where something is defined | `graphify_find`, `search`, `fetch` |
+| Find the files that matter for a question | `graphify_rank_files` |
+| Understand how a feature works | `query_graph`, `graphify_node` |
+| See who calls a function, and what it calls | `graphify_callers`, `graphify_callees` |
+| Follow a call path from one function to another | `graphify_trace`, `shortest_path` |
+| Find non-call uses of a symbol | `graphify_references` |
+| Map a file's imports and dependents | `graphify_imports_exports`, `graphify_file_neighbors` |
+| Size up a change before making it | `graphify_impact`, `impact_and_risk` |
+| Find the tests linked to code | `graphify_tests_for` |
+| Check that a repository is indexed, and how fresh it is | `graph_stats` |
+| Read or save what the team remembers | `recall`, `memories_about`, `remember` |
+| Switch between Graphify workspaces | `list_workspaces`, `set_workspace` |
+
+## Find code
+
+<PromptBlock text="Use Graphify to find where invoice totals are calculated. Call graphify_find with short name fragments like 'invoice' and 'total', then graphify_rank_files with the question. Show the definitions with file paths." />
+
+`graphify_find` matches symbol names, so use a fragment, not a question. `graphify_rank_files` takes a plain-language question and returns files, not code. `search` and `fetch` work as a pair: `search` returns results with ids, and `fetch` reads the code behind one id.
+
+## Understand how something works
+
+<PromptBlock text="Use Graphify's query_graph to explain how a user signs in, from the login route to the session being stored. Cite file paths and line numbers." />
+
+`query_graph` answers a question with the relevant definitions in full. `graphify_node` returns one symbol's code plus its immediate neighbors. `graphify_expand` turns ids from another tool's results into full code, and `graphify_render_subgraph` returns a small graph you can draw.
+
+## Follow calls and dependencies
+
+<PromptBlock text="Use graphify_callers on chargeCard to list everything that calls it, then graphify_trace from the checkout handler to chargeCard. Tell me which paths skip the retry wrapper." />
+
+`graphify_callers` and `graphify_callees` list direct calls. `graphify_trace` returns directed call paths between two symbols, and `shortest_path` returns the most confident connection between them. `graphify_references` finds uses that aren't calls, such as reads and mentions. `graphify_imports_exports` and `graphify_file_neighbors` work at the file level.
+
+## Change code safely
+
+<PromptBlock text="Before you change parseConfig, call graphify_impact and impact_and_risk on it, then graphify_tests_for. List the files most at risk and the tests I should run." />
+
+`graphify_impact` lists the code directly connected to a symbol. It's a first pass, not every indirect dependency. `impact_and_risk` ranks the riskiest files by combining that with linked test coverage. `graphify_tests_for` lists tests linked through the graph. All three read the graph. They don't run tests or prove that a change is safe.
+
+## Use what your team remembers
+
+<PromptBlock text="Before you edit src/billing/retry.ts, call memories_about on that path and tell me any decisions or gotchas recorded for it." />
+
+`memories_about` returns what's remembered about one file or symbol. `recall` searches memory with a question. `remember` saves one fact. Have your agent ask you before it saves anything. Saved facts wait for review before they're published. See [Memory](/platform/memory).
+
+## Search your documents
+
+If your workspace has Google Drive folders connected, they show up in `list_repositories` next to your code, and the same tools search them.
+
+<PromptBlock text="Call list_repositories, then use query_graph on our Google Drive folder to find what our data retention policy says. Quote the document name." />
+
+See [Connect Google Drive](/platform/connectors#connect-google-drive).
+
+## Pick the repository and workspace
+
+<PromptBlock text="Call list_workspaces and list_repositories and tell me which Graphify workspace is active and which repositories you can query." />
+
+Most tools take a `repository_id`, either an id or a name like `acme/web-app`. `graph_stats` shows whether a repository is indexed and when. `set_workspace` switches the workspace for the current session. Your agent can also start a task handed off from a repository page with `run_repository_starter_task`.
+
+## What the tools don't do
+
+- They don't edit your code or run your tests. Your agent does that with its own tools.
+- They answer from the last index of your default branch. Code that isn't merged or indexed yet isn't in the results.
+- There's no tool to read pull request reviews. Your agent reads reviews on GitHub. See [Know when a review is ready](/platform/reviews).
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Use Graphify from your agent" icon="list-checks" href="/agents/recipes">
+    Copy-ready prompts for common jobs.
+  </Card>
+  <Card title="Hosted MCP" icon="book" href="/platform/hosted-mcp">
+    Client setup and limits.
+  </Card>
+</Columns>

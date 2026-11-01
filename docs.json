@@ -205,7 +205,8 @@
               "for-agents",
               "agents/overview",
               "agents/headless",
-              "agents/recipes"
+              "agents/recipes",
+              "agents/capabilities"
             ]
           }
         ]

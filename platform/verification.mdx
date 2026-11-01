@@ -1,7 +1,7 @@
 ---
-title: "Formal verification of pull requests"
+title: "Formal verification: prove a change keeps behavior"
 sidebarTitle: "Formal verification"
-description: "Compare changed functions, inspect behavioral differences, and understand each formal verification verdict on a pull request."
+description: "Graphify proves changed functions behave like the previous version, or shows the input that differs. What a pass means, languages and limits."
 surface: "cloud"
 hideFooterPagination: true
 icon: "shield-check"
@@ -9,9 +9,54 @@ icon: "shield-check"
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-Graphify includes **Formal Verification** as a core feature. It compares changed functions with their earlier implementations to determine whether behavior is preserved or whether a concrete input produces a different result.
+Graphify formally verifies the functions a pull request changes. For each one, it proves the new version still behaves like the previous version, or it shows you an input where the two give different results. The result appears as a separate GitHub check named **Graphify Formal Verification**, and in the **Formal Verification** view in [Graphify](https://app.graphify.com).
 
-Open **Formal Verification** in [Graphify](https://app.graphify.com). Hosted plans include verification with different usage and concurrency allowances; see [plans and pricing](/platform/support/pricing).
+## How it works
+
+<Steps>
+  <Step title="Find the changed functions">
+    Graphify compares the pull request's head commit with its base and picks out the functions the pull request changed.
+  </Step>
+  <Step title="Compare old and new">
+    For each changed function, Graphify checks whether the new version returns the same result as the previous version for the inputs in scope. The previous version is the reference, not a written spec.
+  </Step>
+  <Step title="Report a verdict per function">
+    Each function gets a verdict: proved equivalent, behavior change (with the input that differs), sampled but not proven, abstained, or errored. The check title sums them up. See [Understand the result](#understand-the-result) for what each one means.
+  </Step>
+</Steps>
+
+<Note>
+**What a pass means.** A passing check means every function this pull request changed was proved to behave like its previous version, within the bounds the proof covers. It does not mean the code meets your requirements: if the old version had a bug, an equivalent new version has the same bug.
+
+- **It never blocks a merge.** The check is advisory. It shows `success` only when every changed function is proved equivalent, and `neutral` in every other case, including a behavior change. It never shows `failure`.
+- **Sampled is not proven.** "No divergence found (sampled, not a proof)" means the tried inputs matched. It is evidence, not a proof.
+- **A check that never ran the function doesn't count.** If verification never exercised a function, that function is counted as not verified.
+- **Each run has a budget.** A run checks a limited number of functions within a time limit. Functions over the limit are listed as not verified, with the reason in the check title.
+- **Only changed functions count.** Unchanged functions checked alongside the change are listed separately as context and are not part of the score.
+</Note>
+
+## Supported languages
+
+| Language | File extensions |
+| --- | --- |
+| Python | `.py` |
+| JavaScript and TypeScript | `.js` `.mjs` `.cjs` `.jsx` `.ts` `.tsx` `.mts` `.cts` |
+| Go | `.go` |
+| Java | `.java` |
+| C, C++, CUDA and Metal | `.c` `.h` `.cc` `.cpp` `.cxx` `.hh` `.hpp` `.hxx` `.cu` `.cuh` `.metal` |
+| Rust | `.rs` |
+| COBOL | `.cbl` `.cob` `.cpy` `.cobol` |
+
+A function in a supported language can still get an **Abstained** verdict when the verifier can't analyze it within its supported domain or budget.
+
+## When it doesn't run
+
+Graphify posts a neutral **Formal verification did not run** check, with the reason, when:
+
+- the pull request changes no files in a supported language, or
+- the pull request only changes test files, such as files in `tests/` or `__tests__/`, `test_*.py`, `*_test.go`, or `*.test.ts` and `*.spec.ts`.
+
+In both cases there is no changed product code to compare. If you expected a run and see nothing, check that **Formal verification** is turned on for the repository in [Repositories and builds](/platform/repositories).
 
 ## Inspect a verification run
 

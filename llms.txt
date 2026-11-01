@@ -38,22 +38,22 @@ Use when explaining how the graph answers questions about code, and how to read 
 - [Follow calls and trace a path between symbols](https://docs.graphify.com/concepts/follow-calls.md): Ask your agent what calls a function, what it calls, and how one symbol reaches another in your indexed repository.
 - [Check the impact of a change before you make it](https://docs.graphify.com/concepts/check-impact.md): Ask your agent what a change to a symbol or file reaches in your indexed repository, which files carry the most risk, and which tests cover them.
 - [Edges and provenance](https://docs.graphify.com/concepts/provenance.md): How to read a Graphify edge: what a relationship claims, where it came from, and the EXTRACTED, INFERRED, and AMBIGUOUS confidence tags.
-- [How Graphify finds code dependencies, without guessing](https://docs.graphify.com/concepts/how-graphify-finds-dependencies.md): How Graphify builds a code dependency graph: tree-sitter parsing, symbol resolution, cross-repo linking and provenance tags, and where a model is used.
+- [How code dependencies are found, not guessed](https://docs.graphify.com/concepts/how-graphify-finds-dependencies.md): How Graphify builds a code dependency graph: tree-sitter parsing, symbol resolution, cross-repo linking and provenance tags, and where a model is used.
 - [Graph files and outputs](https://docs.graphify.com/concepts/outputs.md): The files Graphify writes to graphify-out/, including graph.json, what each one contains, and the parts you can reuse in other tools.
-- [What is formal verification? A plain guide for code](https://docs.graphify.com/concepts/what-is-formal-verification.md): Formal verification proves code behavior for every input in scope, not just tested ones. How it differs from tests and review, and what a proof covers.
+- [What is formal verification? A plain guide](https://docs.graphify.com/concepts/what-is-formal-verification.md): Formal verification proves code behavior for every input in scope, not just tested ones. How it differs from tests and review, and what a proof covers.
 
 ## Graphify: Features
 
 Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, connectors or the hosted MCP server.
 
-- [Ask your codebase: grounded answers with citations](https://docs.graphify.com/platform/ask.md): Ask your codebase plain-language questions. Graphify answers with cited graph nodes and paths, handles PR questions, and abstains without a path.
-- [Code knowledge graph: explore, query, combine repos](https://docs.graphify.com/platform/graphs.md): Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph.
+- [Ask your codebase: answers with citations](https://docs.graphify.com/platform/ask.md): Ask your codebase plain-language questions. Graphify answers with cited graph nodes and paths, handles PR questions, and abstains without a path.
+- [Code knowledge graph: explore and query repos](https://docs.graphify.com/platform/graphs.md): Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph.
 - [AI pull request reviews with code graph context](https://docs.graphify.com/platform/reviews.md): How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how to read findings with code graph context.
 - [Review a pull request with Graphify](https://docs.graphify.com/concepts/review-a-pull-request.md): Get a Graphify review on a pull request, rerun it after new commits with @graphify review, and teach it with @graphify wrong, good and suppress.
 - [Read a review and a verdict](https://docs.graphify.com/platform/read-a-result.md): Tell a review finding from a verification verdict, and what each one is allowed to mean.
 - [Find pull requests that collide before you merge](https://docs.graphify.com/concepts/colliding-pull-requests.md): Find open pull requests that change the same part of your code graph, see the merge-order risk with graphify prs, and rank the review queue with a model.
 - [Test impact analysis: run only the affected tests](https://docs.graphify.com/platform/test-impact.md): Pick which tests to run from a diff. Graphify maps changed files to affected tests, returns Buildkite or JSON, and caps at 60 calls a minute.
-- [Formal verification: prove a change keeps behavior](https://docs.graphify.com/platform/verification.md): Graphify proves changed functions behave like the previous version, or shows the input that differs. What a pass means, languages and limits.
+- [Formal verification: prove behavior is kept](https://docs.graphify.com/platform/verification.md): Graphify proves changed functions behave like the previous version, or shows the input that differs. What a pass means, languages and limits.
 - [Read a formal verification check on GitHub](https://docs.graphify.com/platform/verification-check-results.md): Each Graphify verification check title and verdict: Behavior changed, Proven same, No change found, Not checked, Couldn't run, and what to do next.
 - [Insights: code findings across repositories](https://docs.graphify.com/platform/insights.md): Review code findings across your repositories and pull requests in Graphify, with evidence, priority, and a team decision on each one.
 - [Wiki: generated docs for every repository](https://docs.graphify.com/platform/wiki.md): Read, search, and ask questions about the wiki Graphify generates for each repository from its code knowledge graph, with a confidence trail on every page.
@@ -76,7 +76,7 @@ Use for repository indexing and sync, connected agents, contributors and profile
 Use for errors, rate limits, pricing, security, or moving from Graphify CLI to hosted Graphify.
 
 - [FAQs](https://docs.graphify.com/platform/support/faqs.md): Answers to common Graphify questions: getting started, indexing, failed builds, plan limits, reviews, assistants, data, and where to get help.
-- [Graphify troubleshooting: MCP, 429, and error codes](https://docs.graphify.com/platform/support/troubleshooting.md): Fix MCP OAuth errors, 429 rate_limited, indexing and reindex failures, query and Ask error codes, and GitHub or GitLab connection issues.
+- [Troubleshooting: MCP, 429 and error codes](https://docs.graphify.com/platform/support/troubleshooting.md): Fix MCP OAuth errors, 429 rate_limited, indexing and reindex failures, query and Ask error codes, and GitHub or GitLab connection issues.
 - [Plans and pricing](https://docs.graphify.com/platform/support/pricing.md): Free plan for up to 3 repositories, no card required. Compare Free, Pro, Teams, and Enterprise pricing, allowances, and billing.
 - [Rate limits and plan limits](https://docs.graphify.com/platform/support/rate-limits.md): Per-minute request limits for Ask, query, and MCP, memory limits, plan allowances, and how to handle a 429 from Graphify.
 - [Security and data handling](https://docs.graphify.com/platform/support/security.md): What Graphify stores, how long it keeps it, which GitHub and Google Drive permissions it asks for, and how assistants reach your graphs.
@@ -87,10 +87,10 @@ Use for errors, rate limits, pricing, security, or moving from Graphify CLI to h
 Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.
 
 - [Graphify CLI: open-source code knowledge graph](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
-- [Quickstart: map a repository with the Graphify skill](https://docs.graphify.com/open-source/quickstart.md): Install the graphifyy package, add the Graphify skill to your coding agent, and build a knowledge graph of your repository with one command.
+- [Quickstart: map a repository with the skill](https://docs.graphify.com/open-source/quickstart.md): Install the graphifyy package, add the Graphify skill to your coding agent, and build a knowledge graph of your repository with one command.
 - [Install Graphify CLI with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install graphify with uv or pipx on macOS, Linux, or Windows, upgrade it, and register the Graphify skill with your coding assistant.
-- [CLI quickstart: build and query a graph from the terminal](https://docs.graphify.com/open-source/cli-quickstart.md): Build a code knowledge graph with graphify extract, then query it with query, path, explain, and god-nodes. No agent or API key needed.
-- [MCP server quickstart: serve your graph to any agent](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and nine other graph tools from any MCP client.
+- [CLI quickstart: build and query a code graph](https://docs.graphify.com/open-source/cli-quickstart.md): Build a code knowledge graph with graphify extract, then query it with query, path, explain, and god-nodes. No agent or API key needed.
+- [MCP server quickstart: serve your graph](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and nine other graph tools from any MCP client.
 - [Self-host the Graphify MCP server with Docker](https://docs.graphify.com/open-source/self-host.md): Build the open-source Graphify Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph.
 - [Vibe coding with Graphify CLI](https://docs.graphify.com/open-source/vibe-coding.md): Set up open-source Graphify so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code.
 - [Run Graphify locally](https://docs.graphify.com/open-source/local-development.md): Run Graphify entirely on your machine: a code-only workflow, or semantic extraction with a local model backend such as Ollama.
@@ -179,8 +179,8 @@ Use these first when you are an AI agent reading or acting on these docs.
 
 - [Search the docs from your agent](https://docs.graphify.com/mcp/docs-search.md): Connect the Graphify documentation MCP server so your agent can search these docs. It is separate from the MCP server for your repository graph.
 - [Notes for AI agents using the Graphify docs](https://docs.graphify.com/for-agents.md): Rules for coding agents that answer questions from the Graphify docs: package names, commands, and which surface each page covers.
-- [How AI agents use Graphify: connect, query, refresh](https://docs.graphify.com/agents/overview.md): For coding agents: how to connect to Graphify, which MCP tool answers which code question, how fresh the graph is, and what to do before sign-in.
-- [Headless agents and bots with Graphify's hosted MCP](https://docs.graphify.com/agents/headless.md): Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't.
+- [How AI agents connect, query and refresh](https://docs.graphify.com/agents/overview.md): For coding agents: how to connect to Graphify, which MCP tool answers which code question, how fresh the graph is, and what to do before sign-in.
+- [Headless agents and bots with hosted MCP](https://docs.graphify.com/agents/headless.md): Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't.
 - [Use Graphify from your agent: prompts that work](https://docs.graphify.com/agents/recipes.md): Copy-ready prompts for PR review, change impact, finding callers, tests for a symbol and onboarding, with the Graphify MCP tool each one triggers.
 - [What your agent can do with Graphify](https://docs.graphify.com/agents/capabilities.md): Every hosted Graphify MCP tool, grouped by the job it does, with a prompt to paste for each one and what it can't do.
 
@@ -189,7 +189,7 @@ Use these first when you are an AI agent reading or acting on these docs.
 Use for step-by-step recipes: onboarding, refactors, reading the graph and keeping docs current.
 
 - [Graphify cookbooks: end-to-end recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: onboard to a codebase, share a team graph, connect coding agents, load Neo4j and Postgres, and add graph impact to CI.
-- [Understand a new codebase in 30 minutes with Graphify](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
+- [Understand a new codebase in 30 minutes](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
 - [Plan a refactor with code impact analysis](https://docs.graphify.com/cookbooks/plan-a-refactor.md): Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify.
 - [Read your code graph and clean up your repos](https://docs.graphify.com/cookbooks/read-your-graph.md): Turn a messy code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.
 - [Oversee a codebase when you don't write code](https://docs.graphify.com/cookbooks/govern-codebase-non-engineer.md): A weekly routine for founders and managers: read what changed, decide which findings matter, and hand fixes to an agent, all in the Graphify app.
@@ -207,13 +207,13 @@ Use for team workflows: reviews, a shared graph and cross-repo dependencies.
 
 Use when making coding agents use the graph, including cloud agents and local models.
 
-- [Give Claude Code a knowledge graph of your monorepo](https://docs.graphify.com/cookbooks/claude-code-monorepo.md): Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
+- [Claude Code knowledge graph for your monorepo](https://docs.graphify.com/cookbooks/claude-code-monorepo.md): Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
 - [Connect cloud coding agents to hosted MCP](https://docs.graphify.com/cookbooks/cloud-coding-agents.md): Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories.
 - [Make your coding agent actually use the graph](https://docs.graphify.com/cookbooks/make-agents-use-the-graph.md): Get Claude Code, Codex and Cursor to query Graphify before they grep, keep the graph fresh as code changes, and prove the agent called the tools.
 - [Fix Graphify review findings with a coding agent](https://docs.graphify.com/cookbooks/fix-review-findings.md): Have Claude Code or Codex wait for a Graphify review, check each finding against the graph, fix it, and ask for a fresh review.
 - [Make coding agents reuse code you already have](https://docs.graphify.com/cookbooks/reuse-existing-code.md): Stop agents from writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first.
 - [Run several coding agents on one shared graph](https://docs.graphify.com/cookbooks/agent-team-one-graph.md): Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so they all read the same graph and the same team memory.
-- [Build a fully local code knowledge graph with Ollama](https://docs.graphify.com/cookbooks/local-with-ollama.md): Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model.
+- [Fully local code knowledge graph with Ollama](https://docs.graphify.com/cookbooks/local-with-ollama.md): Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model.
 
 ## Cookbooks: Data
 

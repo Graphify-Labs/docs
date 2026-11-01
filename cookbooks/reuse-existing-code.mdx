@@ -9,8 +9,21 @@ icon: "recycle"
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import { PromptBlock } from '/snippets/hero-install.jsx';
 
 Coding agents are quick to write a new helper and slow to look for the one you already have. Over a few months a codebase ends up with three date formatters, two modal components and a retry wrapper per service. Each copy drifts, and every bug fix has to be made more than once. This recipe makes "look for it first" part of the agent's routine, using the graph Graphify already has of your repository.
+
+<Info>
+**Works with:** Graphify (hosted), with Claude Code, Codex, Cursor or any agent connected to the hosted MCP server.
+</Info>
+
+## The short version
+
+Already connected? Paste this into your agent:
+
+<PromptBlock text="Before you write any new function or component in this task, search Graphify for an existing one: call graphify_rank_files with what you need and graphify_find with likely name fragments. Read the best match with graphify_node and check its callers. Reuse or extend it, or tell me why it doesn't fit." />
+
+The rest of this page sets it up so it happens every time.
 
 ## The scenario
 

@@ -1,8 +1,8 @@
 ---
-title: "Document the why so agents keep intended code"
+title: "Stop AI Agents Fixing Intentional Code"
 sidebarTitle: "Document the why"
-description: "Stop coding agents fixing code that is wrong on purpose: find heavily used code with Graphify, write down why it works, and pin it with a test."
-keywords: ["why comments", "architecture decision record", "ai agent context", "intended behavior", "coding agent guardrails"]
+description: "Stop AI coding agents fixing code that is wrong on purpose. Find hot spots with Graphify, write WHY comments or ADRs, and pin them with tests."
+keywords: ["document why in code", "why comments", "architecture decision records for ai agents", "adr for coding agents", "stop ai agents changing intentional code", "code comments for ai", "AGENTS.md", "CLAUDE.md", "code hotspots", "regression test pin behavior"]
 surface: "both"
 hideFooterPagination: true
 icon: "message-square-quote"
@@ -10,11 +10,13 @@ icon: "message-square-quote"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-**Code tells an agent what it does. It never says why.** So when an agent sees code that looks wrong but is deliberate, it "fixes" it, confidently. This recipe writes the reasoning down where agents read it, and pins it with a test so it can't quietly go stale.
+**Code tells an agent what it does. It never says why.** So when an agent sees code that looks wrong but is deliberate, it "fixes" it, confidently.
+
+**The fix:** write the reason next to the code as a short WHY comment or decision record (ADR), and pin the behavior with a test. Agents read the reason before they edit, and a careless change fails CI. Start with the coupling hot spots Graphify flags in your PR reviews.
 
 <CardGroup cols={3}>
   <Card title="Find" icon="search">
-    The code that the most other code depends on.
+    Coupling hot spots and the most-called code.
   </Card>
   <Card title="Explain" icon="message-square-quote">
     A short WHY comment or decision record next to it.
@@ -29,17 +31,24 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 - A repository indexed in [Graphify](https://app.graphify.com), with your coding agent connected to the [hosted MCP server](/platform/hosted-mcp). The open-source [Graphify CLI](/open-source/overview) works too.
 - Access to your git history and issue tracker.
 
-## The workflow
+## How do you document why code works the way it does?
 
 <Steps>
   <Step title="Find the code that matters most">
-    Start where a wrong "fix" would hurt most: code that much of the system depends on. Open [Graph explorer](/platform/graphs) and check **Most connected**, or select a node and read **What a change could affect**. From your agent, ask:
+    Start where a wrong "fix" would hurt most.
+
+    - **Coupling hot spots from your PR reviews.** Every [Graphify review](/platform/reviews) has an **Impact & health** section under **Analysis details**. When a change makes coupling worse, it says so, for example: **Health** — this change adds coupling hotspots: worse: `load_cached()` — 66 callers, 10 callees. Those functions are your first candidates.
+    - **The most-called code.** Open [Graph explorer](/platform/graphs) and check **Most connected**, or select a node and read **What a change could affect**.
+
+    From your agent, ask:
 
     ```text
     Which functions in this repo have the most callers? For the top five, show what a change to each could affect.
     ```
 
     The agent answers with the `graphify_callers` and `graphify_impact` tools. With the CLI, run `graphify explain "<name>"` and check the degree, or use the `god_nodes` MCP tool.
+
+    <Note>Hot spots here come from how code connects, not from how often files change. Graphify doesn't rank files by git churn.</Note>
   </Step>
   <Step title="Trace each odd line back to its commit">
     For lines that look wrong, run `git blame` to find the commit, then the pull request and ticket behind it.
@@ -59,7 +68,7 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
     Add a test that asserts the deliberate behavior and points back to the WHY. If someone changes the behavior, the test fails loudly, and the comment can't silently drift from the code.
   </Step>
   <Step title="Keep it current">
-    Ask your agent to add a WHY whenever it changes deliberate behavior. Later, add a CI check. See [Keep it current](#keep-it-current).
+    Ask your agent to add a WHY whenever it changes deliberate behavior. Later, add a CI check. See [Keep it current](#how-do-you-keep-why-comments-current).
   </Step>
 </Steps>
 
@@ -104,7 +113,7 @@ This is an illustrative example. Say an upstream payment provider reports `PENDI
 
 Without the comment, `PENDING → SUCCESS` looks like a bug, and an agent will "fix" it. With the comment and test, the agent reads the reason, and a careless change fails CI.
 
-## WHY comment or decision record?
+## Should you write a WHY comment or an ADR?
 
 | Use | When | Where it lives |
 | --- | --- | --- |
@@ -112,7 +121,7 @@ Without the comment, `PENDING → SUCCESS` looks like a bug, and an agent will "
 | Decision record (ADR) | The reason spans files, teams or trade-offs | `docs/adr/`, linked from a comment |
 | Pinning test | Always, for either one | Your test suite, named after the behavior |
 
-## Keep it current
+## How do you keep WHY comments current?
 
 <AccordionGroup>
   <Accordion title="Ask the agent for a WHY" icon="bot">
@@ -140,14 +149,34 @@ Without the comment, `PENDING → SUCCESS` looks like a bug, and an agent will "
   </Accordion>
 </AccordionGroup>
 
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Why do AI coding agents change code that is intentional?" icon="circle-question-mark">
+    Agents read the code, not the history behind it. Deliberate code that looks odd reads like a bug, so the agent "fixes" it. A WHY comment puts the reason where the agent reads.
+  </Accordion>
+  <Accordion title="What is a WHY comment?" icon="circle-question-mark">
+    A short comment above the code that says why it works this way, not what it does. Keep it to the reason and a link to the ticket or decision record.
+  </Accordion>
+  <Accordion title="Do AGENTS.md or CLAUDE.md replace WHY comments?" icon="circle-question-mark">
+    No. Rules files hold project-wide guidance, such as "read WHY comments before editing". The reason for one specific line belongs next to that line.
+  </Accordion>
+  <Accordion title="What are code hot spots in Graphify?" icon="circle-question-mark">
+    Coupling hot spots: functions with many callers and callees whose coupling a pull request made worse. Graphify lists them in the **Impact & health** part of each [review](/concepts/review-a-pull-request).
+  </Accordion>
+</AccordionGroup>
+
 ## Next steps
 
-<CardGroup cols={3}>
+<CardGroup cols={2}>
   <Card title="Make agents use the graph" icon="bot" href="/cookbooks/make-agents-use-the-graph">
     Tell your agent when to ask Graphify first.
   </Card>
   <Card title="Plan a refactor" icon="list-checks" href="/cookbooks/plan-a-refactor">
     List callers and tests before a change.
+  </Card>
+  <Card title="Review a pull request" icon="git-pull-request" href="/concepts/review-a-pull-request">
+    See where coupling hot spots come from.
   </Card>
   <TryCloudCard />
 </CardGroup>

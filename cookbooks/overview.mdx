@@ -1,8 +1,8 @@
 ---
-title: "Graphify cookbooks: end-to-end recipes"
+title: "Graphify cookbooks: step-by-step recipes"
 sidebarTitle: "Overview"
 description: "Step-by-step Graphify recipes: onboard to a codebase, share a team graph, connect coding agents, load Neo4j and Postgres, and add graph impact to CI."
-keywords: ["graphify cookbooks", "code knowledge graph recipes"]
+keywords: ["graphify cookbooks", "code knowledge graph recipes", "ai coding agent recipes"]
 surface: "both"
 hideFooterPagination: true
 icon: "house"
@@ -15,19 +15,19 @@ Each cookbook is a complete, runnable recipe that takes one job from install to 
 ## Essentials
 
 <Columns cols={2}>
-  <Card title="Understand a new codebase in 30 minutes with Graphify" icon="compass" href="/cookbooks/onboard-to-a-codebase">
+  <Card title="How to understand a new codebase in 30 minutes" icon="compass" href="/cookbooks/onboard-to-a-codebase">
     Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
   </Card>
-  <Card title="Plan a refactor with code impact analysis" icon="compass" href="/cookbooks/plan-a-refactor">
+  <Card title="Plan a safe refactor with change impact analysis" icon="compass" href="/cookbooks/plan-a-refactor">
     Run code impact analysis before a refactor: list every caller of a function, trace paths between modules, and find the tests to run, with Graphify.
   </Card>
-  <Card title="Read your code graph and clean up your repos" icon="compass" href="/cookbooks/read-your-graph">
+  <Card title="Find dead and duplicate code in your repos" icon="compass" href="/cookbooks/read-your-graph">
     Turn a messy code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.
   </Card>
-  <Card title="Oversee a codebase when you don't write code" icon="compass" href="/cookbooks/govern-codebase-non-engineer">
+  <Card title="Track code quality when you don't write code" icon="compass" href="/cookbooks/govern-codebase-non-engineer">
     A weekly routine for founders and managers: read what changed, decide which findings matter, and hand fixes to an agent, all in the Graphify Console.
   </Card>
-  <Card title="Keep docs in sync with code using git hooks" icon="compass" href="/cookbooks/keep-docs-in-sync">
+  <Card title="Keep a code wiki in sync using git hooks" icon="compass" href="/cookbooks/keep-docs-in-sync">
     Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
   </Card>
 </Columns>
@@ -35,13 +35,13 @@ Each cookbook is a complete, runnable recipe that takes one job from install to 
 ## Team
 
 <Columns cols={2}>
-  <Card title="Review pull requests as a team with a code graph" icon="users" href="/cookbooks/review-as-a-team">
+  <Card title="Review PRs as a team and avoid merge conflicts" icon="users" href="/cookbooks/review-as-a-team">
     Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code, and pick a safe merge order early.
   </Card>
   <Card title="Share a code graph with your team using git" icon="users" href="/cookbooks/shared-team-graph">
     Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
   </Card>
-  <Card title="Map dependencies across multiple repositories" icon="users" href="/cookbooks/cross-repo-dependencies">
+  <Card title="Map a dependency graph across multiple repos" icon="users" href="/cookbooks/cross-repo-dependencies">
     Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others.
   </Card>
 </Columns>
@@ -49,25 +49,25 @@ Each cookbook is a complete, runnable recipe that takes one job from install to 
 ## Agents
 
 <Columns cols={2}>
-  <Card title="Give Claude Code a knowledge graph of your monorepo" icon="bot" href="/cookbooks/claude-code-monorepo">
+  <Card title="Claude Code MCP and hooks for your monorepo" icon="bot" href="/cookbooks/claude-code-monorepo">
     Give Claude Code a knowledge graph of your monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
   </Card>
-  <Card title="Connect cloud coding agents to hosted MCP" icon="bot" href="/cookbooks/cloud-coding-agents">
+  <Card title="Connect cloud coding agents to remote MCP" icon="bot" href="/cookbooks/cloud-coding-agents">
     Connect Claude Code, Codex, Cursor or VS Code to Graphify's hosted MCP server, sign in with OAuth, and let your agent query indexed repositories.
   </Card>
-  <Card title="Make your coding agent actually use the graph" icon="bot" href="/cookbooks/make-agents-use-the-graph">
+  <Card title="Make your AI coding agent use the graph" icon="bot" href="/cookbooks/make-agents-use-the-graph">
     Get Claude Code, Codex and Cursor to query Graphify before they grep, keep the graph fresh as code changes, and prove the agent called the tools.
   </Card>
-  <Card title="Fix Graphify review findings with a coding agent" icon="bot" href="/cookbooks/fix-review-findings">
+  <Card title="Fix code review findings with a coding agent" icon="bot" href="/cookbooks/fix-review-findings">
     Have Claude Code or Codex wait for a Graphify review, check each finding against the graph, fix it, and ask for a fresh review.
   </Card>
-  <Card title="Make coding agents reuse code you already have" icon="bot" href="/cookbooks/reuse-existing-code">
+  <Card title="Stop AI coding agents writing duplicate code" icon="bot" href="/cookbooks/reuse-existing-code">
     Stop agents from writing a second date formatter or modal. Have them search the Graphify graph for existing helpers and components first.
   </Card>
-  <Card title="Run several coding agents on one shared graph" icon="bot" href="/cookbooks/agent-team-one-graph">
+  <Card title="Run multiple AI coding agents on one graph" icon="bot" href="/cookbooks/agent-team-one-graph">
     Point Claude Code, Codex, Cursor and cloud agents at one Graphify workspace, so they all read the same graph and the same team memory.
   </Card>
-  <Card title="Build a fully local code knowledge graph with Ollama" icon="bot" href="/cookbooks/local-with-ollama">
+  <Card title="Run a local code knowledge graph with Ollama" icon="bot" href="/cookbooks/local-with-ollama">
     Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model.
   </Card>
 </Columns>
@@ -75,16 +75,16 @@ Each cookbook is a complete, runnable recipe that takes one job from install to 
 ## Data
 
 <Columns cols={2}>
-  <Card title="Graph your Postgres schema next to your code" icon="database" href="/cookbooks/postgres-schema-graph">
+  <Card title="Map your PostgreSQL schema next to your code" icon="database" href="/cookbooks/postgres-schema-graph">
     Add your PostgreSQL schema to your code graph: Graphify reads tables, views, functions and foreign keys over a read-only connection, next to your code.
   </Card>
-  <Card title="Load your code knowledge graph into Neo4j" icon="database" href="/cookbooks/neo4j-export">
+  <Card title="Load your code graph into Neo4j with Cypher" icon="database" href="/cookbooks/neo4j-export">
     Export your Graphify code graph to Neo4j as a Cypher script or push it straight to a database, then query callers and dependencies in Cypher.
   </Card>
   <Card title="Check code against your policy documents" icon="database" href="/cookbooks/policy-docs-next-to-code">
     Connect a Google Drive folder of policies or regulations, then have your agent read the rule and the code that has to follow it, side by side.
   </Card>
-  <Card title="Turn meeting recordings into a knowledge graph" icon="database" href="/cookbooks/meetings-and-videos">
+  <Card title="Transcribe meetings into a knowledge graph" icon="database" href="/cookbooks/meetings-and-videos">
     Transcribe meeting recordings, talks and YouTube videos with Whisper, then add the transcripts to your Graphify knowledge graph next to your code.
   </Card>
 </Columns>
@@ -92,10 +92,10 @@ Each cookbook is a complete, runnable recipe that takes one job from install to 
 ## CI and Ops
 
 <Columns cols={2}>
-  <Card title="Post graph impact on every pull request" icon="server" href="/cookbooks/pr-impact-comment-ci">
+  <Card title="Post change impact comments on every PR" icon="server" href="/cookbooks/pr-impact-comment-ci">
     Build a Graphify code graph in GitHub Actions and post each pull request's graph impact, communities and changed files as a PR comment.
   </Card>
-  <Card title="Self-host a shared Graphify MCP server" icon="server" href="/cookbooks/self-host-shared-mcp">
+  <Card title="Self-host a shared MCP server for your team" icon="server" href="/cookbooks/self-host-shared-mcp">
     Run the open-source Graphify MCP server over HTTP in Docker with an API key, so your whole team and its agents query one shared code graph.
   </Card>
 </Columns>

@@ -1,8 +1,8 @@
 ---
-title: "Fully local code knowledge graph with Ollama"
+title: "Run a local code knowledge graph with Ollama"
 sidebarTitle: "Fully local with Ollama"
-description: "Build a code knowledge graph that never leaves your machine: parse code offline, then run Graphify's semantic extraction on a local Ollama model."
-keywords: ["local knowledge graph ollama"]
+description: "Run Graphify with a local LLM in Ollama: parse code offline, then extract docs and name communities on a model that runs on your own machine."
+keywords: ["ollama", "local llm for coding", "local knowledge graph ollama", "code knowledge graph", "offline code graph"]
 surface: "local"
 hideFooterPagination: true
 icon: "hard-drive-download"
@@ -120,6 +120,20 @@ graphify hook install
 ## What you built
 
 A knowledge graph of code and docs built entirely on your hardware, tuned for a local model, and kept current by code-only hooks.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does code parsing need a model?" icon="cpu">
+    No. Code is parsed locally with tree-sitter. Only docs, papers and community names use the model.
+  </Accordion>
+  <Accordion title="Which Ollama model does Graphify use?" icon="box">
+    `qwen2.5-coder:7b` by default. Change it with `OLLAMA_MODEL` or `--model`.
+  </Accordion>
+  <Accordion title="Can Ollama run on another machine?" icon="network">
+    Yes. Set `OLLAMA_BASE_URL` or `OLLAMA_HOST` to the other host.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

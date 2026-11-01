@@ -1,8 +1,8 @@
 ---
-title: "Make your coding agent actually use the graph"
+title: "Make your AI coding agent use the graph"
 sidebarTitle: "Make agents use the graph"
-description: "Get Claude Code, Codex and Cursor to query Graphify before they grep, keep the graph fresh as code changes, and prove the agent called the tools."
-keywords: ["coding agent ignores MCP", "Claude Code PreToolUse hook", "AGENTS.md instructions", "keep code graph up to date", "verify MCP tool calls"]
+description: "Get Claude Code, Codex and Cursor to query Graphify before they grep, using CLAUDE.md, AGENTS.md and Cursor rules, then prove the agent used it."
+keywords: ["coding agent ignores MCP", "claude.md", "agents.md", "cursor rules", "Claude Code PreToolUse hook", "verify MCP tool calls"]
 surface: "both"
 hideFooterPagination: true
 icon: "crosshair"
@@ -303,6 +303,23 @@ Then start Claude Code, ask a real question about the code, and run the transcri
 ## What you built
 
 Your agent now has a specific rule for when to call Graphify, a reminder at the moment it reaches for grep, a graph that updates as the code changes, and a check that shows whether it used the graph.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Why does my coding agent ignore MCP tools?" icon="eye-off">
+    It sees a long tool list and falls back to grep. A short, specific rule in its instruction file fixes most of this.
+  </Accordion>
+  <Accordion title="Where do the instructions go?" icon="file-text">
+    `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex and many other agents, and `.cursor/rules/` for Cursor.
+  </Accordion>
+  <Accordion title="Does the hosted MCP server have hooks?" icon="webhook">
+    No. On hosted, the instruction block does that job. Hooks are part of open-source Graphify.
+  </Accordion>
+  <Accordion title="How can I prove the agent used the graph?" icon="search-check">
+    Count Graphify tool calls in Claude Code's session files under `~/.claude/projects/`.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

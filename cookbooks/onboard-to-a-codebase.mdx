@@ -1,8 +1,8 @@
 ---
-title: "Understand a new codebase in 30 minutes"
+title: "How to understand a new codebase in 30 minutes"
 sidebarTitle: "Onboard to a codebase"
 description: "Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines."
-keywords: ["understand new codebase"]
+keywords: ["understand new codebase", "codebase onboarding", "onboarding new developers", "code visualization"]
 surface: "both"
 hideFooterPagination: true
 icon: "compass"
@@ -144,6 +144,20 @@ graphify export wiki
 ## What you built
 
 You have a graph of the repository, a ranked reading list, a wiki, and a way to ask questions that cite real lines. In Graphify, the hosted product, the same graph is built for you when you connect a repository, and your agent queries it over MCP.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do I need an API key?" icon="key-round">
+    No. `extract --code-only` parses source with tree-sitter and needs no LLM.
+  </Accordion>
+  <Accordion title="What should I read first?" icon="star">
+    The hub nodes. Most of the codebase calls into them.
+  </Accordion>
+  <Accordion title="Do answers point to real code?" icon="file-code">
+    Yes. Every node and edge carries its file and line.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

@@ -1,8 +1,8 @@
 ---
-title: "Self-host a shared Graphify MCP server"
+title: "Self-host a shared MCP server for your team"
 sidebarTitle: "Self-host a shared MCP"
 description: "Run the open-source Graphify MCP server over HTTP in Docker with an API key, so your whole team and its agents query one shared code graph."
-keywords: ["self-hosted mcp server"]
+keywords: ["self-hosted mcp server", "mcp server docker", "remote mcp server", "shared mcp server"]
 surface: "local"
 hideFooterPagination: true
 icon: "server-cog"
@@ -143,6 +143,20 @@ curl -s -X POST http://127.0.0.1:8080/mcp \
 ## What you built
 
 One MCP server, behind TLS and an API key, that serves your code graph to every teammate and agent, and picks up new graphs without a restart.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I secure it?" icon="lock">
+    Require an API key, and put a TLS reverse proxy in front. Never send the key over plain HTTP.
+  </Accordion>
+  <Accordion title="Do I restart it after a rebuild?" icon="refresh-cw">
+    No. The server reloads when the graph file changes.
+  </Accordion>
+  <Accordion title="Does it work behind a load balancer?" icon="network">
+    Yes. Start it with `--stateless`.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

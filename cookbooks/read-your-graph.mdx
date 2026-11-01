@@ -1,8 +1,8 @@
 ---
-title: "Read your code graph and clean up your repos"
+title: "Find dead and duplicate code in your repos"
 sidebarTitle: "Read your graph and clean up"
-description: "Turn a messy code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely."
-keywords: ["read a code graph", "find dead code", "duplicate code", "codebase cleanup", "change impact"]
+description: "Turn your code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely."
+keywords: ["find dead code", "find duplicate code", "code cleanup", "technical debt", "read a code graph"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "eraser"
@@ -127,6 +127,20 @@ For your agent to check callers against the graph while it works, connect it to 
 ## What you built
 
 You read your graph from the top down: its code areas, its most connected code, and what one change reaches. You turned the dead and duplicate code findings into a task your agent investigates before it changes anything. To see how sure Graphify is of each connection, read [Provenance](/concepts/provenance).
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How does Graphify find dead code?" icon="search">
+    It flags private symbols with no references across at least two indexed builds, 14 days or more apart.
+  </Accordion>
+  <Accordion title="Which languages are checked?" icon="code">
+    Python, JavaScript and TypeScript.
+  </Accordion>
+  <Accordion title="Is it safe to let an agent delete code?" icon="shield-check">
+    The copied task tells the agent not to delete or change anything without your separate instruction. Check dynamic lookups first.
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

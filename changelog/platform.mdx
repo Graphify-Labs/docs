@@ -11,6 +11,9 @@ icon: "cloud"
 <Update label="2026-11-01" description="MCP sign-in works for more agents">
 ## MCP sign-in works for more agents
 
+### New
+- **MCP:** Agents can now ask how Graphify's review of a pull request went with the new `review_status` tool. It returns the review's status, whether it passed, the finding counts and the top five findings, worst first. Leave out the PR number to get your 10 most recent reviews.
+
 ### Fixed
 - **MCP:** OAuth sign-in now works for Claude Desktop's Code tab, Warp, Le Chat, Grok, Linear, Devin, Glama, Mammouth, Sim, Executor and the Postman desktop app. Before, Graphify refused their sign-in.
 - **MCP:** Connecting with an email-and-password account that isn't verified yet now shows a **Verify your email to connect** page with a button to resend the email, instead of a generic access-denied error.

@@ -34,6 +34,7 @@ Use when setting up hosted Graphify: sign in, index a repository, and connect an
 Use when explaining how the graph answers questions about code, and how to read its edges.
 
 - [How Graphify builds a code knowledge graph](https://docs.graphify.com/concepts/architecture.md): How Graphify works: from source files parsed with tree-sitter to a persistent knowledge graph your coding assistant can traverse and query.
+- [How is Graphify different?](https://docs.graphify.com/concepts/how-graphify-is-different.md): How a code knowledge graph compares with vector search, wiki-style repo docs, language servers and context-graph tools, and when each is the better fit.
 - [Ask a question about your code](https://docs.graphify.com/concepts/ask-about-your-code.md): Ask your agent a plain-English question and get back the definitions and files from your indexed repository that answer it.
 - [Follow calls and trace a path between symbols](https://docs.graphify.com/concepts/follow-calls.md): Ask your agent what calls a function, what it calls, and how one symbol reaches another. Hosted Graphify answers from real call edges in your indexed repo.
 - [Check the impact of a change before you make it](https://docs.graphify.com/concepts/check-impact.md): Ask your agent what a change to a symbol or file reaches in your indexed repository, which files carry the most risk, and which tests cover them.

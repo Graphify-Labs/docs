@@ -37,6 +37,7 @@
             "icon": "brain",
             "pages": [
               "concepts/architecture",
+              "concepts/how-graphify-is-different",
               "concepts/ask-about-your-code",
               "concepts/follow-calls",
               "concepts/check-impact",

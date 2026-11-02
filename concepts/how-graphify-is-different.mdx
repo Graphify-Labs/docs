@@ -1,0 +1,90 @@
+---
+title: "How is Graphify different?"
+sidebarTitle: "How Graphify is different"
+description: "How a code knowledge graph compares with vector search, wiki-style repo docs, language servers and context-graph tools, and when each is the better fit."
+keywords: ["code knowledge graph", "graphify vs vector search", "graphify vs lsp", "code graph comparison"]
+surface: "both"
+icon: "split"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify is a **code knowledge graph**. It reads your code, records the symbols in it and how they connect (calls, imports, inheritance, dependencies), and lets you or your agent walk those connections. Every edge says where it came from and how sure it is. See [Provenance](/concepts/provenance).
+
+Other tools help agents and people understand code too. They answer different questions, and they often work well together.
+
+<Tip>
+**Try it on your own repo.** [Start with hosted Graphify](https://app.graphify.com), or build a graph locally with `uv tool install graphifyy`.
+</Tip>
+
+## At a glance
+
+| Approach | Best at | Answers "what breaks if I change this?" |
+| --- | --- | --- |
+| **Graphify** | How code connects across files and repos | Yes, by following edges |
+| **Vector search** | Finding text that looks like your question | Not directly |
+| **Wiki-style repo docs** | Reading a written overview | Only if the writer covered it |
+| **Language servers** | Precise lookups while you edit one project | Partly, one lookup at a time |
+| **Context-graph tools** | Linking code to tickets, reviews and pipelines | Depends on how deep the code layer goes |
+
+## Compared one by one
+
+<AccordionGroup>
+  <Accordion title="Vector search">
+    **How it works:** files are split into chunks, each chunk is turned into an embedding, and a question returns the chunks whose embeddings are closest.
+
+    **Where it shines:** fuzzy, natural-language search over a lot of text, including docs and comments.
+
+    **The gap for code:** similar text isn't the same as connected code. A caller in another file can look nothing like the function it calls, so it may not come back. Graphify follows the actual call and import edges instead.
+
+    **May fit better when** you mostly need to search prose, or you want "find something like this" across a large mixed corpus.
+  </Accordion>
+  <Accordion title="Wiki-style repo docs">
+    **How it works:** a tool writes pages about your repository, such as overviews, module summaries and diagrams, that people and agents read.
+
+    **Where it shines:** onboarding. A good written overview is faster to read than any graph.
+
+    **The gap for code:** a summary is a snapshot of what someone, or something, chose to describe. It can't list every caller of a function, and it can drift from the code. Graphify answers from the extracted structure, with a source reference on each edge.
+
+    **May fit better when** you want a readable tour of a codebase more than precise answers about it.
+  </Accordion>
+  <Accordion title="Language servers (LSP)">
+    **How it works:** your editor talks to a language server using the Language Server Protocol, which offers go to definition, find references and call hierarchy for the files open in your workspace.
+
+    **Where it shines:** exact, type-aware answers for one language in one project, as you type.
+
+    **The gap for code:** a language server answers one lookup at a time, inside a running editor session, usually for one language. Graphify keeps the whole picture as a saved graph your agent can query, across languages and repositories, and can trace several hops at once with `path` and `affected`.
+
+    **May fit better when** you need compiler-accurate navigation while editing. Many teams use both.
+  </Accordion>
+  <Accordion title="Context-graph tools">
+    **How it works:** these tools connect code to the work around it, such as issues, reviews, pipelines and owners, so you can ask questions about the delivery process.
+
+    **Where it shines:** questions like "which work item introduced this?" or "what's blocking this release?"
+
+    **The gap for code:** the code layer is one part of a wider model, and its depth varies, for example in which branches or languages it covers. Graphify goes deep on the code itself: symbol-level edges, confidence tags, and impact across repositories.
+
+    **May fit better when** your main questions are about process and planning rather than how the code fits together.
+  </Accordion>
+</AccordionGroup>
+
+## What Graphify is not
+
+- **Not a chat memory.** It doesn't store your conversations. It describes your code.
+- **Not a search index.** It doesn't rank text by similarity. It records connections.
+- **Not a replacement for reading code.** Each answer points back to the source it came from.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Provenance" icon="fingerprint" href="/concepts/provenance">
+    How to read an edge and how sure it is.
+  </Card>
+  <Card title="Check impact" icon="radar" href="/concepts/check-impact">
+    See what a change could affect before you make it.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

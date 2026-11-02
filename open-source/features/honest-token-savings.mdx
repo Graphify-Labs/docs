@@ -1,0 +1,109 @@
+---
+title: "Reduce token usage and cost"
+sidebarTitle: "Honest token savings"
+description: "See where Graphify spends model tokens, build from code only for free, avoid paying twice, and measure what your AI coding assistant saves."
+keywords: ["graphify code-only", "graphify api key", "graphify llm cost", "graphify semantic extraction", "reduce claude code token usage", "llm token cost"]
+surface: "local"
+icon: "coins"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Building a graph isn't always free. **Code costs nothing to extract. Docs, PDFs and images do.** Knowing which is which lets you decide what goes into the graph, and measure savings on your own repo instead of trusting a headline number.
+
+<Tip>
+**Rather not manage this yourself?** [Hosted Graphify](https://app.graphify.com) builds and serves the graph for you. See [Graphify vs Graphify CLI](/platform/graphify-vs-local).
+</Tip>
+
+## What costs tokens
+
+| Files | Read by | Needs a model |
+| --- | --- | --- |
+| **Code** | tree-sitter, locally | No |
+| **Docs** | Semantic pass | Yes |
+| **PDFs** | Semantic pass | Yes |
+| **Images** | Semantic pass | Yes |
+
+Docs means `.md`, `.mdx`, `.qmd`, `.txt`, `.rst`, `.html`, `.skill` and Jinja templates. Images means `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` and `.svg`.
+
+The semantic pass runs on your assistant's own model when you use `/graphify`, or on a model key you've configured when you use the CLI. Either way it uses tokens. **A README and a folder of screenshots are enough to trigger it.**
+
+## Build from code only
+
+<Steps>
+  <Step title="Skip docs, papers and images">
+    ```bash
+    graphify extract . --code-only
+    ```
+    Graphify prints how many files it skipped. No model is called and no key is needed.
+  </Step>
+  <Step title="Or turn model work off everywhere">
+    ```bash
+    export GRAPHIFY_BACKEND=none
+    ```
+    The local code pass still runs. Every model call is skipped.
+  </Step>
+  <Step title="Keep specific files out">
+    Add paths to `.graphifyignore` (same syntax as `.gitignore`) so they're never scanned.
+  </Step>
+</Steps>
+
+<Note>
+**No key, mixed repo?** `graphify extract` stops with "no LLM API key found" and tells you how many doc, paper or image files need a model. Add `--code-only` or configure a backend. A repo with only code never needs a key.
+</Note>
+
+## Check what you save
+
+Run this after a build:
+
+```bash
+graphify benchmark
+```
+
+It compares the tokens in your whole corpus with the tokens in the answers Graphify returns for five typical questions, and prints the reduction for your repo. See [Token benchmark](/open-source/features/token-benchmark) for how it's worked out.
+
+## Avoid paying twice
+
+- **Unchanged files are cached.** Docs whose content hasn't changed reuse their earlier results. An upgrade that changes the extraction prompt re-extracts them once.
+- **Refreshes are code only.** `graphify update .`, the git hooks and `graphify watch` never call a model.
+- **`--force --code-only` keeps what you paid for.** It rebuilds code and keeps the existing doc and image layer.
+
+## Watch out for
+
+<AccordionGroup>
+  <Accordion title="Hooks can undo --code-only">
+    A graph built with `--code-only` gets doc nodes back after the next branch switch, merge or rebase, because the hook rebuild doesn't remember the scope. This adds no model calls, but the graph grows. Use `.graphifyignore` for anything you want kept out for good. Tracked in [#4923](https://github.com/Graphify-Labs/graphify/issues/4923).
+  </Accordion>
+  <Accordion title="Headline numbers aren't your numbers">
+    How much smaller a graph answer is than your whole repo depends on the repo and the question. Measure it on yours with [`graphify benchmark`](/open-source/features/token-benchmark).
+  </Accordion>
+</AccordionGroup>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I reduce Claude Code token usage with Graphify?">
+    Build the graph, then let your assistant ask it questions instead of reading whole files. It gets back the few functions, files and links that matter. Keep the build cheap with `--code-only` and keep it current with `graphify hook install`.
+  </Accordion>
+  <Accordion title="Does Graphify need an API key?">
+    Not for code. Code is read locally with tree-sitter. A key or your assistant's model is only needed for docs, PDFs and images.
+  </Accordion>
+  <Accordion title="Do refreshes cost tokens?">
+    No. `graphify update .`, the git hooks and `graphify watch` only re-read code. Docs and images are re-read only when you run `/graphify . --update`, and unchanged files come from the cache.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Token benchmark" icon="chart-bar" href="/open-source/features/token-benchmark">
+    Measure savings on your own repository.
+  </Card>
+  <Card title="Documents and media" icon="file-video-camera" href="/open-source/features/documents-and-media">
+    What the semantic pass extracts from docs and images.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

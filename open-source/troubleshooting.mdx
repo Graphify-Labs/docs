@@ -85,7 +85,7 @@ Run its configured command manually and inspect stderr. Check the MCP extra, exe
 Confirm `gh` is installed and authenticated for the repository. Check the repo and base-branch options. CLI `--triage` additionally needs a configured model backend.
 </Accordion>
 <Accordion title="Do I need to rebuild after git pull?">
-Not if you've run `graphify hook install`. A pull that merges fires the `post-merge` hook, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Docs, PDFs and images still need `/graphify . --update`. See [Keeping the graph fresh](/open-source/keep-the-graph-fresh).
+Not if you've run `graphify hook install`. A pull that merges fires the `post-merge` hook, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Docs, PDFs and images still need `/graphify . --update`. See [Keep your code graph up to date](/open-source/keep-the-graph-fresh).
 </Accordion>
 </AccordionGroup>
 

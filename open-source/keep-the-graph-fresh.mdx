@@ -1,8 +1,8 @@
 ---
-title: "Keeping the graph fresh"
+title: "Keep your code graph up to date"
 sidebarTitle: "Keeping the graph fresh"
-description: "Keep your local Graphify graph in step with your code using git hooks or graphify watch, and see what each one refreshes and what it leaves to you."
-keywords: ["graphify hook install", "graphify watch", "post-merge hook", "keep code graph up to date"]
+description: "Keep your Graphify code graph up to date with git hooks or graphify watch. See what each refreshes, how to check it works, and the known limits."
+keywords: ["graphify hook install", "graphify watch", "git hooks", "post-merge hook", "keep code graph up to date", "graphify update after git pull"]
 surface: "local"
 icon: "git-merge"
 ---
@@ -17,12 +17,18 @@ Your agent answers from the saved graph, not from the files on disk. **If the gr
 
 ## Pick a method
 
+| Method | Refreshes when | Setup | Best for |
+| --- | --- | --- | --- |
+| **Git hooks** | You commit, switch branches, merge, pull or rebase | `graphify hook install`, once per repo | Most people |
+| **graphify watch** | You save a code file | Keep a terminal open | Long editing sessions |
+| **Hosted Graphify** | You push to GitHub | Connect the repo | Teams, with nothing to install |
+
 <Columns cols={2}>
   <Card title="Git hooks" icon="git-commit-horizontal">
-    **Refresh on every git event.** Best for most people. Runs in the background after commits, branch switches, merges, pulls and rebases.
+    **Refresh on every git event.** Runs in the background after commits, branch switches, merges, pulls and rebases.
   </Card>
   <Card title="graphify watch" icon="eye">
-    **Refresh as you save.** Good while you edit for a long session. Rebuilds a few seconds after code files change.
+    **Refresh as you save.** Rebuilds a few seconds after code files change.
   </Card>
 </Columns>
 
@@ -45,6 +51,20 @@ It adds four hooks and a merge driver for `graph.json`:
 | `post-rewrite` | A rebase, including `git pull --rebase` | The whole code graph |
 
 **You don't need to run `graphify update .` after `git pull`.** The `post-merge` or `post-rewrite` hook does it for you.
+
+### Check that it's working
+
+`graphify hook status` should print:
+
+```text
+post-commit: installed
+post-checkout: installed
+post-merge: installed
+post-rewrite: installed
+merge driver: registered
+```
+
+If a line says `out of date`, run `graphify hook install` again. To see what a rebuild did, read `~/.cache/graphify-rebuild.log`.
 
 A few things to know:
 
@@ -100,6 +120,9 @@ These are open issues in the Graphify CLI repository. We'll update this page whe
 ## FAQ
 
 <AccordionGroup>
+  <Accordion title="How do I keep a code graph up to date automatically?">
+    Run `graphify hook install` once in the repository. From then on, git rebuilds the code graph after each commit, branch switch, merge, pull and rebase. With [hosted Graphify](https://app.graphify.com), the graph rebuilds on every push and there's nothing to install.
+  </Accordion>
   <Accordion title="Do I still need graphify update after git pull?">
     Not if you've run `graphify hook install`. A pull that merges fires `post-merge`, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Without hooks, run `graphify update .` yourself.
   </Accordion>
@@ -108,6 +131,9 @@ These are open issues in the Graphify CLI repository. We'll update this page whe
   </Accordion>
   <Accordion title="How do I turn the hooks off for one command?">
     Set `GRAPHIFY_SKIP_HOOK=1`, for example `GRAPHIFY_SKIP_HOOK=1 git pull`. To remove them, run `graphify hook uninstall`.
+  </Accordion>
+  <Accordion title="Do the hooks call a model or use tokens?">
+    No. Hooks and the watcher only re-read code, locally. Docs, PDFs and images refresh when you run `/graphify . --update`.
   </Accordion>
 </AccordionGroup>
 

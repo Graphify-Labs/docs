@@ -95,7 +95,7 @@ This compares a graph query with a naive baseline that reads the whole corpus. I
 
 ## When it goes wrong
 
-**Claude ignores the graph.** Check that `graphify-out/graph.json` exists at the repository root, and that `.claude/settings.json` has the hooks. The guard only nudges when the graph is fresh, so run `graphify update .` after pulling.
+**Claude ignores the graph.** Check that `graphify-out/graph.json` exists at the repository root, and that `.claude/settings.json` has the hooks. The guard only nudges when the graph is fresh, so run `graphify hook install` once to keep it current after pulls, or `graphify update .` by hand.
 
 **The MCP server fails to start.** Install the `mcp` extra: `uv tool install "graphifyy[mcp]"`. Pass the graph path relative to where Claude Code starts, or use an absolute path.
 

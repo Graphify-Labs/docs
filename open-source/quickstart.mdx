@@ -63,6 +63,13 @@ The fastest way to use open-source Graphify is as a skill inside your coding age
 
     The skill traverses the graph and returns only the nodes and edges that answer the question, trimmed to a token budget.
   </Step>
+  <Step title="Keep it fresh">
+    ```bash
+    graphify hook install
+    ```
+
+    Git hooks rebuild the code graph in the background after commits, branch switches, merges, pulls and rebases. You don't need to run `graphify update .` after `git pull`. When docs or images change, run `/graphify . --update`.
+  </Step>
 </Steps>
 
 ## What changes in your repository

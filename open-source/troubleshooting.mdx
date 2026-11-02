@@ -9,6 +9,50 @@ icon: "life-buoy"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
+## Install errors
+
+### `uv tool install graphify`: no solution found when resolving dependencies
+
+The package name has two y's. There is no `graphify` package on PyPI, so uv can't resolve it. Install `graphifyy` instead:
+
+```bash
+uv tool install graphifyy
+```
+
+The command it installs is still `graphify`. See [Installation](/open-source/installation).
+
+### Error: could not find a version that satisfies the requirement graphify (no matching distribution found for graphify)
+
+Same cause with pip or pipx. Use the `graphifyy` package:
+
+```bash
+pipx install graphifyy
+```
+
+Other packages with similar names are not the Graphify Labs package.
+
+### zsh: command not found: uv
+
+uv isn't installed, or your shell can't find it yet. Install it with Homebrew (`brew install uv`) or uv's own installer:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Open a new terminal and run `uv --version`. If it's still not found, the install folder isn't on your `PATH`; see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+### Unrecognized command `'/graphify'` in Claude Code
+
+The Graphify skill isn't installed for Claude Code, or Claude Code hasn't loaded it yet. Register it:
+
+```bash
+graphify install --platform claude
+```
+
+This copies the skill to `~/.claude/skills/graphify/SKILL.md`. Then restart Claude Code, open your project, and send `/graphify .` again. If you registered with `--project`, run Claude Code from that project's root. See [Claude Code](/integrations/claude-code).
+
+## Other problems
+
 <AccordionGroup>
 <Accordion title="The graphify command is not found">
 Run `uv tool update-shell` or `pipx ensurepath`, then open a new terminal. Verify that the package you installed was `graphifyy`. A GUI app may need an absolute executable path even when your terminal finds it.

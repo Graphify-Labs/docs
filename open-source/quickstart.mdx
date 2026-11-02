@@ -69,6 +69,24 @@ The fastest way to use open-source Graphify is as a skill inside your coding age
     ```
 
     Git hooks rebuild the code graph in the background after commits, branch switches, merges, pulls and rebases. You don't need to run `graphify update .` after `git pull`. When docs or images change, run `/graphify . --update`.
+
+    Check that the hooks are in place:
+
+    ```bash
+    graphify hook status
+    ```
+
+    You should see:
+
+    ```text
+    post-commit: installed
+    post-checkout: installed
+    post-merge: installed
+    post-rewrite: installed
+    merge driver: registered
+    ```
+
+    See [Incremental updates](/open-source/features/incremental-updates) for what each refresh covers.
   </Step>
 </Steps>
 

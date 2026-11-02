@@ -2,12 +2,14 @@
 title: "How is Graphify different?"
 sidebarTitle: "How Graphify is different"
 description: "How a code knowledge graph compares with vector search, wiki-style repo docs, language servers and context-graph tools, and when each is the better fit."
-keywords: ["code knowledge graph", "graphify vs vector search", "graphify vs lsp", "code graph comparison"]
+keywords: ["code knowledge graph", "graphify vs vector search", "graphify vs lsp", "code graph comparison", "knowledge graph vs vector database", "what is a code knowledge graph"]
 surface: "both"
 icon: "split"
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+## What is a code knowledge graph?
 
 Graphify is a **code knowledge graph**. It reads your code, records the symbols in it and how they connect (calls, imports, inheritance, dependencies), and lets you or your agent walk those connections. Every edge says where it came from and how sure it is. See [Provenance](/concepts/provenance).
 
@@ -68,11 +70,33 @@ Other tools help agents and people understand code too. They answer different qu
   </Accordion>
 </AccordionGroup>
 
+## Use them together
+
+Most teams don't pick one. A common setup:
+
+- **A language server** in the editor for exact lookups while you type.
+- **Search** for finding prose, docs and "something like this".
+- **Graphify** for the questions in between: what calls this, how two parts connect, and what a change could break, for both you and your agent.
+
 ## What Graphify is not
 
 - **Not a chat memory.** It doesn't store your conversations. It describes your code.
 - **Not a search index.** It doesn't rank text by similarity. It records connections.
 - **Not a replacement for reading code.** Each answer points back to the source it came from.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Knowledge graph vs vector database: which do I need for code?">
+    It depends on the question. A vector database finds text that reads like your question. A knowledge graph follows how code is actually connected. For "what calls this?" or "what breaks if I change this?", you want the graph. For fuzzy search over docs, a vector index works well. Many setups use both.
+  </Accordion>
+  <Accordion title="Does Graphify replace a language server?">
+    No. Keep your language server for in-editor navigation. Graphify adds a saved graph your agent can query across languages and repositories.
+  </Accordion>
+  <Accordion title="Does Graphify send my code to a model?">
+    Not for code. Code is read locally with tree-sitter. Only docs, PDFs and images go through a model, and you can skip them with `--code-only`. See [Reduce token usage and cost](/open-source/features/honest-token-savings).
+  </Accordion>
+</AccordionGroup>
 
 ## Next steps
 

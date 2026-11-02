@@ -67,7 +67,7 @@ Register the exact platform with `graphify install --platform <name>`. Confirm w
 Run the build workflow before querying. For a local test, use `graphify extract . --code-only` at the project root. For another location, pass `--graph /absolute/path/to/graph.json` to queries and the absolute path to MCP.
 </Accordion>
 <Accordion title="The answer reflects old code">
-Run `graphify update .`, then query again. Git hooks run in the background, and pulls/merges require an explicit update. Refresh document context through the skill or semantic extraction if documents changed.
+Run `graphify update .`, then query again. Git hooks run in the background, so a query right after a commit or pull can briefly see the old graph. Without hooks, pulls and merges need an explicit update. Refresh document context through the skill or semantic extraction if documents changed.
 </Accordion>
 <Accordion title="A refresh refuses to write a smaller graph">
 Inspect the warning and confirm the smaller result is intentional. Missing dependencies or failed semantic calls can produce incomplete output. After an intentional removal or refactor, use `graphify update . --force` to allow replacement.

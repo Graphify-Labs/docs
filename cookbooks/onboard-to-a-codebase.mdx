@@ -126,7 +126,7 @@ This writes one article per community plus `graphify-out/wiki/index.md` (904 art
 
 - Commit nothing yet. Add `graphify-out/` to `.gitignore` while you explore. The [shared team graph](/cookbooks/shared-team-graph) recipe covers committing it.
 - Give the graph to your agent. See [Give Claude Code a graph of your monorepo](/cookbooks/claude-code-monorepo).
-- Keep it fresh with `graphify update .` after you pull. It re-extracts code without an API cost.
+- Keep it fresh with `graphify hook install`. It rebuilds the code graph after each commit, pull and rebase, without an API cost.
 
 ## Complete example
 

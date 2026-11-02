@@ -38,7 +38,7 @@ graphify hook install
 graphify hook status
 ```
 
-The hooks refresh after commits and branch switches. They run in the background, so a query immediately after a commit can briefly see the old graph. After `git pull` or a merge, run `graphify update .` explicitly.
+The hooks refresh after commits, branch switches, merges and rebases, so `git pull` is covered whether it merges or rebases. They run in the background, so a query immediately after a commit or pull can briefly see the old graph.
 
 ## Exclude unhelpful files
 

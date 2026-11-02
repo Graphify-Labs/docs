@@ -1,0 +1,153 @@
+---
+title: "Keep your code graph up to date"
+sidebarTitle: "Keeping the graph fresh"
+description: "Keep your Graphify code graph up to date with git hooks or graphify watch. See what each refreshes, how to check it works, and the known limits."
+keywords: ["graphify hook install", "graphify watch", "git hooks", "post-merge hook", "keep code graph up to date", "graphify update after git pull"]
+surface: "local"
+icon: "git-merge"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Your agent answers from the saved graph, not from the files on disk. **If the graph is old, the answers are old.** Open-source Graphify gives you two ways to refresh it without thinking about it: git hooks and a file watcher.
+
+<Tip>
+**Want this handled for you?** [Hosted Graphify](https://app.graphify.com) rebuilds the graph on every push to your default branch, with nothing to install. See [Graphify vs Graphify CLI](/platform/graphify-vs-local).
+</Tip>
+
+## Pick a method
+
+| Method | Refreshes when | Setup | Best for |
+| --- | --- | --- | --- |
+| **Git hooks** | You commit, switch branches, merge, pull or rebase | `graphify hook install`, once per repo | Most people |
+| **graphify watch** | You save a code file | Keep a terminal open | Long editing sessions |
+| **Hosted Graphify** | You push to GitHub | Connect the repo | Teams, with nothing to install |
+
+<Columns cols={2}>
+  <Card title="Git hooks" icon="git-commit-horizontal">
+    **Refresh on every git event.** Runs in the background after commits, branch switches, merges, pulls and rebases.
+  </Card>
+  <Card title="graphify watch" icon="eye">
+    **Refresh as you save.** Rebuilds a few seconds after code files change.
+  </Card>
+</Columns>
+
+## Git hooks
+
+Run this once in each repository, after you've built a graph:
+
+```bash
+graphify hook install
+graphify hook status
+```
+
+It adds four hooks and a merge driver for `graph.json`:
+
+| Hook | Runs after | What it rebuilds |
+| --- | --- | --- |
+| `post-commit` | `git commit` | Only the files that commit changed |
+| `post-checkout` | Switching branches | The whole code graph |
+| `post-merge` | `git merge`, and `git pull` that merges | The whole code graph |
+| `post-rewrite` | A rebase, including `git pull --rebase` | The whole code graph |
+
+**You don't need to run `graphify update .` after `git pull`.** The `post-merge` or `post-rewrite` hook does it for you.
+
+### Check that it's working
+
+`graphify hook status` should print:
+
+```text
+post-commit: installed
+post-checkout: installed
+post-merge: installed
+post-rewrite: installed
+merge driver: registered
+```
+
+If a line says `out of date`, run `graphify hook install` again. To see what a rebuild did, read `~/.cache/graphify-rebuild.log`.
+
+A few things to know:
+
+- **It runs in the background.** Git returns straight away, so a query right after a commit or pull can still see the old graph for a moment. Output goes to `~/.cache/graphify-rebuild.log`.
+- **It needs a graph to exist.** Build one first with `/graphify .` or `graphify extract .`. The branch, merge and rebase hooks do nothing until `graphify-out/` exists.
+- **It skips some moments on purpose.** No rebuild runs mid-rebase, in a linked `git worktree`, or when `GRAPHIFY_SKIP_HOOK=1` is set.
+- **It keeps your own hooks.** Graphify adds its block between markers and leaves the rest of the file alone. `graphify hook uninstall` removes only its own block.
+- **Re-run it after moving Python.** The hook remembers which Python ran `hook install`. If you reinstall or move that environment, run `graphify hook install` again.
+
+## graphify watch
+
+The watcher needs the `watch` extra:
+
+```bash
+uv tool install "graphifyy[watch]"
+graphify watch .
+```
+
+It waits until files stop changing for three seconds, then:
+
+- **Code changed:** rebuilds the code graph right away. No model is called.
+- **A doc, PDF or image changed:** writes a `graphify-out/needs_update` flag and tells you to run `/graphify --update` in your assistant. It does not call a model by itself.
+- **A file was deleted:** rebuilds, so the deleted file's nodes drop out.
+
+Stop it with **Ctrl+C**. The watcher only runs while that terminal is open, so hooks are the better default.
+
+## What stays manual
+
+Hooks and the watcher refresh **code**. They never call a model, so changes to docs, PDFs and images wait for you:
+
+```text
+/graphify . --update
+```
+
+Run `graphify check-update .` to see whether a doc refresh is pending.
+
+## Known limits
+
+These are open issues in the Graphify CLI repository. We'll update this page when they're fixed.
+
+<AccordionGroup>
+  <Accordion title="Hooks rebuild a --code-only graph as a full graph">
+    If you built with `graphify extract . --code-only`, the next branch switch, merge or rebase rebuilds it with docs included, so it grows. The rebuild doesn't remember the scope you chose. Until this is fixed, add docs you want kept out to `.graphifyignore`. Tracked in [#4923](https://github.com/Graphify-Labs/graphify/issues/4923).
+  </Accordion>
+  <Accordion title="Deleting a doc can re-queue every other doc">
+    After you delete a document and run `/graphify --update`, the next update can treat all your other docs as changed and run them through the semantic pass again. Cached results still save the model calls, but the run takes longer. Tracked in [#4914](https://github.com/Graphify-Labs/graphify/issues/4914).
+  </Accordion>
+  <Accordion title="An interrupted doc extraction can look finished">
+    If you stop a semantic extraction partway through a long document, the cache can mark that document as done, and later updates skip the part that never ran. If you interrupted a run, rebuild that file with `graphify extract . --force`. Tracked in [#4943](https://github.com/Graphify-Labs/graphify/issues/4943).
+  </Accordion>
+</AccordionGroup>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I keep a code graph up to date automatically?">
+    Run `graphify hook install` once in the repository. From then on, git rebuilds the code graph after each commit, branch switch, merge, pull and rebase. With [hosted Graphify](https://app.graphify.com), the graph rebuilds on every push and there's nothing to install.
+  </Accordion>
+  <Accordion title="Do I still need graphify update after git pull?">
+    Not if you've run `graphify hook install`. A pull that merges fires `post-merge`, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Without hooks, run `graphify update .` yourself.
+  </Accordion>
+  <Accordion title="Should I use hooks and watch together?">
+    You can. Rebuilds take a per-repository lock and queue behind each other, so they don't pile up. Most people only need hooks.
+  </Accordion>
+  <Accordion title="How do I turn the hooks off for one command?">
+    Set `GRAPHIFY_SKIP_HOOK=1`, for example `GRAPHIFY_SKIP_HOOK=1 git pull`. To remove them, run `graphify hook uninstall`.
+  </Accordion>
+  <Accordion title="Do the hooks call a model or use tokens?">
+    No. Hooks and the watcher only re-read code, locally. Docs, PDFs and images refresh when you run `/graphify . --update`.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Keep the graph current" icon="refresh-cw" href="/open-source/features/incremental-updates">
+    Manual refreshes, ignore files and the `--force` flag.
+  </Card>
+  <Card title="Troubleshooting" icon="life-buoy" href="/open-source/troubleshooting">
+    Fixes for stale answers, missing nodes and hook problems.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

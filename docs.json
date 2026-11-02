@@ -121,6 +121,7 @@
               "open-source/features/community-detection",
               "open-source/features/querying",
               "open-source/features/incremental-updates",
+              "open-source/keep-the-graph-fresh",
               "open-source/features/work-memory",
               "open-source/features/pr-impact",
               "open-source/features/multi-repo",

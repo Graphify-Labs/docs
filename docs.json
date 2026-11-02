@@ -128,7 +128,8 @@
               "open-source/features/exports",
               "open-source/features/headless-extraction",
               "open-source/features/mcp-tools",
-              "open-source/features/token-benchmark"
+              "open-source/features/token-benchmark",
+              "open-source/features/honest-token-savings"
             ]
           },
           {

@@ -116,7 +116,7 @@ Use for what Graphify CLI can map and query: inputs, updates, PR impact, exports
 - [Extract without an IDE](https://docs.graphify.com/open-source/features/headless-extraction.md): Run graphify extraction from a terminal or CI without an IDE or assistant, for code-only graphs or optional semantic extraction.
 - [MCP tool reference](https://docs.graphify.com/open-source/features/mcp-tools.md): Reference for the ten tools in Graphify's local MCP server: the inputs for graph queries, paths, explanations, and pull request tools.
 - [Token benchmark](https://docs.graphify.com/open-source/features/token-benchmark.md): Measure how many tokens open-source Graphify saves per question compared with sending your whole corpus to a model, using graphify benchmark.
-- [Get honest token savings](https://docs.graphify.com/open-source/features/honest-token-savings.md): Know where open-source Graphify spends model tokens: code builds locally for free, while docs and images need a model. Use --code-only to skip that pass.
+- [Reduce token usage and cost](https://docs.graphify.com/open-source/features/honest-token-savings.md): See where Graphify spends model tokens, build from code only for free, avoid paying twice, and measure what your AI coding assistant saves.
 
 ## Graphify CLI: Configuration
 

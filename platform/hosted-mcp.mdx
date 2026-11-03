@@ -2,7 +2,7 @@
 title: "Hosted MCP server for code graphs, with OAuth"
 sidebarTitle: "Hosted MCP"
 description: "Connect Claude Code, Cursor, Codex, or VS Code to Graphify's hosted MCP server with OAuth sign-in. Tools, workspaces, 240/min limit, errors."
-keywords: ["graphify mcp", "hosted mcp server", "mcp oauth", "code graph mcp", "claude code mcp", "cursor mcp", "codex mcp"]
+keywords: ["graphify mcp", "hosted mcp server", "mcp oauth", "code graph mcp", "claude code mcp", "cursor mcp", "codex mcp", "remote mcp server", "mcp server card", "mcp registry"]
 surface: "cloud"
 icon: "cloud"
 ---
@@ -171,22 +171,38 @@ You don't paste a key. Your client discovers the sign-in flow from the server:
 
 If a token doesn't verify, you get the same discovery `401`, and your client starts the sign-in again.
 
-## Server card
+## Let clients find Graphify with a server card
 
-Graphify publishes an [MCP Server Card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards). It's a public JSON document that tells a client where the server is and how to connect, before the client connects. Clients, registries and IDE extensions that support server cards can set up Graphify from it.
+**Your client can find Graphify on its own.** Graphify publishes an [MCP server card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards): a small public JSON file that says where the server is and how to connect, so a client can read it before it signs in.
 
-| Document | URL |
-| --- | --- |
-| Server card | `https://api.graphify.com/mcp/server-card` |
-| AI Catalog that lists it | `https://api.graphify.com/.well-known/ai-catalog.json` |
+<Columns cols={2}>
+  <Card title="Server card" icon="id-card">
+    `https://api.graphify.com/mcp/server-card`. The server's name, its URL and how to reach it.
+  </Card>
+  <Card title="AI catalog" icon="list">
+    `https://api.graphify.com/.well-known/ai-catalog.json`. Points clients at the server card from the domain.
+  </Card>
+</Columns>
 
-The card names the server `io.github.Graphify-Labs/graphify`, as in the MCP Registry, and lists one remote: `https://api.graphify.com/mcp` over Streamable HTTP. It doesn't list tools. Your client still gets those from `tools/list` after you sign in, because they depend on your workspace.
+Clients, registries and editor extensions that support server cards can set Graphify up from these files. Other clients keep working with the setup steps above.
 
-To check the card yourself:
+<AccordionGroup>
+  <Accordion title="What's in the server card?">
+    The name `io.github.Graphify-Labs/graphify`, which matches the MCP Registry entry, and one remote: `https://api.graphify.com/mcp` over Streamable HTTP. There's no key or header in it, because sign-in uses OAuth.
+  </Accordion>
+  <Accordion title="Does the server card list Graphify's tools?">
+    No. The tools depend on your workspace, so your client gets them from `tools/list` after you sign in.
+  </Accordion>
+  <Accordion title="How do I check the server card?">
+    Run:
 
-```bash
-curl -H "Accept: application/mcp-server-card+json" https://api.graphify.com/mcp/server-card
-```
+    ```bash
+    curl -H "Accept: application/mcp-server-card+json" https://api.graphify.com/mcp/server-card
+    ```
+
+    You get back JSON with the server's name and remote URL.
+  </Accordion>
+</AccordionGroup>
 
 ## Workspaces and MCP sessions
 

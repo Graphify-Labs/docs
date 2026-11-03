@@ -1,0 +1,70 @@
+---
+title: "How Graphify keeps your graph fresh"
+sidebarTitle: "Keeping the graph fresh"
+description: "Graphify rebuilds your code graph on every push to the default branch, re-processing only the files that changed. See what triggers a build and when."
+keywords: ["keep code graph up to date", "incremental indexing", "reindex on push", "github webhook indexing", "default branch indexing"]
+surface: "cloud"
+icon: "refresh-cw"
+---
+
+**Push your code and the graph follows.** Once a repository is connected, Graphify keeps its graph in step with your default branch. There's nothing to install and nothing to run.
+
+<Columns cols={3}>
+  <Card title="On every push" icon="git-commit-horizontal">
+    A push to the default branch starts a new build through the Graphify GitHub App.
+  </Card>
+  <Card title="Only what changed" icon="file-diff">
+    Graphify re-processes the changed files and keeps the code around them in context.
+  </Card>
+  <Card title="Default branch only" icon="git-branch">
+    Pushes to other branches don't change the graph.
+  </Card>
+</Columns>
+
+## What happens when you push
+
+<Steps>
+  <Step title="You push to the default branch">
+    GitHub sends the push to Graphify through the GitHub App you installed when you connected the repository.
+  </Step>
+  <Step title="Graphify works out what changed">
+    It checks the push is for the default branch of a connected, enabled repository, then starts a build for the new head commit.
+  </Step>
+  <Step title="Only the changed files are rebuilt">
+    The changed files are re-processed, while related code nearby stays in context, so calls and dependencies across files stay accurate.
+  </Step>
+</Steps>
+
+## What doesn't trigger a build
+
+<AccordionGroup>
+  <Accordion title="Pushes to other branches" icon="git-branch">
+    Feature branches are ignored. The graph reflects your default branch, so work on a branch shows up once it's merged.
+  </Accordion>
+  <Accordion title="Deleting a branch" icon="trash-2">
+    A push that deletes a branch is ignored.
+  </Accordion>
+  <Accordion title="Repositories you've turned off" icon="circle-pause">
+    If a repository is disabled in your workspace, its pushes are skipped until you turn it back on.
+  </Accordion>
+  <Accordion title="Over the daily build allowance" icon="gauge">
+    Automatic builds are capped per repository each day. A push over the cap is still recorded, but no build runs for it. See [push allowance](/platform/repositories).
+  </Accordion>
+</AccordionGroup>
+
+## Sync and reindex
+
+<Columns cols={2}>
+  <Card title="Sync" icon="arrow-right-left" href="/platform/repositories#sync-and-reindex">
+    **Sync** on the Repositories and Overview pages re-reads which repositories your GitHub connection can see. It doesn't rebuild a graph.
+  </Card>
+  <Card title="Reindex" icon="rotate-cw" href="/platform/repositories#sync-and-reindex">
+    **Reindex** rebuilds one repository's graph from its default-branch head, if you ever need a fresh start.
+  </Card>
+</Columns>
+
+## Using Graphify CLI instead
+
+<Card title="Keep your code graph up to date" icon="terminal" href="/open-source/keep-the-graph-fresh">
+  Working locally with Graphify CLI? Use git hooks or `graphify watch` to refresh the graph as you commit and save.
+</Card>

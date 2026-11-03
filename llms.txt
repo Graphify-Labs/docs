@@ -26,6 +26,7 @@ Use when setting up hosted Graphify: sign in, index a repository, and connect an
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
 - [Check your agent is using Graphify](https://docs.graphify.com/platform/verify-connection.md): Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix common setup problems.
 - [Index your first repository in Graphify](https://docs.graphify.com/concepts/index-a-repository.md): Connect a GitHub or GitLab repository to Graphify, switch on indexing, and confirm the build finished so your agent can query the graph.
+- [How Graphify keeps your graph fresh](https://docs.graphify.com/platform/keep-the-graph-fresh.md): Graphify rebuilds your code graph on every push to the default branch, re-processing only the files that changed. See what triggers a build and when.
 - [Console tour: the Graphify web app](https://docs.graphify.com/platform/console.md): A tour of the Graphify web app at app.graphify.com: Overview, repository graphs, pull request reviews, formal verification, Wiki, memory and connectors.
 - [Graphify vs Graphify CLI: hosted or open source](https://docs.graphify.com/platform/graphify-vs-local.md): Compare hosted Graphify with Graphify CLI, the open-source graphifyy package: how each builds, updates and serves the graph, and what needs hosted.
 

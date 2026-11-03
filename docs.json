@@ -28,6 +28,7 @@
               "platform/quickstart",
               "platform/verify-connection",
               "concepts/index-a-repository",
+              "platform/keep-the-graph-fresh",
               "platform/console",
               "platform/graphify-vs-local"
             ]

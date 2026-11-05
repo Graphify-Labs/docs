@@ -71,6 +71,15 @@ On **Repositories**, open **Options** for a repository. **PR reviews** turns the
 
 Expand the repository row to see **Unreferenced code (heuristic)**. It is not a switch. The card appears when indexing is on and the graph has nodes. It lists private functions, methods, and classes that nothing in that repository's graph references, and that a text search of the source finds no other use of. A symbol is listed only after it has stayed unreferenced for the number of days the card states, across at least two indexed builds. Code reached through reflection, a string lookup, or another repository can still appear, so check it before you remove it.
 
+## Limits, skips, and the review queue
+
+When Graphify cannot start a review because of a plan limit, the skip is visible on the pull request's **Graphify** check (and as a notice on **Reviews** when the workspace is over its review allowance). Examples:
+
+- Monthly or daily review limit reached — the check says reviews resume at the next UTC reset, and links to billing.
+- Usage limit reached — same idea for the workspace usage cap.
+
+When the workspace already has its maximum number of reviews running, a new review **waits in line** instead of being dropped. The check shows **Queued** with how many reviews are already running. If it does not start within the queue age limit, it is dropped; comment `@graphify review` to retry. Concurrent review limits by plan are on [Plans and pricing](/platform/support/pricing#build-concurrency).
+
 ## Missing or outdated results
 
 Check the selected repository and commit, the settings above, and any plan-limit or access message. A result for an older commit describes that earlier revision. [Repositories and builds](/platform/repositories) explains where to check indexing and repository controls.

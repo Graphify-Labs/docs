@@ -70,10 +70,19 @@ The first completed index makes code context available in [Graphs](/platform/gra
 
 These events never start an index: a push to a non-default branch, a branch deletion, and any push to a repository whose indexing is off.
 
+### When a rebuild is skipped
+
+If the graph already covers the latest default-branch commit, Graphify tells you the rebuild was skipped instead of quietly returning the previous build. Typical messages:
+
+- Enabling indexing when the graph is already current: the repository is on, and nothing was re-indexed.
+- **Reindex** soon after a successful rebuild of the same commit: `index_rebuild_debounced` (409), with when you can try again. The graph already reflects that commit.
+
+While a rebuild runs for an unchanged commit, the published graph stays available.
+
 | Code | Status | What it means |
 | --- | --- | --- |
 | `repository_disabled` | 409 | "Enable the repository before re-indexing." Turn **Indexing** back on. |
-| `index_rebuild_debounced` | 409 | A rebuild was requested moments ago. The response includes `retryAfterSeconds`. Wait that long. |
+| `index_rebuild_debounced` | 409 | A rebuild was requested moments ago, or the same commit was re-indexed too recently. The response includes `retryAfterSeconds`. Wait that long. |
 | `provider_disconnected` | 409 | "This repository's provider connection is gone. Reconnect it, or remove it." |
 | `repository_not_found` | 404 | The repository isn't in this workspace. |
 | `subscription_required` | 402 | The workspace plan isn't active. Check **Billing**. |

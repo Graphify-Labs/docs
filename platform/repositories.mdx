@@ -30,9 +30,29 @@ Return to the repository list to check indexing status. Provider and status filt
 
 ## Repository controls
 
-Open a repository's options to inspect available controls for **PR reviews**, **Fix suggestions**, **Formal verification**, and **Indexing**. Available actions depend on the workspace's configuration and access.
+Open a repository's **…** options menu. Controls depend on the provider and your role.
 
-The Indexing control pauses or enables indexing. Review and verification controls are separate; do not use an indexing toggle as a substitute for review configuration.
+| Control | Default | What it does |
+| --- | --- | --- |
+| **PR reviews** | On | Runs Graphify reviews on the repository's pull requests. |
+| **Fix suggestions** | Off | Proposes verified fixes as GitHub suggestions on reviewed PRs. Available on Pro, Teams, and Enterprise. |
+| **Inline health** | On | Posts structural health and coupling findings as inline PR comments. Off keeps them in the review summary only, so they no longer create merge-blocking threads. GitHub only; hidden on GitLab. |
+| **Formal verification** | On | Runs formal verification on the repository's pull requests. Off opts this repository out. Fork and untrusted code stay gated server-side. |
+| **Risky patterns** | On | Lists risky patterns on lines a PR adds (advisory, never blocks). |
+| **Stale docs** | On | Lists docs that mention code a PR changed (advisory, never blocks). |
+| **Indexing** | — | Pauses or enables indexing. Separate from review and verification toggles. |
+
+Do not use the indexing toggle as a substitute for review configuration.
+
+## No longer on GitHub
+
+When GitHub reports a repository as deleted, transferred to an account without Graphify, or no longer accessible to the Graphify GitHub App, the row shows **No longer on GitHub**. A countdown appears when Graphify will remove it on its own (for example, **Removed from Graphify in 5 days**).
+
+Owners and admins can **Remove** it from that row to delete its graph and history now. Hover the label for the reason Graphify recorded (`access_removed`, `deleted`, or `transferred`).
+
+### Transfers that stay connected
+
+If you transfer a repository to a new owner and Graphify remains installed on that account, the repository keeps its builds, reviews, verifications, and memories. The row stays indexed; it does not show **No longer on GitHub**.
 
 ## When a repository is indexed
 

@@ -68,6 +68,7 @@ Use when the user asks about a hosted feature: Ask, graphs, reviews, verificatio
 
 Use for repository indexing and sync, connected agents, contributors and profiles.
 
+- [Workspaces, members and roles](https://docs.graphify.com/platform/workspaces-and-members.md): How Graphify workspaces work: the one you own, ones you join by invite, roles, access requests, and switching between them.
 - [Repository indexing and sync: builds and reindex](https://docs.graphify.com/platform/repositories.md): How Graphify indexes and syncs GitHub and GitLab repositories: build states, reindex rules, the push allowance, and indexing error codes.
 - [Agents and integrations](https://docs.graphify.com/platform/connections.md): Connect Claude Code, Codex, Cursor or another coding agent to your hosted Graphify workspace over MCP, add shared knowledge and manage your integrations.
 - [Contributors: code authorship and reach](https://docs.graphify.com/platform/contributors.md): See who wrote what in a repository: authorship, the reach of each contributor's code in the graph, and any available commit signing evidence.

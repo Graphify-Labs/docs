@@ -52,6 +52,12 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 GitHub names, check titles and next steps: [Read a verification check](/platform/verification-check-results).
 
+## Open a specific run
+
+A PR check's **View evidence** link opens Formal Verification with `?run=<id>`. Graphify loads that run and pins it at the top of the list, even when it is older than the first page. If the run is missing or you cannot see its workspace, the page says the linked run could not be found.
+
+You can also open a run from Overview: the **Latest pull request** card links **Open FV run** to the same `?run=` URL when a verification run matches that pull request's head commit. See [Console tour](/platform/console#overview).
+
 ## What a pass proves
 
 A check passes only when every changed function is **Proven same**, within the bounds the proof covers.

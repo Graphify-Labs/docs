@@ -163,6 +163,18 @@ Each review includes the repository, PR number and title, status (`queued`, `run
 
 If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in a few minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
 
+## Query a repository group
+
+A [combined graph](/platform/graphs#combine-repositories) is a query target for your agent, the same way a single repository is.
+
+1. In Graphify, open **Graphs**, choose **Combine graphs**, and pick the repositories. Wait until the combined graph is ready.
+2. Ask your agent to run `list_repositories`. Combined graphs appear in that list with `kind: "workspace"`. Their `repositoryId` is the group id, and `fullName` is the name you gave the group.
+3. Pass that `repositoryId` to the usual query tools (find, callers, impact, and the rest). Graphify serves the group's promoted merged graph.
+
+A group is queryable only when its current merge is promoted. If `queryable` is false, the merge is still building, failed, or was not promoted. Combined graphs have no pull requests, so review tools do not apply to them.
+
+See [Graph explorer](/platform/graphs) for how to build and open a combined graph in the UI.
+
 ## How hosted MCP sign-in works
 
 You don't paste a key. Your client discovers the sign-in flow from the server:

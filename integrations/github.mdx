@@ -24,6 +24,26 @@ Graphify connects to GitHub through the Graphify GitHub App. You choose which re
 
 To add or remove repositories later, change the app's repository access on GitHub, or click **Add GitHub repositories** again.
 
+## Claim an install from github.com
+
+If you installed the Graphify GitHub App from github.com instead of from Graphify, the install is not connected to a workspace yet. Graphify shows it on **Repositories** (and during onboarding) with a **Claim** button.
+
+<Steps>
+  <Step title="Find the pending install">
+    Open **Repositories**. Owners and admins see a row for each GitHub account or organization that is installed but not connected.
+  </Step>
+  <Step title="Click Claim">
+    **Claim** proves you control that GitHub install and binds it to your current workspace. You may be asked to confirm on GitHub.
+  </Step>
+  <Step title="Index the repositories">
+    After the claim, the repositories from that install appear in the workspace and can build their graphs.
+  </Step>
+</Steps>
+
+Unclaimed installs stay claimable for a limited time. If the row disappears, install the app again from **Add GitHub repositories**, or from GitHub and claim it while signed in.
+
+If you uninstall and reinstall the Graphify GitHub App on the same GitHub account, your repositories move over to the new install.
+
 ## What the app does
 
 - **Indexing.** A push to the default branch starts an index of that commit. Other branches do not change the graph. See [Repositories and builds](/platform/repositories).

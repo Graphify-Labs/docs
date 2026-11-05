@@ -17,6 +17,8 @@ The screens on this page are the public [graphify](https://github.com/Graphify-L
 
 **Overview** is the workspace home. **All repositories** sets the scope. **Sync** refreshes the workspace. **Connect agent** opens the path to a coding assistant.
 
+**Latest pull request** shows the newest review from the last 14 days, with its verdict and attention items. When a formal verification run matches the same repository, pull request number, and head commit, the card also shows that result and links to **Open review** (`/reviews?run=…`) and **Open FV run** (`/verifications?run=…`). If there is no recent review, the card is hidden.
+
 **Code findings** lists **Checks incomplete**, **Duplicate code**, and **Dead code**. **Recent activity** includes pull requests reviewed. **Continue work** is where a recent review or finding returns. **Your indexed repositories** shows a graph card for each indexed repository, with **Combine graph** and **View all**. Further down, **Workspace stats** covers builds, code reviews, build outcomes, and graph density.
 
 <img src="/images/console/overview.webp" alt="Overview with code findings, recent activity, continue work, and indexed repository cards" width="1920" height="1080" className="block h-auto w-full" />

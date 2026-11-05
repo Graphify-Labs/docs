@@ -9,6 +9,18 @@ icon: "circle-check"
 
 Use this page after you [connect your agent](/platform/quickstart). It takes about two minutes. You check three things in order: the server is connected, the agent can call Graphify's tools, and the agent picks them for code questions.
 
+## In Graphify: connection status and starter tasks
+
+On **Connectors → MCP**, Graphify shows a live **Agent connection status** line while you set up:
+
+| Status | Meaning |
+| --- | --- |
+| Ask your agent to list your Graphify repositories. | Not connected yet for this workspace. |
+| Your agent reached this workspace. | A recent MCP call reached this workspace. |
+| Your agent last reached … | Connected, but to a different workspace. Switch with `set_workspace`, or use a token from this workspace. |
+
+The same page has a **Connect your agent** card with install steps for your client, a rules block you can copy into `AGENTS.md` / `CLAUDE.md` / your client's rules file, and (once a repository is indexed) **Try it on your repository** starter tasks drawn from your code. Starter tasks are one-click handoffs; after a task finishes you can **Run again** for a fresh receipt instead of replaying a consumed one.
+
 ## Step 1: Check the server is connected
 
 Your client should list a server named `graphify` at `https://api.graphify.com/mcp`, signed in, with its tools showing.

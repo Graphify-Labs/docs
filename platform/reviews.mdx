@@ -21,7 +21,9 @@ To review the current head after new commits, a repository owner, member, or col
 
 A review shows up in two places on the pull request: a review comment from the Graphify app, and a check run named **Graphify** on the reviewed commit. Formal verification posts its own check run, **Graphify Formal Verification**, and runs on every push.
 
-Graphify doesn't push a message to your coding agent when a review lands, and the hosted MCP server has no review tool. To have an agent wait for the review and then read it, point it at GitHub:
+Graphify doesn't push a message to your coding agent when a review lands. Your agent can ask for the result with the hosted MCP `review_status` tool: pass a PR number for one review, or omit it to get the 10 most recent. See [What your agent can do](/platform/hosted-mcp#what-your-agent-can-do).
+
+To wait on GitHub itself, point the agent at the **Graphify** check run and the review comments:
 
 ```bash
 # Wait for the pull request's checks, including the Graphify check, to finish

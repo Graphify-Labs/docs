@@ -73,6 +73,7 @@
             "group": "Workspace",
             "icon": "building-2",
             "pages": [
+              "platform/workspaces-and-members",
               "platform/repositories",
               "platform/connections",
               "platform/contributors",

@@ -1,0 +1,72 @@
+---
+title: "Workspaces, members and roles"
+sidebarTitle: "Workspaces and members"
+description: "How Graphify workspaces work: the one you own, ones you join by invite, roles, access requests, and switching between them."
+keywords: ["workspace members", "invite teammates", "workspace roles", "request access", "switch workspace"]
+surface: "cloud"
+icon: "users-round"
+---
+
+**One workspace you own. Others you join.** Your account always has a workspace you own. Teammates invite you into theirs, or you request access when they already connected your GitHub organization.
+
+<Columns cols={3}>
+  <Card title="Own one" icon="home">
+    Each person owns one workspace. You join others by invite.
+  </Card>
+  <Card title="Four roles" icon="shield">
+    Owner, Admin, Member, and Billing control who can invite, manage, and open billing.
+  </Card>
+  <Card title="Switch anytime" icon="arrow-left-right">
+    When you belong to more than one workspace, the sidebar switcher lists them all.
+  </Card>
+</Columns>
+
+## Roles
+
+| Role | What they can do |
+| --- | --- |
+| **Owner** | Full control, including inviting people, approving access requests, and opening the billing portal. A workspace always keeps at least one owner. |
+| **Admin** | Invite people, manage members, and approve access requests. Cannot open the billing portal. |
+| **Member** | Use the workspace: repositories, graphs, reviews, Ask, and agents. Cannot invite or manage members. |
+| **Billing** | Open the billing portal and manage payment. Cannot resume a paused Free workspace or manage members. |
+
+Owners and admins manage the member roster. Only owners and billing members can open the Stripe billing portal on **Billing**.
+
+## Invite teammates
+
+Member management is available on **Teams** workspaces. Free and Pro personal workspaces stay single-player until you move to Teams.
+
+<Steps>
+  <Step title="Open Members">
+    In your [Graphify](https://app.graphify.com) workspace, open **Members**.
+  </Step>
+  <Step title="Send an invite">
+    Click **Invite**, enter their email, and choose **Admin** or **Member**. Each person uses one seat.
+  </Step>
+  <Step title="They accept">
+    They get an email (or a one-time accept link you can copy). After they join, you can change their role to Admin, Member, or Billing.
+  </Step>
+</Steps>
+
+## Request access
+
+If a teammate already installed Graphify on your GitHub organization, connecting that org can offer **request access** instead of creating a second workspace. Owners review pending requests on **Members** and in **Settings**.
+
+## Switch workspaces
+
+When you belong to more than one workspace, the sidebar workspace switcher lists every workspace you can open. Pick one to move there. Agents keep their own workspace selection over MCP with `list_workspaces` and `set_workspace`. See [Hosted MCP server](/platform/hosted-mcp).
+
+## Last active on Members
+
+The **Members** roster shows **Last active** for each person. It combines console use and agent calls into one line. Hover for the split between Graphify, agent, and pull request activity.
+
+## Related
+
+<Columns cols={2}>
+  <Card title="Plans and pricing" icon="credit-card" href="/platform/support/pricing">
+    Free, Pro, Teams, trials, and billing.
+  </Card>
+  <Card title="Repositories and builds" icon="folder-git" href="/platform/repositories">
+    Connect repos and watch indexing.
+  </Card>
+</Columns>

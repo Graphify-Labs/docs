@@ -105,11 +105,24 @@ Graphify also picks up memories from recent conversations and from AI agents. Th
 
 | Label | Meaning |
 | --- | --- |
-| **Added automatically, not reviewed** | An agent or recent activity added it, and nobody has reviewed it. |
+| **Added automatically by your agent** | Published while you were the only member of the workspace, so nobody reviewed it. |
+| **Added automatically, not reviewed** | Evidence stamp on an automatic add: not a person's note. |
 | **Saved by an AI agent** | A connected agent saved it. |
 | **From a conversation** | It came from an Ask or agent conversation. |
 
 Keep a suggestion as it is, edit it and keep it, or discard it. If the code a memory refers to changes after it was saved, the memory is flagged: "The code this refers to changed after it was saved. Check that it is still true." When two current versions disagree, Ask and agents use neither until you edit one to say which is right.
+
+### Recently added by your agent
+
+When you are the only member of a workspace, an agent's memory can publish without a review step. Those rows appear under **Recently added by your agent**, labeled **Added automatically by your agent**.
+
+Owners, admins, and members can select **Undo** on a row or in the memory drawer. Undo needs no reason. Graphify processes the change, then Ask and agents stop using that version. Billing-only viewers see the list but not **Undo**.
+
+### Memories given to this answer
+
+When you ask a question from **Memory** and Graphify returns a grounded answer, a **Memories given to this answer** panel lists up to 10 memory versions that were put into the prompt. These are context references, not proof that each one was cited.
+
+Each row shows whether that version is **Published** or **Unreviewed**. You can mark **Useful**, or (when you can write memory) open **Wrong** or **Stale** to correct or dismiss it. The panel does not appear when Ask abstains.
 
 ## Remove and restore
 

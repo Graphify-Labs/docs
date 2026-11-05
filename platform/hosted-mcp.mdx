@@ -141,14 +141,27 @@ https://api.graphify.com/mcp?repo=acme/payments
 
 ## What your agent can do
 
-Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. The repository tools, such as `list_repositories`, come from the indexed graph. Graphify adds two workspace tools to every session:
+Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. The repository tools, such as `list_repositories`, come from the indexed graph. Graphify also adds these tools to every session:
 
 | Tool | Arguments | Behavior |
 | --- | --- | --- |
 | `list_workspaces` | None | Lists the workspaces you belong to and marks the active one. Read-only. |
 | `set_workspace` | `handle` (string, required), `make_default` (boolean, optional) | Switches the session to that workspace. With `make_default`, the choice persists. Marked as a state-changing tool, so most clients ask before running it. |
+| `review_status` | `repository` (string, optional), `pr_number` (integer, optional) | Read-only. Returns how Graphify's review of a pull request went. Pass `pr_number` for one PR. Omit it to list the 10 most recent reviews. Does not start or re-run a review. |
 
 Changing workspace changes which repositories the session can see. It doesn't change your code or the graph.
+
+### What `review_status` returns
+
+For one PR, the tool returns a `review` object (or `null` with a message if Graphify has not reviewed that PR yet). Without `pr_number`, it returns a `reviews` list of up to 10 runs, newest first.
+
+Each review includes the repository, PR number and title, status (`queued`, `running`, `completed`, `failed`, or `cancelled`), and whether a newer push superseded it. A completed review also includes:
+
+- **`gate`:** `pass` or `advisory`
+- **Finding counts:** `blocking_count`, `advisory_count`, and `findings_total`
+- **`top_findings`:** up to five findings, worst severity first
+
+If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in a few minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
 
 ## How hosted MCP sign-in works
 

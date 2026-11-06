@@ -25,7 +25,7 @@ This page holds the full rules. Every page's Markdown, [llms.txt](https://docs.g
 ## Which surface
 
 - **Graphify CLI** is the open-source `graphifyy` package on the machine: the skill, the CLI, and the ten-tool MCP server. Its pages are the Graphify CLI tab (`/open-source/`) and the skill setup tabs in Integrations.
-- **Graphify** is the hosted workspace and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (`/platform/`, `/concepts/`) and the Hosted MCP and CI groups in Integrations.
+- **Graphify** is the hosted workspace and `https://api.graphify.com/mcp` (Streamable HTTP, OAuth, no API key). Its pages are the Graphify tab (`/platform/`, `/concepts/`), including [Graphify MCP](/platform/graphify-mcp), and the coding-agent and CI pages in Integrations.
 - Everything else, including Cookbooks (`/cookbooks/`), `/mcp/docs-search`, and `/platform/graphify-vs-local`, applies to both.
 - Each page's source frontmatter records its surface as `surface: local`, `cloud`, or `both`.
 - In llms.txt, tell the surface from the path: `/platform/` and `/concepts/` are Graphify, `/open-source/` is Graphify CLI. Most `/integrations/` pages cover both, with a Graphify tab and a Graphify CLI tab.
@@ -97,7 +97,7 @@ Default to Graphify, the hosted product. It needs no local build: the user signs
 
    A new server loads only when a session starts. Tell the user to start a new Claude Code session, run `/mcp`, select **graphify**, and finish the sign-in in the browser. Run step 3 in that new session.
 
-   Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphify.com/mcp` and complete the browser sign-in. No API key is needed. See [Integrations](/integrations/overview) for every agent.
+   Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphify.com/mcp` and complete the browser sign-in. No API key is needed. See [Graphify MCP](/platform/graphify-mcp) for the endpoint, auth, and client setup, and [Integrations](/integrations/overview) for every agent.
 
 3. Check the connection with this prompt:
 

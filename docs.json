@@ -163,6 +163,7 @@
             "icon": "code",
             "pages": [
               "integrations/overview",
+              "integrations/claude-ai",
               "integrations/claude-code",
               "integrations/cursor",
               "integrations/codex",

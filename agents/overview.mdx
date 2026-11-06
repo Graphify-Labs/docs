@@ -61,7 +61,7 @@ Rules for the results:
 The tools don't edit source files, but two of them change stored state on purpose. Ask the user first:
 
 - `remember` saves a note to the workspace's shared [Memory](/platform/memory). Save only what the user asked you to save.
-- `set_workspace` changes which workspace, and so which repositories, the session reads. With `make_default`, it also changes the user's default. See [Hosted MCP](/platform/hosted-mcp#workspaces-and-mcp-sessions).
+- `set_workspace` changes which workspace, and so which repositories, the session reads. With `make_default`, it also changes the user's default. See [Graphify MCP](/platform/graphify-mcp#workspaces-and-mcp-sessions).
 
 In workspaces with trail capture turned on, `search`, `query_graph`, `graphify_find`, `graphify_trace`, `graphify_rank_files` and an unscoped `recall` can also save the question you asked to workspace memory. They never change source code.
 
@@ -96,7 +96,7 @@ If `list_repositories` succeeds but is empty, sign-in worked and no repository i
   <Card title="Check your agent is using Graphify" icon="circle-check" href="/platform/verify-connection">
     Test prompts and fixes per client.
   </Card>
-  <Card title="Hosted MCP" icon="cloud" href="/platform/hosted-mcp">
+  <Card title="Graphify MCP" icon="cloud" href="/platform/graphify-mcp">
     Sign-in, workspaces, limits and errors.
   </Card>
   <Card title="Make agents use the graph" icon="route" href="/cookbooks/make-agents-use-the-graph">

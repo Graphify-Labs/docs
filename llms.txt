@@ -142,7 +142,8 @@ Use when Graphify CLI fails to install or build a graph.
 Use when connecting a specific coding agent. Each page has a Graphify tab and a Graphify CLI tab.
 
 - [Integrations: coding agents and MCP clients](https://docs.graphify.com/integrations/overview.md): See which coding agents and assistants connect to Graphify's hosted MCP server, which support the open-source skill, and which get always-on context.
-- [Graphify for Claude Code](https://docs.graphify.com/integrations/claude-code.md): Connect Claude from the Anthropic directory or with OAuth in Claude Code, or use the open-source Graphify skill on your machine.
+- [Graphify for Claude](https://docs.graphify.com/integrations/claude-ai.md): Connect Graphify from the Claude connectors directory on Claude.ai and Desktop. Approve OAuth, enable per chat, then verify with a simple graph question.
+- [Graphify for Claude Code](https://docs.graphify.com/integrations/claude-code.md): Connect Claude Code to Graphify through your Claude account, or add the hosted MCP server by hand. Covers project config, OAuth, and a first graph check.
 - [Graphify for Cursor](https://docs.graphify.com/integrations/cursor.md): Connect Cursor to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.
 - [Graphify for Codex](https://docs.graphify.com/integrations/codex.md): Connect Codex to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.
 - [Graphify for VS Code and GitHub Copilot](https://docs.graphify.com/integrations/vscode.md): Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph on your machine.

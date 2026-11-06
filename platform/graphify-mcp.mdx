@@ -30,13 +30,33 @@ You need a Graphify account at [app.graphify.com](https://app.graphify.com), at 
 
 ## Connect your client
 
-One-click installs: [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), or the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4).
+One-click installs: [Connect Graphify in Claude](https://claude.ai/directory/graphify), [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), or the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4).
 
 <Tabs>
-  <Tab title="Claude Code">
+  <Tab title="Claude">
+    ### Claude.ai and Claude Desktop
+
+    Graphify is a connector in Anthropic's Connectors directory.
+
+    1. Open [Graphify in the Claude directory](https://claude.ai/directory/graphify) and select **Connect to Claude**. Or open **Customize → Connectors**, select **Discover**, and search for Graphify.
+    2. Sign in to Graphify in the browser and approve access. There is no API key.
+    3. In each chat, select **+**, then **Connectors**, and turn **Graphify** on. The toggle is for that conversation.
+    4. Ask about your indexed code. Claude may ask you to select **Allow once** or **Always allow** before a tool runs.
+
+    On a Team or Enterprise plan, **Connect to Claude** appears after the connector is available for the organization. Otherwise you may see **Request**, or a note to ask an Owner. An Owner sees **Connect for your team**, and can choose **Connect just for me**.
+
+    The same connector is available in the Claude desktop app and on Claude mobile after you connect it.
+
+    ### Claude Code
+
+    If Claude Code is signed in with the same Claude account, connectors from claude.ai show up in `/mcp` without a separate `claude mcp add`. Authenticate there if the status still needs it.
+
+    A login that is not a Claude account does not load those connectors. Add the server yourself. This command is user scope, and Graphify still signs you in with OAuth:
+
     ```bash
     claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
     ```
+
     Then start Claude Code, run `/mcp`, select **graphify**, and choose **Authenticate**. Finish the sign-in in your browser. Until you authenticate, no tool call reaches Graphify.
 
     To share it with a repository instead, add `.mcp.json`:
@@ -51,6 +71,8 @@ One-click installs: [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/i
       }
     }
     ```
+
+    If a local entry and a claude.ai connector point at the same URL, Claude Code keeps the local entry and lists the connector as hidden. Use one path.
   </Tab>
   <Tab title="Codex">
     ```bash
@@ -308,7 +330,9 @@ Seeing the tools doesn't prove repository access. The last step does. For test p
 | Verify your email to connect | The account email isn't verified. Open the verification email, or select **Resend the verification email**, then connect again. Google or GitHub sign-up: choose that option when you connect. |
 | `list_repositories` is empty | You are in the wrong workspace, or it has no repositories. Switch with `set_workspace`, or index a repository. |
 | A repository returns no results | It is not indexed, or you are in the wrong workspace. Wait for **Indexed** on **Repositories**, then confirm the workspace with `list_workspaces`. |
-| Tools connect but chat can't run them | Turn Graphify tools on in the client, and check that the model can call tools. In Copilot, add `"tools": ["*"]`. |
+| Tools connect but chat can't run them | Turn Graphify tools on in the client, and check that the model can call tools. In Copilot, add `"tools": ["*"]`. In a Claude chat, select **+**, then **Connectors**, and turn Graphify on. |
+| Graphify is connected but a Claude chat doesn't use it | The per-chat toggle is off. Turn Graphify on under **+**, then **Connectors**. Approve the tool call if Claude asks. |
+| Claude Code `/mcp` doesn't list the claude.ai connector | Run `/status`. Connectors from claude.ai load only with a Claude account login, not with `ANTHROPIC_API_KEY`, Bedrock, or another provider. Use `claude mcp add`, or `/login` with your Claude account. |
 | Graphify isn't in my client's MCP gallery | Gallery listing is separate from the registry. Add `https://api.graphify.com/mcp` directly. Registry id: `io.github.Graphify-Labs/graphify`. |
 | `npx` or Node.js isn't found | The bridge needs Node. Install Node where the client can find it, or use the client's native remote setup. |
 | Copilot on github.com can't connect | No OAuth support there yet. Copilot's coding agent and code review only support static header credentials, so they can't use this endpoint yet. |

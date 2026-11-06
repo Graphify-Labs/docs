@@ -58,6 +58,10 @@ Some integrations, such as a CI pipeline, authenticate with a workspace token in
 Never commit a token to a repository or paste it into a chat. Store it as a CI secret.
 </Warning>
 
+<Note>
+Removing a member or leaving the workspace revokes the workspace API tokens that person created there. Create a new token and update CI or agent secrets that still used theirs.
+</Note>
+
 ## Connect a code provider
 
 The top of **Integrations** lists your code providers:

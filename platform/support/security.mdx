@@ -54,6 +54,7 @@ Assistants reach Graphify through the hosted MCP server at `https://api.graphify
 
 - Each assistant signs in with OAuth in the browser. No API key sits in a config file.
 - An agent that cannot open a browser, such as one in CI, uses an API token from the **MCP** tab of **Connectors**. Store it as a CI secret, never in the repository.
+- When a member leaves or is removed, Graphify revokes the workspace API tokens that member created in that workspace. Remint any CI or MCP token they owned before reconnecting pipelines or agents.
 - An assistant reaches only the workspace it signed in to, and only repositories indexed in that workspace.
 - Some tools save notes or switch workspaces. Approve a tool call only when that is what you meant.
 

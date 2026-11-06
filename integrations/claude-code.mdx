@@ -1,37 +1,63 @@
 ---
 title: "Graphify for Claude Code"
 sidebarTitle: "Claude Code"
-description: "Connect Claude Code to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
+description: "Connect Claude from the Anthropic directory or with OAuth in Claude Code, or use the open-source Graphify skill on your machine."
 surface: "both"
 hideFooterPagination: true
 keywords: ["Claude Code MCP", "Claude Code skill", "codebase context"]
 ---
 
 import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+import { InstallButton } from '/snippets/install-button.mdx';
 
 <HostedOrLocal />
 
 <Tabs>
 <Tab title="Graphify">
 
-Connect Claude Code to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Claude Code can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
+Connect Claude to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Claude can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches.
 
-The server uses Streamable HTTP and OAuth. You sign in once in the browser, so there is no API key to paste and no local process to run.
+The server uses Streamable HTTP and OAuth. There is no API key to paste. Connect it from the [Claude directory](https://claude.ai/directory/graphify).
+
+<InstallButton href="https://claude.ai/directory/graphify" label="Connect in Claude">
+One click: open Graphify in Anthropic's Connectors directory, connect, then turn it on in the chat.
+</InstallButton>
 
 ## Before you start
 
 - A Graphify account at [app.graphify.com](https://app.graphify.com). See [Plans and pricing](/platform/support/pricing).
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
-## 1. Add the server
+## Claude.ai and Desktop
 
-Run this in a terminal, not inside a Claude Code session:
+1. Open [Graphify in the Claude directory](https://claude.ai/directory/graphify).
+2. Select **Connect to Claude** and finish Graphify sign-in. Or open **Customize → Connectors**, select **Discover**, and search for Graphify.
+3. In a chat, select **+**, then **Connectors**, and turn **Graphify** on for that conversation.
+4. Ask about your code. Claude may ask you to select **Allow once** or **Always allow** before a tool runs.
+
+On a Team or Enterprise plan, **Connect to Claude** appears after the connector is available for the organization. Otherwise you may see **Request**, or a note to ask an Owner. An Owner sees **Connect for your team**, and can choose **Connect just for me**.
+
+The same connector is available in the Claude desktop app and on Claude mobile after you connect it. A desktop extension is a different install. Graphify uses the remote connector.
+
+## Claude Code
+
+### Use your claude.ai connector
+
+If Claude Code is signed in with the same Claude account, open `/mcp`. Connectors from claude.ai appear in that list. Complete authentication if it still needs it, then ask Claude Code to list your Graphify repositories.
+
+Those connectors load only for a Claude account login. They do not load when `ANTHROPIC_API_KEY`, Bedrock, or another provider is the active login. Run `/status` if `/mcp` does not list the connector, then `/login` with your Claude account, or add the server as below.
+
+### Add the server in the terminal
+
+Use this when Claude Code is not using your Claude account, or when you want a local entry. Run it in a terminal, not inside a Claude Code session. The command is user scope. Graphify still requires OAuth. There is no API key to paste.
 
 ```bash
 claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
 ```
 
 `--scope user` adds Graphify for your user, so it works in every project. The hosted server is per account, not per repository. To keep it to one folder, drop `--scope user` and Claude Code uses local scope.
+
+If a local entry and a claude.ai connector point at the same URL, Claude Code keeps the local entry and lists the connector as hidden. Use one path.
 
 To share the server with everyone who clones a repository, commit this `.mcp.json` at the repository root instead:
 
@@ -46,7 +72,7 @@ To share the server with everyone who clones a repository, commit this `.mcp.jso
 }
 ```
 
-Each teammate approves the project server once, then signs in as in step 2.
+Each teammate approves the project server once, then signs in from `/mcp`.
 
 ### No `claude` command? Edit the config file
 
@@ -66,7 +92,7 @@ The Claude desktop app's **Code** tab and the IDE extensions run their own copy 
 
 An entry at the top level is user scope, the same as `--scope user`. Keep `"type": "http"`: without it, Claude Code treats the entry as a local command and skips it.
 
-In the desktop app you can also skip the file: open **Customize → Connectors** and add Graphify as a custom connector with the URL `https://api.graphify.com/mcp`.
+To add the URL yourself instead of the directory listing, open **Customize → Connectors**, select **Add**, then **Custom** and **Web**, and enter `https://api.graphify.com/mcp`. You still sign in with OAuth.
 
 Claude Code loads servers only when a session starts, so open a **new** session before you sign in.
 
@@ -117,12 +143,15 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | **Pending approval** next to `graphify` | It comes from a project `.mcp.json`. Start `claude` in that repository and approve it. |
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
 | Every Graphify tool appears twice | You have both a user-scope entry and a project `.mcp.json` entry. Remove one with `claude mcp remove graphify`. |
+| A Claude chat doesn't use Graphify | Select **+**, then **Connectors**, and turn Graphify on for that chat. Approve the tool call if Claude asks. |
+| `/mcp` doesn't list the claude.ai connector | Run `/status`. Connectors from claude.ai load only with a Claude account login, not with `ANTHROPIC_API_KEY`, Bedrock, or another provider. Use `claude mcp add`, or `/login` with your Claude account. |
+| The claude.ai connector is hidden | A local entry points at the same URL. Claude Code keeps the local entry. Remove it with `claude mcp remove graphify` if you want the directory connector. |
 
 ## FAQ
 
-### Do I need an API key to connect Claude Code to Graphify?
+### Do I need an API key to connect Claude to Graphify?
 
-No. Claude Code signs in with OAuth in your browser the first time it connects. There is no key to paste or store.
+No. The directory connector and `claude mcp add` both sign in with OAuth in your browser. There is no key to paste or store. An `ANTHROPIC_API_KEY` login is a Claude Code credential. It does not replace Graphify sign-in, and it does not load connectors from claude.ai.
 
 ### Does Graphify read my local files from Claude Code?
 

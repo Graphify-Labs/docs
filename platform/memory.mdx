@@ -19,7 +19,7 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 - A Graphify account at [app.graphify.com](https://app.graphify.com).
 - An indexed repository.
-- A coding agent connected through the [hosted MCP](/platform/hosted-mcp). Memories are written by agents, so a new repository has none.
+- A coding agent connected through the [hosted MCP](/platform/graphify-mcp). Memories are written by agents, so a new repository has none.
 
 ## How it works
 
@@ -66,7 +66,7 @@ Your agent can keep its own preferences and session notes. Graphify adds shared 
 
 ## Tell your agent to use memory
 
-Connected agents get three memory tools from the [hosted MCP server](/platform/hosted-mcp): `recall` searches what the workspace remembers, `memories_about` returns what's known about one file or symbol, and `remember` saves one fact. Most agents won't call them unless their instructions say when. Add a block like this to `AGENTS.md` or `CLAUDE.md` in the repository and commit it. Replace `acme/web-app` with the repository's name in Graphify.
+Connected agents get three memory tools from the [hosted MCP server](/platform/graphify-mcp): `recall` searches what the workspace remembers, `memories_about` returns what's known about one file or symbol, and `remember` saves one fact. Most agents won't call them unless their instructions say when. Add a block like this to `AGENTS.md` or `CLAUDE.md` in the repository and commit it. Replace `acme/web-app` with the repository's name in Graphify.
 
 ```md AGENTS.md
 ## Graphify memory
@@ -159,7 +159,7 @@ Search memory with plain words to find saved decisions, incidents and lessons. T
 ## What's next
 
 <Columns cols={2}>
-  <Card title="Hosted MCP" icon="plug" href="/platform/hosted-mcp">
+  <Card title="Graphify MCP" icon="plug" href="/platform/graphify-mcp">
     Connect the agents that write memory.
   </Card>
   <Card title="Learning" icon="graduation-cap" href="/platform/learning">

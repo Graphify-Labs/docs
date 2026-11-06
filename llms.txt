@@ -19,11 +19,12 @@ Start here for an overview of Graphify.
 
 ## Graphify: Get started
 
-Use when setting up hosted Graphify: sign in, index a repository, and connect an agent.
+Use when setting up hosted Graphify: sign in, index a repository, and connect an agent through Graphify MCP.
 
 - [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Explore graphs, Wiki, pull request reviews, formal verification, Learning and shared agent memory in your hosted Graphify workspace.
 - [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
+- [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth. Endpoint, tools, workspaces, limits, and fixes.
 - [Check your agent is using Graphify](https://docs.graphify.com/platform/verify-connection.md): Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix common setup problems.
 - [Index your first repository in Graphify](https://docs.graphify.com/concepts/index-a-repository.md): Connect a GitHub or GitLab repository to Graphify, switch on indexing, and confirm the build finished so your agent can query the graph.
 - [How Graphify keeps your graph fresh](https://docs.graphify.com/platform/keep-the-graph-fresh.md): Graphify rebuilds your code graph on every push to the default branch, re-processing only the files that changed. See what triggers a build and when.
@@ -46,7 +47,7 @@ Use when explaining how the graph answers questions about code, and how to read 
 
 ## Graphify: Features
 
-Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, connectors or the hosted MCP server.
+Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, or connectors.
 
 - [Ask your codebase: answers with citations](https://docs.graphify.com/platform/ask.md): Ask your codebase plain-language questions. Graphify answers with cited graph nodes and paths, handles PR questions, and abstains without a path.
 - [Code knowledge graph: explore and query repos](https://docs.graphify.com/platform/graphs.md): Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph.
@@ -62,7 +63,6 @@ Use when the user asks about a hosted feature: Ask, graphs, reviews, verificatio
 - [Agent memory for coding agents](https://docs.graphify.com/platform/memory.md): Explore the facts your coding agents remember about a repository, organized by code entity, with provenance and graph anchors behind every fact.
 - [Learning: tune AI code review findings](https://docs.graphify.com/platform/learning.md): Teach Graphify which review findings matter with @graphify wrong, good, and suppress. Learning reduces noise and never changes verification results.
 - [Connectors: agents, code hosts and tools](https://docs.graphify.com/platform/connectors.md): Connect coding agents over MCP and connect source providers, docs, issue trackers, and CI to Graphify from the Connectors page in the Console.
-- [Hosted MCP server for code graphs, with OAuth](https://docs.graphify.com/platform/hosted-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify's hosted MCP server with OAuth sign-in. Tools, workspaces, 240/min limit, errors.
 
 ## Graphify: Workspace
 

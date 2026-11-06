@@ -9,7 +9,7 @@ icon: "map"
 
 import { PromptBlock } from '/snippets/hero-install.jsx';
 
-When your coding agent connects to the [hosted MCP server](/platform/hosted-mcp), it gets a set of Graphify tools. This page maps each job you might want done to the tool that does it, with a prompt you can paste. You don't have to name tools in your prompts. Naming them makes it easier to check that the agent used the graph.
+When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it gets a set of Graphify tools. This page maps each job you might want done to the tool that does it, with a prompt you can paste. You don't have to name tools in your prompts. Naming them makes it easier to check that the agent used the graph.
 
 ## At a glance
 
@@ -27,6 +27,7 @@ When your coding agent connects to the [hosted MCP server](/platform/hosted-mcp)
 | Find the tests linked to code | `graphify_tests_for` |
 | Check that a repository is indexed, and how fresh it is | `graph_stats` |
 | Read or save what the team remembers | `recall`, `memories_about`, `remember` |
+| Read how a pull request review went | `review_status` |
 | Switch between Graphify workspaces | `list_workspaces`, `set_workspace` |
 
 ## Find code
@@ -77,7 +78,7 @@ Most tools take a `repository_id`, either an id or a name like `acme/web-app`. `
 
 - They don't edit your code or run your tests. Your agent does that with its own tools.
 - They answer from the last index of your default branch. Code that isn't merged or indexed yet isn't in the results.
-- There's no tool to read pull request reviews. Your agent reads reviews on GitHub. See [Know when a review is ready](/platform/reviews).
+- `review_status` does not start a review. It reads status and results. A completed review has `gate` of `pass` or `advisory`, not a `passed` field. See [what review_status returns](/platform/graphify-mcp#what-review_status-returns).
 
 ## Related
 
@@ -85,7 +86,7 @@ Most tools take a `repository_id`, either an id or a name like `acme/web-app`. `
   <Card title="Use Graphify from your agent" icon="list-checks" href="/agents/recipes">
     Copy-ready prompts for common jobs.
   </Card>
-  <Card title="Hosted MCP" icon="book" href="/platform/hosted-mcp">
+  <Card title="Graphify MCP" icon="book" href="/platform/graphify-mcp">
     Client setup and limits.
   </Card>
 </Columns>

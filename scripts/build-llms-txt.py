@@ -26,9 +26,9 @@ HEADER = """# Graphify
 
 WHEN_TO_USE = {
     ("Get Started", None): "Start here for an overview of Graphify.",
-    ("Graphify", "Get started"): "Use when setting up hosted Graphify: sign in, index a repository, and connect an agent.",
+    ("Graphify", "Get started"): "Use when setting up hosted Graphify: sign in, index a repository, and connect an agent through Graphify MCP.",
     ("Graphify", "Core concepts"): "Use when explaining how the graph answers questions about code, and how to read its edges.",
-    ("Graphify", "Features"): "Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, connectors or the hosted MCP server.",
+    ("Graphify", "Features"): "Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, or connectors.",
     ("Graphify", "Workspace"): "Use for repository indexing and sync, connected agents, contributors and profiles.",
     ("Graphify", "Support"): "Use for errors, rate limits, pricing, security, or moving from Graphify CLI to hosted Graphify.",
     ("Open Source", "Get started"): "Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.",

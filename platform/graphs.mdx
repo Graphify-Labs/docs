@@ -79,7 +79,7 @@ A combined graph moves through `not_started`, `queued`, `running`, then `ready` 
 
 ## Query the graph
 
-The console, Ask, and your [hosted MCP](/platform/hosted-mcp) agent all query the same graph. Each query targets one repository, by ID, full name such as `acme/api`, or short name such as `api`. A combined graph is targeted by its name in the UI, or by its group id over MCP: `list_repositories` returns it with `kind: "workspace"`, and query tools take that id in the `repository_id` slot. See [Query a repository group](/platform/hosted-mcp#query-a-repository-group).
+The console, Ask, and your [hosted MCP](/platform/graphify-mcp) agent all query the same graph. Each query targets one repository, by ID, full name such as `acme/api`, or short name such as `api`. A combined graph is targeted by its name in the UI, or by its group id over MCP: `list_repositories` returns it with `kind: "workspace"`, and query tools take that id in the `repository_id` slot. See [Query a repository group](/platform/graphify-mcp#query-a-repository-group).
 
 | Code | Status | Fix |
 | --- | --- | --- |

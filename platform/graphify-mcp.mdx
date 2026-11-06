@@ -1,35 +1,34 @@
 ---
-title: "Hosted MCP server for code graphs, with OAuth"
-sidebarTitle: "Hosted MCP"
-description: "Connect Claude Code, Cursor, Codex, or VS Code to Graphify's hosted MCP server with OAuth sign-in. Tools, workspaces, 240/min limit, errors."
-keywords: ["graphify mcp", "hosted mcp server", "mcp oauth", "code graph mcp", "claude code mcp", "cursor mcp", "codex mcp", "remote mcp server", "mcp server card", "mcp registry"]
+title: "Graphify MCP: connect your coding agent"
+sidebarTitle: "Graphify MCP"
+description: "Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth. Endpoint, tools, workspaces, limits, and fixes."
+keywords: ["graphify mcp", "mcp server", "remote mcp server", "mcp oauth", "code graph mcp", "claude code mcp", "cursor mcp", "hosted mcp", "mcp server card"]
 surface: "cloud"
-icon: "cloud"
+icon: "plug"
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-The **hosted MCP** server gives your coding agent the same graph you see in the Graphify app. Instead of grepping through files, your agent asks Graphify for the entities, relationships, and paths it needs, and gets grounded answers for a fraction of the tokens.
+Graphify MCP is the hosted Model Context Protocol server for your indexed repositories. Your coding agent queries the same code graph you see in the console: find symbols, follow callers, check impact, recall team memory, and read review status. Nothing runs on your machine. Sign in with OAuth. There is no API key to paste.
 
 ```text
 https://api.graphify.com/mcp
 ```
 
-You sign in with OAuth from your client. There's no API key to paste.
+| | |
+| --- | --- |
+| **Transport** | Streamable HTTP |
+| **Auth** | OAuth (browser sign-in, PKCE). No API key in the URL or config. |
+| **Scope** | `graphify:query` |
+| **When to use it** | This server. Use the [local MCP server](/open-source/mcp-server) for an offline or on-machine graph. |
+
+Main setup lives in the console under **Connectors → MCP**. That page fills in the endpoint, shows **Agent connection status**, and offers starter tasks under **Try it on your repository** once a repository is indexed.
 
 <Note>
-**Use the hosted MCP when** your repositories are indexed in Graphify and you want every agent on your team to use the same graph. To run a server on your own graph, see the [local MCP server](/open-source/mcp-server).
+You need a Graphify account at [app.graphify.com](https://app.graphify.com), at least one indexed repository, and an MCP client that supports remote HTTP servers. Hosted Graphify lists 63 grammars.
 </Note>
 
-## Before you start
-
-- A Graphify account at [app.graphify.com](https://app.graphify.com).
-- At least one indexed repository. Hosted Graphify lists 63 grammars.
-- An MCP client that supports remote HTTP servers.
-
 ## Connect your client
-
-The **MCP** tab under **Connectors** in Graphify shows the setup for your client, with your endpoint filled in.
 
 One-click installs: [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), or the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4).
 
@@ -112,7 +111,7 @@ One-click installs: [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/i
   </Tab>
 </Tabs>
 
-Graphify also has setup for VS Code, Windsurf, Cline, Continue, JetBrains, Zed, Goose, Kiro, and other clients, including one-click install links where a client supports them.
+Graphify also has setup for Windsurf, Cline, Continue, JetBrains, Zed, Goose, Kiro, and other clients, including one-click install links where a client supports them. See [Integrations](/integrations/overview).
 
 ### Clients without remote OAuth
 
@@ -131,7 +130,7 @@ For a client that only runs local (stdio) servers, use the pinned `mcp-remote` b
 
 Use your client's native remote connection when it supports Graphify's sign-in. The bridge is a third-party package.
 
-## Scope it to one repository
+## Target a repository or group
 
 Add `?repo=` with the repository's full name to set a default:
 
@@ -139,15 +138,29 @@ Add `?repo=` with the repository's full name to set a default:
 https://api.graphify.com/mcp?repo=acme/payments
 ```
 
+### Query a repository group
+
+A [combined graph](/platform/graphs#combine-repositories) is a query target for your agent, the same way a single repository is.
+
+1. In the console, open **Graphs**, choose **Combine graphs**, and pick the repositories. Wait until the combined graph is ready.
+2. Ask your agent to run `list_repositories`. Combined graphs appear in that list with `kind: "workspace"`. Their `repositoryId` is the group id, and `fullName` is the name you gave the group.
+3. Pass that `repositoryId` to the usual query tools (find, callers, impact, and the rest). Graphify serves the group's promoted merged graph.
+
+A group is queryable only when its current merge is promoted. If `queryable` is false, the merge is still building, failed, or was not promoted. Combined graphs have no pull requests, so review tools do not apply to them.
+
+See [Graph explorer](/platform/graphs) for how to build and open a combined graph in the console.
+
 ## What your agent can do
 
-Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. The repository tools, such as `list_repositories`, come from the indexed graph. Graphify also adds these tools to every session:
+Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. Repository tools such as `list_repositories`, `query_graph`, `graphify_find`, callers, impact, and memory come from the indexed graph. For the job-to-tool map and pasteable prompts, see [What your agent can do](/agents/capabilities) and [Use Graphify from your agent](/agents/recipes).
 
-| Tool | Arguments | Behavior |
-| --- | --- | --- |
-| `list_workspaces` | None | Lists the workspaces you belong to and marks the active one. Read-only. |
-| `set_workspace` | `handle` (string, required), `make_default` (boolean, optional) | Switches the session to that workspace. With `make_default`, the choice persists. Marked as a state-changing tool, so most clients ask before running it. |
-| `review_status` | `repository` (string, optional), `pr_number` (integer, optional) | Read-only. Returns how Graphify's review of a pull request went. Pass `pr_number` for one PR. Omit it to list the 10 most recent reviews. Does not start or re-run a review. |
+Graphify also adds these workspace and review tools to every session:
+
+| Tool | What it does |
+| --- | --- |
+| `list_workspaces` | Lists the workspaces you belong to and marks the active one. No arguments. Read-only. |
+| `set_workspace` | `handle` (required) switches the session to that workspace. `make_default` (optional) also saves it as your default. State-changing, so most clients ask before running it. |
+| `review_status` | `repository` and `pr_number` are optional. Pass `pr_number` for one PR, or omit it for the 10 most recent reviews. Read-only. Does not start or re-run a review. |
 
 Changing workspace changes which repositories the session can see. It doesn't change your code or the graph.
 
@@ -157,25 +170,15 @@ For one PR, the tool returns a `review` object (or `null` with a message if Grap
 
 Each review includes the repository, PR number and title, status (`queued`, `running`, `completed`, `failed`, or `cancelled`), and whether a newer push superseded it. A completed review also includes:
 
-- **`gate`:** `pass` or `advisory`
+- **`gate`:** `pass` or `advisory` (not a `passed` field)
 - **Finding counts:** `blocking_count`, `advisory_count`, and `findings_total`
 - **`top_findings`:** up to five findings, worst severity first
 
-If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in a few minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
+If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in about 20 to 30 minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
 
-## Query a repository group
+<a id="how-hosted-mcp-sign-in-works"></a>
 
-A [combined graph](/platform/graphs#combine-repositories) is a query target for your agent, the same way a single repository is.
-
-1. In Graphify, open **Graphs**, choose **Combine graphs**, and pick the repositories. Wait until the combined graph is ready.
-2. Ask your agent to run `list_repositories`. Combined graphs appear in that list with `kind: "workspace"`. Their `repositoryId` is the group id, and `fullName` is the name you gave the group.
-3. Pass that `repositoryId` to the usual query tools (find, callers, impact, and the rest). Graphify serves the group's promoted merged graph.
-
-A group is queryable only when its current merge is promoted. If `queryable` is false, the merge is still building, failed, or was not promoted. Combined graphs have no pull requests, so review tools do not apply to them.
-
-See [Graph explorer](/platform/graphs) for how to build and open a combined graph in the UI.
-
-## How hosted MCP sign-in works
+## How sign-in works
 
 You don't paste a key. Your client discovers the sign-in flow from the server:
 
@@ -186,49 +189,49 @@ You don't paste a key. Your client discovers the sign-in flow from the server:
 
 If a token doesn't verify, you get the same discovery `401`, and your client starts the sign-in again.
 
-## Let clients find Graphify with a server card
+<a id="let-clients-find-graphify-with-a-server-card"></a>
+
+## Server card vs the MCP connection
 
 **Your client can find Graphify on its own.** Graphify publishes an [MCP server card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards): a small public JSON file that says what the server is and where to connect. A client can read it before it connects or signs in, so you don't have to type the server URL.
 
-<Columns cols={2}>
-  <Card title="Server card" icon="id-card">
-    `https://api.graphify.com/mcp/server-card`. Who the server is and where to reach it.
-  </Card>
-  <Card title="AI catalog" icon="list">
-    `https://api.graphify.com/.well-known/ai-catalog.json`. Lists the server card, so a client that only knows the domain can find it.
-  </Card>
-</Columns>
+The server card is discovery only. It is not the MCP connection, and it does not list your tools. After connect and OAuth, your client gets tools from `tools/list`. Clients that don't read server cards keep working with the setup steps above.
 
-### When a client uses it
-
-<Steps>
-  <Step title="Find the card">
-    A client or registry reads the AI catalog at `api.graphify.com`, or goes straight to the server card.
-  </Step>
-  <Step title="Set up the connection">
-    It reads the name, icon and remote URL from the card and adds Graphify for you.
-  </Step>
-  <Step title="Sign in and list tools">
-    It connects to `https://api.graphify.com/mcp`, runs the [OAuth sign-in](#how-hosted-mcp-sign-in-works), then gets your tools from `tools/list`.
-  </Step>
-</Steps>
-
-Clients that don't read server cards keep working with the setup steps above.
+| Endpoint | What it is |
+| --- | --- |
+| `https://api.graphify.com/mcp/server-card` | Server card: name, icon, remote URL |
+| `https://api.graphify.com/.well-known/ai-catalog.json` | AI catalog entry that points at the card |
+| `https://api.graphify.com/mcp` | The actual MCP endpoint your client calls |
 
 ### What's in the card
 
-| Field | Value | What it's for |
-| --- | --- | --- |
-| `name` | `io.github.Graphify-Labs/graphify` | Unique ID. Matches the MCP Registry entry. |
-| `title` | `Graphify` | The name a client shows you. |
-| `description` | What the server does | Shown next to the name. |
-| `version` | Version number, such as `0.1.1` | Which release of the listing this is. |
-| `remotes` | `streamable-http` at `https://api.graphify.com/mcp` | Where and how to connect. |
-| `icons` | 400×400 PNG logo | The icon a client shows. |
-| `websiteUrl` | `https://graphify.com/mcp` | Where to learn more. |
-| `repository` | `github.com/Graphify-Labs/graphify-mcp` | Where the server code lives. |
+| Field | Value |
+| --- | --- |
+| `name` | `io.github.Graphify-Labs/graphify`. Unique ID. Matches the MCP Registry entry. |
+| `title` | `Graphify`. The name a client shows you. |
+| `description` | Search indexed code, trace dependencies, assess change impact, and recall repository memory. |
+| `version` | Version number, such as `0.1.1`. Which release of the listing this is. |
+| `remotes` | `streamable-http` at `https://api.graphify.com/mcp`. Where and how to connect. |
+| `icons` | 400×400 PNG logo. The icon a client shows. |
+| `websiteUrl` | `https://graphify.com/mcp`. Where to learn more. |
+| `repository` | `github.com/Graphify-Labs/graphify-mcp`. Where the server code lives. |
 
 The AI catalog has one entry, `urn:air:graphify.com:mcp:graphify`, of type `application/mcp-server-card+json`, pointing at the server card.
+
+```bash
+curl -H "Accept: application/mcp-server-card+json" https://api.graphify.com/mcp/server-card
+```
+
+### Other discovery endpoints
+
+These public files tell a client how to sign in. Your client reads them for you.
+
+| Endpoint | What it describes |
+| --- | --- |
+| `/.well-known/oauth-protected-resource/mcp` | The MCP server, its sign-in server, and the `graphify:query` scope. |
+| `/.well-known/oauth-authorization-server` | Sign-in, token, registration, and revoke URLs, with PKCE (`S256`). Also at `/.well-known/openid-configuration`. |
+
+All are on `https://api.graphify.com` and are cached for an hour.
 
 <AccordionGroup>
   <Accordion title="Why doesn't the card list Graphify's tools?">
@@ -240,25 +243,7 @@ The AI catalog has one entry, `urn:air:graphify.com:mcp:graphify`, of type `appl
   <Accordion title="Can a web app read the card?">
     Yes. The card and catalog allow any origin (`Access-Control-Allow-Origin: *`), are cached for an hour, and send an `ETag`. Send it back in `If-None-Match` and you get `304 Not Modified` if nothing changed.
   </Accordion>
-  <Accordion title="How do I check the card?">
-    ```bash
-    curl -H "Accept: application/mcp-server-card+json" https://api.graphify.com/mcp/server-card
-    ```
-
-    You get back JSON with the server's name and remote URL.
-  </Accordion>
 </AccordionGroup>
-
-### Other discovery endpoints
-
-These public files tell a client how to sign in. Your client reads them for you.
-
-| Endpoint | What it describes |
-| --- | --- |
-| `/.well-known/oauth-protected-resource/mcp` | The MCP server, its sign-in server and the `graphify:query` scope. |
-| `/.well-known/oauth-authorization-server` | Sign-in, token, registration and revoke URLs, with PKCE (`S256`). Also at `/.well-known/openid-configuration`. |
-
-All are on `https://api.graphify.com` and are cached for an hour.
 
 ## Workspaces and MCP sessions
 
@@ -282,7 +267,9 @@ Every request runs in one workspace. Graphify picks it in this order: the worksp
 | `mcp_session_required` | "set_workspace can only run inside an established MCP session." Reconnect the client, then retry. |
 | `invalid_arguments` | "set_workspace requires a handle." |
 
-## Hosted MCP limits
+<a id="hosted-mcp-limits"></a>
+
+## Limits
 
 | Limit | Default |
 | --- | --- |
@@ -313,49 +300,31 @@ The request limit is counted per client IP address for signed-in sessions. Over 
 
 Seeing the tools doesn't prove repository access. The last step does. For test prompts per client, see [Check your agent is using Graphify](/platform/verify-connection).
 
-### Fix common problems
+## Fix common problems
 
-<AccordionGroup>
-  <Accordion title="The client shows &quot;needs authentication&quot;">
-    Run the client's sign-in step: `/mcp` → Authenticate, or `codex mcp login graphify`.
-  </Accordion>
-  <Accordion title="Verify your email to connect">
-    You're signed in, but the account's email isn't verified yet. Open the verification link Graphify emailed you (or use **Resend the verification email**), then connect again from your client. If you signed up with Google or GitHub, choose that option when you connect.
-  </Accordion>
-  <Accordion title="list_repositories is empty">
-    You're in a workspace with no indexed repositories. Switch with `set_workspace`.
-  </Accordion>
-  <Accordion title="A repository returns no results">
-    Check in Graphify that it finished indexing, and that you're in the right workspace (`list_workspaces`).
-  </Accordion>
-  <Accordion title="Tools connect but chat can't run them">
-    Turn the tools on in your client and check that your model can call tools. In Copilot, add `"tools": ["*"]` to its config.
-  </Accordion>
-  <Accordion title="Graphify isn't in my client's MCP gallery">
-    Add `https://api.graphify.com/mcp` directly. The MCP Registry listing (`io.github.Graphify-Labs/graphify`) and gallery inclusion are separate.
-  </Accordion>
-  <Accordion title="npx or Node.js isn't found">
-    Install Node.js where the client can find it, or use the client's native remote setup.
-  </Accordion>
-  <Accordion title="Copilot on github.com can't connect">
-    Copilot's coding agent and code review only support static header credentials, not OAuth sign-in, so they can't use this endpoint yet.
-  </Accordion>
-  <Accordion title="Does the hosted MCP see my local changes?">
-    No. It serves the indexed graph. For uncommitted work, use the [local MCP server](/open-source/mcp-server).
-  </Accordion>
-</AccordionGroup>
+| What you see | What to do |
+| --- | --- |
+| Needs authentication / Needs login | You are connected, not signed in. Claude Code: `/mcp` → **Authenticate**. Codex: `codex mcp login graphify`. Cursor and VS Code: finish the browser sign-in. |
+| Verify your email to connect | The account email isn't verified. Open the verification email, or select **Resend the verification email**, then connect again. Google or GitHub sign-up: choose that option when you connect. |
+| `list_repositories` is empty | You are in the wrong workspace, or it has no repositories. Switch with `set_workspace`, or index a repository. |
+| A repository returns no results | It is not indexed, or you are in the wrong workspace. Wait for **Indexed** on **Repositories**, then confirm the workspace with `list_workspaces`. |
+| Tools connect but chat can't run them | Turn Graphify tools on in the client, and check that the model can call tools. In Copilot, add `"tools": ["*"]`. |
+| Graphify isn't in my client's MCP gallery | Gallery listing is separate from the registry. Add `https://api.graphify.com/mcp` directly. Registry id: `io.github.Graphify-Labs/graphify`. |
+| `npx` or Node.js isn't found | The bridge needs Node. Install Node where the client can find it, or use the client's native remote setup. |
+| Copilot on github.com can't connect | No OAuth support there yet. Copilot's coding agent and code review only support static header credentials, so they can't use this endpoint yet. |
+| Does Graphify MCP see my local changes? | No. It serves the indexed graph. For uncommitted work, use the [local MCP server](/open-source/mcp-server). |
 
 ## What's next
 
 <Columns cols={2}>
-  <Card title="Ask" icon="comments" href="/platform/ask">
-    The same graph, in the Graphify app.
+  <Card title="Check it's working" icon="circle-check" href="/platform/verify-connection">
+    Three prompts that prove the agent used Graphify.
   </Card>
-  <Card title="Memory" icon="brain" href="/platform/memory">
-    What your agents remember.
+  <Card title="What your agent can do" icon="map" href="/agents/capabilities">
+    Job-to-tool map and pasteable prompts.
   </Card>
-  <Card title="Test impact analysis" icon="flask-conical" href="/platform/test-impact">
-    Run only the tests a change affects.
+  <Card title="Ask" icon="message-square-text" href="/platform/ask">
+    The same graph, in the console.
   </Card>
   <Card title="Integrations" icon="blocks" href="/integrations/overview">
     Setup for each agent.

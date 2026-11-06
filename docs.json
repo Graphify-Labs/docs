@@ -26,6 +26,7 @@
               "platform/overview",
               "platform/how-it-works",
               "platform/quickstart",
+              "platform/graphify-mcp",
               "platform/verify-connection",
               "concepts/index-a-repository",
               "platform/keep-the-graph-fresh",
@@ -65,8 +66,7 @@
               "platform/wiki",
               "platform/memory",
               "platform/learning",
-              "platform/connectors",
-              "platform/hosted-mcp"
+              "platform/connectors"
             ]
           },
           {
@@ -671,6 +671,10 @@
     {
       "source": "/platform/google-drive",
       "destination": "/integrations/google-drive"
+    },
+    {
+      "source": "/platform/hosted-mcp",
+      "destination": "/platform/graphify-mcp"
     }
   ]
 }

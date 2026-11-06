@@ -1,0 +1,113 @@
+---
+title: "Graphify for Claude"
+sidebarTitle: "Claude"
+description: "Connect Graphify from the Claude connectors directory on Claude.ai and Desktop. Approve OAuth, enable per chat, then verify with a simple graph question."
+surface: "cloud"
+hideFooterPagination: true
+keywords: ["claude connectors", "claude connector", "claude desktop mcp", "claude mcp", "graphify claude", "mcp connector"]
+---
+
+import { InstallButton } from '/snippets/install-button.mdx';
+
+Connect [Claude.ai](https://claude.ai) and the Claude desktop app to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Claude can then search the repositories indexed in your [Graphify](https://app.graphify.com) workspace, follow callers and dependencies, and check what a change reaches.
+
+Graphify is listed in Anthropic's [Connectors directory](https://claude.ai/directory/graphify). It is a connector. The server uses Streamable HTTP and OAuth. There is no API key to paste.
+
+<InstallButton href="https://claude.ai/directory/graphify" label="Connect in Claude">
+One click: open Graphify in Anthropic's Connectors directory, connect, then turn it on in the chat.
+</InstallButton>
+
+For Claude Code (CLI, IDE, or the desktop Code tab), see [Graphify for Claude Code](/integrations/claude-code).
+
+## Before you start
+
+- A Graphify account at [app.graphify.com](https://app.graphify.com). See [Plans and pricing](/platform/support/pricing).
+- At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
+- A Claude account. Connectors work on Claude.ai, the desktop app, and Claude mobile. On Team and Enterprise plans, an Owner adds the connector for the organization, and members then connect with their own account.
+
+## Connect from the directory
+
+1. Open [Graphify in the Claude directory](https://claude.ai/directory/graphify).
+2. Select **Connect to Claude** and finish Graphify sign-in in the browser. Or open **Customize → Connectors**, select **Discover**, and search for Graphify.
+3. In a chat, select **+**, then **Connectors**, and turn **Graphify** on for that conversation. The toggle is per chat.
+4. Ask about your indexed code. The first tool call may ask you to select **Allow once** or **Always allow**.
+
+### Team and Enterprise
+
+On a Team or Enterprise plan, **Connect to Claude** appears after the connector is available for the organization. Otherwise you may see **Request**, or a note to ask an Owner. An Owner sees **Connect for your team**, and can choose **Connect just for me**.
+
+### Desktop and mobile
+
+The same connector is available in the Claude desktop app and on Claude mobile after you connect it. A desktop extension is a different install. Graphify uses the remote connector.
+
+## Custom connector
+
+If you are not using the directory listing, open **Customize → Connectors**, select **Add**, then **Custom** and **Web**, and enter:
+
+```text
+https://api.graphify.com/mcp
+```
+
+You still sign in with OAuth. There is no API key.
+
+## Check the connection
+
+With Graphify enabled for the chat, paste:
+
+```text
+List the repositories I can access in Graphify. If a tool fails, report the error instead of guessing.
+```
+
+The list should match the workspace you chose when you signed in. Then name a repository and ask something concrete:
+
+- `Who calls the function that validates a session token?`
+- `What would break if I changed this module's public interface?`
+
+Answers are graph evidence from files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
+
+For a deeper checklist across clients, see [Check your agent is using Graphify](/platform/verify-connection).
+
+## Permissions
+
+| | |
+| --- | --- |
+| **Auth** | Browser OAuth (PKCE). Scope `graphify:query`. No API key in the URL or chat. |
+| **Data** | Indexed repositories in the Graphify workspace you pick at sign-in. Graphify does not read local files from Claude.ai. |
+| **Per chat** | Graphify stays off until you enable it under **+**, then **Connectors**, for that conversation. |
+| **Tool prompts** | Claude may ask **Allow once** or **Always allow** before a Graphify tool runs. |
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| A Claude chat doesn't use Graphify | Select **+**, then **Connectors**, and turn Graphify on for that chat. Approve the tool call if Claude asks. |
+| **Request** instead of Connect | Ask an Owner to add the connector for the organization, or choose **Connect just for me** if you are an Owner. |
+| Tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
+| Sign-in loop or denied access | Finish Graphify sign-in in the browser, pick the workspace, and turn the chat toggle on again. |
+
+## FAQ
+
+### Do I need an API key?
+
+No. The directory connector and a custom connector both sign in with OAuth in your browser.
+
+### Is this the same as Claude Code?
+
+No. This page is Claude.ai, Desktop, and mobile. For the Claude Code CLI and IDE, see [Graphify for Claude Code](/integrations/claude-code).
+
+### Is Graphify a Claude plugin?
+
+No. Graphify is a connector in Anthropic's Connectors directory. A plugin is a separate package that can bundle skills, connectors, and commands.
+
+### Is the hosted server free?
+
+The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required. See [Plans and pricing](/platform/support/pricing).
+
+<Card title="Graphify MCP hub" icon="plug" href="/platform/graphify-mcp">Endpoint, tools, workspaces, and other clients.</Card>
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/integrations/overview" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Overview</span></a>
+  <a href="/integrations/claude-code" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Claude Code</span></a>
+</div>

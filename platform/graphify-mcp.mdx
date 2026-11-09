@@ -26,7 +26,7 @@ https://api.graphify.com/mcp
 Main setup lives in the console under **Connectors → MCP**. That page fills in the endpoint, shows **Agent connection status**, and offers starter tasks under **Try it on your repository** once a repository is indexed.
 
 <Note>
-You need a Graphify account at [app.graphify.com](https://app.graphify.com), at least one indexed repository, and an MCP client that supports remote HTTP servers. Hosted Graphify lists 63 grammars.
+You need a Graphify account, at least one repository with the status **Indexed**, and an MCP client that supports remote HTTP servers. If you don't have an account yet, you can create one for free while connecting from Claude, ChatGPT, Codex, or another OAuth client, then enable a repository and wait for indexing. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing). Hosted Graphify lists 63 grammars.
 </Note>
 
 ## Connect your client
@@ -311,6 +311,9 @@ Seeing the tools doesn't prove repository access. The last step does. For test p
 | `npx` or Node.js isn't found | The bridge needs Node. Install Node where the client can find it, or use the client's native remote setup. |
 | Copilot on github.com can't connect | No OAuth support there yet. Copilot's coding agent and code review only support static header credentials, so they can't use this endpoint yet. |
 | Does Graphify MCP see my local changes? | No. It serves the indexed graph. For uncommitted work, use the [local MCP server](/open-source/mcp-server). |
+| Only a `graphify_setup` tool appears, or the agent shows **Graphify isn't set up for this account yet** | Finish [onboarding](https://app.graphify.com/onboarding), enable a repository, wait until it is **Indexed**, start a new chat, and reconnect the connector if tools still don't appear. |
+| Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories**, wait for the first index to finish, then ask again. |
+| Browser shows **Finish setting up Graphify** | Continue setup with the same account you used to connect, create a workspace, enable a repository, then return to the client. |
 
 ## What's next
 

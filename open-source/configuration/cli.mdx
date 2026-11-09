@@ -156,8 +156,8 @@ graphify clone https://github.com/Graphify-Labs/graphify
 
 | Command | What it does |
 | --- | --- |
-| `graphify hook install` | Add post-commit, post-checkout, post-merge, and post-rewrite hooks, plus a merge driver for `graph.json`. `status` and `uninstall` too. |
-| `graphify install [--platform P]` | Copy the skill for your agent. `uninstall` removes it everywhere (`--purge` also deletes `graphify-out/`). |
+| `graphify hook install` | Add post-commit, post-checkout, post-merge, and post-rewrite hooks, plus a merge driver for `graph.json`. `status` and `uninstall` too. Paths and git config are in [What install changes](/open-source/what-install-changes). |
+| `graphify install [--platform P]` | Register one assistant's skill in your home directory, or in the repo with `--project`. `uninstall` removes user-scope registrations. `--purge` also deletes `graphify-out/`. Paths are in [What install changes](/open-source/what-install-changes). |
 | `graphify claude install`, `cursor install`, `codex install`, and so on | Write the agent's rules file and, where supported, a hook that points it at the graph. |
 | `graphify check-update <path>` | Cron-safe check for pending semantic re-extraction. |
 | `graphify prs` | Pull request dashboard. See [PR impact](/open-source/features/pr-impact). |

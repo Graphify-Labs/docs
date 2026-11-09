@@ -1,0 +1,192 @@
+---
+title: "What install changes and how to undo it"
+sidebarTitle: "What install changes"
+description: "See the files, git hooks, and git config Graphify CLI writes on your machine and in a repo, and how to remove them."
+keywords: ["graphify install", "graphify uninstall", "graphify hook install", "graphify hook uninstall", "git hooks"]
+surface: "local"
+icon: "file-diff"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+`graphify install` and `graphify hook install` write files on your machine and in the current repository. This page lists those paths. Open-source Graphify keeps the writes local: a trace of both commands, and of the code rebuild a hook runs, recorded no network connection.
+
+## `graphify install`
+
+`graphify install` registers one assistant. With no `--platform`, macOS and Linux select `claude`, and Windows selects `windows`. Both write Claude Code's skill folder. `--platform skills` is another name for `agents`.
+
+`--project` writes into the current repository. A few assistants also write into the repository when you omit `--project`. Those rows say so.
+
+A skill directory holds `SKILL.md`, a `.graphify_version` file, and a `references/` folder. The references are `add-watch.md`, `exports.md`, `extraction-spec.md`, `github-and-merge.md`, `hooks.md`, `query.md`, `transcribe.md`, and `update.md`. Aider and Devin ship `SKILL.md` and `.graphify_version` only.
+
+Every skill write also creates `~/.cache/graphify/skill-locks/<hash>.lock`. The hash is of the skill directory. The lock file stays after uninstall.
+
+### What it writes
+
+**Home directory.** This is `graphify install` with no `--project`.
+
+| Path | What | Why |
+| --- | --- | --- |
+| `~/.claude/skills/graphify/` | Claude Code skill. Default on macOS and Linux. `--platform windows` writes the Windows skill into this same directory. | The assistant loads the skill from here. |
+| `~/.claude/CLAUDE.md` | New file, or a `# graphify` section added, for `claude` and `windows`. The section names the skill path. | Claude Code reads it in every session. |
+| `$CLAUDE_CONFIG_DIR/skills/graphify/` and `$CLAUDE_CONFIG_DIR/CLAUDE.md` | Same two Claude Code files, when `CLAUDE_CONFIG_DIR` is set. | That variable replaces `~/.claude` for a user install. |
+| `~/.codex/skills/graphify/` | Codex skill. | Codex loads the skill. User scope writes no `AGENTS.md` and no `hooks.json`. |
+| `~/.config/opencode/skills/graphify/` | OpenCode skill. | OpenCode loads the skill. |
+| `~/.config/opencode/plugins/graphify.js` | OpenCode plugin. | Reminds the assistant about the graph before a shell command. |
+| `~/.config/kilo/skills/graphify/` | Kilo skill. | Kilo loads the skill. |
+| `~/.config/kilo/command/graphify.md` | Kilo `/graphify` command. Also written by `--project --platform kilo`. | Kilo's command file lives in your home directory. |
+| `~/.aider/graphify/` | Aider skill, with no `references/` folder. | Aider loads the skill. |
+| `~/.copilot/skills/graphify/` | GitHub Copilot CLI skill. | Copilot CLI loads the skill. |
+| `~/.openclaw/skills/graphify/` | OpenClaw skill (`claw`). | OpenClaw loads the skill. |
+| `~/.factory/skills/graphify/` | Factory skill (`droid`). | Factory loads the skill. |
+| `~/.trae/skills/graphify/` | Trae skill. | Trae loads the skill. |
+| `~/.trae-cn/skills/graphify/` | Trae CN skill. | Trae CN loads the skill. |
+| `~/.hermes/skills/graphify/` | Hermes skill. On Windows this is `%LOCALAPPDATA%\hermes\skills\graphify\`. | Hermes loads the skill. |
+| `~/.kiro/skills/graphify/` | Kiro skill. | Kiro loads the skill. |
+| `~/.pi/agent/skills/graphify/` | Pi skill. | Pi loads the user skill from this path. |
+| `~/.codebuddy/skills/graphify/` | CodeBuddy skill. | CodeBuddy loads the skill. |
+| `~/.codebuddy/CODEBUDDY.md` | `# graphify` section. Also written by `--project --platform codebuddy`. | Registers the skill for CodeBuddy. |
+| `~/.gemini/config/skills/graphify/` | Antigravity skill, for `antigravity` and `antigravity-windows`. | Both platforms share this directory. |
+| `~/.kimi/skills/graphify/` | Kimi skill. | Kimi loads the skill. |
+| `~/.config/agents/skills/graphify/` | Amp skill. | Amp loads the user skill from here. |
+| `~/.agents/skills/graphify/` | Generic Agent Skills skill (`agents` and `skills`). | Frameworks that read the Agent Skills spec load it from here. |
+| `~/.config/devin/skills/graphify/` | Devin skill, with no `references/` folder. | Devin loads the skill. |
+| `~/.gemini/skills/graphify/` | Gemini CLI skill. | Gemini CLI loads the skill. |
+| `GEMINI.md` and `.gemini/settings.json` in the current directory | Gemini instructions and a BeforeTool hook. Written for `gemini` even without `--project`. The hook command is the absolute path of your `graphify` executable. | Gemini CLI reads both from the project. |
+| `.cursor/rules/graphify.mdc` | Cursor rule with `alwaysApply: true`. Written for `cursor` even without `--project`. Cursor gets no skill directory. | Cursor includes the rule in every chat. |
+
+**Current repository.** This is `graphify install --project`.
+
+| Path | What | Why |
+| --- | --- | --- |
+| `.claude/skills/graphify/`, `.claude/CLAUDE.md`, `CLAUDE.md`, `.claude/settings.json` | Claude Code project install, for `claude`, `windows`, and `--project` with no platform. `CLAUDE.md` holds a `## graphify` section. `.claude/CLAUDE.md` holds the `# graphify` skill registration. `settings.json` adds PreToolUse hooks for Bash, Grep, Read, and Glob, plus a SessionStart hook for compact, each running `graphify hook-guard`. | The repo carries the skill, the rules, and the hooks. `--strict` adds `--strict` to the Read and Grep hook commands. |
+| `.codex/skills/graphify/`, `AGENTS.md`, `.codex/hooks.json` | Codex project install. `AGENTS.md` holds a `## graphify` section. `hooks.json` adds a PreToolUse hook for Bash that runs `graphify hook-check`. | Codex reads the rules and the hook from the repo. |
+| `.opencode/skills/graphify/`, `.opencode/plugins/graphify.js`, `AGENTS.md` | OpenCode project install. | The skill, the plugin, and the rules travel with the repo. |
+| `.config/kilo/skills/graphify/` | Kilo project skill, inside the repo. The command file is still `~/.config/kilo/command/graphify.md`. | Kilo's project skill path follows that layout. |
+| `.aider/graphify/` and `AGENTS.md` | Aider project install. The skill has no `references/` folder. | Aider reads the skill, and the rules file is shared with the assistants below. |
+| `.openclaw/skills/graphify/` and `AGENTS.md` | OpenClaw (`claw`). | Same rules file, plus the OpenClaw skill. |
+| `.factory/skills/graphify/` and `AGENTS.md` | Factory (`droid`). | Same rules file, plus the Factory skill. |
+| `.trae/skills/graphify/` and `AGENTS.md` | Trae. | Same rules file, plus the Trae skill. |
+| `.trae-cn/skills/graphify/` and `AGENTS.md` | Trae CN. | Same rules file, plus the Trae CN skill. |
+| `.hermes/skills/graphify/` and `AGENTS.md` | Hermes. | Same rules file, plus the Hermes skill. |
+| `.agents/skills/graphify/` and `AGENTS.md` | Amp. | Amp's project skill shares this folder with Antigravity and `agents`. |
+| `.copilot/skills/graphify/` | Copilot CLI skill only. | Copilot CLI loads the project skill. |
+| `.pi/skills/graphify/` | Pi project skill. The user path is `~/.pi/agent/skills/graphify/`. | Pi reads project skills from `.pi/skills`. |
+| `.kimi/skills/graphify/` | Kimi skill only. | Kimi loads the project skill. |
+| `.agents/skills/graphify/` | Generic Agent Skills (`agents` and `skills`). | The spec's project location. |
+| `.kiro/skills/graphify/` and `.kiro/steering/graphify.md` | Kiro skill and steering file. | Kiro reads the steering file on every conversation. |
+| `.devin/skills/graphify/` and `.windsurf/rules/graphify.md` | Devin skill, with no `references/` folder, and a Windsurf rules file. | Devin reads rules from `.windsurf/rules`. |
+| `.agents/skills/graphify/`, `.agents/rules/graphify.md`, `.agents/workflows/graphify.md` | Antigravity. | Rules and a workflow sit next to the skill. |
+| `.agents/skills/graphify/` | `antigravity-windows`. Rules and workflows are written for `antigravity` only. | The Windows Antigravity skill uses this folder. |
+| `.codebuddy/skills/graphify/` | CodeBuddy project skill. `~/.codebuddy/CODEBUDDY.md` is still written in your home directory. | The skill is in the repo. The registration file is in your home directory. |
+| `.gemini/skills/graphify/`, `GEMINI.md`, `.gemini/settings.json` | Gemini CLI project install. The hook command is the bare word `graphify`. | The committed hook stays valid on another machine. |
+| `.cursor/rules/graphify.mdc` | Same Cursor rule as a user install. | Cursor has one location for this rule. |
+
+`claude` and `windows` share `~/.claude/skills/graphify/`. `antigravity` and `antigravity-windows` share `~/.gemini/config/skills/graphify/`. In a repo, Amp, Antigravity, and `agents` share `.agents/skills/graphify/`. A later install replaces the skill already in that folder.
+
+If a settings file such as `.claude/settings.json` or `.codex/hooks.json` already exists and the command changes it, the previous copy is saved beside it as `<name>.graphify-bak`.
+
+`graphify install` does not create `graphify-out/` or `.graphifyrc`, and it does not change git config.
+
+### What stays local
+
+The command copies packaged skill files and edits assistant config on disk. It prints a URL in the terminal. It does not request that URL. A system trace of `graphify install` recorded no network connection.
+
+The Gemini user install stores an absolute path in `.gemini/settings.json`. Leave that file uncommitted, or use `--project`, which writes the command name `graphify` instead.
+
+### How to undo it
+
+Remove every user-scope registration:
+
+```bash
+graphify uninstall
+```
+
+`--platform` is ignored here. The command removes every home skill directory in the table, the `# graphify` sections in `~/.claude/CLAUDE.md` and `~/.codebuddy/CODEBUDDY.md`, the Kilo command file, and both OpenCode plugin copies (`~/.config/opencode` and `.opencode` in the repo). In the current repository it also removes a `## graphify` section from `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md`, the Cursor rule, assistant hook entries, and the git hooks and merge driver.
+
+Add `--purge` to also delete the output directory. That is `graphify-out/` unless `GRAPHIFY_OUT` names another directory. `.` and `..` warn and use `graphify-out`. If the path is your home directory, the project, or a parent of either, the command stops and changes nothing.
+
+Remove one project install, or every project install:
+
+```bash
+graphify uninstall --project --platform codex
+graphify uninstall --project
+```
+
+`--project` leaves home skills in place. With no `--platform`, every project install in the table is removed. `--purge` has no effect together with `--project`. Git hooks stay until you run `graphify hook uninstall` or `graphify uninstall` without `--project`.
+
+These files remain:
+
+| Left behind | What to do |
+| --- | --- |
+| `~/.cache/graphify/skill-locks/` | Delete the directory if you want the locks gone. Uninstall creates a lock for each skill directory it checks. |
+| Project skill directories after `graphify uninstall` without `--project` | Run `graphify uninstall --project`, or delete the directories. `.claude/CLAUDE.md` in the repo is one of these. |
+| `~/.codebuddy/CODEBUDDY.md` after a project CodeBuddy uninstall | Run `graphify uninstall` without `--project`. |
+| `~/.config/kilo/command/graphify.md` after a project Kilo uninstall | Same user-scope uninstall. |
+| `.claude/settings.json` and `.codex/hooks.json` after the hooks are stripped | The files stay, with empty hook lists. Delete them and the matching `.graphify-bak` if you wrote nothing else there. |
+| `SKILL.md.bak` | Saved when a reinstall replaces a `SKILL.md` you edited. Delete it or keep it. |
+| `graphify-out/` | Stays unless you passed `--purge`. |
+| The `graphifyy` package | `uv tool uninstall graphifyy`, or `pip uninstall graphifyy`. |
+
+## `graphify hook install`
+
+Run this inside a git repository. It registers four git hooks and a merge driver for `graph.json`. `graphify hook status` only reads those files and prints one line each.
+
+### What it writes
+
+| Path | What | Why |
+| --- | --- | --- |
+| `.git/hooks/post-commit` | A block between `# graphify-hook-start` and `# graphify-hook-end`. | Rebuilds the code graph for files the commit changed. |
+| `.git/hooks/post-checkout` | A block between `# graphify-checkout-hook-start` and `# graphify-checkout-hook-end`. | Rebuilds the code graph after a branch switch. |
+| `.git/hooks/post-merge` | A block between `# graphify-merge-hook-start` and `# graphify-merge-hook-end`. | Rebuilds the code graph after a merge. |
+| `.git/hooks/post-rewrite` | A block between `# graphify-rewrite-hook-start` and `# graphify-rewrite-hook-end`. | Rebuilds the code graph after a rebase. |
+| `.gitattributes` | One appended line, `graphify-out/graph.json merge=graphify`. Other lines stay. If `GRAPHIFY_OUT` is a relative directory name, that name replaces `graphify-out`. | Tells git to merge `graph.json` with Graphify's driver. |
+| `merge.graphify.name` | Local git config value `graphify graph.json union merge`. | Names the driver. |
+| `merge.graphify.driver` | Local git config value `"<python>" -m graphify merge-driver %O %A %B`. `<python>` is the interpreter that ran `hook install`. | Runs the driver even when `graphify` is off `PATH`. |
+
+A new hook file starts with `#!/bin/sh` and is executable. If the hook file already exists, the block is appended and your lines stay above it.
+
+When `core.hooksPath` is `.husky/_`, the four hooks are written in `.husky/`, the parent of `_`. When `core.hooksPath` points outside the repository, the command refuses that path and writes `.git/hooks` instead.
+
+`.graphifyrc` is read and left unchanged. A `viz_node_limit=400` line is copied into each hook as `export GRAPHIFY_VIZ_NODE_LIMIT="${GRAPHIFY_VIZ_NODE_LIMIT:-400}"`. A line that is not `key=value` stops the command with an error, and no hook is written. See [`.graphifyrc`](/open-source/configuration/graphifyrc).
+
+`hook install` does not create `graphify-out/`. A later commit can. The rebuild log is `~/.cache/graphify-rebuild.log`, written when a hook runs.
+
+### What stays local
+
+The command edits hook files, `.gitattributes`, and local git config. A system trace recorded no network connection. The rebuild those hooks launch is a local code extract: a trace of that rebuild recorded no network connection either. The log stays on disk.
+
+`GRAPHIFY_SKIP_HOOK=1` skips the rebuild for one git command. The hooks stay installed.
+
+```bash
+GRAPHIFY_SKIP_HOOK=1 git commit -m "docs: typo"
+```
+
+### How to undo it
+
+```bash
+graphify hook uninstall
+```
+
+This removes only the marker block. Lines outside the block stay. If the file is empty after that, or only `#!/bin/sh` or `#!/bin/bash` remains, the hook file is deleted. The `merge=graphify` line is removed from `.gitattributes`. Other lines stay. If it was the only line, `.gitattributes` is deleted. `merge.graphify.name` and `merge.graphify.driver` are unset.
+
+`graphify uninstall` without `--project` runs this same hook removal.
+
+`graphify-out/` and `~/.cache/graphify-rebuild.log` remain. `graphify uninstall --purge` deletes the output directory and leaves the log.
+
+What each hook rebuilds, and when it skips, is in [Keep your code graph up to date](/open-source/keep-the-graph-fresh).
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Installation" icon="download" href="/open-source/installation">
+    Install the package, then register an assistant.
+  </Card>
+  <Card title="Keeping the graph fresh" icon="git-merge" href="/open-source/keep-the-graph-fresh">
+    What the git hooks rebuild, and how to skip one command.
+  </Card>
+</Columns>
+
+<TryCloudCard />
+
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

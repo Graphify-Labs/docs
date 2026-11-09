@@ -67,7 +67,7 @@ graphify install
 graphify install --platform codex
 ```
 
-The first command detects an assistant. The second targets one explicitly. Run the specific command for each assistant you use.
+With no `--platform`, macOS and Linux register Claude Code, and Windows registers the Windows skill. Both write `~/.claude/skills/graphify/`. `--platform` names the assistant. The files each command writes are in [What install changes and how to undo it](/open-source/what-install-changes).
 
 The package on PyPI is `graphifyy`. The command you run is `graphify`.
 
@@ -121,7 +121,7 @@ Then open a new terminal. With pipx, run `pipx ensurepath`. If an MCP client can
 graphify uninstall --project --platform codex
 ```
 
-`graphify uninstall` removes user registrations across platforms. The optional `--purge` flag also deletes `graphify-out/`; omit it to preserve your graph.
+`graphify uninstall` removes user-scope skills for every platform. It also strips Graphify sections, assistant hooks, and git hooks in the current repository. It leaves project skill directories in place. `--platform` applies only together with `--project`. `--purge` also deletes `graphify-out/`. Omit `--purge` to keep the graph. The full list is in [What install changes and how to undo it](/open-source/what-install-changes).
 
 <TryCloudCard />
 

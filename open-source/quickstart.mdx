@@ -45,7 +45,7 @@ The fastest way to use open-source Graphify is as a skill inside your coding age
     graphify install
     ```
 
-    With no flag, this targets Claude Code. It copies the skill to `~/.claude/skills/graphify/SKILL.md` and registers it in `~/.claude/CLAUDE.md`. For another agent, pass `--platform`, for example `graphify install --platform codex`.
+    On macOS and Linux, with no flag, this targets Claude Code. It copies the skill to `~/.claude/skills/graphify/` and adds a `# graphify` section to `~/.claude/CLAUDE.md`. On Windows the same command writes the Windows skill into that folder. For another assistant, pass `--platform`, for example `graphify install --platform codex`. The file list is in [What install changes and how to undo it](/open-source/what-install-changes).
   </Step>
   <Step title="Run it in your agent">
     Open your agent in the repository and type:

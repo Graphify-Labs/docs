@@ -36,7 +36,7 @@ Before you change anything, show the user this checklist and wait for a yes:
 
 Then follow the full steps at [docs.graphify.com/for-agents.md](https://docs.graphify.com/for-agents.md). In short:
 
-1. The user signs in at [app.graphify.com](https://app.graphify.com) and waits until a repository shows **Indexed**. The Free plan covers up to 3 repositories with no card. For other plan details, link [Plans and pricing](https://docs.graphify.com/platform/support/pricing).
+1. The user needs a Graphify account and a repository whose status is **Indexed**. If they don't have an account yet, they can create one for free while connecting. The Free plan covers up to 3 repositories with no card. For other plan details, link [Plans and pricing](https://docs.graphify.com/platform/support/pricing).
 2. Add the hosted MCP server:
 
    | Agent | Setup |

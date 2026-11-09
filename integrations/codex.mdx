@@ -1,9 +1,10 @@
 ---
 title: "Graphify for Codex"
 sidebarTitle: "Codex"
-description: "Connect Codex to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
+description: "Connect Codex to Graphify's MCP server with OAuth, or install the open-source Graphify skill. Create a Graphify account while connecting if you need one."
 surface: "both"
 hideFooterPagination: true
+keywords: ["codex mcp", "mcp oauth"]
 ---
 
 import { InstallButton } from '/snippets/install-button.mdx';
@@ -25,8 +26,7 @@ One click: install the official **Graphify** plugin by Graphify Labs from the Op
 
 ## Before you start
 
-- A Graphify account at [app.graphify.com](https://app.graphify.com). The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required.
-- At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
+- A Graphify workspace with at least one repository at status **Indexed**. If you don't have a Graphify account yet, you can create one while connecting the plugin, then enable a repository and wait until its status is **Indexed**. The Free plan (up to 3 repositories) needs no card. See [Plans and pricing](/platform/support/pricing) and [Repositories and builds](/platform/repositories).
 
 ## 1. Install the plugin
 
@@ -91,6 +91,8 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | `graphify` is missing from `/mcp` | Start a new Codex session after adding it, and check the `[mcp_servers.graphify]` entry in `config.toml`. |
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
 | Every Graphify tool appears twice | You have both the plugin and a manual server entry. Remove one. |
+| Only a `graphify_setup` tool appears, or tools say **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding), enable a repository, wait until it is **Indexed**, start a new Codex session, and run `codex mcp login graphify` again if needed. |
+| Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories** in Graphify, wait for the first index to finish, then ask again. |
 
 ## FAQ
 

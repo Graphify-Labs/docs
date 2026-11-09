@@ -86,6 +86,8 @@ For a deeper checklist across clients, see [Check your agent is using Graphify](
 | Sign-in loop or denied access | Finish Graphify sign-in in the browser, pick the workspace, and turn the chat toggle on again. |
 | Only a `graphify_setup` tool appears, or Claude shows **Graphify isn't set up for this account yet** | Sign-in worked, but this account has no Graphify workspace yet. Open [onboarding](https://app.graphify.com/onboarding), create a workspace, connect GitHub, enable a repository, wait until it is **Indexed**, then start a **new** chat. If tools still don't appear, disconnect and reconnect Graphify in Claude. |
 | Tools say **This workspace has no repositories enabled for agents yet.** | In [Graphify](https://app.graphify.com), open **Repositories**, enable a repository, wait for the first index to finish, then ask again. |
+| Claude says it couldn't retrieve a result, or shows a generic error | Claude can hide Graphify's error text. Wait a few seconds and ask again. If it keeps failing, check the repository in [Graphify](https://app.graphify.com) for a plan message, then see [Claude shows a generic error](/platform/support/troubleshooting#claude-shows-a-generic-error). |
+| Answers miss recent code, or the repository page says **Showing an older graph** | On the Free plan, a repository over its graph limit keeps serving the last graph that fit. Upgrade in **Billing** to use the latest build. See [Plans and pricing](/platform/support/pricing#hosted-plan-allowances). |
 | Browser shows **Finish setting up Graphify** after connect | Create a workspace and connect a repository with the **same** account you used to connect, then continue. The connect window should return to Claude. |
 
 ## FAQ
@@ -108,7 +110,7 @@ No. Graphify is a connector in Anthropic's Connectors directory. A plugin is a s
 
 ### Is the hosted server free?
 
-The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required. See [Plans and pricing](/platform/support/pricing).
+The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required. See [Plans and pricing](/platform/support/pricing). Free has limits on repositories and graph size. When you reach one, Graphify shows a message in the app. See [Rate limits and plan limits](/platform/support/rate-limits#other-limit-responses).
 
 <Card title="Graphify MCP hub" icon="plug" href="/platform/graphify-mcp">Endpoint, tools, workspaces, and other clients.</Card>
 

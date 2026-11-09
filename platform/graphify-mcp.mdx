@@ -272,7 +272,7 @@ Every request runs in one workspace. Graphify picks it in this order: the worksp
 | Requests | 240 per minute |
 | Request body | 256 KB |
 
-The request limit is counted per client IP address for signed-in sessions. Over the limit returns `429 rate_limited`. A request body over 256 KB returns `413 mcp_body_too_large`. See [Rate limits](/platform/support/rate-limits).
+The request limit is counted per client IP address for signed-in sessions. Over the limit returns `429 rate_limited`. A request body over 256 KB returns `413 mcp_body_too_large`. See [Rate limits](/platform/support/rate-limits). Plan limits, such as repositories and graph size on Free, are separate. See [Plans and pricing](/platform/support/pricing#hosted-plan-allowances).
 
 ## Check the connection
 
@@ -310,6 +310,7 @@ Seeing the tools doesn't prove repository access. The last step does. For test p
 | Graphify isn't in my client's MCP gallery | Gallery listing is separate from the registry. Add `https://api.graphify.com/mcp` directly. Registry id: `io.github.Graphify-Labs/graphify`. |
 | `npx` or Node.js isn't found | The bridge needs Node. Install Node where the client can find it, or use the client's native remote setup. |
 | Copilot on github.com can't connect | No OAuth support there yet. Copilot's coding agent and code review only support static header credentials, so they can't use this endpoint yet. |
+| Claude shows a generic error or says it couldn't retrieve a result | Claude can hide Graphify's error text. Wait a few seconds and ask again, then see [Claude shows a generic error](/platform/support/troubleshooting#claude-shows-a-generic-error). |
 | Does Graphify MCP see my local changes? | No. It serves the indexed graph. For uncommitted work, use the [local MCP server](/open-source/mcp-server). |
 | Only a `graphify_setup` tool appears, or the agent shows **Graphify isn't set up for this account yet** | Finish [onboarding](https://app.graphify.com/onboarding), enable a repository, wait until it is **Indexed**, start a new chat, and reconnect the connector if tools still don't appear. |
 | Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories**, wait for the first index to finish, then ask again. |

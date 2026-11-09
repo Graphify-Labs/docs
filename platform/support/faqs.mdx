@@ -68,6 +68,9 @@ A limit message does not mean the repository is empty. Compare plans on [Plans a
 <Accordion title="My agent gets a 429 rate_limited error">
 It sent too many Ask, query, or MCP requests in a short time. Wait a few seconds and retry with exponential backoff. See [Rate limits and plan limits](/platform/support/rate-limits).
 </Accordion>
+<Accordion title="Claude says it couldn't retrieve a result. Is that a plan limit?">
+Sometimes. Claude can hide Graphify's error text, so the message doesn't say why. A request rate limit applies on every plan. A Free plan limit, such as graph size or the repository allowance, shows as a message in Graphify. See [Claude shows a generic error](/platform/support/troubleshooting#claude-shows-a-generic-error) to tell them apart.
+</Accordion>
 <Accordion title="Does buying more Teams seats raise every limit?">
 No. Workspace allowances are shared across the workspace and do not multiply by seat count. Talk to Graphify before planning a larger rollout.
 </Accordion>

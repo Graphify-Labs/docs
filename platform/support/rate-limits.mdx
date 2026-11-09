@@ -54,6 +54,8 @@ All hosted plans allow 1 index build at a time per repository and 10 across a wo
 }
 ```
 
+Chat apps such as Claude can show a generic message instead of this response. See [Claude shows a generic error](/platform/support/troubleshooting#claude-shows-a-generic-error).
+
 The response has no `Retry-After` header. Back off and retry:
 
 1. Wait 2 seconds, then retry the same request.
@@ -76,6 +78,7 @@ The console shows plan limits as messages:
 | --- | --- |
 | **Monthly indexing allowance used** | The workspace used this month's indexing allowance. It resets at the start of next month. |
 | **Daily build limit reached** | The repository used today's automatic builds. It resets at 00:00 UTC. |
+| **Repository limit reached** | Your plan's repository limit prevents indexing another repository. Upgrade to index more. Your existing repositories keep working. |
 | **Repository too large for this plan** | The newest version was not published. The last published version still works. |
 | **Monthly reviews used** | The plan's reviews for this month are used. |
 | **Workspace paused** | A Free workspace wasn't used for 7 days, so indexing and reviews are paused. Click **Resume** on **Repositories**. See [Inactive Free workspaces](/platform/support/pricing#inactive-free-workspaces). |

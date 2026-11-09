@@ -27,6 +27,7 @@ Your client hasn't finished the one-time browser sign-in. Graphify answers a req
 - Claude Code: run `/mcp`, select **graphify**, and choose **Authenticate**.
 - Codex: run `codex mcp login graphify`.
 - Cursor: select **Needs login** next to the server.
+- Claude.ai and Desktop: finish sign-in from [Graphify for Claude](/integrations/claude-ai), then turn Graphify on for the chat.
 
 See [Graphify MCP](/platform/graphify-mcp#how-sign-in-works) for how sign-in works.
 
@@ -84,6 +85,20 @@ You went over a default per-minute limit:
 | Test impact | 60/minute per workspace |
 
 Back off and retry with exponential delay and jitter. The usual cause is an agent calling Graphify in a tight loop. In CI, treat a `429` from test impact as "run the full suite". See [Rate limits](/platform/support/rate-limits).
+
+## Claude shows a generic error
+
+Claude can hide Graphify's own error text and show a short message instead, such as that it couldn't retrieve a result. The message doesn't say why, so check these causes in order.
+
+| Likely cause | How to tell | What to do |
+| --- | --- | --- |
+| Too many requests in a short time (`429 rate_limited`) | Several lookups ran back to back. | Wait a few seconds, then ask again, and ask for fewer lookups at once. This limit applies on every plan, so upgrading to Pro doesn't raise it. See [Rate limits](/platform/support/rate-limits). |
+| Capacity is busy (`query_busy` or `query_unavailable`) | The error comes and goes. | Ask again in a moment. |
+| The repository is over the Free graph limit | The repository's graph page in Graphify shows **Showing an older graph**. | Claude answers from the last graph that fit, so it can miss recent code. Upgrade in **Billing**, or reduce the repository. See [Plans and pricing](/platform/support/pricing#hosted-plan-allowances). |
+| The Free repository limit is reached | Graphify shows **Repository limit reached** when you enable another repository. | Disable a repository, or upgrade in **Billing**. |
+| Graphify isn't set up yet | Claude shows **Graphify isn't set up for this account yet**, or only a `graphify_setup` tool. | See [Graphify for Claude](/integrations/claude-ai#troubleshooting). |
+
+To upgrade, open [Graphify](https://app.graphify.com), go to **Billing**, and choose Pro. If you can't open **Billing**, ask a workspace owner.
 
 ## Indexing failed or stuck
 

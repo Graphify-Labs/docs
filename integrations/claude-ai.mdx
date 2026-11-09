@@ -1,10 +1,10 @@
 ---
 title: "Graphify for Claude"
 sidebarTitle: "Claude"
-description: "Connect Graphify from the Claude connectors directory on Claude.ai and Desktop. Approve OAuth, enable per chat, then verify with a simple graph question."
+description: "Connect Graphify from the Claude connectors directory. Create your Graphify account for free while connecting, then enable the connector per chat."
 surface: "cloud"
 hideFooterPagination: true
-keywords: ["claude connectors", "claude connector", "claude desktop mcp", "claude mcp", "graphify claude", "mcp connector"]
+keywords: ["claude connectors", "claude connector", "claude desktop mcp", "claude mcp", "graphify claude", "mcp connector", "mcp oauth"]
 ---
 
 import { InstallButton } from '/snippets/install-button.mdx';
@@ -21,14 +21,14 @@ For Claude Code (CLI, IDE, or the desktop Code tab), see [Graphify for Claude Co
 
 ## Before you start
 
-- A Graphify account at [app.graphify.com](https://app.graphify.com). See [Plans and pricing](/platform/support/pricing).
+- A Graphify account. If you don't have one yet, you can create one for free while connecting. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing).
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 - A Claude account. Connectors work on Claude.ai, the desktop app, and Claude mobile. On Team and Enterprise plans, an Owner adds the connector for the organization, and members then connect with their own account.
 
 ## Connect from the directory
 
 1. Open [Graphify in the Claude directory](https://claude.ai/directory/graphify).
-2. Select **Connect to Claude** and finish Graphify sign-in in the browser. Or open **Customize → Connectors**, select **Discover**, and search for Graphify.
+2. Select **Connect to Claude** and finish Graphify sign-in in the browser. Or open **Customize → Connectors**, select **Discover**, and search for Graphify. If you don't have a Graphify account yet, you can create one while connecting. Create a workspace, connect GitHub, and enable a repository before you expect code answers.
 3. In a chat, select **+**, then **Connectors**, and turn **Graphify** on for that conversation. The toggle is per chat.
 4. Ask about your indexed code. The first tool call may ask you to select **Allow once** or **Always allow**.
 
@@ -84,12 +84,19 @@ For a deeper checklist across clients, see [Check your agent is using Graphify](
 | **Request** instead of Connect | Ask an Owner to add the connector for the organization, or choose **Connect just for me** if you are an Owner. |
 | Tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
 | Sign-in loop or denied access | Finish Graphify sign-in in the browser, pick the workspace, and turn the chat toggle on again. |
+| Only a `graphify_setup` tool appears, or Claude shows **Graphify isn't set up for this account yet** | Sign-in worked, but this account has no Graphify workspace yet. Open [onboarding](https://app.graphify.com/onboarding), create a workspace, connect GitHub, enable a repository, wait until it is **Indexed**, then start a **new** chat. If tools still don't appear, disconnect and reconnect Graphify in Claude. |
+| Tools say **This workspace has no repositories enabled for agents yet.** | In [Graphify](https://app.graphify.com), open **Repositories**, enable a repository, wait for the first index to finish, then ask again. |
+| Browser shows **Finish setting up Graphify** after connect | Create a workspace and connect a repository with the **same** account you used to connect, then continue. The connect window should return to Claude. |
 
 ## FAQ
 
 ### Do I need an API key?
 
 No. The directory connector and a custom connector both sign in with OAuth in your browser.
+
+### Do I need a Graphify account before I connect?
+
+Yes, but you don't have to create it first. If you don't have one yet, you can create one for free while connecting. You still need an indexed repository before Graphify can answer questions about your code.
 
 ### Is this the same as Claude Code?
 

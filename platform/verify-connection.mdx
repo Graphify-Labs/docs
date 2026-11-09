@@ -1,7 +1,7 @@
 ---
 title: "Check your agent is using Graphify"
 sidebarTitle: "Check it's working"
-description: "Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix common setup problems."
+description: "Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix a missing workspace or repositories."
 keywords: ["verify graphify mcp", "test mcp connection", "graphify not working", "mcp troubleshooting", "agent uses grep"]
 surface: "cloud"
 icon: "circle-check"
@@ -66,6 +66,9 @@ Then ask a code question without naming Graphify, such as `What calls <function>
 | Every tool appears twice | The server is configured twice, for example in `~/.cursor/mcp.json` and `.cursor/mcp.json`. Remove one. |
 | A Cursor cloud agent can't see Graphify | Cloud agents don't read your local `mcp.json`, and they keep their own sign-in. Add and sign in to Graphify for cloud agents at [cursor.com/agents](https://cursor.com/agents). |
 | Answers miss today's changes | Graphify serves the indexed default branch. Uncommitted work isn't in it. |
+| Only a `graphify_setup` tool appears, or the agent shows **Graphify isn't set up for this account yet** | Create a workspace at [app.graphify.com/onboarding](https://app.graphify.com/onboarding), connect GitHub, enable a repository, wait for **Indexed**, then start a new chat and reconnect if needed. |
+| The agent says **This workspace has no repositories enabled for agents yet.** | Enable a repository in Graphify, wait for the first index to finish, then rerun the check prompts. |
+| The browser shows **Finish setting up Graphify** | Continue setup with the same account you used to connect, create a workspace, enable a repository, then return to the client and rerun the check prompts. |
 
 More fixes are in [Graphify MCP](/platform/graphify-mcp#fix-common-problems) and [Troubleshooting](/platform/support/troubleshooting).
 

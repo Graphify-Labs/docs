@@ -121,7 +121,7 @@ Graphify now reviews a pull request when it is ready, not on every push. That me
 - A draft PR gets reviewed when you mark it **Ready for review**.
 - Pushing more commits no longer triggers a new review on its own.
 
-When you want a fresh review after pushing fixes, comment `@graphify review` on the pull request. Graphify reviews the PR's current head and updates its result.
+When you want a fresh review after pushing fixes, comment `@graphify review` on the pull request. Graphify analyzes the full pull request, from where it branched to its latest commit. It updates the review result.
 
 Formal verification is unchanged. It still runs on every push, so your behavior checks stay current while you iterate.
 

@@ -80,7 +80,7 @@ No. Workspace allowances are shared across the workspace and do not multiply by 
 
 <AccordionGroup>
 <Accordion title="When does Graphify review a pull request?">
-When it is opened, reopened, or marked ready for review. To review the latest commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. See [Pull request reviews](/platform/reviews).
+When it is opened, reopened, or marked ready for review. Pushing new commits does not start a review by itself. A repository owner, member, or collaborator comments `@graphify review` on the pull request to run one. Each review analyzes the full pull request, from where it branched to its latest commit. See [Pull request reviews](/platform/reviews).
 </Accordion>
 <Accordion title="How do I tell Graphify a finding is wrong?">
 Reply on the pull request with `@graphify wrong <finding>`, `@graphify good <finding>`, or `@graphify suppress <rule>`. That feedback tunes later reviews. See [Learning](/platform/learning).

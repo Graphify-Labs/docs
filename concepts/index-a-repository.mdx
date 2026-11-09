@@ -54,7 +54,7 @@ To try it on a public codebase, index a fork of [Graphify-Labs/graphify](https:/
 | --- | --- |
 | A push to the default branch | Graphify indexes that commit. |
 | A push to any other branch | Nothing. The graph follows the default branch only. |
-| A pull request | No new graph. The review uses the default-branch graph and the pull request's diff. |
+| A pull request | Nothing from the pull request's branch is saved as an index. The review analyzes the full pull request, from where it branched to its latest commit. It uses the graph to understand how the changes affect the surrounding code. |
 | **Retry** on a failed build | Graphify indexes the current head of the default branch. |
 
 One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/platform/support/pricing).

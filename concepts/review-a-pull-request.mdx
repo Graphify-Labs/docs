@@ -23,13 +23,13 @@ Reviews are advisory. They don't block a merge.
 
 Open a pull request, reopen one, or mark a draft as ready for review. Graphify reviews it at that point. A draft is skipped until it is marked ready.
 
-A later push to the pull request does not start another review. To review the current head after new commits, comment on the pull request:
+A later push to the pull request does not start another review. To run a review after new commits, comment on the pull request:
 
 ```text
 @graphify review
 ```
 
-The comment works for a repository owner, member, or collaborator. The review uses the indexed default-branch graph plus the pull request's diff. It does not index the pull request's branch.
+The comment works for a repository owner, member, or collaborator. Each review analyzes the full pull request, from where it branched to its latest commit. Reviews use the graph to understand how the changes affect the surrounding code. Reviews compare the pull request's changes against the indexed default branch. Nothing from the pull request's branch is saved as an index.
 
 ## Read the review
 
@@ -63,7 +63,7 @@ Feedback changes which advisory findings appear later. It does not change verifi
 | What you see | What to do |
 | --- | --- |
 | No review on a new pull request | Check that **PR reviews** is on and the repository is **Indexed**. A draft waits until it is marked ready. |
-| The review is for an old commit | Comment `@graphify review` to review the current head. |
+| The review is for an old commit | Comment `@graphify review`. The review analyzes the full pull request, from where it branched to its latest commit. |
 | `@graphify review` does nothing | The commenter must be an owner, member, or collaborator, and **PR reviews** must be on. |
 | A finding misses recent default-branch code | The graph may be **Out of date**. Check [Repositories and builds](/platform/repositories). |
 

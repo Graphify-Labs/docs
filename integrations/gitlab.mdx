@@ -25,7 +25,7 @@ Graphify connects to projects on GitLab.com. Self-managed GitLab instances are n
 ## What the connection does
 
 - **Indexing.** A push to the default branch starts an index of that commit. See [Repositories and builds](/platform/repositories).
-- **Reviews.** Merge requests are reviewed against the indexed graph and the diff. Graphify posts an advisory commit status and one merge request note, which it updates rather than repeats. The status does not block merging. See [Pull request reviews](/platform/reviews).
+- **Reviews.** Each review analyzes the full merge request, from where it branched to its latest commit. It uses the indexed graph to understand how the changes affect the surrounding code. Graphify posts an advisory commit status and one merge request note, which it updates rather than repeats. The status does not block merging. See [Pull request reviews](/platform/reviews).
 
 Indexing uses a token limited to `read_repository`.
 

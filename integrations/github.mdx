@@ -47,7 +47,7 @@ If you uninstall and reinstall the Graphify GitHub App on the same GitHub accoun
 ## What the app does
 
 - **Indexing.** A push to the default branch starts an index of that commit. Other branches do not change the graph. See [Repositories and builds](/platform/repositories).
-- **Pull request reviews.** A review runs when a pull request is opened, reopened, or marked ready for review. New commits do not start a new review on their own. To review the current head, a repository owner, member, or collaborator comments `@graphify review`. See [Pull request reviews](/platform/reviews).
+- **Pull request reviews.** A review runs when a pull request is opened, reopened, or marked ready for review. New commits do not start a new review on their own. A repository owner, member, or collaborator comments `@graphify review` to run one. Each review analyzes the full pull request, from where it branched to its latest commit. See [Pull request reviews](/platform/reviews).
 - **Formal verification.** Runs on each push to a pull request, separately from reviews. See [Formal verification](/platform/verification).
 - **Feedback.** Reply `@graphify wrong <finding>`, `@graphify good <finding>`, or `@graphify suppress <rule>` to tune later reviews. See [Learning](/platform/learning).
 

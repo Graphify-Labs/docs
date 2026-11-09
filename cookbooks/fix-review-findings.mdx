@@ -94,7 +94,7 @@ A push doesn't start a new review. When the fixes are in, comment on the pull re
 @graphify review
 ```
 
-Graphify reviews the current head as a fresh pass over the diff. The new review doesn't list which earlier findings were fixed, so the agent's list from step 5 is your record of what changed and what was skipped.
+Graphify analyzes the full pull request, from where it branched to its latest commit. The new review doesn't list which earlier findings were fixed, so the agent's list from step 5 is your record of what changed and what was skipped.
 
 ## Teach Graphify what was wrong
 
@@ -122,7 +122,7 @@ Use `@graphify good <finding>` for findings that were right, and `@graphify supp
 
 <AccordionGroup>
   <Accordion title="Does a push start a new review?" icon="git-commit-horizontal">
-    No. Comment `@graphify review` on the pull request to review the current head.
+    No. Comment `@graphify review` on the pull request. The review analyzes the full pull request, from where it branched to its latest commit.
   </Accordion>
   <Accordion title="How does the agent decide a finding is real?" icon="search-check">
     It checks the code with `graphify_callers`, `graphify_impact` and `graphify_tests_for` before it changes anything.

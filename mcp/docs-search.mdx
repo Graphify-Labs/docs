@@ -1,6 +1,7 @@
 ---
-title: "Search the docs from your agent"
-description: "Connect the Graphify documentation MCP server so your agent can search these docs. It is separate from the MCP server for your repository graph."
+title: "Search the docs and the website"
+description: "Two public MCP servers search these docs pages, or graphify.com pages such as the blog, glossary, and FAQ."
+keywords: ["docs mcp", "website search", "search_graphify", "search_graphify_docs", "glossary", "faq", "blog"]
 surface: "both"
 hideFooterPagination: true
 icon: "search"
@@ -9,43 +10,138 @@ icon: "search"
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-The documentation MCP answers questions about **using Graphify**. The [graph MCP server](/open-source/mcp-server) answers questions about **your repository**.
+Two public MCP servers answer questions about Graphify. The docs server searches these pages. The website server searches public pages on [graphify.com](https://graphify.com).
 
-## Website documentation endpoint
+Questions about your code go to [Graphify MCP](/platform/graphify-mcp) at `https://api.graphify.com/mcp`, or to the [local MCP server](/open-source/mcp-server) when the graph is on your machine.
 
-The existing Graphify website exposes a public, Streamable HTTP MCP endpoint:
+The Cursor and VS Code entries in the page menu install Graphify MCP. Use the steps below for the two documentation servers.
+
+## Docs pages
+
+```text
+https://docs.graphify.com/mcp
+```
+
+Use this server when the answer is on docs.graphify.com: install steps, CLI flags, the console, and concepts.
+
+| Tool | What you get |
+| --- | --- |
+| `search_graphify` | Titles and links for matching docs pages. |
+| `query_docs_filesystem_graphify` | The text of a published docs page. The lookup stays inside those pages and does not run on your computer. |
+| `submit_feedback` | A note that a docs page is wrong, outdated, or unclear. You send the page path and the note. The tool does not change the page. |
+
+The server also exposes a skill resource named `graphify`. The text is the same as [skill.md](https://docs.graphify.com/skill.md): how to connect an agent to `https://api.graphify.com/mcp`.
+
+## Website pages
 
 ```text
 https://graphify.com/api/mcp
 ```
 
-It provides `search_graphify_docs`, a search tool over the website’s documentation, concepts, integrations, and related content. It does not read your local repository.
+Use this server for public pages on graphify.com. It has one tool, `search_graphify_docs`. Each hit is a title, a URL, and a snippet.
 
-```bash
-claude mcp add --transport http graphify-docs https://graphify.com/api/mcp
-```
+The tool describes its index as quickstart, concepts, per-language and per-assistant guides, comparisons, glossary, FAQ, and blog. Results are pages on graphify.com. Searches returned glossary entries, FAQ answers, blog posts, and the pricing page.
 
-For a JSON-based client:
+## Add the docs server
 
-```json
-{
-  "mcpServers": {
-    "graphify-docs": {
-      "url": "https://graphify.com/api/mcp"
+Name the server `graphify-docs`. Leave an existing `graphify` entry in place. `graphify` is the product server.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http graphify-docs https://docs.graphify.com/mcp
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    ```json ~/.cursor/mcp.json
+    {
+      "mcpServers": {
+        "graphify-docs": {
+          "url": "https://docs.graphify.com/mcp"
+        }
+      }
     }
-  }
-}
-```
+    ```
+  </Tab>
+  <Tab title="VS Code">
+    Run **MCP: Add Server** from the Command Palette, choose **HTTP**, enter `https://docs.graphify.com/mcp`, and name it `graphify-docs`. Or add `.vscode/mcp.json`:
 
-## Mintlify documentation
+    ```json .vscode/mcp.json
+    {
+      "servers": {
+        "graphify-docs": {
+          "type": "http",
+          "url": "https://docs.graphify.com/mcp"
+        }
+      }
+    }
+    ```
 
-This site also provides Mintlify’s documentation features, including Markdown exports and an LLM index at `/llms.txt`. Use the page’s contextual menu to copy a page or connect a supported client. The existing website endpoint and this Mintlify site have separate content indexes.
+    VS Code uses `servers` in this file.
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex mcp add graphify-docs --url https://docs.graphify.com/mcp
+    ```
+  </Tab>
+</Tabs>
+
+## Add the website server
+
+Name the server `graphify-website`.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http graphify-website https://graphify.com/api/mcp
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    ```json ~/.cursor/mcp.json
+    {
+      "mcpServers": {
+        "graphify-website": {
+          "url": "https://graphify.com/api/mcp"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="VS Code">
+    Run **MCP: Add Server** from the Command Palette, choose **HTTP**, enter `https://graphify.com/api/mcp`, and name it `graphify-website`. Or add `.vscode/mcp.json`:
+
+    ```json .vscode/mcp.json
+    {
+      "servers": {
+        "graphify-website": {
+          "type": "http",
+          "url": "https://graphify.com/api/mcp"
+        }
+      }
+    }
+    ```
+
+    VS Code uses `servers` in this file.
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex mcp add graphify-website --url https://graphify.com/api/mcp
+    ```
+  </Tab>
+</Tabs>
 
 ## Example questions
+
+Docs server:
 
 - How do I install the Graphify skill in Cursor?
 - How do I run a code-only extraction?
 - What is the difference between query, path, and explain?
+
+Website server:
+
+- What do EXTRACTED, INFERRED, and AMBIGUOUS mean?
+- What is a code graph?
 
 ## Next steps
 
@@ -58,8 +154,12 @@ This site also provides Mintlify’s documentation features, including Markdown 
   </Card>
 </Columns>
 
+<Visibility for="humans">
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>
 
+<Visibility for="humans">
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
   <a href="/open-source/self-host" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Serve a graph over HTTP</span></a>
 </div>
+</Visibility>

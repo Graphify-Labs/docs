@@ -12,7 +12,7 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 Your agent answers from the saved graph, not from the files on disk. **If the graph is old, the answers are old.** Open-source Graphify gives you two ways to refresh it without thinking about it: git hooks and a file watcher.
 
 <Tip>
-**Want this handled for you?** [Hosted Graphify](https://app.graphify.com) rebuilds the graph on every push to your default branch, with nothing to install, and only re-processes the files that changed. See [how Graphify keeps your graph fresh](/platform/keep-the-graph-fresh).
+**Want this handled for you?** [Hosted Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=open-source-keep-the-graph-fresh) rebuilds the graph on every push to your default branch, with nothing to install, and only re-processes the files that changed. See [how Graphify keeps your graph fresh](/platform/keep-the-graph-fresh).
 </Tip>
 
 ## Pick a method
@@ -155,7 +155,7 @@ These are open issues in the Graphify CLI repository. We'll update this page whe
 
 <AccordionGroup>
   <Accordion title="How do I keep a code graph up to date automatically?">
-    Run `graphify hook install` once in the repository. From then on, git rebuilds the code graph after each commit, branch switch, merge, pull and rebase. With [hosted Graphify](https://app.graphify.com), the graph rebuilds on every push and there's nothing to install.
+    Run `graphify hook install` once in the repository. From then on, git rebuilds the code graph after each commit, branch switch, merge, pull and rebase. With [hosted Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=open-source-keep-the-graph-fresh), the graph rebuilds on every push and there's nothing to install.
   </Accordion>
   <Accordion title="Do I still need graphify update after git pull?">
     Not if you've run `graphify hook install`. A pull that merges fires `post-merge`, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Without hooks, run `graphify update .` yourself.

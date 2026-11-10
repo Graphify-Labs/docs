@@ -8,6 +8,20 @@ rss: true
 icon: "layout-dashboard"
 ---
 
+<Update label="2026-11-10" description="Steadier workspace and setup">
+
+**Improved:**
+- **Memory:** Reindexing a repository no longer hides its saved memories. You can keep browsing in Simple and Advanced, and the list refreshes when the build finishes.
+- **MCP:** If your agent made a Graphify tool call in this workspace in the last 30 days, setup on **Connectors** > **Agents (MCP)** now says **Connected** with the time of the last call, and shows **Try a repository task** right away, with no manual check.
+- **Workspace:** **Members** and **Billing** open without waiting for your repository list. If that list times out, those pages stay up and the others show **Couldn't load repositories** with **Retry**.
+
+**Fixed:**
+- **Workspace:** A slow first request no longer drops you on "We couldn't reach your workspace". Graphify now retries it before giving up.
+- **Onboarding:** Picking a GitHub or GitLab repository with no commits no longer leaves you stuck. Your choice is saved, so you can push a commit and re-sync, or pick another repository.
+- **Members:** When every seat is taken, an admin who sends an invite now sees "No free seats" and is pointed to **Billing** to get a seat added, instead of a permission error.
+
+</Update>
+
 <Update label="2026-11-09" description="Install Graphify in Claude from setup">
 ## Install Graphify in Claude from setup
 

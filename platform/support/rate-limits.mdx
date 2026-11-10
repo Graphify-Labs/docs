@@ -71,7 +71,7 @@ The usual cause is an agent calling `query_graph` or Ask in a tight loop. Tell t
 | `429` `rate_limited` | Too many requests in a short time. | Back off and retry, as above. |
 | `402` `subscription_required` | The feature needs a paid plan. | Check **Billing** in the console. |
 | `409` `seat_limit_reached` | Every Teams seat is assigned. | Buy more seats in **Billing**, or remove a member. |
-| `409` `seat_purchase_requires_owner` | Every Teams seat is assigned, and only the workspace Owner can add one. | Ask the Owner to send the invite, or to resend an invite that adds a paid seat. |
+| `409` `seat_purchase_requires_owner` | Every Teams seat is assigned, and only the Owner can add a seat while inviting. | Ask the Owner to send the invite, or to resend an invite that adds a paid seat. |
 
 The console shows plan limits as messages:
 

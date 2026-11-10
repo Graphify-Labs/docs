@@ -25,10 +25,10 @@ icon: "users-round"
 
 | Role | What they can do |
 | --- | --- |
-| **Owner** | Full control, including inviting people, approving access requests, and opening the billing portal. A workspace always keeps at least one owner. |
-| **Admin** | Invite people, manage members, and approve access requests. Cannot open the billing portal. When every seat is in use, Graphify asks you to have the Owner add one. |
+| **Owner** | Full control, including inviting people, approving or denying access requests, buying seats, and opening the billing portal. Each workspace has exactly one Owner, linked to the account that owns it. Ownership can't be transferred by changing roles or approving a request, and the Owner can't leave or be demoted. |
+| **Admin** | Invite people, manage members, and view pending access requests. Cannot approve or deny requests, or open the billing portal. When every seat is in use, Graphify asks you to have the Owner add one. |
 | **Member** | Use the workspace: repositories, graphs, reviews, Ask, and agents. Cannot invite or manage members. |
-| **Billing** | Open the billing portal and manage payment. Cannot resume a paused Free workspace or manage members. |
+| **Billing** | Open the billing portal, manage payment, and buy seats. Cannot resume a paused Free workspace or manage members. |
 
 Owners and admins manage the member roster. Only owners and billing members can open the Stripe billing portal on **Billing**.
 
@@ -54,7 +54,7 @@ Teams invitations expire after **48 hours**. **Resend** issues a new accept link
 
 ## Request access
 
-If a teammate already installed Graphify on your GitHub organization, connecting that org can offer **request access** instead of creating a second workspace. Owners review pending requests on **Members** and in **Settings**.
+If a teammate already installed Graphify on your GitHub organization, connecting that org can offer **request access** instead of creating a second workspace. Only the Owner can approve or deny pending requests, on **Members** and in **Settings**. Admins can see them.
 
 ## Switch workspaces
 

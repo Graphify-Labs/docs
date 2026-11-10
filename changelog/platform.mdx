@@ -8,6 +8,13 @@ rss: true
 icon: "cloud"
 ---
 
+<Update label="2026-11-10" description="Memory reliability">
+
+**Fixed:**
+- **Memory:** Fewer "Memory is not available right now" errors. If one server is busy, Graphify now tries another. While memory is still loading, the API answers with a `Retry-After` header, so a quick retry gets your results.
+
+</Update>
+
 <Update label="2026-11-08" description="Finish setup from the connect window">
 ## Finish Graphify setup from the connect window
 

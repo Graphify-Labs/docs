@@ -493,6 +493,12 @@
       }
     }
   },
+  "integrations": {
+    "posthog": {
+      "apiKey": "phc_BPqGbvsTRuoVm6ZhMYrKZ4m8Stk4KtUZMWFZgFXP59Px",
+      "sessionRecording": false
+    }
+  },
   "redirects": [
     {
       "source": "/changelog",

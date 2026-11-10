@@ -306,7 +306,7 @@
   "logo": {
     "light": "https://graphify.com/assets/brand/graphify-logo-ink.svg",
     "dark": "https://graphify.com/assets/brand/graphify-logo-white.svg",
-    "href": "https://graphify.com"
+    "href": "https://graphify.com?utm_source=docs&utm_medium=link&utm_campaign=nav"
   },
   "navbar": {
     "links": [
@@ -318,7 +318,7 @@
     "primary": {
       "type": "button",
       "label": "Start free",
-      "href": "https://app.graphify.com/signup"
+      "href": "https://app.graphify.com/signup?utm_source=docs&utm_medium=link&utm_campaign=nav"
     }
   },
   "contextual": {
@@ -361,7 +361,7 @@
         "items": [
           {
             "label": "Graphify",
-            "href": "https://app.graphify.com"
+            "href": "https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=nav"
           },
           {
             "label": "Pricing",
@@ -373,7 +373,7 @@
           },
           {
             "label": "graphify.com",
-            "href": "https://graphify.com"
+            "href": "https://graphify.com?utm_source=docs&utm_medium=link&utm_campaign=nav"
           }
         ]
       },

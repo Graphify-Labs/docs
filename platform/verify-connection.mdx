@@ -64,7 +64,7 @@ Then ask a code question without naming Graphify, such as `What calls <function>
 | **Needs login** or **Needs authentication** next to `graphify` | You haven't signed in. Claude Code: `/mcp`, select **graphify**, choose **Authenticate**. Codex: `codex mcp login graphify`. Cursor: select **graphify** and finish the browser sign-in. VS Code: restart the server in **MCP: List Servers** and sign in. |
 | `graphify` is missing from the list | Check the config file is valid JSON (or TOML for Codex) and the URL is `https://api.graphify.com/mcp`. Then reload the client or start a new session. |
 | The agent asks for an API key | Graphify uses OAuth sign-in, not a key. Check the URL is the hosted one above. |
-| `list_repositories` is empty | No repository is indexed in this workspace. Index one in the [Console](https://app.graphify.com), or switch workspace with `set_workspace`. |
+| `list_repositories` is empty | No repository is indexed in this workspace. Index one in the [Console](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-verify-connection), or switch workspace with `set_workspace`. |
 | A repository is listed but answers are empty | It's still indexing, or it's in another workspace. Wait for **Indexed** on **Repositories** in the Console. |
 | The agent used grep or read files instead | Add the always-on rule from [Setup for AI agents](/for-agents#setup-for-ai-agents) to `AGENTS.md`, `CLAUDE.md` or `.cursor/rules/graphify.mdc`. For hooks and stricter rules, see [Make agents use the graph](/cookbooks/make-agents-use-the-graph). |
 | Tools are listed but never run | Turn on Graphify's tools in your client's chat, and use a model that can call tools. |
@@ -72,7 +72,7 @@ Then ask a code question without naming Graphify, such as `What calls <function>
 | A Cursor cloud agent can't see Graphify | Cloud agents don't read your local `mcp.json`, and they keep their own sign-in. Add and sign in to Graphify for cloud agents at [cursor.com/agents](https://cursor.com/agents). |
 | Answers miss today's changes | Graphify serves the indexed default branch. Uncommitted work isn't in it. |
 | Claude shows a generic error, or says it couldn't retrieve a result | Wait a few seconds and ask again. If it repeats, see [Claude shows a generic error](/platform/support/troubleshooting#claude-shows-a-generic-error). |
-| Only a `graphify_setup` tool appears, or the agent shows **Graphify isn't set up for this account yet** | Create a workspace at [app.graphify.com/onboarding](https://app.graphify.com/onboarding), connect GitHub, enable a repository, wait for **Indexed**, then start a new chat and reconnect if needed. |
+| Only a `graphify_setup` tool appears, or the agent shows **Graphify isn't set up for this account yet** | Create a workspace at [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=platform-verify-connection), connect GitHub, enable a repository, wait for **Indexed**, then start a new chat and reconnect if needed. |
 | The agent says **This workspace has no repositories enabled for agents yet.** | Enable a repository in Graphify, wait for the first index to finish, then rerun the check prompts. |
 | The browser shows **Finish setting up Graphify** | Continue setup with the same account you used to connect, create a workspace, enable a repository, then return to the client and rerun the check prompts. |
 

@@ -17,7 +17,7 @@ Default to the hosted server. Use open-source Graphify only when the user asks f
 
 | Path | Use when | Setup |
 | --- | --- | --- |
-| Hosted MCP server | Default. The user's repositories are indexed at [app.graphify.com](https://app.graphify.com). | Add `https://api.graphify.com/mcp` as a remote Streamable HTTP server. Sign-in is OAuth in the browser; there is no API key. Commands per agent: [Setup for AI agents](/for-agents#setup-for-ai-agents), step 2. |
+| Hosted MCP server | Default. The user's repositories are indexed at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=agents-overview). | Add `https://api.graphify.com/mcp` as a remote Streamable HTTP server. Sign-in is OAuth in the browser; there is no API key. Commands per agent: [Setup for AI agents](/for-agents#setup-for-ai-agents), step 2. |
 | One-click installs and plugins | The user prefers to click instead of editing config. | [Install in Cursor](/integrations/cursor), the [VS Code extension](/integrations/vscode), and the [Graphify plugin for ChatGPT and Codex](/integrations/chatgpt). All three connect to the same hosted server. |
 | Graphify CLI | The user asks for an offline or on-machine graph. | `uv tool install graphifyy`, then `graphify install`. See the [Graphify CLI quickstart](/open-source/quickstart). Its MCP server has [ten tools](/open-source/features/mcp-tools) with different names from the hosted ones. |
 
@@ -85,7 +85,7 @@ You can add the server, but only the user can finish the OAuth sign-in in a brow
 4. Meanwhile, answer from the local files and say that the answer did not come from Graphify.
 5. After sign-in, call `list_repositories` and show the result.
 
-If `list_repositories` succeeds but is empty, sign-in worked and no repository is indexed in this workspace. Ask the user to index one at [app.graphify.com](https://app.graphify.com) or switch workspace.
+If `list_repositories` succeeds but is empty, sign-in worked and no repository is indexed in this workspace. Ask the user to index one at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=agents-overview) or switch workspace.
 
 ## Related
 

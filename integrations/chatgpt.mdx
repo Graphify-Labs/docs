@@ -13,7 +13,7 @@ The **Graphify** plugin is one listing in OpenAI's plugin directory. ChatGPT and
 
 MCP is the connection, at `https://api.graphify.com/mcp`. The plugin is the package that sets that connection up. There is no API key to paste and no graph to build on your computer. This is the same hosted server as [Graphify MCP for VS Code](/integrations/vscode) and [Graphify MCP for JetBrains](/integrations/jetbrains). The [Codex skill](/integrations/codex) is a separate install: it teaches Codex how to build a graph on your machine.
 
-Once connected, ChatGPT, Codex, and a Dot can search the repositories you have indexed in [Graphify](https://app.graphify.com), follow callers and dependencies, and judge what a change reaches.
+Once connected, ChatGPT, Codex, and a Dot can search the repositories you have indexed in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt), follow callers and dependencies, and judge what a change reaches.
 
 <InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Install in ChatGPT">
 One click: open the official **Graphify** plugin by Graphify Labs in the OpenAI plugin directory. One install covers ChatGPT, Codex, and Dots.
@@ -99,7 +99,7 @@ These tools read the indexed graph. They do not edit source files. An empty call
 | Codex shows Graphify, but no tools | Connect it from ChatGPT in the browser, then start a new Codex chat. A directory change can take up to six hours to show up in Codex. |
 | No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories), then ask Graphify to list repositories again. |
 | ChatGPT never asked you to sign in | Open **Settings → Plugins**, select Graphify, and choose **Connect**. Finish the Graphify sign-in in the browser. |
-| Only a `graphify_setup` tool appears, or ChatGPT shows **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding), enable a repository, wait until it is **Indexed**, start a new chat, and reconnect Graphify under **Settings → Plugins** if tools still don't appear. |
+| Only a `graphify_setup` tool appears, or ChatGPT shows **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt), enable a repository, wait until it is **Indexed**, start a new chat, and reconnect Graphify under **Settings → Plugins** if tools still don't appear. |
 | Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories** in Graphify, wait for the first index to finish, then ask again. |
 
 ## Related

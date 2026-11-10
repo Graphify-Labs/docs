@@ -143,6 +143,10 @@ Per-workspace limits: Ask 30, query 120, and test impact 60 requests a minute. T
 
 On the **Repositories** page, select **Add GitHub repositories**. It opens GitHub, where you choose which repositories the Graphify app can access. A repository you didn't grant there won't appear. See [GitHub](/integrations/github).
 
+### "This repository has no commits on its default branch."
+
+During setup, Graphify shows this when the repository's default branch has no commits. The error is "This repository has no commits on its default branch. Push a commit, then retry, or select a different repository below." The page also says **This repository has no commits yet, so there is nothing to index.** and **Your choice is saved. Push a commit to its default branch, then re-sync, or choose another repository.** Push a commit, then select **Re-sync repositories**, or choose another repository. This applies to GitHub and GitLab.
+
 ### GitLab: "GitLab is not connected." or "Reconnect GitLab to continue."
 
 Graphify supports GitLab on **gitlab.com only**. Self-managed GitLab isn't supported. Open **Integrations**, then select **Connect** on the GitLab card. If you see `gitlab_reconnect_required`, connect again.

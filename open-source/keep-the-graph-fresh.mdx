@@ -52,6 +52,40 @@ It adds four hooks and a merge driver for `graph.json`:
 
 **You don't need to run `graphify update .` after `git pull`.** The `post-merge` or `post-rewrite` hook does it for you.
 
+### What hook install changes in your repo
+
+`graphify hook install` writes four hook files, one `.gitattributes` line, and two keys in the repository's git config. Nothing is written to the global git config.
+
+By default the files are `.git/hooks/post-commit`, `.git/hooks/post-checkout`, `.git/hooks/post-merge`, and `.git/hooks/post-rewrite`. Each graphify block sits between its own start and end markers:
+
+| Hook | Start marker | End marker |
+| --- | --- | --- |
+| `post-commit` | `# graphify-hook-start` | `# graphify-hook-end` |
+| `post-checkout` | `# graphify-checkout-hook-start` | `# graphify-checkout-hook-end` |
+| `post-merge` | `# graphify-merge-hook-start` | `# graphify-merge-hook-end` |
+| `post-rewrite` | `# graphify-rewrite-hook-start` | `# graphify-rewrite-hook-end` |
+
+If the hook file already exists, the block is added after the lines that are already there. Those lines stay. A new hook file starts with `#!/bin/sh` and is made executable.
+
+If `core.hooksPath` is `.husky/_`, the four hook files are written to `.husky/`. A missing `.husky/_` directory is created as well. A `core.hooksPath` outside the repository is refused, and the files are written to `.git/hooks`.
+
+It adds `graphify-out/graph.json merge=graphify` to `.gitattributes`. Every other line in that file stays.
+
+In `.git/config` it sets:
+
+- `merge.graphify.name` to `graphify graph.json union merge`
+- `merge.graphify.driver` to the quoted path of the Python interpreter that ran `graphify hook install`, followed by `-m graphify merge-driver %O %A %B`
+
+The hook scripts store that same interpreter path. After you move or reinstall that Python, the hooks and the merge driver still call the old path until you run `graphify hook install` again.
+
+### Turn off or remove the hooks
+
+Set `GRAPHIFY_SKIP_HOOK=1` for a single git command, for example `GRAPHIFY_SKIP_HOOK=1 git pull`. The rebuild is skipped for that command. The hooks stay installed.
+
+`graphify hook uninstall` removes only the graphify marker block from each of the four hook files. Lines you added stay. The file is deleted when nothing is left, or when the only line left is `#!/bin/sh` or `#!/bin/bash`. It removes the `merge=graphify` line from `.gitattributes`, and deletes `.gitattributes` when that line was the only one. It unsets `merge.graphify.name` and `merge.graphify.driver` in the local git config.
+
+`graphify uninstall` without `--project` removes those same hooks and the merge driver. `graphify-out/` stays. `graphify uninstall --purge` is what deletes it. The rebuild log at `~/.cache/graphify-rebuild.log` stays after either command, including `graphify uninstall --purge`.
+
 ### Check that it's working
 
 `graphify hook status` should print:
@@ -71,8 +105,8 @@ A few things to know:
 - **It runs in the background.** Git returns straight away, so a query right after a commit or pull can still see the old graph for a moment. Output goes to `~/.cache/graphify-rebuild.log`.
 - **It needs a graph to exist.** Build one first with `/graphify .` or `graphify extract .`. The branch, merge and rebase hooks do nothing until `graphify-out/` exists.
 - **It skips some moments on purpose.** No rebuild runs mid-rebase, in a linked `git worktree`, or when `GRAPHIFY_SKIP_HOOK=1` is set.
-- **It keeps your own hooks.** Graphify adds its block between markers and leaves the rest of the file alone. `graphify hook uninstall` removes only its own block.
-- **Re-run it after moving Python.** The hook remembers which Python ran `hook install`. If you reinstall or move that environment, run `graphify hook install` again.
+- **It keeps your own hooks.** Graphify adds its block between markers and leaves the rest of the file alone. See [What hook install changes in your repo](#what-hook-install-changes-in-your-repo).
+- **Re-run it after moving Python.** The hooks and the merge driver keep the interpreter path from `hook install`. See [What hook install changes in your repo](#what-hook-install-changes-in-your-repo).
 
 ## graphify watch
 
@@ -130,7 +164,7 @@ These are open issues in the Graphify CLI repository. We'll update this page whe
     You can. Rebuilds take a per-repository lock and queue behind each other, so they don't pile up. Most people only need hooks.
   </Accordion>
   <Accordion title="How do I turn the hooks off for one command?">
-    Set `GRAPHIFY_SKIP_HOOK=1`, for example `GRAPHIFY_SKIP_HOOK=1 git pull`. To remove them, run `graphify hook uninstall`.
+    Set `GRAPHIFY_SKIP_HOOK=1`, for example `GRAPHIFY_SKIP_HOOK=1 git pull`. To remove the hooks, see [Turn off or remove the hooks](#turn-off-or-remove-the-hooks).
   </Accordion>
   <Accordion title="Do the hooks call a model or use tokens?">
     No. Hooks and the watcher only re-read code, locally. Docs, PDFs and images refresh when you run `/graphify . --update`.

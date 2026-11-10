@@ -121,7 +121,7 @@ Then open a new terminal. With pipx, run `pipx ensurepath`. If an MCP client can
 graphify uninstall --project --platform codex
 ```
 
-`graphify uninstall` removes user registrations across platforms. The optional `--purge` flag also deletes `graphify-out/`; omit it to preserve your graph.
+`graphify uninstall` removes user registrations across platforms. The optional `--purge` flag also deletes `graphify-out/`; omit it to preserve your graph. Without `--project`, `graphify uninstall` also removes the git hooks and the merge driver, and `graphify hook uninstall` removes only those ([Turn off or remove the hooks](/open-source/keep-the-graph-fresh#turn-off-or-remove-the-hooks)).
 
 <TryCloudCard />
 

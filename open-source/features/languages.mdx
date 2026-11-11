@@ -1,7 +1,7 @@
 ---
 title: "Supported inputs"
 description: "The languages, schemas, documents, and media Graphify can map, which extractor handles each, and the optional extras to install."
-keywords: ["supported languages", "file extensions", "terraform hcl", "documents and media"]
+keywords: ["supported languages", "file extensions", "terraform hcl", "documents and media", "sql", "oracle", "plsql", "pl/sql", "t-sql", "postgres"]
 surface: "both"
 icon: "languages"
 ---
@@ -23,6 +23,8 @@ Graphify supports a growing set of languages and input formats. Parser coverage 
 | Robot Framework | `.robot`, `.resource` | Install `robot`; uses the official Robot parser. |
 | Salesforce Apex | `.cls`, `.trigger` | Regex-based extraction. |
 | Package and MCP manifests | `pyproject.toml`, `go.mod`, `pom.xml`, MCP JSON files | Packages, dependency edges, and server configuration context. |
+
+Graphify indexes `.sql` files and works best with PostgreSQL and T-SQL style SQL. Oracle PL/SQL packages and Oracle file types such as `.pls`, `.pks`, `.pkb`, and `.pck` aren't supported yet. To read a live database schema, see [Databases](/open-source/features/databases), which supports Postgres.
 
 ## Documents and media
 

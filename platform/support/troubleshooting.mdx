@@ -18,6 +18,8 @@ Every API error has the same shape. Include the `correlationId` when you contact
 }
 ```
 
+If your client sends an `X-Request-Id` header, Graphify echoes it on the response, except on publicly cached responses such as `/.well-known/*`. The value must be 1 to 128 characters from letters, digits, and `._:+=/-`. This does not replace `correlationId` or the `X-Correlation-ID` header. Include both when you contact support if you have them. Cross-origin browser callers can't use `X-Request-Id`.
+
 ## Sign-in and MCP OAuth errors
 
 ### MCP client shows "Needs login" or "needs authentication"

@@ -54,6 +54,10 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 The **Memory summary** shows **Entities covered**, how many facts are **Grounded**, and **Tokens saved**.
 
+A memory about a pull request is titled with the number and the pull request's title, for example **PR #442 · Fix login redirect**, not a bare identifier such as PR-442. Memories that record a review, a verification, or a merge are labeled **Review result**, **Verification**, or **Merged**.
+
+Each memory is attributed to the person who saved or changed it, by their name. If that person has left the workspace, or no name is on file, the label is **Team member**. In **All versions**, a discarded memory is headed **Dismissed by** and that name. In the entity list, a pull request is marked **Pull request** and how many memories it has.
+
 ## Grounded and ungrounded facts
 
 A fact is **grounded** when it's anchored to a code node that still resolves. Ungrounded facts are normal, not errors: a decision about process, or about code since deleted, has nothing to anchor to.
@@ -111,6 +115,16 @@ Graphify also picks up memories from recent conversations and from AI agents. Th
 | **From a conversation** | It came from an Ask or agent conversation. |
 
 Keep a suggestion as it is, edit it and keep it, or discard it. If the code a memory refers to changes after it was saved, the memory is flagged: "The code this refers to changed after it was saved. Check that it is still true." When two current versions disagree, Ask and agents use neither until you edit one to say which is right.
+
+When you keep a suggestion, it moves into your memories with a **Publishing** label and stays there if you reload. The drawer says **Publishing. This will show as a saved memory once that finishes.** If the keep doesn't go through, the row returns to suggestions with **It is back in suggestions. Try again.** A discarded suggestion stays hidden while Graphify is still processing the change. You can restore it later from its history.
+
+### Clear empty suggestions
+
+Some pull request suggestions only repeat a title, a merge, or a review count, with nothing in them to keep. These are grouped as empty suggestions.
+
+**Clear all empty suggestions** discards every empty suggestion in the repository, including any the page has not loaded. Suggestions that name a finding stay. You can restore any of them from its history.
+
+When Graphify knows the exact number, the button reads **Clear all N empty suggestions**, or **Clear 1 empty suggestion** if there is only one. If the exact count isn't available, it reads **Clear all empty suggestions**. The confirm asks you to discard every empty suggestion in this repository, including any this page has not loaded. While it runs, the page says **Finding the empty suggestions in this repository…**, then **Cleared N empty suggestions so far…**. Keep the page open until it finishes.
 
 ### Recently added by your agent
 

@@ -9,6 +9,22 @@ rss: true
 icon: "layout-dashboard"
 ---
 
+<Update label="2026-11-11" description="Clearer Memory, Billing and invites">
+
+**Improved:**
+- **Memory:** Pull request memories now show the PR number and title, like **PR #442 · Fix login redirect**, instead of a bare `PR-442`. Memories you or a teammate saved show that person's name, not a sign-in ID.
+- **Memory:** **Clear all empty suggestions** now clears every empty suggestion in the repository, including ones the page hasn't loaded, and the button shows the exact count when Graphify can work it out. Progress counts what was actually cleared.
+- **Memory:** A suggestion you keep moves straight into your memories with a **Publishing** label until it's saved, so it no longer pops back into Suggested after a reload. A discard that takes a while to process stays hidden until it finishes.
+- **Members:** A pending invite that will add a paid seat when accepted is marked **Adds a paid seat on accept**, and the confirmation after sending it says so too.
+
+**Fixed:**
+- **Billing:** If your team's Teams subscription has ended, Billing now offers **Resubscribe to Teams**. Before, it only pointed you to a billing portal that can't start a new subscription.
+- **Billing:** A canceled or Free plan no longer shows a **Next renewal** date. A canceled plan shows **Canceled. Does not renew**. A Free plan leaves the renewal line off.
+- **Overview:** **Recent activity** shows your real totals for the 7, 14 or 30 day range, instead of stopping at 20, and appears sooner on a cold load.
+- **Graph:** **Show on canvas** on a code area now highlights what a change there could affect. Before, the click did nothing on the code-area map.
+
+</Update>
+
 <Update label="2026-11-10" description="Steadier workspace and setup">
 
 **Improved:**

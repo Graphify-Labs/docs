@@ -93,11 +93,11 @@ To verify, use Graphify's list_repositories tool and show the repositories I can
     | --- | --- | --- |
     | Ask a question | `query_graph` with `question` and `token_budget` | `query_graph` with `repository_id`, `question`, and `budget` |
     | Read one symbol | `get_node` with `label` | `graphify_node` with `repository_id` and `symbol` |
-    | List neighbors | `get_neighbors` | `graphify_callers`, `graphify_callees`, or `graphify_references` |
-    | Connect two symbols | `shortest_path` with `source` and `target` | `shortest_path` with `src` and `tgt`, or `graphify_trace` |
+    | List neighbors | `get_neighbors` | `graphify_callers` for callers, or `graphify_node` for a symbol and its neighbors |
+    | Connect two symbols | The local path tool, with `source` and `target`. See the [MCP tool reference](/open-source/features/mcp-tools). | `graphify_trace` with `src` and `tgt` |
     | Summarize the graph | `graph_stats` | `graph_stats` with `repository_id` |
     | Most connected code, communities | `god_nodes`, `get_community` | **Graphs** in the console |
-    | Pull requests | `list_prs`, `get_pr_impact`, `triage_prs` | **Reviews** in the console, `graphify_impact`, `impact_and_risk` |
+    | Pull requests | `list_prs`, `get_pr_impact`, `triage_prs` | **Reviews** in the console, and `graphify_impact` with `include_risk` |
   </Step>
   <Step title="Move saved lessons into Memory">
     Lessons from `graphify reflect` live in `graphify-out/reflections/LESSONS.md`. There is no import. Check each lesson against the current code, then add the ones that still hold in **Memory** with **Add memory**, or ask the assistant to save them with `remember`. Memory is shared with the workspace, so move only lessons everyone may read.

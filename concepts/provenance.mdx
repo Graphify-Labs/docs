@@ -23,7 +23,9 @@ An inferred edge can be derived **without a model**. Static name and import reso
 
 ## Direction matters
 
-`A calls B` differs from `B calls A`. The current path command and MCP `shortest_path` tool respect stored direction by default. Use `--undirected` in the CLI or `undirected: true` in MCP to explore connectivity regardless of direction.
+`A calls B` differs from `B calls A`. The `graphify path` command respects stored direction by default. Add `--undirected` to explore connectivity regardless of direction.
+
+On the hosted server, `graphify_trace` returns directed call paths from one symbol to another.
 
 ```bash
 graphify path "ApiHandler" "DatabaseClient"

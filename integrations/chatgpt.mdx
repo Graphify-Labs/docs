@@ -59,36 +59,33 @@ Results come from the repositories indexed in your workspace. Open the source an
 
 ## 3. Tools
 
-The plugin exposes these 24 tools.
+Your client builds this list from the server's `tools/list` response. That response is the current set.
 
 | Tool | What it does |
 | --- | --- |
+| `fetch` | Read the definition behind a `search` result. Pass that result's `id` unchanged. |
 | `graph_stats` | Node and edge counts, and languages, for the indexed graph. |
-| `graphify_callees` | What a symbol calls, from directed call edges. |
-| `graphify_callers` | What calls a symbol, from directed call edges. |
-| `graphify_expand` | Turn node handles from another tool into full definition bodies. |
-| `graphify_file_neighbors` | A file's imports, and the files that import it. |
-| `graphify_find` | Indexed symbols whose name contains a fragment. |
-| `graphify_find_seeds` | The top seed nodes for a question, without their definition bodies. |
-| `graphify_impact` | The code directly connected to a symbol. A first pass at what a change reaches. |
-| `graphify_imports_exports` | A file's import and export edges. |
+| `graphify_callers` | Who calls a symbol. By default only resolved call edges. An empty result means no edge was indexed. |
+| `graphify_file_neighbors` | What a file imports, what imports it, and the per-file blast radius. |
+| `graphify_find` | Where a symbol is defined. Matches a name fragment, not a question. |
+| `graphify_help` | Setup, repositories, which tool to use, troubleshooting, and this workspace's plan limits. |
+| `graphify_impact` | Callers and callees directly connected to a symbol. Set `include_risk` to rank hotspot files by linked-test coverage. |
+| `graphify_imports_exports` | A source file's import and export edges. |
 | `graphify_node` | A symbol's definition and its immediate neighbors. |
-| `graphify_rank_files` | The source files most relevant to a question in plain English. |
-| `graphify_references` | References to a symbol that are not calls. |
-| `graphify_render_subgraph` | A bounded neighborhood of nodes and links around seed handles. |
-| `graphify_tests_for` | Tests linked to a symbol or a file. |
-| `graphify_trace` | Directed call paths from one symbol to another. |
-| `impact_and_risk` | Files ranked by how widely a change fans out, and whether tests cover them. |
-| `list_repositories` | Repositories this connection can query, with index status. |
-| `list_workspaces` | Workspaces this agent can target, and which one is active. |
-| `memories_about` | Durable notes tied to a file or a symbol. |
-| `query_graph` | A question in plain English, answered with the matching definitions. |
-| `recall` | Published workspace knowledge for a query. |
-| `remember` | Save a durable note about a repository. It may need review before recall shows it. |
-| `set_workspace` | Point this session at a workspace by its handle. It can also replace the default for later sessions. |
-| `shortest_path` | The most confident path between two symbols. |
+| `graphify_rank_files` | Source files ranked for a natural-language question. Returns files, not bodies. |
+| `graphify_tests_for` | Tests linked to a symbol or a file. Not a guarantee of runtime coverage. |
+| `graphify_trace` | Directed call paths from one symbol (`src`) to another (`tgt`). A missing name can fall back to a semantic match. Check `resolved.src` and `resolved.tgt`. An empty path means none was found in the indexed graph. |
+| `list_repositories` | Repositories this connection can query, and whether each index is ready. |
+| `list_workspaces` | Workspaces this agent can target, which one is active, and how it was selected. |
+| `query_graph` | A natural-language question, answered with the matching definitions. |
+| `recall` | What the workspace remembers for a question. `paths` and `symbols` can rank notes about the code you are about to edit. |
+| `remember` | Save one durable note. Saving records intake until someone keeps it in **Memory**. |
+| `review_status` | Status and findings of Graphify's review of a pull request. Does not start a review. |
+| `run_repository_starter_task` | Run a task handed off from a repository page. Pass its `task_id` unchanged. |
+| `search` | Definitions whose labels match a name fragment. Pass a result `id` to `fetch`. |
+| `set_workspace` | Point this session at a workspace by its handle. `make_default` also replaces the default across sessions. |
 
-These tools read the indexed graph. They do not edit source files. An empty callers or callees result describes that indexed graph. A node lookup or a trace can return a semantic suggestion, so check the labels and resolution fields on the result. When trail capture is enabled, `query_graph`, `graphify_trace`, `graphify_find`, and `graphify_rank_files` can save what you asked, and an empty `recall` can save that nothing matched. `remember` and `set_workspace` change stored state. Approve those only when that is what you meant.
+These tools read the indexed graph. They do not edit source files. An empty result from `graphify_callers` means no call edge was indexed, not that nothing calls the symbol. `graphify_node` can return a semantic suggestion when a name has no exact match, so check the labels and the `resolved` field. The server does not capture tool calls as memory. `remember` saves a note, and `set_workspace` changes which workspace the session reads. Approve those only when that is what you meant.
 
 ## If something fails
 

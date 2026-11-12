@@ -9,26 +9,27 @@ icon: "map"
 
 import { PromptBlock } from '/snippets/hero-install.jsx';
 
-When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it gets a set of Graphify tools. This page maps each job you might want done to the tool that does it, with a prompt you can paste. You don't have to name tools in your prompts. Naming them makes it easier to check that the agent used the graph.
+When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it gets Graphify's tools. Your client shows the current list from `tools/list`. This page maps each job to the tool that does it, with a prompt you can paste. You don't have to name tools in your prompts. Naming them makes it easier to check that the agent used the graph.
 
 ## At a glance
 
 | You want to | Ask your agent to use |
 | --- | --- |
 | See which repositories it can query | `list_repositories` |
-| Find where something is defined | `graphify_find`, `search`, `fetch` |
+| Find where something is defined | `graphify_find`, `search`, then `fetch` |
 | Find the files that matter for a question | `graphify_rank_files` |
 | Understand how a feature works | `query_graph`, `graphify_node` |
-| See who calls a function, and what it calls | `graphify_callers`, `graphify_callees` |
-| Follow a call path from one function to another | `graphify_trace`, `shortest_path` |
-| Find non-call uses of a symbol | `graphify_references` |
+| See who calls a function | `graphify_callers` |
+| See the code directly connected to a function, including what it calls | `graphify_impact` |
+| Follow a call path from one function to another | `graphify_trace` |
 | Map a file's imports and dependents | `graphify_imports_exports`, `graphify_file_neighbors` |
-| Size up a change before making it | `graphify_impact`, `impact_and_risk` |
-| Find the tests linked to code | `graphify_tests_for` |
-| Check that a repository is indexed, and how fresh it is | `graph_stats` |
-| Read or save what the team remembers | `recall`, `memories_about`, `remember` |
+| Size up a change before making it | `graphify_impact` with `include_risk`, `graphify_tests_for` |
+| Check that a repository is indexed, and how large the graph is | `graph_stats` |
+| Read or save what the team remembers | `recall`, `remember` |
 | Read how a pull request review went | `review_status` |
 | Switch between Graphify workspaces | `list_workspaces`, `set_workspace` |
+| Look up setup, which tool to use, or this workspace's plan limits | `graphify_help` |
+| Run a task handed off from a repository page | `run_repository_starter_task` |
 
 ## Find code
 
@@ -40,25 +41,35 @@ When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it ge
 
 <PromptBlock text="Use Graphify's query_graph to explain how a user signs in, from the login route to the session being stored. Cite file paths and line numbers." />
 
-`query_graph` answers a question with the relevant definitions in full. `graphify_node` returns one symbol's code plus its immediate neighbors. `graphify_expand` turns ids from another tool's results into full code, and `graphify_render_subgraph` returns a small graph you can draw.
+`query_graph` answers a question with the relevant definitions in full. Set `skeleton` when you only need outlines instead of bodies. `graphify_node` returns one symbol's code plus its immediate neighbors. To read one `search` hit, pass its `id` to `fetch` unchanged.
 
 ## Follow calls and dependencies
 
-<PromptBlock text="Use graphify_callers on chargeCard to list everything that calls it, then graphify_trace from the checkout handler to chargeCard. Tell me which paths skip the retry wrapper." />
+<PromptBlock text="Use graphify_callers on chargeCard to list everything that calls it. Tell me the file and line for each caller." />
 
-`graphify_callers` and `graphify_callees` list direct calls. `graphify_trace` returns directed call paths between two symbols, and `shortest_path` returns the most confident connection between them. `graphify_references` finds uses that aren't calls, such as reads and mentions. `graphify_imports_exports` and `graphify_file_neighbors` work at the file level.
+`graphify_callers` lists who calls a symbol. By default it counts only resolved call edges. Set `strict_calls` to false to include weaker, inferred edges. An empty list means no edge was indexed, not that the code has none. If the name matches more than one definition, the tool refuses and lists the candidate ids. Pass an id to pick one.
+
+`graphify_impact` returns the callers and callees directly connected to a symbol. That is a first pass, not every indirect dependency.
+
+`graphify_imports_exports` returns a file's import and export edges. `graphify_file_neighbors` maps what a file imports, what imports it, and the per-file blast radius. Set `symbols_only` to get that file's definitions and signatures without bodies.
+
+## Follow a call path
+
+<PromptBlock text="Use graphify_trace from the checkout handler to chargeCard. Tell me which paths skip the retry wrapper." />
+
+`graphify_trace` returns directed call paths from `src` to `tgt`. If a name does not resolve, it can fall back to a semantically similar node. Check `resolved.src` and `resolved.tgt` (`exact` or `semantic`) and the labels on the result. An empty path means no path was found in the indexed graph.
 
 ## Change code safely
 
-<PromptBlock text="Before you change parseConfig, call graphify_impact and impact_and_risk on it, then graphify_tests_for. List the files most at risk and the tests I should run." />
+<PromptBlock text="Before you change parseConfig, call graphify_impact on it with include_risk, then graphify_tests_for. List the hotspot files and the tests I should run." />
 
-`graphify_impact` lists the code directly connected to a symbol. It's a first pass, not every indirect dependency. `impact_and_risk` ranks the riskiest files by combining that with linked test coverage. `graphify_tests_for` lists tests linked through the graph. All three read the graph. They don't run tests or prove that a change is safe.
+`graphify_impact` lists the callers and callees directly connected to a symbol. It's a first pass, not every indirect dependency. Set `include_risk` to also rank hotspot files by linked-test coverage. That ranking is a signal from the graph, not a verdict that the change is safe. `graphify_tests_for` lists tests linked through the graph to a symbol or a file. Both read the graph. They don't run tests.
 
 ## Use what your team remembers
 
-<PromptBlock text="Before you edit src/billing/retry.ts, call memories_about on that path and tell me any decisions or gotchas recorded for it." />
+<PromptBlock text="Before you edit src/billing/retry.ts, call recall with a question about that file and pass the path in paths. Tell me any decisions or gotchas that come back." />
 
-`memories_about` returns what's remembered about one file or symbol. `recall` searches memory with a question. `remember` saves one fact. Have your agent ask you before it saves anything. Saved facts wait for review before they're published. See [Memory](/platform/memory).
+`recall` searches what the workspace remembers. Pass repo-relative paths in `paths`, and function or class names in `symbols`, so notes tied to that code can rank first. Those are hints, not a filter. `remember` saves one fact. Have your agent ask you before it saves anything. Saving records intake, not publication, until someone keeps it in **Memory**. See [Memory](/platform/memory).
 
 ## Search your documents
 
@@ -72,7 +83,11 @@ See [Connect Google Drive](/platform/connectors#connect-google-drive).
 
 <PromptBlock text="Call list_workspaces and list_repositories and tell me which Graphify workspace is active and which repositories you can query." />
 
-Most tools take a `repository_id`, either an id or a name like `acme/web-app`. `graph_stats` shows whether a repository is indexed and when. `set_workspace` switches the workspace for the current session. Your agent can also start a task handed off from a repository page with `run_repository_starter_task`.
+Most tools take a `repository_id`, either an id or a name like `acme/web-app`. `graph_stats` shows whether a repository is indexed and how large the graph is: node and edge counts, and languages. `set_workspace` switches the workspace for the current session. `graphify_help` answers questions about Graphify itself. `topic` is `setup`, `plan`, `repositories`, `tools`, or `troubleshooting`. `plan` is this workspace's plan and usage.
+
+## Run a handed-off task
+
+`run_repository_starter_task` runs a task handed off from a repository page. Pass its `task_id` unchanged. It returns source context for that task and records that the context was delivered. It does not record that your agent finished the answer.
 
 ## What the tools don't do
 

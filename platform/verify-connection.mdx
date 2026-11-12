@@ -51,7 +51,7 @@ Open a new agent chat and paste each prompt. Your client shows each tool call in
 | --- | --- | --- |
 | `Use Graphify to list my repositories. If the tool fails, show the error.` | `list_repositories` | Your indexed repositories, with their index status. |
 | `Using Graphify, who calls <function> in <repo>? Cite file paths.` | `graphify_callers`, often after `graphify_find` | Callers with file paths you can open and check. |
-| `Using Graphify, what could break if I change <function>, and which tests cover it?` | `graphify_impact`, `impact_and_risk` or `graphify_tests_for` | Affected files and linked tests. |
+| `Using Graphify, what could break if I change <function>, and which tests cover it?` | `graphify_impact` with `include_risk`, or `graphify_tests_for` | Connected code, hotspot files, and linked tests. |
 
 Replace `<function>` with a function you know in a repository from the first answer. If you belong to several workspaces and the list looks wrong, ask the agent to run `list_workspaces`, then `set_workspace`.
 

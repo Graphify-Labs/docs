@@ -34,30 +34,31 @@ Your agent uses these hosted tools:
 
 | Tool | What it returns |
 | --- | --- |
-| `graphify_callers` | What calls a symbol, from directed call edges. |
-| `graphify_callees` | What a symbol calls, from directed call edges. |
-| `graphify_references` | References to a symbol that are not calls. |
+| `graphify_callers` | Who calls a symbol. By default only resolved call edges. |
+| `graphify_impact` | The callers and callees directly connected to a symbol. |
+| `graphify_node` | The symbol's definition and its immediate neighbors. |
 
-An empty callers or callees result describes the indexed graph. It does not prove that nothing calls the symbol, for example when code is called dynamically or the index is out of date.
+An empty result from `graphify_callers` means no call edge was indexed. It does not prove that nothing calls the symbol, for example when code is called dynamically or the index is out of date. If the name matches more than one definition, the tool refuses and lists the candidate ids. Pass an id to pick one.
 
 ## Trace a path between two symbols
 
 <CodeGroup>
 
 ```text Agent prompt
-Use Graphify on Graphify-Labs/graphify: how does extract reach build_from_json?
-```
-
-```bash Local CLI
-graphify path "extract" "build_from_json"
+Use Graphify's graphify_trace on Graphify-Labs/graphify: how does extract reach build_from_json?
 ```
 
 </CodeGroup>
 
 | Tool | What it returns |
 | --- | --- |
-| `graphify_trace` | Directed call paths from one symbol to another. |
-| `shortest_path` | The most confident path between two symbols. |
+| `graphify_trace` | Directed call paths from one symbol (`src`) to another (`tgt`). A missing name can fall back to a semantic match. Check `resolved.src` and `resolved.tgt`. An empty path means none was found in the indexed graph. |
+
+## Local path command
+
+```bash
+graphify path "extract" "build_from_json"
+```
 
 The local `graphify path` command takes these options:
 
@@ -69,7 +70,7 @@ The local `graphify path` command takes these options:
 
 ## Read the result
 
-A lookup or a trace can return a semantic suggestion when a name has no exact match. Check the labels and resolution fields on the result before you trust a path. Each edge also carries a confidence tag (`EXTRACTED`, `INFERRED`, or `AMBIGUOUS`). [Edges and provenance](/concepts/provenance) explains each tag.
+A lookup can return a semantic suggestion when a name has no exact match. Check the labels and the `resolved` field (`exact` or `semantic`) before you trust it. Each edge also carries a confidence tag (`EXTRACTED`, `INFERRED`, or `AMBIGUOUS`). [Edges and provenance](/concepts/provenance) explains each tag.
 
 ## If something fails
 

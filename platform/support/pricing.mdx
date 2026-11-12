@@ -142,16 +142,70 @@ Both **Teams** and **Enterprise** include a **dedicated Slack support channel**.
 
 ## Billing and subscription management
 
-Open **Billing** in your [Graphify workspace](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-support-pricing) to review the current plan, seats, billing interval, and renewal information. The current plan shows a short renewal line when it applies: **Trial ends:** and the date during a trial, **Next renewal:** and the date on a paid plan that's still set to renew, and **Canceled. Does not renew** after you cancel. A Free plan with no subscription omits this line. A Free plan that's past due shows **Does not renew**. Use its billing portal for payment details, invoices, and cancellation. Only workspace **owners** and **billing** members can open the portal. Owners and billing members can buy seats. When every Teams seat is in use, only the Owner can add a seat while inviting someone or approving an access request.
+Open **Billing** in your [Graphify workspace](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-support-pricing). It has four tabs:
 
-### Your agent's activity on Billing
+| Tab | What it shows |
+| --- | --- |
+| **Overview** | Your current plan, what you pay, and **What Graphify did** in this workspace. |
+| **Usage** | Your limits, how much of each you've used, and when each one resets. |
+| **Plans** | Free, Pro, Teams, and Enterprise side by side, with a monthly or annual toggle. |
+| **Invoices & payment** | Your card and billing details, and past invoices. |
 
-**Billing** shows two tiles about your agent:
+A dot on **Usage** means a limit is near or reached.
 
-- **Calls.** How many times your agent called Graphify over the last 7 days, across all your workspaces.
-- **Context tokens.** How your agent's Graphify answers in this workspace compared with reading the same source files, over the last 30 days.
+### Overview
 
-Expand **How it's measured** for the method. **View activity** opens the detail. When there are no calls yet, the link says **Connect your agent** instead.
+The current plan shows what you pay. For owners, admins, and billing members on a paid plan, this is the amount Stripe will charge, including any discount. A discount appears on its own **Discount** line with its name and terms, and the price before the discount is struck through. If Stripe can't be reached, the page shows the list price and says so, with **Retry amount**.
+
+The plan also shows a short renewal line when it applies:
+
+- **Trial ends:** and the date during a trial.
+- **Next charge** with the amount and date, or **Ends at the end of this period** if you've cancelled. Owners, admins, and billing members see this on a paid plan.
+- **Next renewal:** and the date, for other members on a paid plan that's still set to renew.
+- **Canceled. Does not renew** after the subscription has ended.
+
+A Free plan with no subscription omits this line.
+
+On Free, Overview lists your allowances with what you've used, such as **2 of 3** repositories, and marks any that are **Near limit** or **At limit**. It suggests Teams when more than one person is using the workspace. **Compare plans** opens **Plans**.
+
+### What Graphify did
+
+**What Graphify did** counts this workspace's activity over the last 7, 14, or 30 days. Pick the range in **Time range**.
+
+| Tile | Counts |
+| --- | --- |
+| **PR reviews** | Reviews Graphify completed in this workspace. |
+| **Agent queries** | Agent calls and graph queries from everyone in this workspace. |
+| **Repos kept current** | Repositories with a fresh index in this period. |
+| **Memories saved** | Shared memories saved for the team, and how often agents recalled them. |
+
+Each tile opens the page behind it. A new workspace sees three first steps instead: **Index a repository**, **Connect your agent**, and **Get your first PR review**.
+
+Below the tiles are two cards about your own agents:
+
+- **Your agents called Graphify.** How many times your agents called Graphify in the last 7 days, across all your workspaces. With no calls yet, it links to **Connect your agent**.
+- **Token savings.** How many tokens your agents' Graphify answers used in this workspace, compared with reading the same source files directly. It is not your model bill. It shows **Not measured yet** until your agents have queried Graphify here.
+
+### Usage
+
+**Usage** shows PR reviews, verification runs, index builds, and group builds, each with what's left and when it resets. It also shows your graph size against your plan's cap. Limits reset on their own. At a limit, new work waits for the reset. Reaching a limit never adds a charge.
+
+On Teams, **Team** shows **Developers** (seats used out of seats bought), **Using agents** (teammates who have made at least one agent call), and **Active** (teammates who used Graphify in the last 30 days).
+
+### Who can do what
+
+| Action | Owner | Billing | Admin | Member |
+| --- | --- | --- | --- | --- |
+| See the plan, usage, and activity | Yes | Yes | Yes | Yes |
+| See the amount Stripe will charge | Yes | Yes | Yes | No, sees the list price |
+| Open **Manage billing** (the Stripe billing portal) | Yes | Yes | No | No |
+| See invoices | Yes | Yes | No | No |
+| **Switch to annual** | Yes | No | Yes | No |
+| Upgrade, buy seats, or **Manage teams** | Yes | Yes | No | No |
+
+If you don't have access, the button stays visible but greyed out, and hovering it shows **Only the owner or a billing member can change billing.** Invoices show **Only the owner or a billing member can see invoices.** When every Teams seat is in use, only the Owner can add a seat while inviting someone or approving an access request.
+
+Use the billing portal for payment details, invoices, and cancellation.
 
 ### Failed payment
 

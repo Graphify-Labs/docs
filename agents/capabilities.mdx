@@ -1,7 +1,7 @@
 ---
 title: "What your agent can do with Graphify"
 sidebarTitle: "What your agent can do"
-description: "Every hosted Graphify MCP tool, grouped by the job it does, with a prompt to paste for each one, a quick lookup table, and what each tool can't do."
+description: "Hosted Graphify MCP tools, grouped by the job each one does, with a prompt to paste, a lookup table, and what each tool can't do."
 keywords: ["graphify mcp tools", "what can my agent do", "mcp capability list", "agent prompts", "hosted mcp tools"]
 surface: "cloud"
 icon: "map"
@@ -16,7 +16,7 @@ When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it ge
 | You want to | Ask your agent to use |
 | --- | --- |
 | See which repositories it can query | `list_repositories` |
-| Find where something is defined | `graphify_find`, `search`, then `fetch` |
+| Find where something is defined | `graphify_find`. `search` and `fetch` are the pair the ChatGPT connector uses. Other clients can call them too. |
 | Find the files that matter for a question | `graphify_rank_files` |
 | Understand how a feature works | `query_graph`, `graphify_node` |
 | See who calls a function | `graphify_callers` |
@@ -29,13 +29,12 @@ When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it ge
 | Read how a pull request review went | `review_status` |
 | Switch between Graphify workspaces | `list_workspaces`, `set_workspace` |
 | Look up setup, which tool to use, or this workspace's plan limits | `graphify_help` |
-| Run a task handed off from a repository page | `run_repository_starter_task` |
 
 ## Find code
 
 <PromptBlock text="Use Graphify to find where invoice totals are calculated. Call graphify_find with short name fragments like 'invoice' and 'total', then graphify_rank_files with the question. Show the definitions with file paths." />
 
-`graphify_find` matches symbol names, so use a fragment, not a question. `graphify_rank_files` takes a plain-language question and returns files, not code. `search` and `fetch` work as a pair: `search` returns results with ids, and `fetch` reads the code behind one id.
+`graphify_find` matches symbol names, so use a fragment, not a question. `graphify_rank_files` takes a plain-language question and returns files, not code. `search` and `fetch` are the pair the ChatGPT connector uses. Other clients can call them too. `search` returns results with ids, and `fetch` reads the code behind one id.
 
 ## Understand how something works
 
@@ -84,10 +83,6 @@ See [Connect Google Drive](/platform/connectors#connect-google-drive).
 <PromptBlock text="Call list_workspaces and list_repositories and tell me which Graphify workspace is active and which repositories you can query." />
 
 Most tools take a `repository_id`, either an id or a name like `acme/web-app`. `graph_stats` shows whether a repository is indexed and how large the graph is: node and edge counts, and languages. `set_workspace` switches the workspace for the current session. `graphify_help` answers questions about Graphify itself. `topic` is `setup`, `plan`, `repositories`, `tools`, or `troubleshooting`. `plan` is this workspace's plan and usage.
-
-## Run a handed-off task
-
-`run_repository_starter_task` runs a task handed off from a repository page. Pass its `task_id` unchanged. It returns source context for that task and records that the context was delivered. It does not record that your agent finished the answer.
 
 ## What the tools don't do
 

@@ -32,7 +32,7 @@ The hosted server sends instructions on connect that map question types to tools
 | Which repositories or workspaces can I query? | `list_repositories`, `list_workspaces` |
 | How does X work? | `query_graph` |
 | Where is X defined? | `graphify_find`, or `graphify_node` for the body and its neighbors |
-| Find a definition by part of its name, then read it | `search`, then `fetch` with a result's `id` |
+| Find a definition by part of its name, then read it | `search`, then `fetch` with a result's `id`. The ChatGPT connector uses this pair. Other clients can call it too. |
 | Who calls X? | `graphify_callers` |
 | What is directly connected to X, including what it calls? | `graphify_impact` |
 | How does A reach B? | `graphify_trace` |
@@ -44,7 +44,6 @@ The hosted server sends instructions on connect that map question types to tools
 | What did the team decide about X? | `recall`. Pass `paths` and `symbols` for the code you are about to change so those notes can rank first. |
 | How do I set Graphify up, or which tool fits? | `graphify_help` |
 | What did a pull request review find? | `review_status` |
-| Run the task handed off from a repository page | `run_repository_starter_task`, with its `task_id` unchanged |
 
 Rules for the results:
 
@@ -64,7 +63,6 @@ The tools don't edit source files. Ask the user before you call a tool that chan
 
 - `remember` saves a note to the workspace's shared [Memory](/platform/memory). Save only what the user asked you to save. Saving records intake, not publication, until someone keeps it.
 - `set_workspace` changes which workspace, and so which repositories, the session reads. With `make_default`, it also changes the user's default. See [Graphify MCP](/platform/graphify-mcp#workspaces-and-mcp-sessions).
-- `run_repository_starter_task` runs a task handed off from a repository page and records that it delivered source context. Call it only for that task, and pass `task_id` unchanged.
 
 The hosted server does not capture tool calls as memory. `recall` reads notes the workspace already has, such as ones saved with `remember`, created through the API, or recorded from a workspace event such as a merged pull request.
 

@@ -49,7 +49,7 @@ Your agent picks the tools. Your client shows the current set from `tools/list`.
 | `graphify_rank_files` | The source files most relevant to the question, not their bodies. |
 | `graphify_find` | Symbols whose name contains a fragment. |
 | `graphify_node` | One symbol's definition and its immediate neighbors. |
-| `search`, then `fetch` | `search` matches a name fragment and returns ids. `fetch` reads one result. Pass the `id` unchanged. |
+| `search`, then `fetch` | The pair the ChatGPT connector uses. Other clients can call them too. `search` matches a name fragment and returns ids. `fetch` reads one result. Pass the `id` unchanged. |
 
 A common pattern is to rank files or search by name, then read the definitions with `query_graph`, `graphify_node`, or `fetch`. The full list is in [Tools](/integrations/chatgpt#3-tools).
 

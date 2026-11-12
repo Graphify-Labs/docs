@@ -59,7 +59,7 @@ Results come from the repositories indexed in your workspace. Open the source an
 
 ## 3. Tools
 
-Your client builds this list from the server's `tools/list` response. That response is the current set.
+Your client builds this list from the server's `tools/list` response. That response is the current set. `search` and `fetch` are the pair the ChatGPT connector uses. Other clients can call them too.
 
 | Tool | What it does |
 | --- | --- |
@@ -81,7 +81,6 @@ Your client builds this list from the server's `tools/list` response. That respo
 | `recall` | What the workspace remembers for a question. `paths` and `symbols` can rank notes about the code you are about to edit. |
 | `remember` | Save one durable note. Saving records intake until someone keeps it in **Memory**. |
 | `review_status` | Status and findings of Graphify's review of a pull request. Does not start a review. |
-| `run_repository_starter_task` | Run a task handed off from a repository page. Pass its `task_id` unchanged. |
 | `search` | Definitions whose labels match a name fragment. Pass a result `id` to `fetch`. |
 | `set_workspace` | Point this session at a workspace by its handle. `make_default` also replaces the default across sessions. |
 

@@ -11,14 +11,31 @@ icon: "layout-dashboard"
 
 <Update label="2026-11-12" description="Clearer Billing, easier wiki reading">
 
-**Improved:**
-- **Billing:** **Settings** > **Billing** is now split into **Overview**, **Usage**, **Plans** and **Invoices & payment**. Owners and billing members see what they actually pay on Overview, including any discount, and **What Graphify did** counts PR reviews, agent queries, repositories kept current and memories saved. Usage shows each allowance with how much is left. Plans and prices are unchanged.
-- **Billing:** On Free, each limit shows how close you are, and a new workspace sees first steps instead of a row of zeros. Teammates without billing access see why a button is greyed out instead of errors they can't fix.
-- **Wiki:** The sidebar now starts with **Overview**, then the repository's subsystems with their code areas underneath, production code before tests, and ends with **Glossary**. Search also finds subsystem pages and the glossary.
-- **Wiki:** Architecture diagrams are easier to read. Boxes show full names, you can zoom and drag to pan a large diagram, and wiki search results show plain text instead of raw links.
+### Billing is easier to scan
 
-**Fixed:**
-- **Graph:** Very large repositories now show a precomputed map of their structure instead of **This graph is too large to display**. Ask and MCP still answer from the full graph. If you still see the old message, re-index the repository.
+*See what you pay, what Graphify did, and how much of each allowance is left.*
+
+Before, **Settings** > **Billing** was one long page that mixed plan, usage and invoices together. It's now split into **Overview**, **Usage**, **Plans** and **Invoices & payment**. Overview shows what you actually pay, including any discount, and **What Graphify did** counts PR reviews, agent queries, repositories kept current and memories saved. Usage shows how much of each allowance is left. Plans and prices are unchanged. Go to **Settings**, **Billing**.
+
+On Free, each limit shows how close you are, and a new workspace sees first steps instead of a row of zeros. If a button is greyed out, it now says why: **Only the owner or a billing member can change billing**. Before, teammates without billing access just hit errors they couldn't fix.
+
+### The wiki sidebar follows the repo
+
+*Overview first, then subsystems and their code areas, with the glossary at the end.*
+
+Before, the wiki sidebar was harder to scan, and search missed subsystem pages and the glossary. It now starts with **Overview**, then the repository's subsystems with their code areas underneath, production code before tests, and ends with **Glossary**. Search finds those pages too.
+
+### Wiki diagrams are easier to read
+
+*Boxes show full names. Scroll to zoom, and drag to pan.*
+
+Architecture diagrams now show full names in the boxes. Scroll to zoom and drag to pan a large diagram, and wiki search results show plain text instead of raw links.
+
+### Very large repositories show a map again
+
+*A precomputed map, instead of a message that the graph is too large to display.*
+
+Before, a very large repository showed **This graph is too large to display**. It now shows a precomputed map of its structure. Ask and MCP still use the full graph. If you still see the old message, re-index the repository.
 
 </Update>
 

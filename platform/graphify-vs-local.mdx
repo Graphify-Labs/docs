@@ -32,10 +32,11 @@ Both give your assistant the same kind of code graph. They differ in where the g
 | **Connection** | `graphify-mcp` over stdio, with a path to `graph.json` | `https://api.graphify.com/mcp` over Streamable HTTP |
 | **Sign-in** | None | OAuth in the browser, or an API token for CI |
 | **Repository** | One `graph.json` for each entry, or `project_path` | `repository_id` on each call |
-| **Tool names** | `get_node`, `get_neighbors`, and `shortest_path` with `source` and `target` | `graphify_node`, `graphify_callers`, and `shortest_path` with `src` and `tgt` |
+| **Tool names** | `get_node` and `get_neighbors` | `graphify_node` and `graphify_callers` |
+| **Call path** | The local path tool, with `source` and `target` | `graphify_trace` with `src` and `tgt` |
 | **Pull requests** | `list_prs`, `get_pr_impact`, and `triage_prs` through `gh` | Automatic reviews in **Reviews** |
 | **Saved lessons** | `graphify-out/reflections/LESSONS.md` | **Memory** for each repository, shared with the workspace |
-| **Change impact** | `graphify affected "<node>"` | `graphify_impact` and `impact_and_risk` |
+| **Change impact** | `graphify affected "<node>"` | `graphify_impact`, with `include_risk` to rank hotspot files |
 | **Wiki** | `graphify export wiki` writes Markdown files | **Wiki** for each indexed repository, with search and questions |
 | **Several repositories** | `graphify merge-graphs` or `graphify global add` | **Cross-Repository** in **Graphs** |
 | **Team** | Each clone installs the skill and the hooks | **Members** in the user menu |
@@ -47,7 +48,7 @@ Both give your assistant the same kind of code graph. They differ in where the g
 - [Learning](/platform/learning) from `@graphify wrong`, `good`, and `suppress` replies on reviews.
 - [Formal verification](/platform/verification) of changed functions against their earlier implementation.
 - [Agent memory](/platform/memory) shared by every assistant and teammate in the workspace.
-- `graphify_tests_for` and `impact_and_risk`, which list the tests linked to a symbol and rank the files a change reaches.
+- `graphify_tests_for`, and `graphify_impact` with `include_risk`, which list the tests linked to a symbol and rank hotspot files by linked-test coverage.
 - [Contributors](/platform/contributors), when it is available in your workspace.
 
 ## Does hosted Graphify have a search hook?

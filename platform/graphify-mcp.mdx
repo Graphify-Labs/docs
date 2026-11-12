@@ -148,7 +148,7 @@ See [Graph explorer](/platform/graphs) for how to build and open a combined grap
 
 ## What your agent can do
 
-Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. Repository tools such as `list_repositories`, `query_graph`, `graphify_find`, callers, impact, and memory come from the indexed graph. For the job-to-tool map and pasteable prompts, see [What your agent can do](/agents/capabilities) and [Use Graphify from your agent](/agents/recipes).
+Your client builds its tool list from the server's `tools/list` response, so the client's tool panel always shows the current set. Trust that list over any written summary. Repository tools such as `list_repositories`, `query_graph`, `graphify_find`, `graphify_callers`, `graphify_impact`, and `recall` come from the indexed graph. For the job-to-tool map and pasteable prompts, see [What your agent can do](/agents/capabilities) and [Use Graphify from your agent](/agents/recipes).
 
 Graphify also adds these workspace and review tools to every session:
 
@@ -156,19 +156,19 @@ Graphify also adds these workspace and review tools to every session:
 | --- | --- |
 | `list_workspaces` | Lists the workspaces you belong to and marks the active one. No arguments. Read-only. |
 | `set_workspace` | `handle` (required) switches the session to that workspace. `make_default` (optional) also saves it as your default. State-changing, so most clients ask before running it. |
-| `review_status` | `repository` and `pr_number` are optional. Pass `pr_number` for one PR, or omit it for the 10 most recent reviews. Read-only. Does not start or re-run a review. |
+| `review_status` | `repository` (owner/name or id) is optional when the workspace has one repository, or when you are listing recent reviews. Pass `pr_number` for one pull request, or omit it to list recent reviews. Read-only. Does not start or re-run a review. |
 
 Changing workspace changes which repositories the session can see. It doesn't change your code or the graph.
 
 ### What `review_status` returns
 
-For one PR, the tool returns a `review` object (or `null` with a message if Graphify has not reviewed that PR yet). Without `pr_number`, it returns a `reviews` list of up to 10 runs, newest first.
+For one PR, the tool returns a `review` object (or `null` with a message if Graphify has not reviewed that PR yet). Without `pr_number`, it returns a `reviews` list of recent runs, newest first.
 
 Each review includes the repository, PR number and title, status (`queued`, `running`, `completed`, `failed`, or `cancelled`), and whether a newer push superseded it. A completed review also includes:
 
 - **`gate`:** `pass` or `advisory` (not a `passed` field)
 - **Finding counts:** `blocking_count`, `advisory_count`, and `findings_total`
-- **`top_findings`:** up to five findings, worst severity first
+- **`top_findings`:** the top findings, worst severity first
 
 If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in about 20 to 30 minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
 
@@ -246,7 +246,7 @@ All are on `https://api.graphify.com` and are cached for an hour.
 Every request runs in one workspace. Graphify picks it in this order: the workspace bound to this MCP session, then your default workspace, then your only workspace if you belong to just one.
 
 - Each client installation gets its own MCP session, so two machines can use different workspaces without overwriting each other.
-- `set_workspace` binds the current session. The binding lasts 24 hours by default. With `make_default: true`, it also becomes your default workspace.
+- `set_workspace` binds the current session. Repeating that selection renews its expiry. With `make_default: true`, it also becomes your default workspace. Without an MCP session, the call replaces your default across sessions even when `make_default` is omitted.
 - Graphify rechecks your membership on every request. Removed members lose access within 60 seconds.
 
 <Warning>

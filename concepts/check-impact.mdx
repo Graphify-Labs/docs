@@ -1,7 +1,7 @@
 ---
 title: "Check the impact of a change before you make it"
 sidebarTitle: "Check the impact of a change"
-description: "Ask your agent what a change to a symbol or file reaches in your indexed repository, which files carry the most risk, and which tests cover them."
+description: "Ask your agent what a change reaches in your indexed repository, which hotspot files the graph ranks, and which tests cover them."
 keywords: ["change impact", "what a change reaches", "files at risk", "tests that cover a change"]
 surface: "cloud"
 hideFooterPagination: true
@@ -10,7 +10,7 @@ icon: "radar"
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-Before you change a function or a file, ask your agent what the change reaches. Graphify reads the graph of your indexed repository and returns the connected code, the files where a change fans out most widely, and the tests linked to them.
+Before you change a function or a file, ask your agent what the change reaches. Graphify reads the graph of your indexed repository and returns the connected code, hotspot files ranked by linked-test coverage, and the tests linked to them.
 
 Use this while you plan a change. After you open a pull request, [pull request reviews](/platform/reviews) check the change itself.
 
@@ -35,10 +35,9 @@ Name the symbol or the file you plan to change. Your agent uses these hosted too
 
 | Tool | What it returns |
 | --- | --- |
-| `graphify_impact` | The code directly connected to a symbol. A first pass at what a change reaches. |
-| `impact_and_risk` | Files ranked by how widely a change fans out, and whether tests cover them. |
+| `graphify_impact` | The callers and callees directly connected to a symbol. A first pass at what a change reaches. Set `include_risk` to rank hotspot files by linked-test coverage. |
 | `graphify_tests_for` | Tests linked to a symbol or a file. |
-| `graphify_file_neighbors` | A file's imports, and the files that import it. |
+| `graphify_file_neighbors` | What a file imports, what imports it, and the per-file blast radius. |
 
 For a deeper look, ask for the callers of the symbol. See [Follow calls and trace a path](/concepts/follow-calls).
 
@@ -46,7 +45,8 @@ For a deeper look, ask for the callers of the symbol. See [Follow calls and trac
 
 Treat the result as a starting list, not a full answer:
 
-- `graphify_impact` returns direct connections only. Code that is called dynamically, or connected through several steps, may not appear.
+- `graphify_impact` returns direct connections only: the callers and callees of the symbol. Code that is called dynamically, or connected through several steps, may not appear.
+- `include_risk` ranks hotspot files by linked-test coverage. That ranking is a signal from the graph, not a verdict that the change is safe.
 - A file with no linked tests in the result may still be tested in a way the graph does not link.
 - Each edge carries a confidence tag (`EXTRACTED`, `INFERRED`, or `AMBIGUOUS`). [Edges and provenance](/concepts/provenance) explains each tag.
 

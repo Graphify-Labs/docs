@@ -41,16 +41,17 @@ If you work in more than one workspace, ask your agent to list repositories firs
 
 ## What your agent calls
 
-Your agent picks the tools. These are the hosted tools it uses for a question in plain English:
+Your agent picks the tools. Your client shows the current set from `tools/list`. These are the hosted tools it uses for a question in plain English:
 
 | Tool | What it returns |
 | --- | --- |
-| `query_graph` | The definitions that match a plain-English question. |
-| `graphify_rank_files` | The source files most relevant to the question. |
-| `graphify_find_seeds` | The top starting nodes for the question, without their definition bodies. |
-| `graphify_expand` | Full definition bodies for node handles returned by another tool. |
+| `query_graph` | The definitions that match a plain-English question. Set `skeleton` for outlines instead of full bodies. |
+| `graphify_rank_files` | The source files most relevant to the question, not their bodies. |
+| `graphify_find` | Symbols whose name contains a fragment. |
+| `graphify_node` | One symbol's definition and its immediate neighbors. |
+| `search`, then `fetch` | `search` matches a name fragment and returns ids. `fetch` reads one result. Pass the `id` unchanged. |
 
-A common pattern is to find seeds or rank files first, then expand only the nodes the agent needs. The full list is in [Tools](/integrations/chatgpt#3-tools).
+A common pattern is to rank files or search by name, then read the definitions with `query_graph`, `graphify_node`, or `fetch`. The full list is in [Tools](/integrations/chatgpt#3-tools).
 
 The local CLI takes these options:
 

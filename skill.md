@@ -57,8 +57,8 @@ Then follow the full steps at [docs.graphify.com/for-agents.md](https://docs.gra
 
 - `query_graph`: how something works.
 - `graphify_find`: where a symbol is defined.
-- `graphify_callers` and `graphify_callees`: who calls what.
-- `graphify_impact`: what a change could affect.
+- `graphify_callers`: who calls a symbol.
+- `graphify_impact`: the callers and callees directly connected to a symbol, and what a change could affect. Set `include_risk` to rank hotspot files by linked-test coverage.
 - `list_workspaces` and `set_workspace`: see or switch the workspace. `set_workspace` changes state, so ask first.
 
 If a Graphify tool fails or the repository is not indexed, say so, then fall back to grep. Do not guess.

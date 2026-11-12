@@ -14,26 +14,26 @@ Paste these prompts into any agent connected to Graphify. Each one names the too
 Hosted Graphify lists 63 grammars. Open-source Graphify supports 40 languages (33 tree-sitter, 7 built-in).
 
 <Tip>
-Start each session with "Use Graphify's `list_repositories` tool and pick the repository for this project." Every other tool takes that `repository_id`, either the UUID or `owner/name`.
+Start each session with "Use Graphify's `list_repositories` tool and pick the repository for this project." Most repository tools take that `repository_id`, either the UUID or `owner/name`. You can omit it when the connection URL sets `?repo=` or the workspace has one repository.
 </Tip>
 
 ## Review a pull request
 
-<PromptBlock text="Use Graphify to review this pull request. For each changed function, call graphify_impact to find the code directly connected to it, then impact_and_risk to rank the risky files. Call graphify_tests_for on the changed symbols and tell me which tests to run. Cite file paths." />
+<PromptBlock text="Use Graphify to review this pull request. For each changed function, call graphify_impact with include_risk to see the code directly connected to it and the hotspot files ranked by linked-test coverage. Call graphify_tests_for on the changed symbols and tell me which tests to run. Cite file paths." />
 
-**Triggers:** `graphify_impact`, `impact_and_risk`, `graphify_tests_for`. These tools read the graph. They don't run tests.
+**Triggers:** `graphify_impact` with `include_risk`, and `graphify_tests_for`. These tools read the graph. They don't run tests. `include_risk` ranks hotspot files by linked-test coverage. That ranking is a signal from the graph, not a verdict.
 
 ## Check the impact of a change
 
-<PromptBlock text="Before you change parseConfig, use Graphify's graphify_impact on it and list the code directly connected to it, grouped by file. Follow the riskiest paths further with graphify_trace." />
+<PromptBlock text="Before you change parseConfig, use Graphify's graphify_impact on it and list the code directly connected to it, grouped by file." />
 
-**Triggers:** `graphify_impact`, which takes the symbol name directly. It returns the callers and callees directly connected to it, grouped by file. That's a first pass, not every transitive effect. If several symbols share the name, the results combine them: check the `resolved` symbol and the `seeds`.
+**Triggers:** `graphify_impact`, which takes the symbol name as `target`. It returns the callers and callees directly connected to it. That's a first pass, not every transitive effect. Set `include_risk` to also rank hotspot files by linked-test coverage.
 
 ## Find where something is called
 
 <PromptBlock text="Use Graphify's graphify_callers to show every place that calls createSession, with file paths and line numbers." />
 
-**Triggers:** `graphify_callers`, which takes the symbol name directly and returns each caller with its file, definition line and `call_site` line. If the name matches several symbols, it lists them under `ambiguous`. By default it returns only resolved call edges; ask for `strict_calls=false` to include inferred ones. An empty list means the index found no callers. It doesn't prove the code is unused, because dynamic calls can be missed.
+**Triggers:** `graphify_callers`, which takes the symbol name as `symbol`. If the name matches several definitions, it refuses and lists the candidate ids. Pass an id to pick one. By default it returns only resolved call edges (`strict_calls` is true). Set `strict_calls` to false to include inferred ones. An empty list means no call edge was indexed. It doesn't prove the code is unused, because dynamic calls can be missed.
 
 ## Find the tests for a symbol
 
@@ -45,11 +45,17 @@ Start each session with "Use Graphify's `list_repositories` tool and pick the re
 
 <PromptBlock text="I'm new to this repository. Use Graphify: call graphify_rank_files for the most important files, then query_graph to explain how a request flows from the API layer to the database. Keep it to one page and cite files." />
 
-**Triggers:** `graphify_rank_files`, which ranks files for the question and shows the matching symbols in each, then `query_graph`, which returns the relevant definitions to explain from. Agents often add `graphify_trace` to follow a path. If it finds no direct call path, it returns where it stopped instead. In workspaces with trail capture turned on, these calls can save the question to workspace memory. For a lighter, read-only first look, ask for `graph_stats` and `graphify_find_seeds`.
+**Triggers:** `graphify_rank_files`, which ranks files for the question, then `query_graph`, which returns the relevant definitions to explain from. For a lighter first look, ask for `graph_stats`, or `query_graph` with `skeleton` so you get outlines instead of full definition bodies.
+
+## Follow a call path
+
+<PromptBlock text="Use Graphify's graphify_trace from the checkout handler to chargeCard. List each directed call path, and say if a path is empty." />
+
+**Triggers:** `graphify_trace`, from `src` to `tgt`. If a name does not resolve, it can fall back to a semantic match. Check `resolved.src` and `resolved.tgt`. An empty path means no directed call path was found in the indexed graph.
 
 ## Make it stick
 
-- Every result carries `freshness`: the indexed commit and its age. The graph reflects the last indexed snapshot of the default branch. If your branch has new code, say so and expect gaps. See [Keep answers fresh](/agents/overview#keep-answers-fresh).
+- The graph reflects the last indexed snapshot of the default branch. If your branch has new code, say so and expect gaps. See [Keep answers fresh](/agents/overview#keep-answers-fresh).
 - `remember` saves a note for later sessions. Your agent should ask before calling it.
 - To make your agent use Graphify without being told, add a project rule. See [Make agents use the graph](/cookbooks/make-agents-use-the-graph).
 

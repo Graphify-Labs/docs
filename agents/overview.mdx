@@ -19,13 +19,13 @@ Default to the hosted server. Use open-source Graphify only when the user asks f
 | --- | --- | --- |
 | Hosted MCP server | Default. The user's repositories are indexed at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=agents-overview). | Add `https://api.graphify.com/mcp` as a remote Streamable HTTP server. Sign-in is OAuth in the browser; there is no API key. Commands per agent: [Setup for AI agents](/for-agents#setup-for-ai-agents), step 2. |
 | One-click installs and plugins | The user prefers to click instead of editing config. | [Install in Cursor](/integrations/cursor), the [VS Code extension](/integrations/vscode), and the [Graphify plugin for ChatGPT and Codex](/integrations/chatgpt). All three connect to the same hosted server. |
-| Graphify CLI | The user asks for an offline or on-machine graph. | `uv tool install graphifyy`, then `graphify install`. See the [Graphify CLI quickstart](/open-source/quickstart). Its MCP server has [ten tools](/open-source/features/mcp-tools) with different names from the hosted ones. |
+| Graphify CLI | The user asks for an offline or on-machine graph. | `uv tool install graphifyy`, then `graphify install`. See the [Graphify CLI quickstart](/open-source/quickstart). Its MCP tools are in the [MCP tool reference](/open-source/features/mcp-tools), and the names differ from the hosted ones. |
 
 Before you change a config file, tell the user what you will change and wait for a yes. After you connect, check the connection with `list_repositories`. If anything fails, use [Check your agent is using Graphify](/platform/verify-connection).
 
 ## Pick the tool
 
-The hosted server sends instructions on connect that map question types to tools, and it lists 27 tools. Your client builds its tool list from the server, so trust the live tool list and its input schemas over this table.
+The hosted server sends instructions on connect that map question types to tools. Your client builds its tool list from the server's `tools/list` response, so trust that live list and its input schemas over this table.
 
 | The user asks | Call |
 | --- | --- |
@@ -33,37 +33,40 @@ The hosted server sends instructions on connect that map question types to tools
 | How does X work? | `query_graph` |
 | Where is X defined? | `graphify_find`, or `graphify_node` for the body and its neighbors |
 | Find a definition by part of its name, then read it | `search`, then `fetch` with a result's `id` |
-| Who calls X? What does X call? | `graphify_callers`, `graphify_callees` |
-| How does A reach B? | `graphify_trace` for a directed call path, `shortest_path` for any connection |
-| What could break if I change X? | `graphify_impact` for the directly connected callers and callees, then `impact_and_risk` to rank the files by linked tests |
-| Where is X used, other than calls? | `graphify_references` |
+| Who calls X? | `graphify_callers` |
+| What is directly connected to X, including what it calls? | `graphify_impact` |
+| How does A reach B? | `graphify_trace` |
+| What could break if I change X? | `graphify_impact`. Set `include_risk` to rank hotspot files by linked-test coverage. `graphify_tests_for` lists linked tests. |
 | Which tests cover X? | `graphify_tests_for` |
 | What does this file import, and what imports it? | `graphify_file_neighbors`, or `graphify_imports_exports` for its import and export edges |
-| Is the repository indexed, and how fresh is it? | `graph_stats` |
+| Is the repository indexed, and how large is the graph? | `graph_stats` |
 | Which files matter for this task? | `graphify_rank_files` |
-| What did the team decide about X? | `recall`, `memories_about` |
+| What did the team decide about X? | `recall`. Pass `paths` and `symbols` for the code you are about to change so those notes can rank first. |
+| How do I set Graphify up, or which tool fits? | `graphify_help` |
+| What did a pull request review find? | `review_status` |
+| Run the task handed off from a repository page | `run_repository_starter_task`, with its `task_id` unchanged |
 
 Rules for the results:
 
 - Use a `repository_id` from `list_repositories`: the UUID or the `owner/name`. Never invent an ID or silently pick a different repository.
-- Check the returned symbol and file before you cite them. If a name matches several symbols, the result lists them under `ambiguous`. Say which one you used. If a name doesn't resolve, you get an error with similar `candidates`, or a `semantic` match instead of an `exact` one. Say so and don't treat it as the symbol the user asked about.
-- Results carry `freshness`: the indexed commit and its age. Mention it when the age matters.
-- An empty caller list means the index returned no callers. It does not prove the symbol is unused.
+- Check the returned symbol and file before you cite them. If a name matches several definitions, `graphify_callers` and `graphify_node` refuse and list the candidate ids. Pass an id to pick one, and say which one you used. If a name does not resolve, `graphify_node` can return a semantic match. The `resolved` field is `exact` or `semantic`. A semantic result is a suggestion, not proof the symbol exists.
+- `graphify_trace` can also return a semantic match for `src` or `tgt`. Check `resolved.src` and `resolved.tgt`. An empty path means no directed call path was found in the indexed graph. Dynamic calls can hide a real path, so don't say A never reaches B from an empty path alone.
+- An empty caller list means no call edge was indexed. It does not prove the symbol is unused.
 - `search` and `graphify_find` match part of a symbol's name, like `ReaSource` or `webhook`, not a question. If a fragment returns nothing, try another name or ask `query_graph` in a full sentence.
-- If `graphify_trace` finds no directed call path, it says so and returns the `frontier` it reached. Dynamic calls can hide a real path, so check the callees from there before you say A never reaches B.
-- An empty `recall` result means nothing is remembered for that repository yet.
-- Impact and test tools read the graph. They don't run tests or prove runtime behavior.
+- An empty `recall` result means nothing relevant is remembered yet.
+- `graphify_impact` and `graphify_tests_for` read the graph. They don't run tests or prove runtime behavior. `include_risk` ranks hotspot files by linked-test coverage. That ranking is a signal from the graph, not a verdict.
 - Use grep for exact strings, such as error messages or config keys.
 - If a Graphify tool fails or the repository isn't indexed, say so, then fall back to reading files. Don't guess.
 
 ## Ask before you change state
 
-The tools don't edit source files, but two of them change stored state on purpose. Ask the user first:
+The tools don't edit source files. Ask the user before you call a tool that changes stored state:
 
-- `remember` saves a note to the workspace's shared [Memory](/platform/memory). Save only what the user asked you to save.
+- `remember` saves a note to the workspace's shared [Memory](/platform/memory). Save only what the user asked you to save. Saving records intake, not publication, until someone keeps it.
 - `set_workspace` changes which workspace, and so which repositories, the session reads. With `make_default`, it also changes the user's default. See [Graphify MCP](/platform/graphify-mcp#workspaces-and-mcp-sessions).
+- `run_repository_starter_task` runs a task handed off from a repository page and records that it delivered source context. Call it only for that task, and pass `task_id` unchanged.
 
-In workspaces with trail capture turned on, `search`, `query_graph`, `graphify_find`, `graphify_trace`, `graphify_rank_files` and an unscoped `recall` can also save the question you asked to workspace memory. They never change source code.
+The hosted server does not capture tool calls as memory. `recall` reads notes the workspace already has, such as ones saved with `remember`, created through the API, or recorded from a workspace event such as a merged pull request.
 
 ## Keep answers fresh
 

@@ -21,7 +21,7 @@ If you build alone with a handful of coding agents, each one starts every sessio
 
 Connect each agent to `https://api.graphify.com/mcp`, then paste this into any of them:
 
-<PromptBlock text="Call list_workspaces and list_repositories and tell me which Graphify workspace you're in and which repositories you can query. Then call memories_about on the file we're about to change." />
+<PromptBlock text="Call list_workspaces and list_repositories and tell me which Graphify workspace you're in and which repositories you can query. Then call recall and pass the file we're about to change in paths." />
 
 Every agent should report the same workspace and repositories.
 
@@ -60,7 +60,8 @@ A solo founder runs one product across three repositories: a web app, an API and
 
     This repository is indexed in Graphify. Other agents work on it too.
 
-    - Before editing a file, call `memories_about` on its path.
+    - Before editing a file, call `recall` with a short question and pass
+      its repo-relative path in `paths`.
     - Before changing a function, call `graphify_callers` and
       `graphify_tests_for` on it. Check other repositories too with
       `list_repositories` if it's an API other code calls.
@@ -72,20 +73,20 @@ A solo founder runs one product across three repositories: a web app, an API and
 
 ## How it works
 
-Graphify keeps the graph and memory in the workspace, not in any one agent. Every agent connected to that workspace reads the same index of your default branches and the same kept memories. A decision one agent saves with `remember` starts as a suggestion. Other agents may already see it, marked as unverified. Once you keep it in **Memory**, it's a reviewed memory every agent gets from `recall` and `memories_about`.
+Graphify keeps the graph and memory in the workspace, not in any one agent. Every agent connected to that workspace reads the same index of your default branches and the same kept memories. A decision one agent saves with `remember` starts as a suggestion. Other agents may already see it, marked as unverified. Once you keep it in **Memory**, it's a reviewed memory every agent gets from `recall`. Pass the file in `paths` so notes tied to that code can rank first. That hint is not a filter.
 
 The agents don't talk to each other through Graphify, and Graphify doesn't divide up work between them. It gives them a shared, current picture of the code and of what you've decided.
 
 ## Verify it worked
 
 - Ask two different agents the short-version prompt. They report the same workspace and repositories.
-- Keep one memory in **Memory**, then ask a different agent `memories_about` on that file. It returns the memory.
+- Keep one memory in **Memory**, then ask a different agent to call `recall` with that file in `paths`. Notes tied to the file can rank first.
 
 ## Troubleshooting
 
 - **One agent sees different repositories.** It's in another workspace. Check with `list_workspaces` and switch with `set_workspace`.
 - **A saved fact shows up as unverified, or not at all.** It's still a suggestion. Keep it in **Memory**. See [Memory](/platform/memory).
-- **Answers look out of date.** The graph follows each repository's default branch. Check freshness with `graph_stats`.
+- **Answers look out of date.** The graph follows each repository's default branch. `graph_stats` shows whether the repository is indexed and how large the graph is. Uncommitted work is not in it.
 
 ## FAQ
 
@@ -94,7 +95,7 @@ The agents don't talk to each other through Graphify, and Graphify doesn't divid
     Yes. Connect each one to `https://api.graphify.com/mcp` and sign in with the same Graphify account. They all read the same workspace.
   </Accordion>
   <Accordion title="How do AI coding agents share memory?" icon="brain">
-    An agent saves a decision with `remember`. It starts as a suggestion. Once you keep it in **Memory**, every agent gets it from `recall` and `memories_about`.
+    An agent saves a decision with `remember`. It starts as a suggestion. Once you keep it in **Memory**, every agent gets it from `recall`.
   </Accordion>
   <Accordion title="Do the agents talk to each other?" icon="message-circle-off">
     No. Graphify doesn't pass messages or split up work. It gives every agent the same current picture of the code and your decisions.

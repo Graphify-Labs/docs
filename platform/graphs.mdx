@@ -112,6 +112,12 @@ Select a node and find **What a change could affect** in its details. Under **De
 
 This is a structural over-estimate. It's not a prediction that anything will break, and it doesn't verify anything. **No dependents found in this view** means nothing in the loaded graph depends on the node within that depth. Dynamic and external callers may not be represented.
 
+## Very large repositories
+
+When a repository's graph has more functions and files than the browser can lay out, the graph page shows **This graph is too large to draw node by node**. Instead of drawing every node, it shows a precomputed map of the graph's structure, with the full node and edge totals. MCP and Ask still answer from the full graph, so your agents and questions aren't limited by the map.
+
+Some builds can't be shown this way, including any made before October 27, 2026. They show **This graph is too large to display** instead. Index the repository again to make a new build.
+
 ## Plan limits
 
 Combining graphs needs an active plan. The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required.
@@ -127,6 +133,8 @@ Combining graphs needs an active plan. The Free plan (up to 3 repositories) need
 | Banner says **Demo graph** | You're looking at sample data, not your code. Index a repository. |
 | **Combining graphs needs an active plan.** | Check **Billing**. |
 | **We couldn't confirm the combined graph was created.** | Check **Combined graphs** before you try again, so you don't create a duplicate. |
+| **This graph is too large to display** | The graph was built, but this build can't be shown as a map. Index the repository again. If it still shows, [contact support](/platform/support/troubleshooting). |
+| **This graph is too large to draw node by node** | Expected for very large repositories. You're seeing a precomputed map. MCP and Ask still use the full graph. |
 | **Graph unavailable** | The build hasn't finished or couldn't start. If you see **We couldn't start this build. Try again.**, start it again. |
 
 <AccordionGroup>

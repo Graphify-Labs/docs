@@ -9,6 +9,13 @@ rss: true
 icon: "cloud"
 ---
 
+<Update label="2026-11-12" description="MCP fix for newer clients">
+
+**Fixed:**
+- **MCP:** Claude Code and other clients on MCP protocol version `2026-07-28` can list and switch workspaces again. Before, `list_workspaces` failed with "missing required resultType". Older clients get the same responses as before.
+
+</Update>
+
 <Update label="2026-11-11" description="Trace requests with your own ID">
 
 **Improved:**

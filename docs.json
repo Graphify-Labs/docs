@@ -687,6 +687,110 @@
     {
       "source": "/platform/hosted-mcp",
       "destination": "/platform/graphify-mcp"
+    },
+    {
+      "source": "/guides/always-on",
+      "destination": "/open-source/vibe-coding"
+    },
+    {
+      "source": "/guides/always-on-setup",
+      "destination": "/open-source/vibe-coding"
+    },
+    {
+      "source": "/open-source/supported-inputs",
+      "destination": "/open-source/features/languages"
+    },
+    {
+      "source": "/open-source/configuration/supported-inputs",
+      "destination": "/open-source/features/languages"
+    },
+    {
+      "source": "/open-source/concepts/supported-inputs",
+      "destination": "/open-source/features/languages"
+    },
+    {
+      "source": "/supported-inputs",
+      "destination": "/open-source/features/languages"
+    },
+    {
+      "source": "/open-source/custom-llm-provider",
+      "destination": "/open-source/configuration/llm-providers"
+    },
+    {
+      "source": "/open-source/configuration/llm-backends",
+      "destination": "/open-source/configuration/llm-providers"
+    },
+    {
+      "source": "/guides/backends",
+      "destination": "/open-source/configuration/llm-providers"
+    },
+    {
+      "source": "/architecture",
+      "destination": "/concepts/architecture"
+    },
+    {
+      "source": "/open-source/how-it-works",
+      "destination": "/concepts/architecture"
+    },
+    {
+      "source": "/how-it-works",
+      "destination": "/platform/how-it-works"
+    },
+    {
+      "source": "/platform/console-tour",
+      "destination": "/platform/console"
+    },
+    {
+      "source": "/concepts/databases",
+      "destination": "/open-source/features/databases"
+    },
+    {
+      "source": "/install",
+      "destination": "/open-source/installation"
+    },
+    {
+      "source": "/open-source/install",
+      "destination": "/open-source/installation"
+    },
+    {
+      "source": "/onboarding",
+      "destination": "/platform/quickstart"
+    },
+    {
+      "source": "/docs/cli",
+      "destination": "/open-source/configuration/cli"
+    },
+    {
+      "source": "/reference/cli",
+      "destination": "/open-source/configuration/cli"
+    },
+    {
+      "source": "/reference/mcp",
+      "destination": "/open-source/features/mcp-tools"
+    },
+    {
+      "source": "/integrations/mcp",
+      "destination": "/platform/graphify-mcp"
+    },
+    {
+      "source": "/reference/security",
+      "destination": "/platform/support/security"
+    },
+    {
+      "source": "/faq",
+      "destination": "/platform/support/faqs"
+    },
+    {
+      "source": "/contact",
+      "destination": "/platform/support/faqs#still-stuck"
+    },
+    {
+      "source": "/platform/pricing",
+      "destination": "/platform/support/pricing"
+    },
+    {
+      "source": "/cookbooks/obsidian-knowledge-graph",
+      "destination": "/open-source/features/exports#write-to-an-existing-obsidian-vault"
     }
   ]
 }

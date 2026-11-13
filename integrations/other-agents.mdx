@@ -2,7 +2,7 @@
 title: "Graphify for other MCP clients"
 sidebarTitle: "Other MCP clients"
 description: "Connect any MCP client to Graphify over Streamable HTTP, or run the open-source Graphify MCP server with a generic mcpServers entry."
-keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform"]
+keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform", "pi coding agent", "pi guard", "oh my pi", "omp"]
 surface: "both"
 hideFooterPagination: true
 ---
@@ -111,6 +111,25 @@ graphify install --platform opencode
 | Shared agent skill convention | `agents` |
 
 Some integrations use skills plus instructions; others also install native rules or hooks. Review the files reported by the installer. Use the assistant’s skill picker or ask it directly to use Graphify if it has no slash-command UI.
+
+### Pi and Oh My Pi
+
+Pi has no `PreToolUse` hook, so Graphify CLI ships a native Pi extension instead. It runs the same graph check before Pi's `read`, `grep`, `find` and search-style `bash` calls. It needs Pi 0.58.4 or newer, and Graphify installed persistently with `uv tool install graphifyy` or `pipx install graphifyy`, not `uvx`.
+
+```bash
+graphify install --platform pi
+graphify pi guard install
+```
+
+Restart Pi after you install or upgrade. Remove the extension with `graphify pi guard uninstall`.
+
+The same package also loads in [Oh My Pi](https://github.com/can1357/oh-my-pi):
+
+```bash
+omp plugin install "$(graphify pi guard path)"
+```
+
+The registered path includes your Python version and virtual environment. If either changes, run `graphify pi guard install` again.
 
 The OpenClaw row installs the local skill. To query repositories indexed in Graphify, use [Graphify MCP for OpenClaw](/integrations/openclaw).
 

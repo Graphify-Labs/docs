@@ -94,6 +94,8 @@ If you change deliberate behaviour, update the comment, the record and its test 
 
 The reason for one specific line still belongs next to that line. AGENTS.md tells the agent to look for it.
 
+To also save the lesson from an incident so later agents recall it before they edit that code, see [Remember incident lessons so agents do not repeat them](/cookbooks/remember-incident-lessons).
+
 ## Lock the behaviour in with a test
 
 Add a test that asserts the deliberate behaviour and points back to the reason. If anyone, person or agent, changes it, CI fails.
@@ -167,6 +169,9 @@ The agent answers with the `graphify_callers` and `graphify_impact` tools. With 
   </Card>
   <Card title="Review a pull request" icon="git-pull-request" href="/concepts/review-a-pull-request">
     See where coupling hot spots come from.
+  </Card>
+  <Card title="Remember incident lessons" icon="life-buoy" href="/cookbooks/remember-incident-lessons">
+    Save what broke and the trap to avoid, then have agents recall it.
   </Card>
   <TryCloudCard />
 </CardGroup>

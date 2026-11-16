@@ -9,7 +9,11 @@ icon: "arrow-right-left"
 
 Cody reaches end of life on January 31, 2027. Sourcegraph [announced](https://sourcegraph.com/blog/sunsetting-cody-future-of-code-intelligence) that date on November 9, 2026, and said Deep Search and their MCP integrations "aren't one-for-one replacements for every Cody capability."
 
-Graphify is a code knowledge graph of the repositories you connect. Claude Code, Cursor, Codex, and other agents all query the same graph over MCP. In the Graphify app you can [Ask](/platform/ask) questions, run [pull request reviews](/platform/reviews), read the [Wiki](/platform/wiki), and use [formal verification](/platform/verification) — all on that graph. Index the repositories that make up your codebase, [combine them](/platform/graphs) when you want one view, and a push to the default branch [keeps the graph current](/platform/keep-the-graph-fresh). Your agent gets that graph context instead of rereading source files into the conversation.
+Graphify is a code knowledge graph of the repositories you connect. Every agent and every session queries the same always-current graph: Claude Code, Cursor, Codex, and your teammates. A push to the default branch [keeps that graph current](/platform/keep-the-graph-fresh), so context doesn't reset when you switch tools or start a new session, and nobody has to re-explain the codebase.
+
+Agents query the graph for the exact functions, callers, and dependencies they need, instead of grepping and rereading whole files. Each task pulls in far less context, so they answer faster, with fewer wasted tokens.
+
+In the Graphify app you can [Ask](/platform/ask) questions, run [pull request reviews](/platform/reviews), read the [Wiki](/platform/wiki), and use [formal verification](/platform/verification) — all on that graph. Index the repositories that make up your codebase, and [combine them](/platform/graphs) when you want one view.
 
 The [Quickstart](/platform/quickstart) gets you from sign-in to a connected agent in 5 minutes. Start at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-migrate-from-cody).
 

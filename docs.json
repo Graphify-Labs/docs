@@ -426,7 +426,7 @@
       }
     ]
   },
-  "description": "Graphify gives your agents and your team shared codebase context: a codebase knowledge graph, a wiki, memory and code review, so every agent works from the same picture of your code.",
+  "description": "Graphify gives your agents and your team shared codebase context: a codebase knowledge graph, a wiki, memory and code review, so every agent works from the same picture of your code and helps improve your SDLC.",
   "seo": {
     "metatags": {
       "twitter:site": "@graphify",

@@ -7,10 +7,14 @@ hideFooterPagination: true
 keywords: ["claude code mcp", "claude mcp", "claude code mcp server", "claude mcp server", "graphify claude", "mcp oauth"]
 ---
 
-import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 import { InstallButton } from '/snippets/install-button.mdx';
 
-<HostedOrLocal />
+There are two ways to use Graphify in Claude Code:
+
+- **Graphify** connects Claude Code to the graph we build and host for your indexed repositories. Use the Claude connector or `claude mcp add`. Nothing to install.
+- **Graphify CLI** installs the open-source local skill and builds the graph on your machine.
+
+Pick the matching tab below. To compare the two, see [Graphify vs Graphify CLI](/platform/graphify-vs-local).
 
 <Tabs>
 <Tab title="Graphify">
@@ -101,6 +105,10 @@ Adding the server does not sign you in. Until you do, Claude Code lists `graphif
 <Note>
 If you don't have a Graphify account yet, you can create one while connecting. Finish workspace setup and enable a repository before you expect code answers.
 </Note>
+
+<Card title="Start free in the app" icon="rocket" href="https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-code&utm_content=start-free">
+  Create your workspace and index a repository so Claude Code has a graph to query. The Free plan needs no card.
+</Card>
 
 ## 3. Check the connection
 

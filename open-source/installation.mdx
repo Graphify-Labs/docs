@@ -44,20 +44,32 @@ The macOS command is Homebrew. The Linux and Windows commands are uv's own insta
 
 ## Install the package
 
-<CodeGroup>
-```bash uv
-uv tool install graphifyy
-```
-```bash pipx
-pipx install graphifyy
-```
-```bash Python environment
-python3 -m venv .venv
-.venv/bin/python -m pip install graphifyy
-```
-</CodeGroup>
+<Tabs>
+  <Tab title="uv">
+    Recommended. uv downloads Python 3.10 or later if you need it and keeps Graphify in its own tool environment.
 
-On Windows, a virtual environment’s executable is `.venv\Scripts\python.exe`. uv and pipx manage the environment for you.
+    ```bash
+    uv tool install graphifyy
+    ```
+  </Tab>
+  <Tab title="pipx">
+    Use pipx if you already install command line tools with it. pipx also manages the environment for you.
+
+    ```bash
+    pipx install graphifyy
+    ```
+  </Tab>
+  <Tab title="Python environment">
+    Use a virtual environment if you already manage Python yourself and want Graphify inside a project.
+
+    ```bash
+    python3 -m venv .venv
+    .venv/bin/python -m pip install graphifyy
+    ```
+
+    On Windows, a virtual environment’s executable is `.venv\Scripts\python.exe`.
+  </Tab>
+</Tabs>
 
 <Note>The official PyPI package is `graphifyy`. Other similarly named packages are not the Graphify Labs package.</Note>
 

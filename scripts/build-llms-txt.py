@@ -12,7 +12,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 HEADER = """# Graphify
 
-> Graphify is a code knowledge graph for AI coding agents. Connect an agent to the hosted MCP server at https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key), or run open-source Graphify CLI on your machine.
+> Graphify is shared codebase context for the agentic SDLC, so AI coding agents and the people who work with them build better software together: a codebase knowledge graph with cross-repo context, a wiki, memory, cross-repo PR review and formal verification. Connect an agent to the hosted MCP server at https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key), or run open-source Graphify CLI on your machine.
 
 ## For agents
 

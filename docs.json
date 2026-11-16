@@ -426,7 +426,7 @@
       }
     ]
   },
-  "description": "Documentation for Graphify: turn code and documents into a knowledge graph your AI agent can query, trace, and explain.",
+  "description": "Graphify gives your agents and your team shared codebase context: a codebase knowledge graph, a wiki, memory and code review, so every agent works from the same picture of your code.",
   "seo": {
     "metatags": {
       "twitter:site": "@graphify",

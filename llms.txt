@@ -1,6 +1,6 @@
 # Graphify
 
-> Graphify is a code knowledge graph for AI coding agents. Connect an agent to the hosted MCP server at https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key), or run open-source Graphify CLI on your machine.
+> Graphify is shared codebase context for AI coding agents and the people who work with them: a codebase knowledge graph, a wiki, memory and code review. Connect an agent to the hosted MCP server at https://api.graphify.com/mcp (Streamable HTTP, OAuth, no API key), or run open-source Graphify CLI on your machine.
 
 ## For agents
 
@@ -21,7 +21,7 @@ Start here for an overview of Graphify.
 
 Use when setting up hosted Graphify: a Graphify account (create one for free while connecting), an indexed repository, and an agent on Graphify MCP.
 
-- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Explore graphs, Wiki, pull request reviews, formal verification, Learning and shared agent memory in your hosted Graphify workspace.
+- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Explore your codebase knowledge graph, Wiki, Memory, pull request reviews, formal verification and Learning, shared by your team and every coding agent in your hosted Graphify workspace.
 - [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
 - [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth. Endpoint, tools, workspaces, limits, and fixes.

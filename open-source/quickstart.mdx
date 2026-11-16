@@ -132,7 +132,7 @@ You should see the five most connected symbols in your code. If the command says
     Yes. Run `graphify extract . --code-only` from a terminal. It builds the code graph with no model calls.
   </Accordion>
   <Accordion title="How do I remove the skill?">
-    Run `graphify uninstall`. Add `--purge` to also delete `graphify-out/` in the current folder.
+    Run `graphify uninstall` to remove the skill from every agent you registered. It also removes the git hooks and merge driver if you installed them. If you installed the skill into one repository with `--project`, run `graphify uninstall --project` from that repository instead. Add `--purge` to also delete `graphify-out/` in the current folder; leave it off to keep your graph. To remove the package itself, run `uv tool uninstall graphifyy` (or `pipx uninstall graphifyy`, or `pip uninstall graphifyy`). See [Remove a registration](/open-source/installation#remove-a-registration) for more.
   </Accordion>
 </AccordionGroup>
 

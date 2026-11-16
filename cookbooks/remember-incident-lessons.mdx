@@ -49,7 +49,7 @@ You can add the lesson yourself in Graphify, or ask your agent to save it after 
 
 ### Add it in Graphify
 
-This is the best way to record an incident, because you choose what kind of memory it is. Open [Memory](/platform/memory), choose the repository, and add a memory. Write the lesson, set the kind to **Incident** (it starts as Lesson), and fill in what it is about, such as *map_status in src/payments/status.py*. Then select **Save and keep**. Memories are stored in Graphify. Your GitHub files are not changed.
+This is the best way to record an incident, because you choose what kind of memory it is. Open [Memory](/platform/memory), choose the repository, and add a memory. Under **What should your team remember?**, write the lesson. Set the kind to **Incident** (it starts as **Lesson**), then fill in **About**, such as *Payment retry after PENDING*. Graphify suggests an About line from your text, and you can change it. Select **Save memory**. Graphify shows **Saved. Graphify is processing it, and it will appear here shortly.** You can filter Memory by **Incidents** to find it later. Memories are stored in Graphify. Your GitHub files are not changed.
 
 ### Ask your agent to call `remember`
 
@@ -114,7 +114,7 @@ This sits alongside the general memory block in [Memory](/platform/memory#tell-y
 2. Start a new agent session, connected to the same workspace.
 3. Ask the agent to call `recall` with a question that names that file and function, and pass the path in `paths`.
 
-The lesson should come back. If the result is empty, check that the memory was kept and has finished publishing, then try a shorter question that names the file or function.
+The lesson should come back. If the result is empty, check that the memory was kept and has finished processing, then try a shorter question that names the file or function.
 
 ## Next steps
 

@@ -28,6 +28,7 @@
               "platform/quickstart",
               "platform/graphify-mcp",
               "platform/verify-connection",
+              "platform/migrate-from-cody",
               "concepts/index-a-repository",
               "platform/keep-the-graph-fresh",
               "platform/console",

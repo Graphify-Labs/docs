@@ -426,7 +426,7 @@
       }
     ]
   },
-  "description": "Graphify gives your agents and your team shared codebase context: a codebase knowledge graph, a wiki, memory and code review, so every agent works from the same picture of your code and helps improve your SDLC.",
+  "description": "Graphify is shared codebase context for the agentic SDLC: a codebase knowledge graph with cross repo context, a wiki, memory, cross repo PR review and formal verification, so your agents and your team ship better software.",
   "seo": {
     "metatags": {
       "twitter:site": "@graphify",

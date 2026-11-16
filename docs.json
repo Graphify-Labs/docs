@@ -510,6 +510,54 @@
       "destination": "/open-source/quickstart"
     },
     {
+      "source": "/getting-started",
+      "destination": "/platform/quickstart"
+    },
+    {
+      "source": "/getting-started/quickstart",
+      "destination": "/platform/quickstart"
+    },
+    {
+      "source": "/tutorial",
+      "destination": "/platform/quickstart"
+    },
+    {
+      "source": "/open-source/mcp",
+      "destination": "/open-source/mcp-server"
+    },
+    {
+      "source": "/open-source/cli",
+      "destination": "/open-source/configuration/cli"
+    },
+    {
+      "source": "/cli/quickstart",
+      "destination": "/open-source/cli-quickstart"
+    },
+    {
+      "source": "/open-source/always-on",
+      "destination": "/open-source/vibe-coding"
+    },
+    {
+      "source": "/open-source/features/always-on",
+      "destination": "/open-source/vibe-coding"
+    },
+    {
+      "source": "/integrations/codebuddy",
+      "destination": "/integrations/other-agents"
+    },
+    {
+      "source": "/integrations/kiro",
+      "destination": "/integrations/other-agents"
+    },
+    {
+      "source": "/concepts/graph-files",
+      "destination": "/concepts/outputs"
+    },
+    {
+      "source": "/cursor",
+      "destination": "/integrations/cursor"
+    },
+    {
       "source": "/installation",
       "destination": "/open-source/installation"
     },

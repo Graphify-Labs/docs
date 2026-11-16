@@ -24,19 +24,29 @@ The fastest way to use open-source Graphify is as a skill inside your coding age
 
 <Steps>
   <Step title="Install the package">
-    <CodeGroup>
-    ```bash uv
-    uv tool install graphifyy
-    ```
+    <Tabs>
+      <Tab title="uv">
+        Recommended. uv installs Python 3.10 or later for you and keeps Graphify in its own environment.
 
-    ```bash pipx
-    pipx install graphifyy
-    ```
+        ```bash
+        uv tool install graphifyy
+        ```
+      </Tab>
+      <Tab title="pipx">
+        Use pipx if you already install command line tools with it. It also gives Graphify its own environment.
 
-    ```bash pip
-    pip install graphifyy
-    ```
-    </CodeGroup>
+        ```bash
+        pipx install graphifyy
+        ```
+      </Tab>
+      <Tab title="pip">
+        Use pip if you already manage Python yourself, for example inside a virtual environment.
+
+        ```bash
+        pip install graphifyy
+        ```
+      </Tab>
+    </Tabs>
 
     The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands.
   </Step>

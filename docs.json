@@ -254,6 +254,7 @@
               "cookbooks/fix-review-findings",
               "cookbooks/reuse-existing-code",
               "cookbooks/document-the-why",
+              "cookbooks/remember-incident-lessons",
               "cookbooks/agent-team-one-graph",
               "cookbooks/local-with-ollama"
             ]

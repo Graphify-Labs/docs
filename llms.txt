@@ -9,7 +9,8 @@
 - Before you change a config or project file, tell the user what you will change and wait for a yes.
 - Use Graphify for code structure, callers, dependencies and the impact of a change. Use grep for exact strings, such as error messages or config keys.
 - Use only commands, flags and endpoints shown on these pages. Do not invent one.
-- Add .md to any page URL to read it as Markdown. Every page in one file: https://docs.graphify.com/llms-full.txt.
+- Add .md to any page URL to read it as Markdown. Prefer this index and single .md pages. https://docs.graphify.com/llms-full.txt has every page in one file, but it is about 850 KB, so most agents only see the start of it.
+- Search these docs over MCP, with no sign-in: https://docs.graphify.com/mcp. It is a different server from the product server at https://api.graphify.com/mcp.
 
 ## Get Started
 
@@ -21,7 +22,7 @@ Start here for an overview of Graphify.
 
 Use when setting up hosted Graphify: a Graphify account (create one for free while connecting), an indexed repository, and an agent on Graphify MCP.
 
-- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Explore your codebase knowledge graph, Wiki, Memory, pull request reviews, formal verification and Learning, shared by your team and every coding agent in your hosted Graphify workspace.
+- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Graphify is shared codebase context for teams and coding agents: a codebase knowledge graph, Wiki, Memory, PR reviews, formal verification and Learning.
 - [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
 - [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth. Endpoint, tools, workspaces, limits, and fixes.

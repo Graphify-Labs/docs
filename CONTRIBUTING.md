@@ -30,6 +30,16 @@ Run both from the repo root, where `docs.json` lives. Each PR also gets a Mintli
 | Page icons | two icons repeat within one sidebar group, or a product-name page under `integrations/` has an `icon:` (a missing `icon:` elsewhere is only a warning) |
 | Mintlify broken links | `mint broken-links` finds a broken internal link |
 
+## Agent readiness check
+
+`.github/workflows/agent-readiness.yml` runs [AFDocs](https://afdocs.dev) against https://docs.graphify.com every Monday and on demand from the Actions tab. It doesn't run on pull requests. Results are uploaded as a workflow artifact, and the run fails if any check fails.
+
+After a big change to the setup pages, also try these by hand in a fresh Claude Code session with no project memory, a few times each, and note which pages the agent fetched:
+
+- Set up Graphify in Claude Code starting only from https://docs.graphify.com/llms.txt. It should use the `claude mcp add` command from the docs and stop at sign-in.
+- Install Graphify CLI. It should install the `graphifyy` package with uv or pipx.
+- Ask which languages Graphify CLI supports for a given language. The answer should match `open-source/features/languages`.
+
 ## Frontmatter
 
 ```yaml

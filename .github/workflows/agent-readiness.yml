@@ -1,0 +1,56 @@
+name: Agent readiness
+
+# Weekly check of the live docs against the Agent-Friendly Documentation Spec.
+# It runs on a schedule only, never on pull requests, so it can't block a PR.
+on:
+  schedule:
+    - cron: "30 3 * * 1" # Mondays 03:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-readiness
+  cancel-in-progress: true
+
+jobs:
+  afdocs:
+    name: AFDocs check of docs.graphify.com
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run AFDocs
+        run: |
+          npx -y afdocs@0.23.0 check https://docs.graphify.com --format json --score -q > afdocs.json || true
+          npx -y afdocs@0.23.0 check https://docs.graphify.com --verbose -q > afdocs.txt 2>&1 || true
+          cat afdocs.txt
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: afdocs-${{ github.run_id }}
+          path: |
+            afdocs.json
+            afdocs.txt
+          retention-days: 90
+
+      - name: Fail on any failed check
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          d = json.load(open("afdocs.json"))
+          s = d.get("summary", {})
+          print(f"pass {s.get('pass')}, warn {s.get('warn')}, fail {s.get('fail')}, skip {s.get('skip')}, error {s.get('error')}")
+          failed = [r["id"] for r in d.get("results", []) if r.get("status") in ("fail", "error")]
+          for r in d.get("results", []):
+              if r.get("status") in ("fail", "error", "warn"):
+                  level = "warning" if r["status"] == "warn" else "error"
+                  print(f"::{level}::{r['id']}: {r.get('message', '')}")
+          sys.exit(1 if failed else 0)
+          PY

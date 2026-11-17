@@ -8,6 +8,7 @@
 - Setting Graphify up for a user? Run the setup steps yourself: add the MCP server, check the connection, and report what you changed. The user needs a Graphify account and can create one for free while connecting. Ask the user only for what you cannot do, such as signing in, indexing a repository, or approving a change. Follow https://docs.graphify.com/for-agents.md step by step.
 - Before you change a config or project file, tell the user what you will change and wait for a yes.
 - Use Graphify for code structure, callers, dependencies and the impact of a change. Use grep for exact strings, such as error messages or config keys.
+- Graphify reviews a pull request when it is opened, reopened or marked ready for review, and `@graphify review` runs it again after new commits. Read results with the review_status tool, which does not start a review. See https://docs.graphify.com/platform/reviews.md.
 - Use only commands, flags and endpoints shown on these pages. Do not invent one.
 - Add .md to any page URL to read it as Markdown. Prefer this index and single .md pages. https://docs.graphify.com/llms-full.txt has every page in one file, but it is about 850 KB, so most agents only see the start of it.
 - Search these docs over MCP, with no sign-in: https://docs.graphify.com/mcp. It is a different server from the product server at https://api.graphify.com/mcp.
@@ -16,7 +17,7 @@
 
 Start here for an overview of Graphify.
 
-- [Docs: code knowledge graph for AI coding agents](https://docs.graphify.com/index.md): Give Claude Code, Codex, Cursor and other AI coding agents a knowledge graph of your codebase through a hosted MCP server, or run it locally.
+- [Docs: code knowledge graph for AI coding agents](https://docs.graphify.com/index.md): Shared codebase context for Claude Code, Codex, Cursor and other agents: a code knowledge graph over hosted MCP and cross-repo PR review, or run locally.
 
 ## Graphify: Get started
 
@@ -190,13 +191,13 @@ Use these first when you are an AI agent reading or acting on these docs.
 - [How AI agents connect, query and refresh](https://docs.graphify.com/agents/overview.md): For coding agents: how to connect to Graphify, which MCP tool answers which code question, how fresh the graph is, and what to do before sign-in.
 - [Headless agents and bots with hosted MCP](https://docs.graphify.com/agents/headless.md): Run Graphify from cloud agents, bots and CI: a person signs in once with OAuth, then the client refreshes tokens. What works today and what doesn't.
 - [Use Graphify from your agent: prompts that work](https://docs.graphify.com/agents/recipes.md): Copy-ready prompts for PR review, change impact, finding callers, tests for a symbol and onboarding, with the Graphify MCP tool each one triggers.
-- [What your agent can do with Graphify](https://docs.graphify.com/agents/capabilities.md): Hosted Graphify MCP tools, grouped by the job each one does, with a prompt to paste, a lookup table, and what each tool can't do.
+- [What your agent can do with Graphify](https://docs.graphify.com/agents/capabilities.md): Hosted Graphify MCP tools by job, from finding code to reading a PR review, with a prompt to paste, a lookup table, and what each tool can't do.
 
 ## Cookbooks: Essentials
 
 Use for step-by-step recipes: onboarding, refactors, reading the graph and keeping docs current.
 
-- [Graphify cookbooks: step-by-step recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: onboard to a codebase, share a team graph, connect coding agents, load Neo4j and Postgres, and add graph impact to CI.
+- [Graphify cookbooks: step-by-step recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: onboard to a codebase, fix PR review findings, share a team graph, connect coding agents, and add graph impact to CI.
 - [How to understand a new codebase in 30 minutes](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
 - [Plan a safe refactor with change impact analysis](https://docs.graphify.com/cookbooks/plan-a-refactor.md): Run change impact analysis before a refactor: list the callers of a function, trace paths between modules and find the tests to run, with Graphify.
 - [Find dead and duplicate code in your repos](https://docs.graphify.com/cookbooks/read-your-graph.md): Turn your code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.

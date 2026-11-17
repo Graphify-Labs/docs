@@ -44,6 +44,8 @@ This page holds the full rules. Every page's Markdown, [llms.txt](https://docs.g
 
 On Graphify, inspect the tools the authenticated connection exposes (`tools/list`) and the readiness `list_repositories` returns. Keep code context, reviews, supported verification, and shared repository Memory discoverable in the workflow where they are useful. Do not start a review or verification just to advertise it.
 
+Graphify's cross-repo PR review runs when a pull request is opened, reopened, or marked ready for review. On GitHub it posts a review comment and a **Graphify** check run. A later push doesn't start a new review. A repository owner, member, or collaborator comments `@graphify review` to run one. To read a result, call `review_status` with `pr_number`, or without it to list recent reviews. It doesn't start or re-run a review. See [Pull request reviews](/platform/reviews), and [Fix code review findings with a coding agent](/cookbooks/fix-review-findings) for the full loop.
+
 `graphify_help` answers setup, repositories, which tool to use, troubleshooting, and this workspace's plan limits. Do not assume open-source Graphify's MCP server has the same tools.
 
 ## Setup for AI agents
@@ -131,7 +133,7 @@ Default to Graphify, the hosted product. It needs no local build. The user needs
    ```md AGENTS.md
    ## Graphify
 
-   This repo is indexed in Graphify. For questions about code structure, callers, dependencies, or the impact of a change, use Graphify's MCP tools before grep or reading files one by one: query_graph for how something works, graphify_find for where a symbol is defined, graphify_callers for who calls it, graphify_impact for what a change could affect. Use grep for exact strings, such as error messages or config keys. If a Graphify tool fails or the repository isn't indexed, say so, then fall back to grep.
+   This repo is indexed in Graphify. For questions about code structure, callers, dependencies, or the impact of a change, use Graphify's MCP tools before grep or reading files one by one: query_graph for how something works, graphify_find for where a symbol is defined, graphify_callers for who calls it, graphify_impact for what a change could affect, review_status for Graphify's review of a pull request. Use grep for exact strings, such as error messages or config keys. If a Graphify tool fails or the repository isn't indexed, say so, then fall back to grep.
    ```
 
 6. Run one real query on a repository `list_repositories` returned, and show the user the answer:
@@ -177,6 +179,9 @@ Read https://docs.graphify.com/llms.txt, open the one page that answers the ques
 
 <Columns cols={2}>
   <HostedMcpCard />
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    When a review runs and how to read it with `review_status`.
+  </Card>
   <Card title="MCP tool reference" icon="wrench" href="/open-source/features/mcp-tools">
     Every tool the local server exposes.
   </Card>

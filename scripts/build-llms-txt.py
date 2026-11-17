@@ -21,7 +21,8 @@ HEADER = """# Graphify
 - Before you change a config or project file, tell the user what you will change and wait for a yes.
 - Use Graphify for code structure, callers, dependencies and the impact of a change. Use grep for exact strings, such as error messages or config keys.
 - Use only commands, flags and endpoints shown on these pages. Do not invent one.
-- Add .md to any page URL to read it as Markdown. Every page in one file: https://docs.graphify.com/llms-full.txt.
+- Add .md to any page URL to read it as Markdown. Prefer this index and single .md pages. https://docs.graphify.com/llms-full.txt has every page in one file, but it is about 850 KB, so most agents only see the start of it.
+- Search these docs over MCP, with no sign-in: https://docs.graphify.com/mcp. It is a different server from the product server at https://api.graphify.com/mcp.
 """
 
 WHEN_TO_USE = {

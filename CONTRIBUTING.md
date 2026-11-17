@@ -42,7 +42,7 @@ After a big change to the setup pages, also try these by hand in a fresh Claude 
 
 ### Skill trigger check
 
-When you change the `description` in `skills/graphify/SKILL.md` (served at https://docs.graphify.com/skill.md, and linked from `.mintlify/skills` so Mintlify finds it), install the skill in a fresh session (`npx skills add https://docs.graphify.com`) in a repository indexed in Graphify, then run each prompt below 3 times. Count it as a pass when the agent loads the Graphify skill in at least 2 of 3 runs for the "should load" prompts, and in at most 1 of 3 runs for the "should not load" prompts.
+When you change the `description` in `.mintlify/skills/graphify/SKILL.md` (served at https://docs.graphify.com/skill.md, and linked from `skills/` so `npx skills add Graphify-Labs/docs` finds it), install the skill in a fresh session (`npx skills add https://docs.graphify.com`) in a repository indexed in Graphify, then run each prompt below 3 times. Count it as a pass when the agent loads the Graphify skill in at least 2 of 3 runs for the "should load" prompts, and in at most 1 of 3 runs for the "should not load" prompts.
 
 Should load the skill:
 

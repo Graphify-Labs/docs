@@ -83,7 +83,7 @@ If this step fails, nothing below helps. Fix the connection first. See [Troubles
 
 ## Step 2: Tell the agent when to use the graph
 
-Agents follow the instruction file they read at the start of every session: `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex and many other agents, and `.cursor/rules/` for Cursor. A tool the instructions never mention is easy to skip. Make the rule specific: when to call, which tool, and what to do with the answer.
+Agents follow the instruction file they read at the start of every session. `AGENTS.md` is the default: Codex and many other agents read it, and Claude Code 2.1.277 and later reads it when the project has no `CLAUDE.md`. If the project already has a `CLAUDE.md`, Claude Code reads that instead, so put the rule there. Cursor also reads `.cursor/rules/`. A tool the instructions never mention is easy to skip. Make the rule specific: when to call, which tool, and what to do with the answer.
 
 <Tabs>
   <Tab title="Graphify">
@@ -311,7 +311,7 @@ Your agent now has a specific rule for when to call Graphify, a reminder at the 
     It sees a long tool list and falls back to grep. A short, specific rule in its instruction file fixes most of this.
   </Accordion>
   <Accordion title="Where do the instructions go?" icon="file-text">
-    `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex and many other agents, and `.cursor/rules/` for Cursor.
+    `AGENTS.md` by default. Codex and many other agents read it, and Claude Code 2.1.277 and later reads it when the project has no `CLAUDE.md`. If the project has a `CLAUDE.md`, use that for Claude Code. Cursor also reads `.cursor/rules/`.
   </Accordion>
   <Accordion title="Does the hosted MCP server have hooks?" icon="webhook">
     No. On hosted, the instruction block does that job. Hooks are part of open-source Graphify.

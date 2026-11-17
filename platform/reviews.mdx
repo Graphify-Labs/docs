@@ -17,6 +17,16 @@ Graphify reviews a pull request when it is opened, reopened, or marked ready for
 
 After new commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. Each review analyzes the full pull request, from where it branched to its latest commit. Reviews use the graph to understand how the changes affect the surrounding code. Reviews compare the pull request's changes against the indexed default branch. Nothing from the pull request's branch is saved as an index. [Repositories and builds](/platform/repositories) explains which branch the graph follows.
 
+## Cross-repo impact
+
+When a repository is part of a cross-repository graph, its pull request reviews also load the latest graphs of the other repositories in that graph. Graphify links those repositories through the types they share and the calls between them.
+
+The review comment then includes a **Cross-repo impact** section. It says "This change impacts N symbol(s) across M peer repo(s)" and lists each affected repository with up to 10 of its symbols. It covers callers and dependents in the other repositories. If nothing is affected, the section says no cross-repo impact was detected among the indexed peer repositories. It also warns you when some repositories in the group aren't indexed yet.
+
+The section is advisory. It never changes whether the **Graphify** check passes or fails.
+
+There's nothing to turn on. To set it up, open **Graphs** > **Cross-Repository** in the app and select **Combine repositories**. A combined graph needs at least two repositories. See [Combine repositories](/platform/graphs#combine-repositories).
+
 ## Know when a review is ready
 
 A review shows up in two places on the pull request: a review comment from the Graphify app, and a check run named **Graphify** on the reviewed commit. Formal verification posts its own check run, **Graphify Formal Verification**, and runs on every push.
@@ -77,8 +87,8 @@ Expand the repository row to see **Unreferenced code (heuristic)**. It is not a 
 
 When Graphify cannot start a review because of a plan limit, the skip is visible on the pull request's **Graphify** check (and as a notice on **Reviews** when the workspace is over its review allowance). Examples:
 
-- Monthly or daily review limit reached — the check says reviews resume at the next UTC reset, and links to billing.
-- Usage limit reached — same idea for the workspace usage cap.
+- Monthly or daily review limit reached: the check says reviews resume at the next UTC reset, and links to billing.
+- Usage limit reached: same idea for the workspace usage cap.
 
 When the workspace already has its maximum number of reviews running, a new review **waits in line** instead of being dropped. The check shows **Queued** with how many reviews are already running. If it does not start within the queue age limit, it is dropped; comment `@graphify review` to retry. Concurrent review limits by plan are on [Plans and pricing](/platform/support/pricing#build-concurrency).
 

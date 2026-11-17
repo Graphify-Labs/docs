@@ -1,6 +1,6 @@
 ---
 name: graphify
-description: Connect a coding agent to Graphify, a code knowledge graph of the user's repositories, through the hosted MCP server at https://api.graphify.com/mcp. Use when the user asks to set up Graphify, or asks about code structure, where a symbol is defined, who calls a function, dependencies, or what a change could affect.
+description: Connect a coding agent to Graphify, shared codebase context for teams and coding agents built on a codebase knowledge graph of the user's repositories, through the hosted MCP server at https://api.graphify.com/mcp. Use when the user asks to set up Graphify, or asks about code structure, where a symbol is defined, who calls a function, dependencies, or what a change could affect.
 compatibility: Any MCP client that supports remote Streamable HTTP servers with OAuth sign-in. Graphify CLI needs Python and the graphifyy package.
 metadata:
   author: Graphify Labs
@@ -9,7 +9,7 @@ metadata:
 
 # Graphify
 
-Graphify is a code knowledge graph for coding agents. The user indexes repositories at [app.graphify.com](https://app.graphify.com), and the agent queries the graph over the hosted MCP server at `https://api.graphify.com/mcp` (Streamable HTTP, OAuth sign-in, no API key).
+Graphify is shared codebase context for teams and coding agents: a codebase knowledge graph, Wiki, Memory, PR reviews, formal verification and Learning. The user indexes repositories at [app.graphify.com](https://app.graphify.com), and the agent queries the graph over the hosted MCP server at `https://api.graphify.com/mcp` (Streamable HTTP, OAuth sign-in, no API key).
 
 Graphify CLI is the open-source alternative: the `graphifyy` package builds a graph on the user's machine. Recommend it only when the user asks for an offline, on-machine, or self-hosted setup.
 

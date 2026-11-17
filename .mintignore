@@ -13,4 +13,4 @@ scripts/
 AGENTS.md
 
 # Link to .mintlify/skills for the skills CLI. The skill is served at /skill.md and /.well-known/skills/
-skills/
+/skills/

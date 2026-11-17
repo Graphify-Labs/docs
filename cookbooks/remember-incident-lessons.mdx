@@ -35,8 +35,6 @@ Write one self-contained note that covers:
 - The fix
 - The trap to avoid
 
-Set `occurred_at` to the date of the incident, as an ISO date such as `2026-03-12`, so the note is about then, not about the moment you saved it.
-
 This is an illustrative example:
 
 ```text
@@ -45,11 +43,19 @@ Checkout charged a card twice when the provider returned PENDING after capture. 
 
 ## How to save it
 
-You can add the lesson yourself in Graphify, or ask your agent to save it after you approve the wording.
+The best way is **Record an incident** in the Advanced view of [Memory](/platform/memory), so you can set when it happened and link the files it affected. You can also add it more quickly from the Simple view, or ask your agent to save it after you approve the wording.
 
-### Add it in Graphify
+### Record an incident in Graphify
 
-This is the best way to record an incident, because you choose what kind of memory it is. Open [Memory](/platform/memory), choose the repository, and add a memory. Under **What should your team remember?**, write the lesson. Set the kind to **Incident** (it starts as **Lesson**), then fill in **About**, such as *Payment retry after PENDING*. Graphify suggests an About line from your text, and you can change it. Select **Save memory**. Graphify shows **Saved. Graphify is processing it, and it will appear here shortly.** You can filter Memory by **Incidents** to find it later. Memories are stored in Graphify. Your GitHub files are not changed.
+Open [Memory](/platform/memory), choose the repository, and switch to **Advanced**. Select **Record an incident**.
+
+- Fill in **Incident identifier**, such as *INC-42 or the affected service*, and **What should the team know?** with the lesson from above.
+- Set **Status** to **Open**, or to **Closed** if the incident is already resolved.
+- Under **More options**, set **Effective time** to when the incident happened (it defaults to when you save). Add the files in **Related code paths**, one repository-relative path per line. Graphify checks these against the code graph. That links the memory to code, so `recall` with `paths` can rank it higher.
+
+Select **Save record**. Graphify shows **Saved securely · Processing. You can leave this page; publication and agent availability are checked separately.** When that finishes, it shows **Processing finished. Check the memory's publication state or preview recall to confirm availability.** Memories are stored in Graphify. Your GitHub files are not changed.
+
+For a quicker add, stay on the **Simple** view, select **Add memory**, set the kind to **Incident** (it starts as **Lesson**), fill in **About**, and select **Save memory**. That path does not ask for related code paths.
 
 ### Ask your agent to call `remember`
 
@@ -110,11 +116,12 @@ This sits alongside the general memory block in [Memory](/platform/memory#tell-y
 
 ## Check that it works
 
-1. Keep the lesson in Memory if it is still a suggestion.
-2. Start a new agent session, connected to the same workspace.
-3. Ask the agent to call `recall` with a question that names that file and function, and pass the path in `paths`.
+1. If the memory is still a suggestion, keep it in Memory.
+2. In **Advanced**, open **Test what agents can recall**.
+3. Set **Recall for** to **Agents / MCP / Published, unreviewed, and conversation turns** (the default).
+4. Enter a **Question** that names the file, and select **Check recall**.
 
-The lesson should come back. If the result is empty, check that the memory was kept and has finished processing, then try a shorter question that names the file or function.
+A just-saved memory may need a moment to finish processing. When it has, the lesson should appear under **What the agent receives**. If the result is empty, check that the memory was kept and has finished processing, then try a shorter question that names the file or function.
 
 ## Next steps
 

@@ -1,6 +1,6 @@
 ---
 name: graphify
-description: Connect a coding agent to Graphify, shared codebase context for teams and coding agents built on a codebase knowledge graph of the user's repositories, through the hosted MCP server at https://api.graphify.com/mcp. Use when the user asks to set up Graphify, or asks about code structure, where a symbol is defined, who calls a function, dependencies, or what a change could affect.
+description: "Graphify is shared codebase context for teams and coding agents, served by the hosted MCP server at https://api.graphify.com/mcp. Use when the user wants to set up or connect Graphify, or asks a question that needs codebase context: where a symbol is defined, who calls a function, how a feature works, how one function reaches another, what a change could affect or which tests cover it, cross-repo dependencies, what the team already decided, or what a pull request review found. Use it even when the user does not name Graphify, if the project says the repository is indexed in Graphify."
 compatibility: Any MCP client that supports remote Streamable HTTP servers with OAuth sign-in. Graphify CLI needs Python and the graphifyy package.
 metadata:
   author: Graphify Labs
@@ -59,6 +59,11 @@ Then follow the full steps at [docs.graphify.com/for-agents.md](https://docs.gra
 - `graphify_find`: where a symbol is defined.
 - `graphify_callers`: who calls a symbol.
 - `graphify_impact`: the callers and callees directly connected to a symbol, and what a change could affect. Set `include_risk` to rank hotspot files by linked-test coverage.
+- `graphify_tests_for`: tests linked through the graph to a symbol or a file. It reads the graph and does not run tests.
+- `graphify_trace`: directed call paths from `src` to `tgt`. Check `resolved.src` and `resolved.tgt`, since a name can resolve to a semantic match. An empty path means no path was found in the indexed graph.
+- `recall`: search what the workspace remembers, such as earlier decisions. Pass `paths` and `symbols` for the code you are about to change so related notes rank first. An empty result means nothing relevant is remembered yet.
+- `remember`: save one fact to the workspace's shared Memory. It writes, so ask the user first, and save only what they asked you to save.
+- `review_status`: read how a pull request review went. Pass `pr_number` for one pull request, or omit it to list recent reviews. It does not start or re-run a review.
 - `list_workspaces` and `set_workspace`: see or switch the workspace. `set_workspace` changes state, so ask first.
 
 If a Graphify tool fails or the repository is not indexed, say so, then fall back to grep. Do not guess.

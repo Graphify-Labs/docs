@@ -71,6 +71,8 @@ Answers are graph evidence from the files Graphify indexed, with source location
 
 Some tools can save repository memory or change the selected workspace. Approve a tool only when that is what you meant.
 
+To see how Graphify's review of a pull request went, ask the assistant to call `review_status` with the pull request number. It reads the review and doesn't start one. See [Pull request reviews](/platform/reviews).
+
 ## Add the Graphify skill
 
 If your assistant supports Agent Skills, add the Graphify skill too. It tells the agent when to use Graphify and how to connect to it. Run this in your project:
@@ -160,6 +162,12 @@ An assistant does not need a dedicated skill installer to read an existing graph
   </Card>
   <Card title="When something fails" icon="life-buoy" href="/platform/support/faqs">
     Fix sign-in and connection problems.
+  </Card>
+  <Card title="Fix code review findings" icon="git-pull-request" href="/cookbooks/fix-review-findings">
+    Have your agent check each review finding against the graph and fix it.
+  </Card>
+  <Card title="Pull request reviews" icon="file-check" href="/platform/reviews">
+    When Graphify reviews a pull request and how to read it.
   </Card>
 </Columns>
 

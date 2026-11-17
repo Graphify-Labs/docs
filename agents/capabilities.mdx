@@ -1,7 +1,7 @@
 ---
 title: "What your agent can do with Graphify"
 sidebarTitle: "What your agent can do"
-description: "Hosted Graphify MCP tools, grouped by the job each one does, with a prompt to paste, a lookup table, and what each tool can't do."
+description: "Hosted Graphify MCP tools by job, from finding code to reading a PR review, with a prompt to paste, a lookup table, and what each tool can't do."
 keywords: ["graphify mcp tools", "what can my agent do", "mcp capability list", "agent prompts", "hosted mcp tools"]
 surface: "cloud"
 icon: "map"
@@ -69,6 +69,12 @@ When your coding agent connects to [Graphify MCP](/platform/graphify-mcp), it ge
 <PromptBlock text="Before you edit src/billing/retry.ts, call recall with a question about that file and pass the path in paths. Tell me any decisions or gotchas that come back." />
 
 `recall` searches what the workspace remembers. Pass repo-relative paths in `paths`, and function or class names in `symbols`, so notes tied to that code can rank first. Those are hints, not a filter. `remember` saves one fact. Have your agent ask you before it saves anything. Saving records intake, not publication, until someone keeps it in **Memory**. See [Memory](/platform/memory).
+
+## Read a pull request review
+
+<PromptBlock text="Call review_status for PR 123 in this repository. Tell me the status, the gate, and the top findings. If the review is still queued or running, tell me and don't keep polling." />
+
+Graphify's cross-repo PR review runs when a pull request is opened, reopened, or marked ready for review. `review_status` reads it. Pass `pr_number` for one pull request, or omit it to list recent reviews, newest first. A completed review has a `gate` of `pass` or `advisory`, finding counts, and `top_findings`. If the review is still queued or running, the response says how long it has been in flight and suggests checking again in about 20 to 30 minutes. The tool does not start a review. To run one again after new commits, comment `@graphify review` on the pull request. See [Pull request reviews](/platform/reviews) and [Fix code review findings with a coding agent](/cookbooks/fix-review-findings).
 
 ## Search your documents
 

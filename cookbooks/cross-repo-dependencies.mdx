@@ -175,7 +175,7 @@ Trace the path from the checkout button in web-frontend to the charge in billing
 
 ## Step 6: Make the check automatic
 
-Prompts are easy to forget. Put the rule where the agent reads it at the start of every session: `CLAUDE.md` for Claude Code, `AGENTS.md` for Codex and most other agents, or `.cursor/rules/` for Cursor. Commit it to each repository in the combined graph.
+Prompts are easy to forget. Put the rule where the agent reads it at the start of every session. `AGENTS.md` is the default: Codex and most other agents read it, and Claude Code 2.1.277 and later reads it when the project has no `CLAUDE.md`. Use `CLAUDE.md` if the project already has one, or `.cursor/rules/` for Cursor. Commit it to each repository in the combined graph.
 
 ```md AGENTS.md
 ## Cross-repo changes

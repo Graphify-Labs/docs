@@ -45,20 +45,131 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
     Open **Memory** in Graphify and choose a **Repository**.
   </Step>
   <Step title="Choose a view">
-    **Simple** and **Advanced** switch the layout. Filter memories with **All**, **Decisions**, **Incidents**, **Lessons**, or **Owners**.
+    **Simple** and **Advanced** switch the layout, at the top right. The Simple view is for adding a memory quickly and asking what your team already knows. It keeps **Add memory**, **Open graph**, the **Recent memories** filters (**All**, **Decisions**, **Incidents**, **Lessons**, or **Owners**), and the [Ask and Search playground](#ask-what-your-team-knows).
   </Step>
   <Step title="Inspect a memory">
-    Open a saved memory to read its evidence and history. A typical row is labeled **Incident · Kept · Ask and connected agents · Source-backed · Current · by** the person's name.
+    Open a saved memory, or select **View evidence**, to read its evidence and history. The drawer is covered in [Evidence and history](#evidence-and-history).
   </Step>
 </Steps>
 
-The drawer is titled **Memory · evidence & history**. It shows **Status**, **Current**, **Source-backed**, **Shared with team**, and supporting evidence. The actions are **Correct memory**, **Update status**, **Attach evidence**, and **Remove memory**. There is also a **When this memory was returned** section, and **History** with versions.
+Use **Advanced** when you want to review suggestions, record a decision or an incident with more detail, or test what agents can recall. That view is covered in [The Advanced view](#the-advanced-view).
 
-In **Advanced**, the heading is **Memory console**. The shortcuts are **Save a decision**, **Record an incident**, and **Connect an agent**. The tabs are **Memories**, **Review**, and **Test what agents can recall**. Under **Memory entities**, use **Find an entity…** or **Search entities**, sort with **Sort entities: Most memories**, and browse by **All**, **Services**, **Files**, **Symbols**, **Topics**, or **Pull requests**.
+## Add a memory
+
+<Steps>
+  <Step title="Write it">
+    Select **Add memory**. The dialog is titled **Add to memory**. The subheading is **Saved to** the chosen repository **for your team.** Under **What should your team remember?**, write one fact your team should keep. For example: *Retry failed card charges at most three times, and never retry hard declines.*
+  </Step>
+  <Step title="Choose a kind and an About line">
+    Pick a kind: **Lesson** (the default; *Something the team learned or should keep doing*), **Decision**, **Incident** (*Something that broke, and what happened.*), or **Owner**. Fill in **About**, such as *Payment retry policy*. Graphify suggests an About line from your text, and you can change it. The helper text is *Keeps related memories together. Suggested from your text; change it if you like.*
+  </Step>
+  <Step title="Save">
+    Select **Save memory**. Graphify shows **Saved. Graphify is processing it, and it will appear here shortly.** The footer says **Attributed to you. Your GitHub files aren't changed.** You can select **Cancel** if you don't want to save.
+  </Step>
+</Steps>
+
+In **Advanced**, **Save a decision** and **Record an incident** open their own forms, with fields for when it happened and the related files. See [Save a decision](#save-a-decision) and [Record an incident](#record-an-incident).
+
+## The Advanced view
+
+Switch to **Advanced** at the top right. The heading is **Memory console**, with the subheading **Review and manage saved memories.** Pick a repository, then use the shortcuts **Save a decision**, **Record an incident**, and **Connect an agent**. The tabs are **Memories**, **Review**, and **Test what agents can recall**.
+
+Four tiles summarize the repository:
+
+- **Kept**: Ask can use these
+- **Suggestions**: Waiting to be kept
+- **Conflicting**: Has a conflicting version
+- **Needs a closer look**: Waiting on a person
+
+**More about this repository** is collapsed until you open it. It shows:
+
+- **Topics covered**: Distinct topics (files, services, people) in current published memories.
+- **Grounded**: how many code-linked versions match the current graph, including history.
+- **Context tokens saved**: Tokens your agent didn't need to read because it asked Graphify instead of opening files, over the last 30 days. This does not measure Memory recall quality.
+- **Code graph**: **Available** when the graph is ready, and when memory was last updated.
+
+### Save a decision
+
+Use **Save a decision** when your team has chosen a direction that later work should follow. The dialog is titled **Save a decision**, with the subheading **Save the context your team will need later**.
+
+Fill in **Decision subject** (placeholder *Payment retry policy*) and **What should the team know?** The helper text is *Include the decision, why it matters, and when it applies.*
+
+**More options · timing, grouping & code** adds:
+
+- **Effective time**: Defaults to when you save. Set a time only for a past or scheduled change.
+- **Group this memory by**: defaults to **decision**. The other options are **service**, **symbol**, **file**, **incident**, **pull request**, and **person**.
+- **Status**: Optional, for example proposed or adopted. This is the decision's own status, and it is separate from team review.
+- **Related code paths**: Optional. One repository-relative file path per line. Graphify checks these against the code graph.
+
+The footer says **Attributed to your account. Your record is saved first, then processed for publication.** Select **Save record**, or **Cancel**.
+
+### Record an incident
+
+Use **Record an incident** when something broke and the team should remember what happened. For a full walkthrough, see [Remember incident lessons so agents do not repeat them](/cookbooks/remember-incident-lessons).
+
+Fill in **Incident identifier** (placeholder *INC-42 or the affected service*) and **What should the team know?** **Status** starts as **Open**. Set it to **Closed** when the incident is resolved.
+
+Under **More options**, set **Effective time** to when the incident happened, leave **Group this memory by** as **incident** unless another grouping fits better, and add the files in **Related code paths**. Graphify checks those paths against the code graph, which links the memory to that code, so `recall` with `paths` can rank it higher.
+
+After you select **Save record**, Graphify shows **Saved securely · Processing. You can leave this page; publication and agent availability are checked separately.** When that finishes, it shows **Processing finished. Check the memory's publication state or preview recall to confirm availability.**
+
+### Connect an agent
+
+**Connect an agent** opens a side panel titled **Connect an agent**, with the subheading **Graphify MCP server**. The endpoint is `https://api.graphify.com/mcp`. It uses Streamable HTTP and OAuth, and there is no API key.
+
+**Copy setup prompt** copies a prompt you can paste into your coding agent. It connects the server and says when to recall and when to remember. There is also quick setup for Claude Code, Codex, and Cursor. For the setup commands, see [Graphify MCP](/platform/graphify-mcp).
+
+### Memories
+
+The **Memories** tab lists saved memories for the repository. Toggle **Current** or **All versions**, and search with **Search repository memory**.
+
+You can filter by **Type** (**All types**, or **Incident**, **Regression**, **Fix**, **Decision**, **Ownership**, **Status**, **Lesson**, or **Imported memory**), by **Source** (**All sources**, or **Graphify activity**, **Team member**, **Agent note**, **Conversation summary**, **Observed activity**, or **Imported source**), or by a **Status** text. Turn on **Linked to code only** to see only memories with a code link. Sort by **Newest first** or **Oldest first**.
+
+Each card shows the kind, whether it is **Kept**, **Ask and connected agents**, **Source-backed** or **Linked to code**, **Current**, a status if one is set, **by** the person, and **Last checked** with who last checked it. The actions are **View evidence** and **Test recall**.
+
+The entities panel has **Find an entity…**. Sort by **Most memories**, **Most recent**, or **Least recent**, and browse with **All**, **Services**, **Files**, **Symbols**, **Topics**, or **Pull requests**. Selecting an entity filters the list to its memories. **Clear entity** removes that filter.
 
 A memory about a pull request is titled with the number and the pull request's title, for example **PR #442 · Fix login redirect**, not a bare identifier such as PR-442. Memories that record a review, a verification, or a merge are labeled **Review result**, **Verification**, or **Merged**.
 
 Each memory is attributed to the person who saved or changed it, by their name. If that person has left the workspace, or no name is on file, the label is **Team member**. In **All versions**, a discarded memory is headed **Dismissed by** and that name. In the entity list, a pull request is marked **Pull request** and how many memories it has.
+
+### Review
+
+The **Review** tab, which shows a count badge, is for memories that need a person. The heading tells you how many need a person, broken into suggestions, withheld memories, memories whose code changed, and memories whose code could not be found.
+
+The helper text is **Accepted memory is used by Ask and agents. Open a memory to read all of it, with its evidence, history and actions.** You can **Select all on this page** to act on several at once.
+
+When you open a suggestion, the drawer says **Suggested. Check the evidence, then keep or discard it.** It also explains: **Not yet reviewed by the team. Agents using MCP may receive it, labelled unverified. Ask uses it only after it is accepted.** The actions are **Keep suggestion**, **Correct & accept**, and **Discard suggestion**.
+
+### Test what agents can recall
+
+Use **Test what agents can recall** to preview what comes back for a question, without saving a memory. Browsing filters do not apply to this check.
+
+**Recall for** is either:
+
+- **Ask / Published only**: Ask grounds answers on accepted memory only. This sends the same request Ask sends: 10 results within a 2,000 token budget. Conflicting and earlier versions are withheld.
+- **Agents / MCP / Published, unreviewed, and conversation turns** (the default): Agents and MCP clients use the agent profile with the service defaults: accepted memory, current unreviewed candidates labelled unverified, and matching conversation turns, each within its share of the budget.
+
+Enter a **Question**, choose a **Context budget** (1,000, 2,000 by default, 4,000, or 8,000 tokens), and select **Check recall**.
+
+The result shows how many memories and conversation turns were returned, and how many tokens were returned against the budget. Retrieval is described as **Semantic and keyword retrieval**. **What the agent receives** lists the memories. **Conversation turns** are verbatim retained turns that matched the question. They are evidence, not reviewed knowledge. If the limit left records out, the page tells you.
+
+### Evidence and history
+
+Opening a memory, or selecting **View evidence**, opens the drawer titled **Memory · evidence & history**.
+
+**Can Ask or an agent use this?** includes or excludes the memory. The drawer explains that **Evidence identifies where a claim came from. A code link does not establish that the claim is correct.**
+
+The actions are:
+
+- **Correct memory**
+- **Update status**, with **What should the team know?**, **Status**, **Reason / supporting evidence**, and **Effective time**
+- **Attach evidence**, with **Reason / supporting evidence**
+- **Remove memory**. The confirm asks **Remove this memory? Ask and agents will stop using it. Its history is kept, and it can be restored.** After you confirm, Graphify shows **Removed from this list. Graphify is finishing the change in the background.**
+
+The footer on those dialogs says **Memories are team notes, not an authority for inventory, ledgers or production access.**
+
+**When this memory was returned** shows observations of a memory version being delivered. They do not prove an agent followed it or that it changed an answer. The drawer also has **History** and **Technical details**.
 
 ## Grounded and ungrounded facts
 
@@ -91,23 +202,7 @@ Repository in Graphify: acme/web-app
 - Don't save secrets, credentials, personal data or session chatter.
 ```
 
-A fact saved with `remember` doesn't publish straight away. `remember` takes the text, and optionally `repository_id`, `session_id`, `tags`, and `occurred_at`. It doesn't set a kind or attach a code anchor, so name the file or function in the text when the note is about specific code. The note arrives as a suggestion, and someone on your team keeps it, as described in [Suggestions and kept memories](#suggestions-and-kept-memories). An empty result from `recall` means nothing relevant is remembered yet.
-
-## Add a memory
-
-<Steps>
-  <Step title="Write it">
-    Select **Add memory**. The dialog is titled **Add to memory**. The subheading is **Saved to** the chosen repository **for your team.** Under **What should your team remember?**, write one fact your team should keep. For example: *Retry failed card charges at most three times, and never retry hard declines.*
-  </Step>
-  <Step title="Choose a kind and an About line">
-    Pick a kind: **Lesson** (the default; *Something the team learned or should keep doing*), **Decision**, **Incident** (*Something that broke, and what happened.*), or **Owner**. Fill in **About**, such as *Payment retry policy*. Graphify suggests an About line from your text, and you can change it. The helper text is *Keeps related memories together. Suggested from your text; change it if you like.*
-  </Step>
-  <Step title="Save">
-    Select **Save memory**. Graphify shows **Saved. Graphify is processing it, and it will appear here shortly.** The footer says **Attributed to you. Your GitHub files aren't changed.** You can select **Cancel** if you don't want to save.
-  </Step>
-</Steps>
-
-In **Advanced**, **Save a decision** and **Record an incident** open their own forms, with fields for when it happened and the related files. To record an incident with the files it affected, see [Remember incident lessons so agents do not repeat them](/cookbooks/remember-incident-lessons).
+A fact saved with `remember` doesn't publish straight away. `remember` takes the text, and optionally `repository_id`, `session_id`, `tags`, and `occurred_at`. It doesn't set a kind or attach a code link, so name the file or function in the text when the note is about specific code. The note arrives as a suggestion, and someone on your team keeps it, as described in [Suggestions and kept memories](#suggestions-and-kept-memories). An empty result from `recall` means nothing relevant is remembered yet.
 
 ## Suggestions and kept memories
 
@@ -120,7 +215,7 @@ Graphify also writes memories on its own: a status record when a review finishes
 | **Saved by an AI agent** | A connected agent saved it. |
 | **From a conversation** | It came from an Ask or agent conversation. |
 
-Keep a suggestion as it is, edit it and keep it, or discard it. If the code a memory refers to changes after it was saved, the memory is flagged: "The code this refers to changed after it was saved. Check that it is still true." When two current versions disagree, Ask and agents use neither until you edit one to say which is right.
+Keep a suggestion as it is, edit it and keep it, or discard it. In the Advanced **Review** tab, those actions are **Keep suggestion**, **Correct & accept**, and **Discard suggestion**. If the code a memory refers to changes after it was saved, the memory is flagged: "The code this refers to changed after it was saved. Check that it is still true." When two current versions disagree, Ask and agents use neither until you edit one to say which is right.
 
 When you keep a suggestion, it moves into your memories with a **Publishing** label and stays there if you reload. The drawer says **Publishing. This will show as a saved memory once that finishes.** If the keep doesn't go through, the row returns to suggestions with **It is back in suggestions. Try again.** A discarded suggestion stays hidden while Graphify is still processing the change. You can restore it later from its history.
 
@@ -146,11 +241,13 @@ Each row shows whether that version is **Published** or **Unreviewed**. You can 
 
 ## Remove and restore
 
-Removing a memory means Ask and agents stop using it. Its history is kept, and you can restore it.
+Removing a memory means Ask and agents stop using it. Its history is kept, and you can restore it. The confirm and the message Graphify shows after you remove one are in [Evidence and history](#evidence-and-history).
 
 ## Ask what your team knows
 
 The playground has **Ask** and **Search**. Search memory with plain words to find saved decisions, incidents and lessons. Search options include **Results** (10 by default), **Kind** (All kinds), and **Source** (All sources). Turn on **Only linked to code** to see only memories anchored to code, or turn on **Include suggestions not yet kept** or **Include what was said in conversations** to search more widely. The helper text is **Search uses the same retrieval as your AI agents.** Ask answers each question on its own, so name what you mean in follow-ups.
+
+To preview what an agent or Ask would receive for a question, use [Test what agents can recall](#test-what-agents-can-recall) in the Advanced view.
 
 ## Verify and troubleshoot
 

@@ -11,3 +11,6 @@ scripts/
 
 # Contributor instructions for agents editing this repo
 AGENTS.md
+
+# Agent skill source, served at /skill.md and /.well-known/skills/ through .mintlify/skills
+skills/

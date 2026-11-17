@@ -40,6 +40,36 @@ After a big change to the setup pages, also try these by hand in a fresh Claude 
 - Install Graphify CLI. It should install the `graphifyy` package with uv or pipx.
 - Ask which languages Graphify CLI supports for a given language. The answer should match `open-source/features/languages`.
 
+### Skill trigger check
+
+When you change the `description` in `skill.md`, install the skill in a fresh session (`npx skills add https://docs.graphify.com`) in a repository indexed in Graphify, then run each prompt below 3 times. Count it as a pass when the agent loads the Graphify skill in at least 2 of 3 runs for the "should load" prompts, and in at most 1 of 3 runs for the "should not load" prompts.
+
+Should load the skill:
+
+1. Set up Graphify in this project.
+2. Where is `parseConfig` defined?
+3. who calls the retry helper
+4. How does checkout work in this repo?
+5. Is there a path from the webhook handler to `chargeCard`?
+6. I'm about to rename `UserService`. What could break, and which tests should I run?
+7. Which other repositories depend on this package?
+8. Did we decide anything about how we handle timeouts in the API client?
+9. What did the review on PR 42 find?
+10. Before I refactor the auth module, give me a map of what touches it.
+
+Should not load the skill:
+
+1. Find every line that logs "connection refused".
+2. Fix the typo in README.md.
+3. Write a unit test for this pure function I pasted.
+4. What does HTTP 429 mean?
+5. Convert this JSON file to YAML.
+6. Run the test suite.
+7. Bump the version in package.json.
+8. Explain what a knowledge graph is in general.
+9. What's the capital of France?
+10. Format this file with Prettier.
+
 ## Frontmatter
 
 ```yaml

@@ -1,0 +1,9 @@
+User-agent: *
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+Disallow: /cdn-cgi/
+Allow: /_next/image
+Disallow: /_next/
+Sitemap: https://docs.graphify.com/sitemap.xml
+
+# LLM-friendly docs index: https://docs.graphify.com/llms.txt
+# Full docs as one file: https://docs.graphify.com/llms-full.txt

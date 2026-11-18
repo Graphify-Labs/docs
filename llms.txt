@@ -93,8 +93,8 @@ Use for errors, rate limits, pricing, security, or moving from Graphify CLI to h
 Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.
 
 - [Graphify CLI: open-source code knowledge graph](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
-- [Quickstart: map a repository with the skill](https://docs.graphify.com/open-source/quickstart.md): Install the graphifyy package, add the Graphify skill to your coding agent, and build a knowledge graph of your repository with one command.
-- [Install Graphify CLI with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install graphify with uv or pipx on macOS, Linux, or Windows, upgrade it, and register the Graphify skill with your coding assistant.
+- [Graphify skill quickstart: install graphifyy and run /graphify .](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, run graphify install to add the Graphify skill, then type /graphify . in your coding agent to map the repository.
+- [Install graphifyy (Graphify CLI) with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify.
 - [CLI quickstart: build and query a code graph](https://docs.graphify.com/open-source/cli-quickstart.md): Build a code knowledge graph with graphify extract, then query it with query, path, explain, and god-nodes. No agent or API key needed.
 - [MCP server quickstart: serve your graph](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and nine other graph tools from any MCP client.
 - [Self-host the Graphify MCP server with Docker](https://docs.graphify.com/open-source/self-host.md): Build the open-source Graphify Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph.
@@ -144,12 +144,12 @@ Use when Graphify CLI fails to install or build a graph.
 
 Use when connecting a specific coding agent. Each page has a Graphify tab and a Graphify CLI tab.
 
-- [Integrations: coding agents and MCP clients](https://docs.graphify.com/integrations/overview.md): See which coding agents and assistants connect to Graphify's hosted MCP server, which support the open-source skill, and which get always-on context.
+- [Graphify integrations: Claude Code, Cursor, VS Code, Codex and more](https://docs.graphify.com/integrations/overview.md): Connect Claude Code, Cursor, VS Code, Copilot, Codex, or Gemini CLI to Graphify over MCP, or install the open-source Graphify skill.
 - [Graphify for Claude](https://docs.graphify.com/integrations/claude-ai.md): Connect Graphify from the Claude connectors directory. Create your Graphify account for free while connecting, then enable the connector per chat.
 - [Graphify for Claude Code](https://docs.graphify.com/integrations/claude-code.md): Connect Claude Code to Graphify with your Claude account or claude mcp add. Create your Graphify account for free while connecting.
 - [Graphify for Cursor](https://docs.graphify.com/integrations/cursor.md): Connect Cursor to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.
 - [Graphify for Codex](https://docs.graphify.com/integrations/codex.md): Connect Codex to Graphify's MCP server with OAuth, or install the open-source Graphify skill. Create your Graphify account for free while connecting.
-- [Graphify for VS Code and GitHub Copilot](https://docs.graphify.com/integrations/vscode.md): Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph on your machine.
+- [Connect Graphify to VS Code and GitHub Copilot](https://docs.graphify.com/integrations/vscode.md): Install the Graphify MCP extension for VS Code, or add https://api.graphify.com/mcp. You can also run the open-source Graphify skill on a local graph.
 - [Graphify for Gemini CLI](https://docs.graphify.com/integrations/gemini-cli.md): Connect Gemini CLI to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.
 - [Graphify MCP for JetBrains](https://docs.graphify.com/integrations/jetbrains.md): Install the Graphify MCP plugin to connect JetBrains AI Assistant to your indexed repositories through hosted Graphify's MCP server. No API key to paste.
 

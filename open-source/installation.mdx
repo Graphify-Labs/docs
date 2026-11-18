@@ -1,7 +1,7 @@
 ---
-title: "Install Graphify CLI with uv or pipx"
+title: "Install graphifyy (Graphify CLI) with uv or pipx"
 sidebarTitle: "Installation"
-description: "Install graphify with uv or pipx on macOS, Linux, or Windows, upgrade it, and register the Graphify skill with your coding assistant."
+description: "Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify."
 keywords: ["install graphifyy", "uv tool install", "pipx", "graphify install skill"]
 surface: "local"
 hideFooterPagination: true
@@ -11,7 +11,7 @@ icon: "download"
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 <Tip>
-Don't want to install anything? Graphify, the hosted product at app.graphify.com, indexes your GitHub repositories in the browser. We run it for you, so there's nothing to deploy. Start with the [Cloud quickstart](/platform/quickstart).
+Don't want to install anything? Start with the [Graphify quickstart](/platform/quickstart). Graphify indexes your GitHub repositories in the browser and hosts the graph for you, so there's nothing to deploy.
 </Tip>
 
 ## Prerequisites
@@ -73,6 +73,8 @@ The macOS command is Homebrew. The Linux and Windows commands are uv's own insta
 
 <Note>The official PyPI package is `graphifyy`. Other similarly named packages are not the Graphify Labs package.</Note>
 
+The package is `graphifyy`. The command you run is `graphify`. If your shell cannot find `graphify` after install, see [Command not found](#command-not-found).
+
 ## Register the skill
 
 ```bash
@@ -81,8 +83,6 @@ graphify install --platform codex
 ```
 
 The first command detects an assistant. The second targets one explicitly. Run the specific command for each assistant you use.
-
-The package on PyPI is `graphifyy`. The command you run is `graphify`.
 
 Open the assistant in a repository and send `/graphify .`. That message builds the graph for the folder. Follow [Your first knowledge graph](/open-source/quickstart) to read the output and ask a question.
 
@@ -122,11 +122,13 @@ Re-run registration for the assistants you use so their skill files match the pa
 
 ## Command not found
 
+If `graphify` is not on your `PATH` after `uv tool install graphifyy`, run:
+
 ```bash
 uv tool update-shell
 ```
 
-Then open a new terminal. With pipx, run `pipx ensurepath`. If an MCP client cannot find Graphify, use an absolute executable path in its configuration.
+Then open a new terminal. With pipx, run `pipx ensurepath`. If an MCP client cannot find Graphify, use an absolute executable path in its configuration. More install failures are in [Troubleshooting](/open-source/troubleshooting).
 
 ## Remove a registration
 

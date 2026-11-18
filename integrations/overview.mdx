@@ -1,7 +1,7 @@
 ---
-title: "Integrations: coding agents and MCP clients"
+title: "Graphify integrations: Claude Code, Cursor, VS Code, Codex and more"
 sidebarTitle: "Overview"
-description: "See which coding agents and assistants connect to Graphify's hosted MCP server, which support the open-source skill, and which get always-on context."
+description: "Connect Claude Code, Cursor, VS Code, Copilot, Codex, or Gemini CLI to Graphify over MCP, or install the open-source Graphify skill."
 keywords: ["coding agent integrations", "hosted mcp", "graphify cli skill", "which agent to connect"]
 surface: "both"
 hideFooterPagination: true
@@ -10,7 +10,9 @@ icon: "layout-grid"
 
 import OfficialMcpSource from '/snippets/official-mcp-source.mdx';
 
-Every agent below can use Graphify. Start with **Graphify**: it answers from repositories you have indexed, through `https://api.graphify.com/mcp`, with no local build. **Graphify CLI**, the alternative for offline or self-hosted setups, installs the open-source `graphifyy` skill and builds the graph on your machine. See [Graphify vs Graphify CLI](/platform/graphify-vs-local) to choose.
+Graphify is shared codebase context for agents and the people who work with them: a code graph, a wiki, memory, and pull request reviews. Connect [Claude Code](/integrations/claude-code), [Cursor](/integrations/cursor), [VS Code](/integrations/vscode), [Codex](/integrations/codex), and the other assistants below to the hosted MCP server, or install the Graphify CLI skill on a graph you build locally.
+
+**Graphify** answers from repositories you have indexed, through `https://api.graphify.com/mcp`, with no local build. **Graphify CLI** installs the open-source `graphifyy` skill and builds the graph on your machine. See [Graphify vs Graphify CLI](/platform/graphify-vs-local) to choose.
 
 <OfficialMcpSource />
 
@@ -61,7 +63,7 @@ You need a Graphify account. If you don't have one yet, you can create one for f
   <a href="/integrations/chatgpt" className="flex flex-col gap-5 rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-white dark:bg-[#141515] p-6 text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#118d4f] dark:hover:border-[#4dea9c] hover:!border-b-[#118d4f] dark:hover:!border-b-[#4dea9c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/logos/openai.svg" alt="OpenAI" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">ChatGPT, Codex, and Dots</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">One OpenAI plugin. Install it once.</p></div></a>
   <a href="/integrations/openclaw" className="flex flex-col gap-5 rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-white dark:bg-[#141515] p-6 text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#118d4f] dark:hover:border-[#4dea9c] hover:!border-b-[#118d4f] dark:hover:!border-b-[#4dea9c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://openclaw.ai/favicon.svg" alt="OpenClaw" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">OpenClaw</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">ClawHub package for the hosted server.</p></div></a>
   <a href="/integrations/vercel" className="flex flex-col gap-5 rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-white dark:bg-[#141515] p-6 text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#118d4f] dark:hover:border-[#4dea9c] hover:!border-b-[#118d4f] dark:hover:!border-b-[#4dea9c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/logos/vercel.svg" alt="Vercel" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Vercel</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">A project token, or a per-user Connect token.</p></div></a>
-  <a href="/integrations/other-agents" className="flex flex-col gap-5 rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-white dark:bg-[#141515] p-6 text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#118d4f] dark:hover:border-[#4dea9c] hover:!border-b-[#118d4f] dark:hover:!border-b-[#4dea9c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/google-antigravity.png" alt="Antigravity" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/logos/windsurf.svg" alt="Windsurf" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/logos/cline.svg" alt="Cline" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Other Cloud agents</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">Antigravity, Windsurf, Cline, Zed, and any other MCP client.</p></div></a>
+  <a href="/integrations/other-agents" className="flex flex-col gap-5 rounded-xl border border-[#d6e5dc] dark:border-[#262626] !border-b-[#d6e5dc] dark:!border-b-[#262626] bg-white dark:bg-[#141515] p-6 text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#118d4f] dark:hover:border-[#4dea9c] hover:!border-b-[#118d4f] dark:hover:!border-b-[#4dea9c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#118d4f]"><div className="flex h-8 items-center gap-2"><img src="https://graphify.com/assets/assistants/google-antigravity.png" alt="Antigravity" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/logos/windsurf.svg" alt="Windsurf" width="32" height="32" className="m-0 h-8 w-8 object-contain" /><img src="https://graphify.com/logos/cline.svg" alt="Cline" width="32" height="32" className="m-0 h-8 w-8 object-contain" /></div><div><h3 className="m-0 text-base font-semibold">Other agents</h3><p className="mb-0 mt-2 text-sm leading-6 text-[#586b60] dark:text-[#a3a3a3]">Antigravity, Windsurf, Cline, Zed, and any other MCP client.</p></div></a>
 </div>
 
 ## Graphify CLI
@@ -89,6 +91,20 @@ The installer adds platform-specific files and may install hooks or instructions
 ### Local MCP server
 
 The [local MCP server](/open-source/mcp-server) exposes a graph that already exists on your machine as MCP tools. Use it with the skill or on its own.
+
+## FAQ
+
+### Does Graphify work with Claude Code, Cursor, or VS Code?
+
+Yes. See [Claude Code](/integrations/claude-code), [Cursor](/integrations/cursor), and [VS Code and GitHub Copilot](/integrations/vscode). The table above lists every assistant on this page, including Codex, Gemini CLI, JetBrains, ChatGPT, OpenClaw, and Hermes.
+
+### Do I need Graphify CLI if I use hosted Graphify?
+
+No. Hosted Graphify is enough when you connect your agent over MCP and have an indexed repository. Use Graphify CLI when you want an offline or on-machine graph.
+
+### What is always-on context?
+
+It is what `graphify install` writes so the agent checks the graph before reading source, without being asked. Hooks never grant the agent new permissions.
 
 ## Beyond coding agents
 

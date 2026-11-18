@@ -1,7 +1,7 @@
 ---
-title: "Graphify for VS Code and GitHub Copilot"
+title: "Connect Graphify to VS Code and GitHub Copilot"
 sidebarTitle: "VS Code and GitHub Copilot"
-description: "Connect VS Code and GitHub Copilot to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph on your machine."
+description: "Install the Graphify MCP extension for VS Code, or add https://api.graphify.com/mcp. You can also run the open-source Graphify skill on a local graph."
 keywords: ["vs code mcp", "github copilot", "graphify mcp extension", "vs code marketplace"]
 surface: "both"
 hideFooterPagination: true
@@ -12,6 +12,10 @@ import { InstallButton } from '/snippets/install-button.mdx';
 import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
 <HostedOrLocal />
+
+<Note>
+This page is for VS Code and GitHub Copilot. Install the [Graphify MCP](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp) extension for Copilot Chat, or use the Graphify CLI tab for Copilot CLI and a local graph. If you use Cursor, see [Graphify for Cursor](/integrations/cursor).
+</Note>
 
 <Tabs>
 <Tab title="Graphify">
@@ -26,7 +30,7 @@ One click: install the official **Graphify MCP** extension by Graphify Labs from
 
 ## Before you start
 
-- VS Code 1.102 or later.
+- VS Code 1.102 or later. If Graphify is not in **MCP: List Servers**, see [Troubleshooting](#troubleshooting).
 - An agent chat model available in VS Code. The extension does not include one.
 - A Graphify account. If you don't have one yet, you can create one for free while connecting. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing).
 - At least one repository with the status **Indexed**. Connect a repository and wait for that status. See [Repositories and builds](/platform/repositories).

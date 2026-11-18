@@ -8,6 +8,7 @@ icon: "server"
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import OfficialMcpSource from '/snippets/official-mcp-source.mdx';
 
 `graphify-mcp` reads `graphify-out/graph.json` and exposes it as MCP tools. Your agent can then ask for a subgraph, a node, a path, or the pull requests a change affects, instead of reading files to find out.
 
@@ -22,6 +23,8 @@ Build a graph first with the [CLI quickstart](/open-source/cli-quickstart), then
 ```bash
 uv tool install "graphifyy[mcp]"
 ```
+
+<OfficialMcpSource />
 
 ## Connect one agent over stdio
 

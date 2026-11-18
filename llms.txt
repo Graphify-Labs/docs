@@ -52,7 +52,7 @@ Use when explaining how the graph answers questions about code, and how to read 
 
 Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, or connectors.
 
-- [Ask your codebase: answers with citations](https://docs.graphify.com/platform/ask.md): Ask your codebase plain-language questions. Graphify answers with cited graph nodes and paths, handles PR questions, and abstains without a path.
+- [Ask your codebase: answers with citations](https://docs.graphify.com/platform/ask.md): Ask your codebase plain-language questions. Graphify answers from the graph or the wiki, handles PR questions, and abstains when it has no answer.
 - [Code knowledge graph: explore and query repos](https://docs.graphify.com/platform/graphs.md): Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph.
 - [AI pull request reviews with code graph context](https://docs.graphify.com/platform/reviews.md): How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how to read findings with code graph context.
 - [Review a pull request with Graphify](https://docs.graphify.com/concepts/review-a-pull-request.md): Get a Graphify review on a pull request, rerun it after new commits with @graphify review, and teach it with @graphify wrong, good and suppress.

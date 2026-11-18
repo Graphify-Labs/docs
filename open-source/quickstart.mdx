@@ -1,18 +1,18 @@
 ---
-title: "Quickstart: map a repository with the skill"
-sidebarTitle: "Quickstart (skill)"
-description: "Install the graphifyy package, add the Graphify skill to your coding agent, and build a knowledge graph of your repository with one command."
-keywords: ["graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph"]
+title: "Graphify skill: install graphifyy and run /graphify ."
+sidebarTitle: "Skill quickstart"
+description: "Install graphifyy, run graphify install to add the Graphify skill, then type /graphify . in your coding agent to map the repository."
+keywords: ["graphify skill", "graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph"]
 surface: "local"
 icon: "zap"
 ---
 
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
-The fastest way to use open-source Graphify is as a skill inside your coding agent. You install it once, type `/graphify .`, and the agent builds the graph and reads `GRAPH_REPORT.md` before it answers questions about your code.
+The Graphify skill lets your coding agent build and query a local knowledge graph of the repository. You install `graphifyy` once, type `/graphify .`, and the agent builds the graph and reads `GRAPH_REPORT.md` before it answers questions about your code.
 
 <Note>
-**Use the skill when** you work in Claude Code, Codex, Cursor, Gemini CLI, or another agent that supports skills, and you want the agent to drive extraction for you. If you only want terminal commands, follow the [CLI quickstart](/open-source/cli-quickstart).
+**Use this skill quickstart** to install `graphifyy` and run `/graphify .` in your coding agent. For a graph, wiki, memory, and pull request reviews hosted for you, start with the [Graphify quickstart](/platform/quickstart). If you only want terminal commands, follow the [CLI quickstart](/open-source/cli-quickstart).
 </Note>
 
 ## Before you start
@@ -48,7 +48,7 @@ The fastest way to use open-source Graphify is as a skill inside your coding age
       </Tab>
     </Tabs>
 
-    The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands.
+    The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands. If your shell cannot find `graphify`, see [Command not found](/open-source/installation#command-not-found).
   </Step>
   <Step title="Install the skill">
     ```bash

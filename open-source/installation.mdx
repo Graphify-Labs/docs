@@ -2,7 +2,7 @@
 title: "Install graphifyy (Graphify CLI) with uv or pipx"
 sidebarTitle: "Installation"
 description: "Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify."
-keywords: ["install graphifyy", "uv tool install", "pipx", "graphify install skill", "uninstall graphify", "remove graphify", "uninstall graphifyy", "unin", "unins", "uninstal", "uninstall", "graphify windows", "install graphify windows", "windows", "powershell"]
+keywords: ["install graphifyy", "uv tool install", "pipx", "graphify install skill", "uninstall graphify", "remove graphify", "uninstall graphifyy", "unin", "unins", "uninstal", "uninstall", "graphify windows", "install graphify windows", "windows", "powershell", "first build cost", "what does the first build cost", "graphify extract code-only", "cost.json"]
 surface: "local"
 hideFooterPagination: true
 icon: "download"
@@ -107,6 +107,20 @@ graphify install --project --platform codex
 ```
 
 Read the installer’s list of files before committing them. Project and user registrations live in different locations.
+
+## What does the first build cost?
+
+Code is extracted locally from the AST. It does not use an LLM. Docs, PDFs and images go to the LLM. Video and audio are transcribed locally, then treated as text.
+
+Graphify CLI does not ask you to confirm a build, and it does not show an estimate first. After the build finishes, it prints the cost and saves it to `graphify-out/cost.json`.
+
+To skip the LLM, run:
+
+```bash
+graphify extract . --code-only
+```
+
+You can also set `GRAPHIFY_BACKEND=none`, or run `graphify update`, which is always AST only. See [Honest token savings](/open-source/features/honest-token-savings).
 
 ## Optional capabilities
 

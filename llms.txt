@@ -47,6 +47,7 @@ Use when explaining how the graph answers questions about code, and how to read 
 - [How code dependencies are found, not guessed](https://docs.graphify.com/concepts/how-graphify-finds-dependencies.md): How Graphify builds a code dependency graph: tree-sitter parsing, symbol resolution, cross-repo linking and provenance tags, and where a model is used.
 - [Graph files and outputs](https://docs.graphify.com/concepts/outputs.md): The files Graphify writes to graphify-out/, including graph.json, what each one contains, and the parts you can reuse in other tools.
 - [What is formal verification? A plain guide](https://docs.graphify.com/concepts/what-is-formal-verification.md): Formal verification proves code behavior for every input in scope, not just tested ones. How it differs from tests and review, and what a proof covers.
+- [Bring your stack to Graphify](https://docs.graphify.com/concepts/bring-your-stack.md): Index a GitHub or GitLab.com repository in Graphify, which lists 63 grammars and reads docs, PDFs and images alongside your code.
 
 ## Graphify: Features
 

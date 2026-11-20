@@ -2,7 +2,7 @@
 title: "How code dependencies are found, not guessed"
 sidebarTitle: "How dependencies are found"
 description: "How Graphify builds a code dependency graph: tree-sitter parsing, symbol resolution, cross-repo linking and provenance tags, and where a model is used."
-keywords: ["code dependency graph", "how graphify works", "tree-sitter", "static analysis", "cross-repo dependencies"]
+keywords: ["code dependency graph", "how graphify works", "tree-sitter", "static analysis", "cross-repo dependencies", "ontology", "code ontology", "codebase ontology"]
 surface: "both"
 hideFooterPagination: true
 icon: "workflow"
@@ -11,6 +11,8 @@ icon: "workflow"
 import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 Graphify finds the dependencies in your code by parsing it, not by asking a model to guess. Every function, class, import and call in the graph comes from reading your source files with a parser, then resolving names to the one declaration they point at. When Graphify can't be sure, it says so on the edge.
+
+Those node types, edge types and confidence tags work as an ontology for your code, and you can explore them in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=concepts-how-graphify-finds-dependencies).
 
 This page explains each step, the tags that tell you how sure Graphify is, where a model *is* used, and what the graph can't see.
 

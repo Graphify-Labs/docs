@@ -4,7 +4,7 @@ sidebarTitle: "Codex"
 description: "Connect Codex to Graphify's MCP server with OAuth, or install the open-source Graphify skill. Create your Graphify account for free while connecting."
 surface: "both"
 hideFooterPagination: true
-keywords: ["codex mcp", "mcp oauth"]
+keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex"]
 ---
 
 import { InstallButton } from '/snippets/install-button.mdx';
@@ -23,6 +23,10 @@ The server uses Streamable HTTP and OAuth. You sign in once in the browser, so t
 <InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Install in Codex">
 One click: install the official **Graphify** plugin by Graphify Labs from the OpenAI plugin directory, then select **Connect** and sign in. The same install works in ChatGPT.
 </InstallButton>
+
+## How do I use Graphify with Codex?
+
+Install the Graphify plugin in Codex, sign in to your Graphify account, and ask Codex about a repository you indexed in Graphify. Codex then calls Graphify's tools to find code, follow callers and dependencies, and check what a change reaches. The steps below take a few minutes.
 
 ## Before you start
 
@@ -76,11 +80,27 @@ Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mc
 
 ## 3. Ask a question
 
-Pick a repository from the list and name the symbol, file, or area you care about:
+Pick a repository from the list and name the symbol, file, or area you care about. Three things to try first:
 
-- `Who calls the function that validates a session token?`
-- `What would break if I changed this module's public interface?`
-- `Summarize how requests reach the billing service.`
+**Understand a codebase**
+
+```text
+Use Graphify to give me a map of owner/name: the main areas, how requests reach the billing service, and the files I should read first. Cite the files for each point.
+```
+
+**Find what a change could affect**
+
+```text
+Use Graphify's impact tool on the function that validates session tokens in owner/name. List the callers and files that could break if I change its signature.
+```
+
+**Check a pull request against other repositories**
+
+```text
+For pull request 123 in owner/name, list the symbols it changes. Then use Graphify's impact tool on each one against our combined graph, and tell me which other repositories call them.
+```
+
+Cross-repository answers need a [combined graph](/platform/graphify-mcp#query-a-repository-group) that includes those repositories. To read the result of Graphify's own review of a pull request, ask Codex to run `review_status`.
 
 Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
 

@@ -2,7 +2,7 @@
 title: "FAQs"
 sidebarTitle: "FAQs"
 description: "Answers to common Graphify questions: getting started, indexing, failed builds, plan limits, reviews, assistants, data, and where to get help."
-keywords: ["graphify faq", "failed builds", "plan limits", "getting started", "delete account", "close account", "delete my data"]
+keywords: ["graphify faq", "failed builds", "plan limits", "getting started", "delete account", "close account", "delete my data", "is graphify safe", "graphify safe", "graphify security"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "circle-question-mark"
@@ -108,6 +108,9 @@ The workspace has more than one repository, so the call needs `repository_id`. P
 ## Data and security
 
 <AccordionGroup>
+<Accordion title="Is Graphify safe to use?">
+Graphify does not train models on your code. Hosted Graphify encrypts data in transit and at rest and only reads the workspace and repositories you choose. Graphify CLI parses code locally with tree-sitter and needs no LLM for code; add `--code-only` to skip LLM calls entirely. See [Security and data handling](/platform/support/security).
+</Accordion>
 <Accordion title="Does Graphify train models on my code?">
 No. Code goes to Graphify's LLM subprocessors only to produce results, under terms that prohibit training. See [Security and data handling](/platform/support/security).
 </Accordion>

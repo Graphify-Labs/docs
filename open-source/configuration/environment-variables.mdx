@@ -42,7 +42,7 @@ Provider keys such as `ANTHROPIC_API_KEY` are covered on [LLM providers](/open-s
 | `GRAPHIFY_API_TIMEOUT` | `600` | Seconds per model request. |
 | `GRAPHIFY_MAX_RETRIES` | built in | Retries for rate-limited requests. |
 | `GRAPHIFY_MAX_RETRY_DEPTH` | built in | How far Graphify splits a truncated chunk to recover it. |
-| `GRAPHIFY_MAX_OUTPUT_TOKENS` | backend's | Output token cap per request. |
+| `GRAPHIFY_MAX_OUTPUT_TOKENS` | backend's | Output token cap per request. Graphify sends it as `max_tokens` or `max_completion_tokens`, whichever the backend uses. |
 | `GRAPHIFY_LLM_TEMPERATURE` | backend's | Override the sampling temperature. |
 | `GRAPHIFY_DISABLE_THINKING` | off | Turn off thinking on models that enable it by default, such as DeepSeek v4. |
 | `GRAPHIFY_OPENAI_MODEL`, `GRAPHIFY_GEMINI_MODEL`, `GRAPHIFY_DEEPSEEK_MODEL`, `GRAPHIFY_AZURE_MODEL`, `GRAPHIFY_BEDROCK_MODEL` | backend's | Model for that backend. |

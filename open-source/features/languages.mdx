@@ -1,7 +1,7 @@
 ---
 title: "Supported inputs"
 description: "The languages, schemas, documents, and media Graphify can map, which extractor handles each, and the optional extras to install."
-keywords: ["supported languages", "file extensions", "terraform hcl", "documents and media", "sql", "oracle", "plsql", "pl/sql", "t-sql", "postgres", "c#", "csharp", "c sharp", "javascript", "typescript", "node.js", "nodejs"]
+keywords: ["supported languages", "file extensions", "terraform hcl", "documents and media", "sql", "oracle", "plsql", "pl/sql", "t-sql", "postgres", "c#", "csharp", "c sharp", "javascript", "typescript", "node.js", "nodejs", "dart", "flutter", "django", "fastapi", "spring", "micronaut", "egui", "redscript", "unsupported language"]
 surface: "both"
 icon: "languages"
 ---
@@ -25,6 +25,10 @@ Graphify supports a growing set of languages and input formats. Parser coverage 
 | Package and MCP manifests | `pyproject.toml`, `go.mod`, `pom.xml`, MCP JSON files | Packages, dependency edges, and server configuration context. |
 
 Graphify indexes `.sql` files and works best with PostgreSQL and T-SQL style SQL. Oracle PL/SQL packages and Oracle file types such as `.pls`, `.pks`, `.pkb`, and `.pck` aren't supported yet. To read a live database schema, see [Databases](/open-source/features/databases), which supports Postgres.
+
+Graphify parses framework code as the language it's written in. A Django or FastAPI app is Python, a Spring or Micronaut app is Java or Kotlin, a Flutter app is Dart, and an egui app is Rust. How much framework-specific wiring shows up in the graph varies, as the table notes.
+
+Files with an extension that isn't in the [file extensions](#file-extensions) list, such as Redscript `.reds` files, aren't parsed; Graphify skips them. If an unlisted extension holds code in a supported language, map it to that language in [`.graphifyrc`](/open-source/configuration/graphifyrc).
 
 ## Documents and media
 

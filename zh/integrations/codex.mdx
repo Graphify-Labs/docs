@@ -1,0 +1,223 @@
+---
+title: "在 Codex 中使用 Graphify"
+sidebarTitle: "Codex"
+description: "为 Codex 安装 Graphify 插件，或通过 OAuth 添加 Graphify 的 MCP 服务器，也可以使用开源 Graphify 技能。可免费创建账号。"
+surface: "both"
+hideFooterPagination: true
+keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex", "graphify plugin for codex", "install graphify plugin codex", "codex ide extension graphify", "Graphify Codex 插件", "Codex MCP 服务器", "代码上下文"]
+---
+
+import { InstallButton } from '/snippets/install-button.mdx';
+
+<Tip>
+  请选择与你运行 Graphify 的方式相符的标签页：**Graphify** 连接到我们为你构建的图谱，**Graphify CLI** 读取你在自己电脑上构建的图谱。[比较两者](/platform/graphify-vs-local)。
+</Tip>
+
+<Tabs>
+<Tab title="Graphify">
+
+把 Codex 连接到 Graphify 的托管 MCP 服务器 `https://api.graphify.com/mcp`。之后，Codex 就能搜索你的 [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) 工作区中已建立索引的仓库，追踪调用方和依赖，并检查一次改动会影响到哪里，而无需重新读取每个文件。
+
+该服务器使用 Streamable HTTP 和 OAuth。你只需在浏览器中登录一次，所以不需要粘贴 API key，也不需要运行本地进程。
+
+<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="在 Codex 中安装">
+一键完成：从 OpenAI 插件目录安装 Graphify Labs 发布的官方 **Graphify** 插件，然后选择 **Connect** 并登录。同样的安装在 ChatGPT 中也有效。
+</InstallButton>
+
+## 如何在 Codex 中使用 Graphify？ {#how-do-i-use-graphify-with-codex}
+
+在 Codex 中安装 Graphify 插件，登录你的 Graphify 账号，然后向 Codex 询问你在 Graphify 中建立过索引的仓库。Codex 会调用 Graphify 的工具来查找代码、追踪调用方和依赖，并检查一次改动会影响到哪里。下面的步骤只需几分钟。
+
+想了解大型代码库为什么需要它，以及图谱如何发挥作用，请阅读 [How to give Codex context on a large codebase](https://graphify.com/blog/how-to-give-codex-context-on-a-large-codebase)。
+
+## 什么是 Codex 的 Graphify 插件？ {#what-is-the-graphify-plugin-for-codex}
+
+Graphify 插件是 Graphify 在 OpenAI [插件目录](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)中的官方条目，Codex 和 ChatGPT 共用这个目录。它把 Codex 连接到你的 Graphify 账号，让 Codex 可以浏览你建立过索引的仓库，追踪调用路径和依赖，检查一次改动可能影响什么，并找到关联的测试。你可以在 Codex 中通过 `/plugins` 安装，也可以用 `codex mcp add` 手动添加服务器（参见[手动设置](#manual-setup)）。要在其他智能体中使用同一个服务器，请参见 [Graphify MCP 服务器页面](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex)。
+
+## 开始之前 {#before-you-start}
+
+- 一个 Graphify 账号。如果还没有，可以在连接时免费创建。Free 方案无需绑卡。参见[方案与价格](/platform/support/pricing)。
+- 至少一个状态为 **Indexed** 的仓库。[快速开始](/zh/platform/quickstart)会连接 GitHub 并开始建立索引。索引状态可以在[仓库与构建](/platform/repositories)中查看。
+
+## 1. 安装插件 {#1-install-the-plugin}
+
+打开 [Graphify 条目](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)并选择 **Install plugin**，或者在 Codex CLI 中打开 `/plugins` 并搜索 **Graphify**。连接你的 Graphify 账号，并完成浏览器中的登录。同一个插件在 ChatGPT 中也能使用；参见 [ChatGPT、Codex 和 Dots](/zh/integrations/chatgpt)。
+
+插件可以在 Codex CLI 以及 ChatGPT 桌面应用中的 Codex 里使用。Codex IDE 扩展暂不支持插件，所以在编辑器中请改用[手动设置](#manual-setup)。安装后，请开启一个新的 Codex 会话，让 Graphify 的工具加载进来。详情见 OpenAI 的[插件指南](https://learn.chatgpt.com/docs/plugins)。
+
+### 手动设置 {#manual-setup}
+
+更希望把设置保留在自己的配置里？那就改为手动添加服务器。完整的分步讲解请阅读 [How to add an MCP server to Codex](https://graphify.com/blog/how-to-add-an-mcp-server-to-codex)。
+
+**终端**
+
+```bash
+codex mcp add graphify --url https://api.graphify.com/mcp
+codex mcp login graphify
+```
+
+第二条命令会打开浏览器登录。没有它，连接就是未认证的，Graphify 会拒绝该连接。
+
+**config.toml**
+
+如果是为你的用户配置，把下面的内容加到 `~/.codex/config.toml`；如果只针对一个项目，加到 `.codex/config.toml`：
+
+```toml ~/.codex/config.toml
+[mcp_servers.graphify]
+url = "https://api.graphify.com/mcp"
+auth = "oauth"
+```
+
+然后运行 `codex mcp login graphify` 登录。
+
+只用一种方式。两个连接会让每个 Graphify 工具都出现两次。
+
+## 2. 检查连接 {#2-check-the-connection}
+
+开启一个新的 Codex 会话，运行 `/mcp`，检查 `graphify` 是否可用。然后粘贴：
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+```
+
+这与控制台在 **Connectors → MCP → Try a query** 中显示的测试提示词相同。检查列表是否与你登录时选择的工作区一致。
+
+### 可选：设置默认仓库 {#optional-set-a-default-repository}
+
+在端点后面加上 `?repo=owner/name`，例如 `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`。当工具调用没有指定仓库时，Graphify 会使用这个仓库。调用中指定的仓库仍然优先。
+
+## 3. 提问 {#3-ask-a-question}
+
+从列表中选一个仓库，并说出你关心的符号、文件或区域。可以先试试这三件事：
+
+**理解一个代码库**
+
+```text
+Use Graphify to give me a map of owner/name: the main areas, how requests reach the billing service, and the files I should read first. Cite the files for each point.
+```
+
+**找出一次改动可能影响什么**
+
+```text
+Use Graphify's impact tool on the function that validates session tokens in owner/name. List the callers and files that could break if I change its signature.
+```
+
+**对照其他仓库检查拉取请求**
+
+```text
+For pull request 123 in owner/name, list the symbols it changes. Then use Graphify's impact tool on each one against our combined graph, and tell me which other repositories call them.
+```
+
+跨仓库的回答需要一个包含这些仓库的[组合图谱](/platform/graphify-mcp#query-a-repository-group)。要读取 Graphify 自己对某个拉取请求的审查结果，请让 Codex 运行 `review_status`。完整的分步讲解请阅读 [How to set up Codex code review with Graphify](https://graphify.com/blog/codex-code-review)。
+
+回答是来自 Graphify 已索引文件的图谱证据，而不是经过验证的结果。在依赖某个回答之前，请打开它引用的源码行进行核对。有些工具会写入工作区 Memory，所以批准每个工具请求之前请先读一遍。
+
+## 故障排查 {#troubleshooting}
+
+| 现象 | 解决方法 |
+| --- | --- |
+| Graphify 拒绝连接 | 你添加了服务器但没有登录。运行 `codex mcp login graphify`。 |
+| `/mcp` 中没有 `graphify` | 添加后开启一个新的 Codex 会话，并检查 `config.toml` 中的 `[mcp_servers.graphify]` 条目。 |
+| 工具返回没有仓库 | 该仓库还没有建立索引，或者它在另一个工作区中。请检查[仓库与构建](/platform/repositories)。 |
+| 每个 Graphify 工具都出现两次 | 你同时装了插件和手动添加的服务器条目。删除其中一个。 |
+| 只出现一个 `graphify_setup` 工具，或者工具提示 **Graphify isn't set up for this account yet** | 在 [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) 完成设置，启用一个仓库，等到它变为 **Indexed**，开启一个新的 Codex 会话，必要时再次运行 `codex mcp login graphify`。 |
+| 工具提示 **This workspace has no repositories enabled for agents yet.** | 在 Graphify 的 **Repositories** 下启用一个仓库，等待首次索引完成，然后再问一次。 |
+
+## 常见问题 {#faq}
+
+### 把 Codex 连接到 Graphify 需要 API key 吗？ {#do-i-need-an-api-key-to-connect-codex-to-graphify}
+
+不需要。Codex 首次连接时会在浏览器中通过 OAuth 登录。没有需要粘贴或保存的 key。
+
+### Graphify 会通过 Codex 读取我的本地文件吗？ {#does-graphify-read-my-local-files-from-codex}
+
+不会。托管服务器根据你的 Graphify 工作区中已经建立索引的仓库作答。如果想改为从你电脑上的文件构建图谱，请使用开源包及其本地技能。
+
+### Graphify MCP 服务器免费吗？ {#is-the-graphify-mcp-server-free}
+
+Free 方案（最多 3 个仓库）无需绑卡。Pro 和 Teams 从 14 天试用开始，需要绑卡。Pro 和 Teams 的详情参见[方案与价格](/platform/support/pricing)。
+
+### 应该用插件还是 codex mcp add？ {#should-i-use-the-plugin-or-codex-mcp-add}
+
+两种都可以，而且都通过 OAuth 登录。插件是最快的方式。`codex mcp add` 会把设置保留在你自己的 `config.toml` 中。
+
+</Tab>
+<Tab title="Graphify CLI">
+
+本页安装的是本地技能。Codex 会在你的电脑上构建图谱。要查询已经在 Graphify 中建立索引的仓库，请使用 [ChatGPT、Codex 和 Dots](/zh/integrations/chatgpt)。
+
+## 1. 安装并注册 {#1-install-and-register}
+
+```bash
+uv tool install graphifyy
+graphify install --platform codex
+```
+
+这个集成会安装 Graphify 技能和 AGENTS.md 指令。当前的安装程序也支持 Codex 的 hook 集成。具体写入位置取决于你使用个人安装还是项目安装；安装程序会报告它写入的文件。
+
+如果要在仓库内设置，请在项目根目录运行：
+
+```bash
+graphify install --project --platform codex
+```
+
+## 2. 构建图谱 {#2-build-the-graph}
+
+在 Codex 中打开你的项目。选择 Graphify 技能并输入：
+
+```text
+$graphify map the current repository
+```
+
+助手会运行 Graphify 工作流并写入 `graphify-out/`。代码提取在本地运行；对于文档和媒体，语义提取可以使用你的助手所用的模型。
+
+## 3. 带着上下文提问 {#3-ask-with-context}
+
+图谱构建完成后，可以这样问：
+
+> 使用 Graphify 解释认证流程。引用源文件，并区分明确的关系和推断出的关系。
+
+你也可以在终端中查询：
+
+```bash
+graphify query "authentication flow"
+```
+
+## 保持最新 {#keep-it-current}
+
+```bash
+uv tool upgrade graphifyy
+graphify install --platform codex
+```
+
+如果找不到技能，请刷新助手，并确认注册安装在了预期的用户或项目范围内。参见[故障排查](/open-source/troubleshooting)。
+
+<Card title="连接原生 MCP 工具" icon="plug" href="/open-source/mcp-server">通过结构化的工具调用使用同一个图谱。</Card>
+
+</Tab>
+</Tabs>
+
+## 相关内容 {#related}
+
+<Columns cols={2}>
+  <Card title="在 Codex 中使用 Graphify（本地技能）" icon="terminal" href="/zh/integrations/codex">
+    改用开源本地技能，在你的电脑上构建图谱。
+  </Card>
+  <Card title="Graphify 如何构建代码知识图谱" icon="share-2" href="/concepts/architecture">
+    图谱包含什么，以及其中的关系从何而来。
+  </Card>
+  <Card title="边与来源" icon="git-branch" href="/concepts/provenance">
+    读懂一个回答中的关系说明了什么，以及它们有多确定。
+  </Card>
+  <Card title="与智能体一起写代码" icon="bot" href="/cookbooks/cloud-coding-agents">
+    通过控制台的 Connectors → MCP 向导设置任意智能体。
+  </Card>
+  <Card title="修复代码审查发现的问题" icon="git-pull-request" href="/cookbooks/fix-review-findings">
+    让你的智能体对照图谱检查 Graphify PR 审查中的每个问题并修复。
+  </Card>
+</Columns>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>
+

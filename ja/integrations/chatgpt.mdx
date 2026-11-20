@@ -1,0 +1,115 @@
+---
+title: "ChatGPT、Codex、Dots で Graphify を使う"
+sidebarTitle: "ChatGPT、Codex、Dots"
+description: "Graphify のホスト型 MCP サーバーを使う 1 つの OpenAI プラグインで、ChatGPT、Codex、Dots をインデックス済みのリポジトリに接続します。"
+surface: "cloud"
+hideFooterPagination: true
+keywords: ["chatgpt plugin", "mcp oauth", "graphify chatgpt plugin", "add graphify to chatgpt", "Graphify ChatGPT プラグイン", "ChatGPT MCP", "コードベースのコンテキスト"]
+---
+
+import { InstallButton } from '/snippets/install-button.mdx';
+
+**Graphify** プラグインは、OpenAI のプラグインディレクトリにある 1 つのリスティングです。ChatGPT と Codex はこのディレクトリを共有しており、[Dot](https://openai.com/index/introducing-dots/) はすでに接続済みのプラグインを使います。インストールは 1 回だけです。承認した権限は ChatGPT、ChatGPT Work、Codex、Dots に適用されます。
+
+接続そのものは MCP で、アドレスは `https://api.graphify.com/mcp` です。プラグインはその接続をセットアップするためのパッケージです。貼り付ける API キーも、自分のコンピューターで構築するグラフもありません。これは [VS Code 用 Graphify MCP](/integrations/vscode) や [JetBrains 用 Graphify MCP](/integrations/jetbrains) と同じホスト型サーバーです。その他のエージェントでのセットアップは、[Graphify MCP サーバーのページ](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt)を参照してください。[Codex スキル](/ja/integrations/codex)は別途インストールするもので、Codex に自分のマシン上でグラフを構築する方法を教えます。
+
+接続すると、ChatGPT、Codex、Dot は [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt) でインデックス化したリポジトリを検索し、呼び出し元や依存関係をたどり、変更がどこまで影響するかを判断できます。
+
+<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="ChatGPT にインストール">
+ワンクリック：OpenAI のプラグインディレクトリで Graphify Labs による公式 **Graphify** プラグインを開きます。1 回のインストールで ChatGPT、Codex、Dots をカバーします。
+</InstallButton>
+
+## 始める前に {#before-you-start}
+
+- Web、デスクトップアプリ、モバイルのいずれかの ChatGPT。ChatGPT デスクトップアプリ内の Codex、または Codex CLI。あるいは、デスクトップアプリかデスクトップブラウザの chatgpt.com で作成した Dot。Codex IDE 拡張機能ではプラグインを使えません。
+- 業務用ワークスペースでは、接続する前に管理者がプラグインを許可する必要がある場合があります。
+- Graphify アカウント。まだお持ちでない場合は、接続時に無料で作成できます。Free プランはカード登録不要です。[プランと料金](/platform/support/pricing)を参照してください。
+- ステータスが **Indexed** のリポジトリが 1 つ以上。[リポジトリとビルド](/platform/repositories)を参照してください。
+
+## 1. プラグインをインストールする {#1-install-the-plugin}
+
+[ChatGPT で開く](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)
+
+または **Plugins** タブを開き、**Graphify Labs** による **Graphify** を選びます。
+
+ChatGPT に **Install plugin** が表示されたらそれを選び、続けて **Connect** を選びます。ブラウザが開くので、Graphify にサインインし、クエリしたいリポジトリがあるワークスペースを選びます。承認する前に、ChatGPT が求めるアクセス権限を確認してください。
+
+プラグインをインストールしただけではサインインされません。Graphify へのサインインが完了して初めて接続が使える状態になります。
+
+Codex と Dot も同じインストールを使います。リリースの経緯とプラグインでできることは、[Graphify is now a ChatGPT plugin](https://graphify.com/blog/graphify-chatgpt-plugin) を読んでください。
+
+**Codex。** ChatGPT デスクトップアプリで Codex に切り替えて **Plugins** を開き、Graphify がまだインストールされていなければインストールします。同じ方法で接続とサインインを行い、新しいチャットを始めます。Codex CLI では `/plugins` と入力して Graphify をインストールし、新しいセッションを始めます。
+
+**Dots。** **Settings → Customize → Plugins** を開いて Graphify を選びます。Dot が自分で実行してよい操作と、あなたに確認が必要な操作を決めます。Dot がバックグラウンドで調べものをしている間、OpenAI は接続済みのアプリを読み取り専用にするため、あなたが依頼してそのリクエストを承認するまで、ノートの保存やワークスペースの切り替えは行われません。
+
+## 2. 質問する {#2-ask-a-question}
+
+ChatGPT では、メッセージを送る前に Graphify をメンションするか、**\+**、**More** の順に選んで Graphify を選びます。Codex や Dot との会話でも、プラグインを接続したあとの新しいチャットで同じように Graphify をメンションします。
+
+```text
+@Graphify Show my indexed repositories and help me choose one to explore.
+```
+
+次に、回答からリポジトリを選びます。
+
+- `@Graphify Explain how authentication works in my selected repository, with supporting code locations.`
+- `@Graphify Help me assess the likely impact of a code change and find linked tests in my selected repository.`
+
+結果は、ワークスペースでインデックス化されたリポジトリから得られます。回答を当てにする前に、引用されたソースを開いて確認してください。
+
+## 3. ツール {#3-tools}
+
+この一覧は、クライアントがサーバーの `tools/list` レスポンスから作成します。そのレスポンスが現在のツールセットです。`search` と `fetch` は ChatGPT のコネクタが使う組み合わせです。他のクライアントからも呼び出せます。
+
+| ツール | 内容 |
+| --- | --- |
+| `fetch` | `search` の結果の背後にある定義を読み取ります。その結果の `id` をそのまま渡します。 |
+| `graph_stats` | インデックス済みグラフのノード数、エッジ数、言語。 |
+| `graphify_callers` | あるシンボルを誰が呼び出しているか。デフォルトでは解決済みの呼び出しエッジのみ。結果が空の場合は、エッジがインデックス化されていないことを意味します。 |
+| `graphify_file_neighbors` | ファイルが何をインポートし、何からインポートされているか、そしてファイル単位の影響範囲。 |
+| `graphify_find` | シンボルがどこで定義されているか。質問ではなく名前の一部にマッチします。 |
+| `graphify_help` | セットアップ、リポジトリ、どのツールを使うか、トラブルシューティング、このワークスペースのプランの上限。 |
+| `graphify_impact` | シンボルに直接つながっている呼び出し元と呼び出し先。`include_risk` を設定すると、関連テストのカバレッジでホットスポットのファイルをランク付けします。 |
+| `graphify_imports_exports` | ソースファイルのインポートとエクスポートのエッジ。 |
+| `graphify_node` | シンボルの定義と、その直接の隣接ノード。 |
+| `graphify_rank_files` | 自然言語の質問に対してランク付けされたソースファイル。本文ではなくファイルを返します。 |
+| `graphify_tests_for` | シンボルまたはファイルに関連するテスト。実行時のカバレッジを保証するものではありません。 |
+| `graphify_trace` | あるシンボル（`src`）から別のシンボル（`tgt`）への有向の呼び出しパス。見つからない名前は意味的なマッチにフォールバックすることがあります。`resolved.src` と `resolved.tgt` を確認してください。パスが空の場合は、インデックス済みのグラフでパスが見つからなかったことを意味します。 |
+| `list_repositories` | この接続でクエリできるリポジトリと、各インデックスの準備ができているか。 |
+| `list_workspaces` | このエージェントが対象にできるワークスペース、どれがアクティブか、そしてどのように選ばれたか。 |
+| `query_graph` | 自然言語の質問に、該当する定義を添えて回答します。 |
+| `recall` | ある質問についてワークスペースが覚えていること。`paths` と `symbols` で、これから編集するコードに関するノートをランク付けできます。 |
+| `remember` | 永続的なノートを 1 件保存します。保存した内容は、誰かが **Memory** で残すまで受け付け段階として記録されます。 |
+| `review_status` | Graphify によるプルリクエストのレビューのステータスと指摘。レビューは開始しません。 |
+| `search` | ラベルが名前の一部にマッチする定義。結果の `id` を `fetch` に渡します。 |
+| `set_workspace` | ハンドルを指定して、このセッションの対象ワークスペースを設定します。`make_default` を使うと、全セッションのデフォルトも置き換えます。 |
+
+これらのツールはインデックス済みのグラフを読み取ります。ソースファイルは編集しません。`graphify_callers` の結果が空の場合は、呼び出しエッジがインデックス化されていないという意味であり、シンボルを呼び出すものが何もないという意味ではありません。`graphify_node` は、名前に完全一致がないときに意味的な候補を返すことがあるため、ラベルと `resolved` フィールドを確認してください。サーバーはツール呼び出しを Memory として記録しません。`remember` はノートを保存し、`set_workspace` はセッションが読み取るワークスペースを変更します。これらは本当に意図したときだけ承認してください。
+
+## 失敗したとき {#if-something-fails}
+
+| 表示される内容 | 対処法 |
+| --- | --- |
+| Graphify が一覧にない | **Settings → Plugins** を開きます。それでも見つからない場合、このプラン、地域、ワークスペースではプラグインを利用できません。管理者が **Workspace settings → Plugins** で有効にします。 |
+| **Connect** が使えない、または管理者により無効化されていると表示される | ワークスペースの管理者に、あなたのロールで Graphify を有効にしてもらい、もう一度接続してください。 |
+| Codex に Graphify は表示されるが、ツールがない | ブラウザの ChatGPT から接続し、新しい Codex チャットを始めてください。ディレクトリの変更が Codex に反映されるまで最大 6 時間かかることがあります。 |
+| リポジトリがない、または回答が空 | そのリポジトリがまだインデックス化されていないか、別のワークスペースにあります。[リポジトリとビルド](/platform/repositories)でステータスを確認してから、Graphify にもう一度リポジトリの一覧を出させてください。 |
+| ChatGPT にサインインを求められなかった | **Settings → Plugins** を開き、Graphify を選んで **Connect** を選びます。ブラウザで Graphify へのサインインを完了してください。 |
+| `graphify_setup` ツールしか表示されない、または ChatGPT に **Graphify isn't set up for this account yet** と表示される | [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt) でセットアップを完了し、リポジトリを有効にして **Indexed** になるまで待ち、新しいチャットを始めます。それでもツールが表示されない場合は、**Settings → Plugins** で Graphify を再接続してください。 |
+| ツールが **This workspace has no repositories enabled for agents yet.** と表示する | Graphify の **Repositories** でリポジトリを有効にし、最初のインデックス化が終わるのを待ってから、もう一度質問してください。 |
+
+## 関連情報 {#related}
+
+<Columns cols={2}>
+  <Card title="VS Code 用 Graphify MCP" icon="plug" href="/integrations/vscode">
+    VS Code のエージェントを同じホスト型サーバーに接続します。
+  </Card>
+
+  <Card title="JetBrains 用 Graphify MCP" icon="plug" href="/integrations/jetbrains">
+    JetBrains AI Assistant を同じホスト型サーバーに接続します。
+  </Card>
+</Columns>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

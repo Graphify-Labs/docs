@@ -64,6 +64,8 @@ def frontmatter(page):
 
 def main():
     nav = json.loads((ROOT / "docs.json").read_text())["navigation"]
+    if "languages" in nav:  # English only; translated pages stay out of llms.txt
+        nav = next(l for l in nav["languages"] if l["language"] == "en")
     out = [HEADER]
     for tab in nav["tabs"]:
         groups = tab.get("groups") or [{"group": None, "pages": tab.get("pages", [])}]

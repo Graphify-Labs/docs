@@ -1,0 +1,115 @@
+---
+title: "在 ChatGPT、Codex 和 Dots 中使用 Graphify"
+sidebarTitle: "ChatGPT、Codex 和 Dots"
+description: "通过一个使用 Graphify 托管 MCP 服务器的 OpenAI 插件，把 ChatGPT、Codex 和 Dots 连接到你已建立索引的仓库。"
+surface: "cloud"
+hideFooterPagination: true
+keywords: ["chatgpt plugin", "mcp oauth", "graphify chatgpt plugin", "add graphify to chatgpt", "Graphify ChatGPT 插件", "ChatGPT MCP", "代码库上下文"]
+---
+
+import { InstallButton } from '/snippets/install-button.mdx';
+
+**Graphify** 插件是 OpenAI 插件目录中的一个条目。ChatGPT 和 Codex 共用这个目录，而 [Dot](https://openai.com/index/introducing-dots/) 会使用你已经连接的插件。你只需安装一次。你批准的权限会在 ChatGPT、ChatGPT Work、Codex 和 Dots 中生效。
+
+MCP 是连接本身，地址为 `https://api.graphify.com/mcp`。插件是用来建立这个连接的安装包。不需要粘贴 API key，也不需要在你的电脑上构建图谱。这与 [VS Code 版 Graphify MCP](/integrations/vscode) 和 [JetBrains 版 Graphify MCP](/integrations/jetbrains) 使用的是同一个托管服务器。在其他所有智能体中的设置方法，请参见 [Graphify MCP 服务器页面](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt)。[Codex 技能](/zh/integrations/codex)需要单独安装：它教 Codex 如何在你的电脑上构建图谱。
+
+连接后，ChatGPT、Codex 和 Dot 可以搜索你在 [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt) 中建立过索引的仓库，追踪调用方和依赖，并判断一次改动会影响到哪里。
+
+<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="在 ChatGPT 中安装">
+一键完成：在 OpenAI 插件目录中打开 Graphify Labs 发布的官方 **Graphify** 插件。一次安装即可覆盖 ChatGPT、Codex 和 Dots。
+</InstallButton>
+
+## 开始之前 {#before-you-start}
+
+- 网页版、桌面应用或移动端的 ChatGPT。ChatGPT 桌面应用中的 Codex，或 Codex CLI。或者一个 Dot，在桌面应用中或在桌面浏览器的 chatgpt.com 上创建。Codex IDE 扩展中无法使用插件。
+- 在工作类工作区中，可能需要管理员先允许该插件，你才能连接它。
+- 一个 Graphify 账号。如果还没有，可以在连接时免费创建。Free 方案无需绑卡。参见[方案与价格](/platform/support/pricing)。
+- 至少一个状态为 **Indexed** 的仓库。参见[仓库与构建](/platform/repositories)。
+
+## 1. 安装插件 {#1-install-the-plugin}
+
+[在 ChatGPT 中打开](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)
+
+或者打开 **Plugins** 标签页，选择 **Graphify Labs** 发布的 **Graphify**。
+
+如果 ChatGPT 显示 **Install plugin**，请选择它，然后选择 **Connect**。浏览器会打开，让你登录 Graphify，并选择包含你要查询的仓库的工作区。批准之前，请先查看 ChatGPT 请求的访问权限。
+
+安装插件本身并不会让你登录。只有完成 Graphify 登录后，连接才算就绪。
+
+Codex 和 Dot 使用的是同一次安装。关于发布背景和插件能做什么，请阅读 [Graphify is now a ChatGPT plugin](https://graphify.com/blog/graphify-chatgpt-plugin)。
+
+**Codex。** 在 ChatGPT 桌面应用中切换到 Codex，打开 **Plugins**，如果还没安装 Graphify，就安装它。用同样的方式连接并登录，然后开始一个新对话。在 Codex CLI 中，输入 `/plugins`，安装 Graphify，然后开始一个新会话。
+
+**Dots。** 打开 **Settings → Customize → Plugins** 并选择 Graphify。决定 Dot 可以自行执行哪些操作，哪些操作必须先征求你的同意。当 Dot 在后台做研究时，OpenAI 会让已连接的应用保持只读，所以在你提出请求并批准之前，它不会保存笔记，也不会切换工作区。
+
+## 2. 提问 {#2-ask-a-question}
+
+在 ChatGPT 中，发送消息前提到 Graphify，或者选择 **\+**，再选 **More**，然后选择 Graphify。在 Codex 中以及与 Dot 对话时，插件连接后，在新对话中用同样的方式提到 Graphify。
+
+```text
+@Graphify Show my indexed repositories and help me choose one to explore.
+```
+
+然后从回答中选一个仓库：
+
+- `@Graphify Explain how authentication works in my selected repository, with supporting code locations.`
+- `@Graphify Help me assess the likely impact of a code change and find linked tests in my selected repository.`
+
+结果来自你工作区中已建立索引的仓库。在依赖某个回答之前，请打开它引用的源码。
+
+## 3. 工具 {#3-tools}
+
+你的客户端根据服务器的 `tools/list` 响应生成这个列表。该响应就是当前的工具集。`search` 和 `fetch` 是 ChatGPT 连接器使用的一对工具。其他客户端也可以调用它们。
+
+| 工具 | 作用 |
+| --- | --- |
+| `fetch` | 读取某个 `search` 结果背后的定义。原样传入该结果的 `id`。 |
+| `graph_stats` | 已索引图谱的节点数、边数和语言。 |
+| `graphify_callers` | 谁调用了某个符号。默认只返回已解析的调用边。结果为空表示没有索引到调用边。 |
+| `graphify_file_neighbors` | 一个文件导入了什么、被什么导入，以及按文件计算的影响范围。 |
+| `graphify_find` | 某个符号在哪里定义。匹配的是名称片段，而不是问题。 |
+| `graphify_help` | 设置、仓库、该用哪个工具、故障排查，以及这个工作区的方案限制。 |
+| `graphify_impact` | 与某个符号直接相连的调用方和被调用方。设置 `include_risk` 可以按关联测试的覆盖情况为热点文件排序。 |
+| `graphify_imports_exports` | 一个源文件的导入和导出边。 |
+| `graphify_node` | 一个符号的定义及其直接相邻节点。 |
+| `graphify_rank_files` | 针对一个自然语言问题排序的源文件。返回的是文件，不是文件内容。 |
+| `graphify_tests_for` | 与某个符号或文件关联的测试。不保证运行时覆盖。 |
+| `graphify_trace` | 从一个符号（`src`）到另一个符号（`tgt`）的有向调用路径。找不到的名称可能会回退为语义匹配。请检查 `resolved.src` 和 `resolved.tgt`。路径为空表示在已索引的图谱中没有找到。 |
+| `list_repositories` | 这个连接可以查询的仓库，以及每个索引是否就绪。 |
+| `list_workspaces` | 这个智能体可以指向的工作区、当前激活的是哪一个，以及它是如何被选中的。 |
+| `query_graph` | 一个自然语言问题，回答中附带匹配的定义。 |
+| `recall` | 工作区针对一个问题记住了什么。`paths` 和 `symbols` 可以为你即将编辑的代码相关的笔记排序。 |
+| `remember` | 保存一条持久笔记。保存的内容会先作为待处理项记录，直到有人在 **Memory** 中保留它。 |
+| `review_status` | Graphify 对某个拉取请求的审查状态和发现的问题。不会启动审查。 |
+| `search` | 标签与名称片段匹配的定义。把结果的 `id` 传给 `fetch`。 |
+| `set_workspace` | 通过 handle 让这个会话指向某个工作区。`make_default` 还会替换所有会话的默认工作区。 |
+
+这些工具读取的是已索引的图谱。它们不会编辑源文件。`graphify_callers` 返回空结果表示没有索引到调用边，而不是说没有任何代码调用这个符号。当某个名称没有精确匹配时，`graphify_node` 可能返回语义建议，所以请检查标签和 `resolved` 字段。服务器不会把工具调用记录为 Memory。`remember` 会保存一条笔记，`set_workspace` 会改变会话读取的工作区。只有确实需要时才批准它们。
+
+## 如果出现失败 {#if-something-fails}
+
+| 你看到的情况 | 解决方法 |
+| --- | --- |
+| 没有列出 Graphify | 打开 **Settings → Plugins**。如果仍然没有，说明这个方案、地区或工作区无法使用该插件。管理员可以在 **Workspace settings → Plugins** 中开启它。 |
+| **Connect** 不可用，或提示已被管理员禁用 | 请工作区管理员为你的角色启用 Graphify，然后重新连接。 |
+| Codex 显示了 Graphify，但没有工具 | 在浏览器中从 ChatGPT 连接它，然后开始一个新的 Codex 对话。目录的变更最多可能需要六小时才会出现在 Codex 中。 |
+| 没有仓库，或者回答为空 | 该仓库还没有建立索引，或者它在另一个工作区中。在[仓库与构建](/platform/repositories)中检查它的状态，然后让 Graphify 再列一次仓库。 |
+| ChatGPT 从未要求你登录 | 打开 **Settings → Plugins**，选择 Graphify，然后选择 **Connect**。在浏览器中完成 Graphify 登录。 |
+| 只出现一个 `graphify_setup` 工具，或者 ChatGPT 显示 **Graphify isn't set up for this account yet** | 在 [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt) 完成设置，启用一个仓库，等到它变为 **Indexed**，开始一个新对话；如果工具仍未出现，请在 **Settings → Plugins** 下重新连接 Graphify。 |
+| 工具提示 **This workspace has no repositories enabled for agents yet.** | 在 Graphify 的 **Repositories** 下启用一个仓库，等待首次索引完成，然后再问一次。 |
+
+## 相关内容 {#related}
+
+<Columns cols={2}>
+  <Card title="VS Code 版 Graphify MCP" icon="plug" href="/integrations/vscode">
+    把 VS Code 中的智能体连接到同一个托管服务器。
+  </Card>
+
+  <Card title="JetBrains 版 Graphify MCP" icon="plug" href="/integrations/jetbrains">
+    把 JetBrains AI Assistant 连接到同一个托管服务器。
+  </Card>
+</Columns>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

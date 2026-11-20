@@ -91,10 +91,10 @@ Agents follow the instruction file they read at the start of every session. `AGE
 
     ```md AGENTS.md
     ## Graphify
-
+    
     This repository is indexed in Graphify as `acme/web-app`. Use the
     graphify MCP tools before you search or read code.
-
+    
     - Before the first grep, glob or file read in a task, call
       `query_graph` with `repository_id` set to `acme/web-app` and the
       task as the question. Open the files it returns first.
@@ -103,11 +103,16 @@ Agents follow the instruction file they read at the start of every session. `AGE
       plan to edit, say so in your plan.
     - Use `graphify_tests_for` to pick which tests to run.
     - Cite the Graphify result (symbol and file path) in your answer.
-      Use grep for exact strings, such as error messages or config keys.
-      If a Graphify call fails, say so, then fall back to grep.
+    - Use targeted grep for exact literals (error messages, config
+      keys, hardcoded values), preferably in graph-identified files.
+      Text matches alone do not establish callers or change impact.
+    - If Graphify fails or the repo isn't indexed, say so. Fall back
+      to source reads and text search without claiming graph evidence.
     - The graph reflects the default branch. Code you changed in this
       session isn't in it yet, so read your own edits from disk.
     ```
+
+    Start with Graphify for structural questions, then inspect the returned files to verify details. Targeted grep complements the graph for literal strings; it is not the primary way to establish call paths or dependencies.
 
     To save the agent a lookup, you can set a default repository on the server URL instead, such as `https://api.graphify.com/mcp?repo=acme/web-app`. See [Graphify MCP](/platform/graphify-mcp).
   </Tab>

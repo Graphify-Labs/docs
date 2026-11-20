@@ -440,9 +440,13 @@
       "logo": "https://graphify.com/assets/brand/graphify-logo-ink.svg",
       "sameAs": [
         "https://github.com/Graphify-Labs",
+        "https://pypi.org/project/graphifyy/",
         "https://x.com/graphify",
+        "https://www.linkedin.com/company/graphify-labs/",
         "https://discord.gg/graphify",
-        "https://www.linkedin.com/company/graphify-labs"
+        "https://www.youtube.com/@graphifylabs",
+        "https://www.wikidata.org/wiki/Q141604132",
+        "https://www.ycombinator.com/companies/graphify-labs"
       ]
     }
   },

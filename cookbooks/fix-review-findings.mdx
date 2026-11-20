@@ -127,6 +127,9 @@ Use `@graphify good <finding>` for findings that were right, and `@graphify supp
   <Accordion title="How does the agent decide a finding is real?" icon="search-check">
     It checks the code with `graphify_callers`, `graphify_impact` and `graphify_tests_for` before it changes anything.
   </Accordion>
+  <Accordion title="What about possible issues?" icon="circle-question-mark">
+    The review lists leads it couldn't confirm as possible issues, apart from bugs. They never change the merge confidence score. Have the agent check each one the same way, and fix it only if it holds up. See [Merge confidence score](/platform/reviews#merge-confidence-score).
+  </Accordion>
   <Accordion title="What if a finding is wrong?" icon="thumbs-down">
     Reply on the pull request with the finding's name so Graphify learns. Learning never changes formal verification results.
   </Accordion>

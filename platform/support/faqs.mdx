@@ -86,6 +86,9 @@ No. Workspace allowances are shared across the workspace and do not multiply by 
 <Accordion title="When does Graphify review a pull request?">
 When it is opened, reopened, or marked ready for review. Pushing new commits does not start a review by itself. A repository owner, member, or collaborator comments `@graphify review` on the pull request to run one. Each review analyzes the full pull request, from where it branched to its latest commit. See [Pull request reviews](/platform/reviews).
 </Accordion>
+<Accordion title="How is the merge confidence score worked out?">
+Each completed review scores the pull request from 1 to 5 using confirmed findings only. A P0 or P1 bug gives 1/5 or 2/5, **Fix before merging**. A P2 bug or a bug with no priority gives 3/5, **Review before merging**. A single P2 bug with limited reach gives 4/5 but still says **Review before merging**. Only P3 bugs or cleanup suggestions give 4/5, and nothing found gives 5/5, both **Looks safe to merge**. Possible issues the review couldn't confirm never change the score, but a review with any of them says **Nothing blocking · N possible issues to check** instead of **Looks safe to merge**. A review that stopped early is scored on what it found. See [Merge confidence score](/platform/reviews#merge-confidence-score).
+</Accordion>
 <Accordion title="How do I tell Graphify a finding is wrong?">
 Reply on the pull request with `@graphify wrong <finding>`, `@graphify good <finding>`, or `@graphify suppress <rule>`. That feedback tunes later reviews. See [Learning](/platform/learning).
 </Accordion>

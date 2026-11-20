@@ -1,9 +1,9 @@
 ---
 title: "AI pull request reviews with code graph context"
 sidebarTitle: "Pull request reviews"
-description: "How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how to read findings with code graph context."
+description: "How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, how the 1 to 5 merge confidence score works, and how to read findings with code graph context."
 surface: "cloud"
-keywords: ["AI code review", "pull request review", "@graphify review"]
+keywords: ["AI code review", "pull request review", "@graphify review", "merge confidence score", "possible issues"]
 icon: "git-pull-request"
 ---
 
@@ -42,6 +42,40 @@ gh pr checks 123 --watch
 # Read the review comments
 gh pr view 123 --comments
 ```
+
+## Merge confidence score
+
+Each completed review gives the pull request a merge confidence score from 1 to 5 and a label. The review comment, the **Graphify** check title, and the review in the app show the same score and label. The score comes only from confirmed findings: ones checked against the code or confirmed by a test.
+
+| What the review confirmed | Score | Label |
+| --- | --- | --- |
+| A P0 bug | 1/5 | **Fix before merging** |
+| A P1 bug | 2/5 | **Fix before merging** |
+| A P2 bug, or a bug with no priority | 3/5 | **Review before merging** |
+| A single P2 bug with limited reach, and nothing worse | 4/5 | **Review before merging** |
+| Only P3 bugs, cleanup suggestions, or leads the review checked and ruled out | 4/5 | **Looks safe to merge** |
+| Nothing | 5/5 | **Looks safe to merge** |
+
+The worst confirmed bug sets the score. A few details:
+
+- **Limited reach** means the review ranked the bug's impact as moderate, and the bug either stays within a small part of the code or only happens under specific conditions. Several P2 bugs, a P2 bug that ordinary use can hit, and a P2 bug without that ranking still score 3/5. A 4/5 from one P2 bug still says **Review before merging**, because there is a real bug to look at.
+- A bug that was already in the code before the pull request counts one priority level milder.
+- A review that confirmed nothing and inspected no files gets no score.
+- The impact shown next to the score, such as **Low impact** or **High impact**, says how much code the change touches. It doesn't change the score.
+- Scores saved before a scoring change aren't recomputed. Run `@graphify review` to get a score under the current rules.
+
+### Possible issues
+
+A possible issue is a lead the review found but couldn't confirm. The review comment lists possible issues apart from bugs and says they don't change the score.
+
+- Possible issues never change the score.
+- A 4/5 or 5/5 review with possible issues never says **Looks safe to merge**. It says **Nothing blocking · N possible issues to check**, for example "5/5 · Nothing blocking · 2 possible issues to check".
+- Bug counts mean confirmed bugs only: in the review header, the **Reviews** list, the pull request's activity timeline, **Overview**, and `review_status`. Possible issues have their own count.
+- A review with possible issues stays under **Needs attention**, so someone checks them.
+
+### Reviews that stopped early
+
+A review that skipped files or stopped early, for example because time ran out or the pull request was merged or closed first, is scored on what it found, like any other review. There is no "Partly reviewed" label. The comment says **Review finished**, and a collapsed **What this review covered** section lists how many files were inspected and why the review stopped.
 
 ## Review again after a fix
 

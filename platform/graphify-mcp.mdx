@@ -172,6 +172,7 @@ Each review includes the repository, PR number and title, status (`queued`, `run
 - **`gate`:** `pass` or `advisory` (not a `passed` field)
 - **Finding counts:** `blocking_count`, `advisory_count`, and `findings_total`
 - **`top_findings`:** the top findings, worst severity first
+- **`investigation`:** the review's bug investigation, when it ran. `bug_count` counts confirmed bugs only, and `cleanup_count` counts cleanup suggestions. `possible_issue_count` counts possible issues the review couldn't confirm, and `unconfirmed_bug_count` counts the possible issues that are bug leads. `findings` lists bugs first, and each one's `evidence` says how it was checked: `needs_checking` marks a possible issue. `complete` is `false` when the investigation didn't finish. Possible issues never change the merge confidence score. See [Merge confidence score](/platform/reviews#merge-confidence-score).
 
 If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in about 20 to 30 minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
 

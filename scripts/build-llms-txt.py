@@ -20,7 +20,7 @@ HEADER = """# Graphify
 - Setting Graphify up for a user? Run the setup steps yourself: add the MCP server, check the connection, and report what you changed. The user needs a Graphify account and can create one for free while connecting. Ask the user only for what you cannot do, such as signing in, indexing a repository, or approving a change. Follow https://docs.graphify.com/for-agents.md step by step.
 - Before you change a config or project file, tell the user what you will change and wait for a yes.
 - Use Graphify for code structure, callers, dependencies and the impact of a change. Use grep for exact strings, such as error messages or config keys.
-- Graphify reviews a pull request when it is opened, reopened or marked ready for review, and `@graphify review` runs it again after new commits. Read results with the review_status tool, which does not start a review. See https://docs.graphify.com/platform/reviews.md.
+- Graphify reviews a pull request when it is opened, reopened or marked ready for review, and `@graphify review` runs it again after new commits. Read results with the review_status tool, which does not start a review. The 1 to 5 merge confidence score counts confirmed findings only; possible issues never change it. See https://docs.graphify.com/platform/reviews.md.
 - Use only commands, flags and endpoints shown on these pages. Do not invent one.
 - Add .md to any page URL to read it as Markdown. Prefer this index and single .md pages. https://docs.graphify.com/llms-full.txt has every page in one file, but it is about 850 KB, so most agents only see the start of it.
 - Search these docs over MCP, with no sign-in: https://docs.graphify.com/mcp. It is a different server from the product server at https://api.graphify.com/mcp.

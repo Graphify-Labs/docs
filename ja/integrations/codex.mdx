@@ -1,0 +1,223 @@
+---
+title: "Codex で Graphify を使う"
+sidebarTitle: "Codex"
+description: "Codex 用 Graphify プラグインをインストールするか、OAuth で Graphify の MCP サーバーを追加します。オープンソースの Graphify スキルも使えます。アカウントは無料で作成できます。"
+surface: "both"
+hideFooterPagination: true
+keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex", "graphify plugin for codex", "install graphify plugin codex", "codex ide extension graphify", "Graphify Codex プラグイン", "Codex MCP サーバー", "コードコンテキスト"]
+---
+
+import { InstallButton } from '/snippets/install-button.mdx';
+
+<Tip>
+  Graphify の使い方に合ったタブを選んでください。**Graphify** は私たちが構築するグラフに接続し、**Graphify CLI** はあなたが自分のマシンで構築したグラフを読み込みます。[両者を比較する](/platform/graphify-vs-local)。
+</Tip>
+
+<Tabs>
+<Tab title="Graphify">
+
+Codex を Graphify のホスト型 MCP サーバー `https://api.graphify.com/mcp` に接続します。接続すると、Codex は [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) のワークスペースでインデックス化されたリポジトリを検索し、呼び出し元や依存関係をたどり、変更がどこまで影響するかを確認できます。すべてのファイルを読み直す必要はありません。
+
+このサーバーは Streamable HTTP と OAuth を使います。ブラウザで一度サインインするだけなので、貼り付ける API キーも、実行するローカルプロセスもありません。
+
+<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Codex にインストール">
+ワンクリック：OpenAI のプラグインディレクトリから Graphify Labs による公式 **Graphify** プラグインをインストールし、**Connect** を選んでサインインします。同じインストールが ChatGPT でも使えます。
+</InstallButton>
+
+## Codex で Graphify を使うには？ {#how-do-i-use-graphify-with-codex}
+
+Codex に Graphify プラグインをインストールし、Graphify アカウントにサインインして、Graphify でインデックス化したリポジトリについて Codex に質問します。Codex は Graphify のツールを呼び出して、コードを探し、呼び出し元や依存関係をたどり、変更がどこまで影響するかを確認します。以下の手順は数分で終わります。
+
+大規模なコードベースでなぜこれが必要なのか、グラフがどう役立つのかは、[How to give Codex context on a large codebase](https://graphify.com/blog/how-to-give-codex-context-on-a-large-codebase) を読んでください。
+
+## Codex 用 Graphify プラグインとは？ {#what-is-the-graphify-plugin-for-codex}
+
+Graphify プラグインは、Codex と ChatGPT が共有する OpenAI の[プラグインディレクトリ](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)にある Graphify の公式リスティングです。Codex をあなたの Graphify アカウントに接続し、インデックス化したリポジトリの探索、呼び出しパスや依存関係の追跡、変更が影響しうる範囲の確認、関連するテストの検索ができるようにします。Codex の `/plugins` からインストールするか、`codex mcp add` でサーバーを手動で追加します（[手動セットアップ](#manual-setup)を参照）。他のエージェントで同じサーバーを使う場合は、[Graphify MCP サーバーのページ](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex)を参照してください。
+
+## 始める前に {#before-you-start}
+
+- Graphify アカウント。まだお持ちでない場合は、接続時に無料で作成できます。Free プランはカード登録不要です。[プランと料金](/platform/support/pricing)を参照してください。
+- ステータスが **Indexed** のリポジトリが 1 つ以上。[クイックスタート](/ja/platform/quickstart)で GitHub を接続し、インデックス化を開始できます。インデックス化のステータスは[リポジトリとビルド](/platform/repositories)で確認できます。
+
+## 1. プラグインをインストールする {#1-install-the-plugin}
+
+[Graphify のリスティング](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4)を開いて **Install plugin** を選ぶか、Codex CLI で `/plugins` を開いて **Graphify** を検索します。Graphify アカウントを接続し、ブラウザでのサインインを完了します。同じプラグインが ChatGPT でも使えます。[ChatGPT、Codex、Dots](/ja/integrations/chatgpt) を参照してください。
+
+プラグインは Codex CLI と、ChatGPT デスクトップアプリ内の Codex で使えます。Codex IDE 拡張機能はまだプラグインに対応していないため、エディタでは代わりに[手動セットアップ](#manual-setup)を使ってください。インストール後は、Graphify のツールが読み込まれるよう新しい Codex セッションを開始します。詳細は OpenAI の[プラグインガイド](https://learn.chatgpt.com/docs/plugins)にあります。
+
+### 手動セットアップ {#manual-setup}
+
+セットアップを自分の設定ファイルで管理したい場合は、代わりにサーバーを手動で追加します。詳しい手順は [How to add an MCP server to Codex](https://graphify.com/blog/how-to-add-an-mcp-server-to-codex) を読んでください。
+
+**ターミナル**
+
+```bash
+codex mcp add graphify --url https://api.graphify.com/mcp
+codex mcp login graphify
+```
+
+2 つ目のコマンドでブラウザのサインインが開きます。これを実行しないと接続は未認証のままで、Graphify に拒否されます。
+
+**config.toml**
+
+ユーザー全体に設定する場合は `~/.codex/config.toml` に、1 つのプロジェクトだけに設定する場合は `.codex/config.toml` に次を追加します。
+
+```toml ~/.codex/config.toml
+[mcp_servers.graphify]
+url = "https://api.graphify.com/mcp"
+auth = "oauth"
+```
+
+続けて `codex mcp login graphify` を実行してサインインします。
+
+方法は 1 つに絞ってください。接続が 2 つあると、Graphify のツールがすべて 2 回ずつ表示されます。
+
+## 2. 接続を確認する {#2-check-the-connection}
+
+新しい Codex セッションを開いて `/mcp` を実行し、`graphify` が使えることを確認します。次に、以下を貼り付けます。
+
+```text
+Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+```
+
+これは、コンソールの **Connectors → MCP → Try a query** に表示されるテスト用プロンプトと同じです。一覧が、サインイン時に選んだワークスペースと一致することを確認してください。
+
+### 任意：デフォルトのリポジトリを設定する {#optional-set-a-default-repository}
+
+エンドポイントに `?repo=owner/name` を付けます。例：`https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`。ツール呼び出しでリポジトリが指定されていないとき、Graphify はこのリポジトリを使います。呼び出しでリポジトリを指定した場合はそちらが優先されます。
+
+## 3. 質問する {#3-ask-a-question}
+
+一覧からリポジトリを選び、気になるシンボル、ファイル、領域を指定します。まずは次の 3 つを試してみてください。
+
+**コードベースを理解する**
+
+```text
+Use Graphify to give me a map of owner/name: the main areas, how requests reach the billing service, and the files I should read first. Cite the files for each point.
+```
+
+**変更が影響しうる範囲を見つける**
+
+```text
+Use Graphify's impact tool on the function that validates session tokens in owner/name. List the callers and files that could break if I change its signature.
+```
+
+**プルリクエストを他のリポジトリと照らし合わせる**
+
+```text
+For pull request 123 in owner/name, list the symbols it changes. Then use Graphify's impact tool on each one against our combined graph, and tell me which other repositories call them.
+```
+
+リポジトリをまたぐ回答には、それらのリポジトリを含む[結合グラフ](/platform/graphify-mcp#query-a-repository-group)が必要です。Graphify 自身によるプルリクエストのレビュー結果を読むには、Codex に `review_status` を実行させてください。詳しい手順は [How to set up Codex code review with Graphify](https://graphify.com/blog/codex-code-review) を読んでください。
+
+回答は Graphify がインデックス化したファイルから得たグラフ上の根拠であり、検証済みの結果ではありません。回答を当てにする前に、引用されたソースの行を開いて確認してください。ワークスペースのメモリに書き込むツールもあるため、各ツールのリクエストは承認する前に読んでください。
+
+## トラブルシューティング {#troubleshooting}
+
+| 表示される内容 | 対処法 |
+| --- | --- |
+| Graphify が接続を拒否する | サーバーを追加したもののサインインしていません。`codex mcp login graphify` を実行してください。 |
+| `/mcp` に `graphify` がない | 追加後に新しい Codex セッションを開始し、`config.toml` の `[mcp_servers.graphify]` エントリを確認してください。 |
+| ツールがリポジトリを返さない | リポジトリがまだインデックス化されていないか、別のワークスペースにあります。[リポジトリとビルド](/platform/repositories)を確認してください。 |
+| Graphify のツールがすべて 2 回表示される | プラグインと手動のサーバーエントリの両方があります。どちらか一方を削除してください。 |
+| `graphify_setup` ツールしか表示されない、またはツールが **Graphify isn't set up for this account yet** と表示する | [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) でセットアップを完了し、リポジトリを有効にして **Indexed** になるまで待ちます。その後、新しい Codex セッションを開始し、必要に応じて `codex mcp login graphify` を再度実行してください。 |
+| ツールが **This workspace has no repositories enabled for agents yet.** と表示する | Graphify の **Repositories** でリポジトリを有効にし、最初のインデックス化が終わるのを待ってから、もう一度質問してください。 |
+
+## よくある質問 {#faq}
+
+### Codex を Graphify に接続するのに API キーは必要ですか？ {#do-i-need-an-api-key-to-connect-codex-to-graphify}
+
+いいえ。Codex は初回接続時にブラウザで OAuth によりサインインします。貼り付けたり保存したりするキーはありません。
+
+### Graphify は Codex からローカルファイルを読みますか？ {#does-graphify-read-my-local-files-from-codex}
+
+いいえ。ホスト型サーバーは、Graphify のワークスペースですでにインデックス化されたリポジトリをもとに回答します。自分のマシン上のファイルからグラフを構築したい場合は、オープンソースのパッケージとそのローカルスキルを使ってください。
+
+### Graphify MCP サーバーは無料ですか？ {#is-the-graphify-mcp-server-free}
+
+Free プラン（最大 3 リポジトリ）はカード登録不要です。Pro と Teams は 14 日間のトライアルから始まり、カード登録が必要です。Pro と Teams については[プランと料金](/platform/support/pricing)を参照してください。
+
+### プラグインと codex mcp add のどちらを使うべきですか？ {#should-i-use-the-plugin-or-codex-mcp-add}
+
+どちらでも動作し、どちらも OAuth でサインインします。最も手早いのはプラグインです。`codex mcp add` なら、セットアップを自分の `config.toml` で管理できます。
+
+</Tab>
+<Tab title="Graphify CLI">
+
+このページではローカルスキルをインストールします。Codex はあなたのマシン上でグラフを構築します。Graphify ですでにインデックス化されたリポジトリにクエリするには、[ChatGPT、Codex、Dots](/ja/integrations/chatgpt) を使ってください。
+
+## 1. インストールして登録する {#1-install-and-register}
+
+```bash
+uv tool install graphifyy
+graphify install --platform codex
+```
+
+この連携では、Graphify スキルと AGENTS.md の指示がインストールされます。現在のインストーラーは Codex のフック連携にも対応しています。書き込み先は、個人インストールかプロジェクトインストールかによって異なります。インストーラーが書き込んだファイルを表示します。
+
+リポジトリ単位でセットアップする場合は、プロジェクトのルートで次を実行します。
+
+```bash
+graphify install --project --platform codex
+```
+
+## 2. グラフを構築する {#2-build-the-graph}
+
+Codex でプロジェクトを開きます。Graphify スキルを選んで、次のように入力します。
+
+```text
+$graphify map the current repository
+```
+
+アシスタントが Graphify のワークフローを実行し、`graphify-out/` を書き出します。コードの抽出はローカルで行われます。ドキュメントやメディアの意味的な抽出には、アシスタントのモデルを使うことができます。
+
+## 3. コンテキスト付きで質問する {#3-ask-with-context}
+
+グラフを構築したら、次のように質問します。
+
+> Graphify を使って認証フローを説明してください。ソースファイルを引用し、明示的な関係と推論された関係を区別してください。
+
+ターミナルからクエリすることもできます。
+
+```bash
+graphify query "authentication flow"
+```
+
+## 最新の状態に保つ {#keep-it-current}
+
+```bash
+uv tool upgrade graphifyy
+graphify install --platform codex
+```
+
+スキルが見当たらない場合は、アシスタントを再読み込みし、登録が意図したユーザーまたはプロジェクトのスコープにインストールされているかを確認してください。[トラブルシューティング](/open-source/troubleshooting)を参照してください。
+
+<Card title="ネイティブの MCP ツールを接続する" icon="plug" href="/open-source/mcp-server">構造化されたツール呼び出しで同じグラフを使います。</Card>
+
+</Tab>
+</Tabs>
+
+## 関連情報 {#related}
+
+<Columns cols={2}>
+  <Card title="Codex で Graphify を使う（ローカルスキル）" icon="terminal" href="/ja/integrations/codex">
+    代わりにオープンソースのローカルスキルを使って、自分のマシンでグラフを構築します。
+  </Card>
+  <Card title="Graphify がコードナレッジグラフを構築する仕組み" icon="share-2" href="/concepts/architecture">
+    グラフに含まれるものと、その関係がどこから来るのか。
+  </Card>
+  <Card title="エッジと出所" icon="git-branch" href="/concepts/provenance">
+    回答に含まれる関係が何を示し、どの程度確かなのかを読み取ります。
+  </Card>
+  <Card title="エージェントとコーディングする" icon="bot" href="/cookbooks/cloud-coding-agents">
+    コンソールの Connectors → MCP ウィザードで任意のエージェントをセットアップします。
+  </Card>
+  <Card title="コードレビューの指摘を修正する" icon="git-pull-request" href="/cookbooks/fix-review-findings">
+    Graphify の PR レビューの各指摘をエージェントにグラフと照らし合わせて確認させ、修正させます。
+  </Card>
+</Columns>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>
+

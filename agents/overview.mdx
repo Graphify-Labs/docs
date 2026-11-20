@@ -27,6 +27,8 @@ Before you change a config file, tell the user what you will change and wait for
 
 The hosted server sends instructions on connect that map question types to tools. Your client builds its tool list from the server's `tools/list` response, so trust that live list and its input schemas over this table.
 
+For codebase exploration, start with Graphify to find the relevant symbols, files and relationships. Use targeted text search to check exact literals where needed. Text matches alone do not establish callers, dependencies or change impact.
+
 | The user asks | Call |
 | --- | --- |
 | Which repositories or workspaces can I query? | `list_repositories`, `list_workspaces` |
@@ -54,8 +56,8 @@ Rules for the results:
 - `search` and `graphify_find` match part of a symbol's name, like `ReaSource` or `webhook`, not a question. If a fragment returns nothing, try another name or ask `query_graph` in a full sentence.
 - An empty `recall` result means nothing relevant is remembered yet.
 - `graphify_impact` and `graphify_tests_for` read the graph. They don't run tests or prove runtime behavior. `include_risk` ranks hotspot files by linked-test coverage. That ranking is a signal from the graph, not a verdict.
-- Use grep for exact strings, such as error messages or config keys.
-- If a Graphify tool fails or the repository isn't indexed, say so, then fall back to reading files. Don't guess.
+- Use targeted grep for exact literal matches, such as error messages, configuration keys or hardcoded values. When Graphify has identified relevant files or paths, search within that scope first.
+- If a Graphify tool fails or the repository isn't indexed, say so, then fall back to source reads and targeted text search. Don't guess or attribute fallback results to Graphify.
 
 ## Ask before you change state
 

@@ -2,7 +2,7 @@
 title: "Graphify skill: install graphifyy and run /graphify ."
 sidebarTitle: "Skill quickstart"
 description: "Install graphifyy, run graphify install to add the Graphify skill, then type /graphify . in your coding agent to map the repository."
-keywords: ["graphify skill", "graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph"]
+keywords: ["graphify skill", "graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph", "uninstall graphify", "remove graphify skill"]
 surface: "local"
 icon: "zap"
 ---
@@ -24,29 +24,23 @@ The Graphify skill lets your coding agent build and query a local knowledge grap
 
 <Steps>
   <Step title="Install the package">
-    <Tabs>
-      <Tab title="uv">
-        Recommended. uv installs Python 3.10 or later for you and keeps Graphify in its own environment.
+    Run one of these. uv is recommended: it installs Python 3.10 or later for you and keeps Graphify in its own environment.
 
-        ```bash
-        uv tool install graphifyy
-        ```
-      </Tab>
-      <Tab title="pipx">
-        Use pipx if you already install command line tools with it. It also gives Graphify its own environment.
+    ```bash
+    uv tool install graphifyy
+    ```
 
-        ```bash
-        pipx install graphifyy
-        ```
-      </Tab>
-      <Tab title="pip">
-        Use pip if you already manage Python yourself, for example inside a virtual environment.
+    If you already install command line tools with pipx, use it instead. It also gives Graphify its own environment.
 
-        ```bash
-        pip install graphifyy
-        ```
-      </Tab>
-    </Tabs>
+    ```bash
+    pipx install graphifyy
+    ```
+
+    If you manage Python yourself, for example inside a virtual environment, use pip.
+
+    ```bash
+    pip install graphifyy
+    ```
 
     The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands. If your shell cannot find `graphify`, see [Command not found](/open-source/installation#command-not-found).
   </Step>
@@ -141,10 +135,29 @@ You should see the five most connected symbols in your code. If the command says
   <Accordion title="Can I skip the LLM step?">
     Yes. Run `graphify extract . --code-only` from a terminal. It builds the code graph with no model calls.
   </Accordion>
-  <Accordion title="How do I remove the skill?">
-    Run `graphify uninstall` to remove the skill from every agent you registered. It also removes the git hooks and merge driver if you installed them. If you installed the skill into one repository with `--project`, run `graphify uninstall --project` from that repository instead. Add `--purge` to also delete `graphify-out/` in the current folder; leave it off to keep your graph. To remove the package itself, run `uv tool uninstall graphifyy` (or `pipx uninstall graphifyy`, or `pip uninstall graphifyy`). See [Remove a registration](/open-source/installation#remove-a-registration) for more.
-  </Accordion>
 </AccordionGroup>
+
+## Remove the skill
+
+Run `graphify uninstall` to remove the skill from every agent you registered. It also removes the git hooks and merge driver if you installed them.
+
+```bash
+graphify uninstall
+```
+
+If you installed the skill into one repository with `--project`, run `graphify uninstall --project` from that repository instead. Add `--purge` to also delete `graphify-out/` in the current folder; leave it off to keep your graph.
+
+To remove the package itself, run the uninstall command for the tool you installed it with:
+
+```bash
+uv tool uninstall graphifyy
+# or
+pipx uninstall graphifyy
+# or
+pip uninstall graphifyy
+```
+
+See [Remove a registration](/open-source/installation#remove-a-registration) for more.
 
 ## What's next
 

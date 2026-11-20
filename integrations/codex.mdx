@@ -4,7 +4,7 @@ sidebarTitle: "Codex"
 description: "Connect Codex to Graphify's MCP server with OAuth, or install the open-source Graphify skill. Create your Graphify account for free while connecting."
 surface: "both"
 hideFooterPagination: true
-keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex"]
+keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex", "graphify plugin for codex", "install graphify plugin codex"]
 ---
 
 import { InstallButton } from '/snippets/install-button.mdx';
@@ -29,6 +29,10 @@ One click: install the official **Graphify** plugin by Graphify Labs from the Op
 Install the Graphify plugin in Codex, sign in to your Graphify account, and ask Codex about a repository you indexed in Graphify. Codex then calls Graphify's tools to find code, follow callers and dependencies, and check what a change reaches. The steps below take a few minutes.
 
 For why large codebases need this and how the graph helps, read [How to give Codex context on a large codebase](https://graphify.com/blog/how-to-give-codex-context-on-a-large-codebase).
+
+## What is the Graphify plugin for Codex?
+
+The Graphify plugin is Graphify's official listing in OpenAI's [plugin directory](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4), which Codex and ChatGPT share. It connects Codex to your Graphify account, so Codex can explore the repositories you indexed, trace call paths and dependencies, check what a change could affect, and find linked tests. Install it from `/plugins` in Codex, or add the server by hand with `codex mcp add` (see [Manual setup](#manual-setup)).
 
 ## Before you start
 

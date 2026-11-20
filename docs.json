@@ -47,7 +47,8 @@
               "concepts/provenance",
               "concepts/how-graphify-finds-dependencies",
               "concepts/outputs",
-              "concepts/what-is-formal-verification"
+              "concepts/what-is-formal-verification",
+              "concepts/bring-your-stack"
             ]
           },
           {

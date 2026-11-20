@@ -14,6 +14,20 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 Don't want to install anything? Start with the [Graphify quickstart](/platform/quickstart). Graphify indexes your GitHub repositories in the browser and hosts the graph for you, so there's nothing to deploy.
 </Tip>
 
+## How do I install Graphify on Windows?
+
+On Windows, install uv from PowerShell, open a new terminal, then install the Graphify CLI package `graphifyy`:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+```powershell
+uv tool install graphifyy
+```
+
+The command it installs is `graphify`. If you use a virtual environment instead, the Python executable is `.venv\Scripts\python.exe`.
+
 ## Prerequisites
 
 | Requirement | Check |

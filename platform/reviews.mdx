@@ -103,20 +103,15 @@ A review that skipped files or stopped early, for example because time ran out o
 
 ## How accurate are Graphify reviews?
 
-Thorough mode caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. That 71% is the mean of 3 independent runs (35.3 of 50) in November 2026, on bug-introducing pull requests from 5 production repositories and 5 languages. Results vary by codebase.
+Graphify caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. That 71% is the mean of 3 independent runs (35.3 of 50) in November 2026, on bug-introducing pull requests from 5 production repositories and 5 languages. Results vary by codebase.
 
-| Mode | Bugs caught on 50 PRs | Bugs caught on 56 unseen PRs | Possible issues shown | Comments rated real |
-| --- | --- | --- | --- | --- |
-| Thorough | 71% (35.3 of 50) | 64% (36 of 56) | Up to 20 | 49% |
-| Standard | 63% (31.3 of 50) | 59% (33 of 56) | Up to 10 | 56% |
+On 56 pull requests from the same five repositories that were never used in development, Graphify caught 64% (36 of 56). Reviews can show up to 20 possible issues, and 49% of comments were rated real. Possible issues never change the merge verdict. See [Possible issues](#possible-issues).
 
-Pick Thorough when you want maximum coverage. It shows up to 20 possible issues. Pick Standard when you want fewer comments, with a higher share rated real. Possible issues never change the merge verdict. See [Possible issues](#possible-issues).
-
-The 56 unseen pull requests came from the same five repositories and were never used in development. The method, limits, and comparisons are on the [code review benchmark](https://graphify.com/benchmark).
+The method, limits, and comparisons are on the [code review benchmark](https://graphify.com/benchmark).
 
 <AccordionGroup>
   <Accordion title="How accurate is Graphify code review?">
-    Thorough mode caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. That figure is the mean of 3 runs (35.3 of 50) in November 2026. Standard mode caught 63% (31.3 of 50). See the [code review benchmark](https://graphify.com/benchmark) for the method, limits, and comparisons.
+    Graphify caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. That figure is the mean of 3 runs (35.3 of 50) in November 2026. On 56 pull requests never used in development, Graphify caught 64% (36 of 56). See the [code review benchmark](https://graphify.com/benchmark) for the method, limits, and comparisons.
   </Accordion>
 </AccordionGroup>
 

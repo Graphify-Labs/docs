@@ -2,7 +2,7 @@
 title: "Troubleshoot Graphify CLI"
 sidebarTitle: "Troubleshooting"
 description: "Fix common Graphify problems: install errors, an empty or stale graph, and MCP server connection issues in Claude Code, Cursor, and other clients."
-keywords: ["graphify install error", "command not found", "empty graph", "mcp connection issues", "first build cost", "what does the first graphify cli build cost", "cost.json"]
+keywords: ["graphify install error", "command not found", "uv is not recognized", "uv command not found", "microsoft visual c++ 14.0 is required", "unrecognized command /graphify", "empty graph", "mcp connection issues", "first build cost", "what does the first graphify cli build cost", "cost.json"]
 surface: "both"
 hideFooterPagination: true
 icon: "life-buoy"
@@ -42,15 +42,58 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Open a new terminal and run `uv --version`. If it's still not found, the install folder isn't on your `PATH`; see the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
-### Unrecognized command `'/graphify'` in Claude Code
+### uv : The term 'uv' is not recognized (PowerShell)
 
-The Graphify skill isn't installed for Claude Code, or Claude Code hasn't loaded it yet. Register it:
+uv isn't installed, or PowerShell hasn't picked up the new `PATH` yet. Install uv with its Windows installer, then close and reopen the terminal:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Run `uv --version` to confirm. If `uv` works but `graphify` isn't found after `uv tool install graphifyy`, run `uv tool update-shell` and open a new terminal.
+
+### bash: uv: command not found (Linux)
+
+uv isn't installed, or it is in `~/.local/bin` and your current shell hasn't loaded that folder yet. Install it, then open a new terminal or load the path in the same shell:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source "$HOME/.local/bin/env"
+```
+
+Run `uv --version` to confirm. On `sh` the same error reads `uv: not found`.
+
+### ``syntax error near unexpected token `<'`` when installing uv
+
+The uv install URL redirects, and the shell ran the redirect page instead of the installer. This happens when `curl` runs without `-L`. Use the full command:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+If you see `HTTP/2: No such file or directory` or `location:: command not found`, curl is also printing headers. Remove `-i`, `--include` or `include` from `~/.curlrc`, then run the command again.
+
+### error: Microsoft Visual C++ 14.0 or greater is required
+
+A dependency is building from source because there is no prebuilt package for your Python and Windows setup. On 64-bit Windows with Python 3.11 to 3.14, nothing needs to compile. The common cause is Windows on ARM with Python 3.11. Install with Python 3.12 instead:
+
+```powershell
+uv tool install --python 3.12 graphifyy
+```
+
+On 32-bit Python, switch to 64-bit Python. Installing Microsoft C++ Build Tools also works, but it is a much larger download.
+
+### Unrecognized command `'/graphify'`
+
+`/graphify` is a command for your coding agent, not your terminal. The Graphify skill isn't installed for that agent, or the agent hasn't loaded it yet. Register it for Claude Code:
 
 ```bash
 graphify install --platform claude
 ```
 
 This copies the skill to `~/.claude/skills/graphify/SKILL.md`. Then restart Claude Code, open your project, and send `/graphify .` again. If you registered with `--project`, run Claude Code from that project's root. See [Claude Code](/integrations/claude-code).
+
+For other agents, use their platform name, such as `graphify install --platform codex` or `graphify install --platform cursor`, then restart the agent.
 
 ## Other problems
 

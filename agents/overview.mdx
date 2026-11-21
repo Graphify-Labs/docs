@@ -9,7 +9,7 @@ icon: "bot"
 
 This page is written for you, the coding agent. Read it when a user wants you to use Graphify, or when the project's instruction file says the repository is indexed in Graphify. To set Graphify up from scratch, follow [Setup for AI agents](/for-agents#setup-for-ai-agents) step by step instead.
 
-Graphify is shared context for you and the user's team: a code knowledge graph of their repositories. You query it over MCP and get definitions, callers, dependencies and linked tests with file paths, instead of reading files one by one. On hosted Graphify you can also recall team [Memory](/platform/memory) and read PR review status.
+Graphify is shared context for AI coding agents and the user's team: a code knowledge graph of their repositories. You query it over MCP and get definitions, callers, dependencies and linked tests with file paths, instead of reading files one by one. On hosted Graphify you can also recall team [Memory](/platform/memory) and read PR review status.
 
 ## Connect
 
@@ -74,7 +74,7 @@ Hosted Graphify serves the indexed graph of each repository's default branch. A 
 
 - Before you edit, read the local files the graph pointed you to. The checkout can be ahead of the index.
 - If the user's change is on a feature branch, say that the graph reflects the default branch.
-- If a repository shows **Out of date**, tell the user. A reindex in the Console refreshes it.
+- If a repository shows **Out of date**, tell the user. A reindex in the Graphify app refreshes it.
 
 With Graphify CLI, the graph is a file on the machine. Offer `graphify hook install` to refresh it after commits, pulls, merges and rebases, or run `graphify update .` by hand. See [Incremental updates](/open-source/features/incremental-updates).
 

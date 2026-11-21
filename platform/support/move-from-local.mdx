@@ -123,7 +123,7 @@ To verify, use Graphify's list_repositories tool and show the repositories I can
 Until you delete `graphify-out/`, you can go back at any time:
 
 1. Restore the local entry in each assistant. [Local MCP server](/open-source/mcp-server) has the command for each client.
-2. If you removed the package or skill, run `uv tool install "graphifyy[mcp]"` and `graphify install --platform <name>`.
+2. If you removed the package or skill, run `uv tool install --python 3.12 "graphifyy[mcp]"` and `graphify install --platform <name>`.
 3. Run `graphify update .`, and `graphify hook install` if you used hooks.
 
 To stop Graphify indexing the repository, open its **Options** on **Repositories** and switch **Indexing** off.

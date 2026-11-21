@@ -23,7 +23,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 ```
 
 ```powershell
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 ```
 
 The command it installs is `graphify`. If you use a virtual environment instead, the Python executable is `.venv\Scripts\python.exe`.
@@ -32,7 +32,7 @@ The command it installs is `graphify`. If you use a virtual environment instead,
 
 | Requirement | Check |
 | --- | --- |
-| Python 3.10 or later | uv installs this. With pip or a virtual environment, `python3 --version` |
+| Python 3.11.5 or later, below 3.15 | uv installs this. With pip or a virtual environment, `python3 --version` |
 | uv or pipx | `uv --version` or `pipx --version` |
 | A coding assistant, for the skill workflow | [Choose an integration](/integrations/overview) |
 
@@ -40,7 +40,7 @@ The standalone CLI works without an assistant. Code-only extraction does not req
 
 ## Get uv
 
-uv downloads Python 3.10 or later for Graphify. Install uv for your system, open a new terminal, and run `uv --version`.
+uv downloads Python 3.11.5 or later for Graphify. Install uv for your system, open a new terminal, and run `uv --version`.
 
 <CodeGroup>
 ```bash macOS
@@ -60,10 +60,10 @@ The macOS command is Homebrew. The Linux and Windows commands are uv's own insta
 
 <Tabs>
   <Tab title="uv">
-    Recommended. uv downloads Python 3.10 or later if you need it and keeps Graphify in its own tool environment.
+    Recommended. uv downloads Python 3.11.5 or later if you need it and keeps Graphify in its own tool environment.
 
     ```bash
-    uv tool install graphifyy
+    uv tool install --python 3.12 graphifyy
     ```
   </Tab>
   <Tab title="pipx">
@@ -128,16 +128,16 @@ Install only the extras your workflow needs. Quote bracketed names in zsh.
 
 | Capability | uv installation |
 | --- | --- |
-| MCP server | `uv tool install "graphifyy[mcp]"` |
-| File watching | `uv tool install "graphifyy[watch]"` |
-| PDFs | `uv tool install "graphifyy[pdf]"` |
-| SQL parsing | `uv tool install "graphifyy[sql]"` |
-| Terraform | `uv tool install "graphifyy[terraform]"` |
-| Office documents | `uv tool install "graphifyy[office]"` |
-| Local Ollama backend | `uv tool install "graphifyy[ollama]"` |
-| Leiden clustering | `uv tool install "graphifyy[leiden]"` |
+| MCP server | `uv tool install --python 3.12 "graphifyy[mcp]"` |
+| File watching | `uv tool install --python 3.12 "graphifyy[watch]"` |
+| PDFs | `uv tool install --python 3.12 "graphifyy[pdf]"` |
+| SQL parsing | `uv tool install --python 3.12 "graphifyy[sql]"` |
+| Terraform | `uv tool install --python 3.12 "graphifyy[terraform]"` |
+| Office documents | `uv tool install --python 3.12 "graphifyy[office]"` |
+| Local Ollama backend | `uv tool install --python 3.12 "graphifyy[ollama]"` |
+| Leiden clustering | `uv tool install --python 3.12 "graphifyy[leiden]"` |
 
-Combine extras, for example `uv tool install "graphifyy[mcp,watch]"`. If uv reports an existing installation, use its `--reinstall` option to replace that tool environment with the requested extras.
+Combine extras, for example `uv tool install --python 3.12 "graphifyy[mcp,watch]"`. If uv reports an existing installation, use its `--reinstall` option to replace that tool environment with the requested extras.
 
 ## Upgrade
 
@@ -150,7 +150,7 @@ Re-run registration for the assistants you use so their skill files match the pa
 
 ## Command not found
 
-If `graphify` is not on your `PATH` after `uv tool install graphifyy`, run:
+If `graphify` is not on your `PATH` after `uv tool install --python 3.12 graphifyy`, run:
 
 ```bash
 uv tool update-shell

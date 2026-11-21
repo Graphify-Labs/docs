@@ -23,7 +23,7 @@ Graphify can read a live PostgreSQL database and add its schema to the same grap
 Install the `postgres` extra. It adds `psycopg` and the SQL grammar Graphify uses to parse the schema:
 
 ```bash
-uv tool install "graphifyy[postgres]"
+uv tool install --python 3.12 "graphifyy[postgres]"
 ```
 
 Use a role that can read the catalog. It doesn't need write access, because Graphify opens a read-only transaction.
@@ -73,7 +73,7 @@ Whether a path exists depends on how your code names the table. Where none is fo
 
 ## When it goes wrong
 
-**`psycopg is required for --postgres`.** Install the extra: `uv tool install "graphifyy[postgres]"`.
+**`psycopg is required for --postgres`.** Install the extra: `uv tool install --python 3.12 "graphifyy[postgres]"`.
 
 **The schema adds zero nodes.** The SQL grammar is missing, so parsing returns nothing. The `postgres` extra includes it. If you installed `psycopg` on its own, add `tree-sitter-sql`.
 
@@ -89,7 +89,7 @@ Whether a path exists depends on how your code names the table. Where none is fo
 ## Complete example
 
 ```bash
-uv tool install "graphifyy[postgres]"
+uv tool install --python 3.12 "graphifyy[postgres]"
 cd your-repo
 export PGHOST=localhost PGDATABASE=app PGUSER=readonly
 graphify extract . --code-only --postgres ""

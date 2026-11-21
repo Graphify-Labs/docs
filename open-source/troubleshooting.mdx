@@ -17,7 +17,7 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 The package name has two y's. There is no `graphify` package on PyPI, so uv can't resolve it. Install `graphifyy` instead:
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 ```
 
 The command it installs is still `graphify`. See [Installation](/open-source/installation).
@@ -50,7 +50,7 @@ uv isn't installed, or PowerShell hasn't picked up the new `PATH` yet. Install u
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-Run `uv --version` to confirm. If `uv` works but `graphify` isn't found after `uv tool install graphifyy`, run `uv tool update-shell` and open a new terminal.
+Run `uv --version` to confirm. If `uv` works but `graphify` isn't found after `uv tool install --python 3.12 graphifyy`, run `uv tool update-shell` and open a new terminal.
 
 ### bash: uv: command not found (Linux)
 

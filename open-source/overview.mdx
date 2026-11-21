@@ -15,7 +15,7 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 Open-source Graphify turns a folder of code, docs, papers, images, or videos into a knowledge graph you can query from a terminal, a coding agent, or an MCP client. It runs on your machine and is published on PyPI as [`graphifyy`](https://pypi.org/project/graphifyy/) under the Apache-2.0 license.
 
-Coding agents spend most of their context re-reading files to rediscover how a codebase fits together. Open-source Graphify parses the code once, records every function, class, import, and call as a node or an edge, and lets the agent ask the graph instead. On the Graphify repository itself, `graphify benchmark` reports about 127 times fewer tokens per question than reading the corpus.
+Without a map, coding agents rediscover how a codebase fits together by re-reading files. Open-source Graphify parses the code once, records every function, class, import, and call as a node or an edge, and lets the agent ask the graph instead: what calls this, how two parts connect, and what a change could break. Edges it can't bind to exactly one definition are marked `AMBIGUOUS` instead of guessed.
 
 <Note>
 **Use open-source Graphify when:**

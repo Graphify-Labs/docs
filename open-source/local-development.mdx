@@ -18,7 +18,7 @@ The open-source engine stores its graph on your filesystem. It does not require 
 ## Code-only workflow
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 graphify extract . --code-only
 graphify cluster-only . --no-label
 graphify export html
@@ -32,7 +32,7 @@ graphify query "entry points"
 Install the Ollama extra and run an Ollama model suitable for your content. Select an installed model in `OLLAMA_MODEL`, then:
 
 ```bash
-uv tool install "graphifyy[ollama]"
+uv tool install --python 3.12 "graphifyy[ollama]"
 graphify extract ./docs --backend ollama
 ```
 

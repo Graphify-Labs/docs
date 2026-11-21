@@ -220,7 +220,7 @@ Now a teammate who asks "rename `total_cents`" gets the cross-repo list first, w
 Open-source Graphify can merge graphs on your machine without an account. Build each repository's graph, then add it to the global graph in `~/.graphify/`:
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 for repo in shared-models billing-service api-gateway; do
   (cd "$repo" && graphify update . && graphify global add graphify-out/graph.json --as "$repo")
 done

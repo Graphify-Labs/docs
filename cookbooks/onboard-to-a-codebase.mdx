@@ -26,7 +26,7 @@ This recipe uses the open-source [Graphify-Labs/graphify](https://github.com/Gra
 You need Python 3.11.5 or later and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 git clone https://github.com/Graphify-Labs/graphify
 cd graphify
 ```
@@ -131,7 +131,7 @@ This writes one article per community plus `graphify-out/wiki/index.md` (904 art
 ## Complete example
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 git clone https://github.com/Graphify-Labs/graphify && cd graphify
 graphify extract . --code-only
 graphify cluster-only . --no-label

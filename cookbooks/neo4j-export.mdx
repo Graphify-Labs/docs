@@ -21,7 +21,7 @@ Graphify stores its graph as `graph.json`, but you can load it into [Neo4j](http
 ## Setup
 
 ```bash
-uv tool install "graphifyy[neo4j]"
+uv tool install --python 3.12 "graphifyy[neo4j]"
 cd your-repo
 graphify extract . --code-only
 ```
@@ -93,7 +93,7 @@ RETURN DISTINCT caller.label LIMIT 50;
 
 ## When it goes wrong
 
-**`neo4j driver not installed`.** Install the extra: `uv tool install "graphifyy[neo4j]"`.
+**`neo4j driver not installed`.** Install the extra: `uv tool install --python 3.12 "graphifyy[neo4j]"`.
 
 **The import is very slow.** Create the indexes in Step 2 before running the script, or use `--push`, which creates them for you.
 
@@ -109,7 +109,7 @@ RETURN DISTINCT caller.label LIMIT 50;
 ## Complete example
 
 ```bash
-uv tool install "graphifyy[neo4j]"
+uv tool install --python 3.12 "graphifyy[neo4j]"
 cd your-repo
 graphify extract . --code-only
 export NEO4J_PASSWORD="$(your-secret-tool get neo4j)"

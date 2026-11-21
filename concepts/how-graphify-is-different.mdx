@@ -1,8 +1,8 @@
 ---
-title: "How is Graphify different?"
+title: "Code graph vs RAG vs memory: how Graphify differs"
 sidebarTitle: "How Graphify is different"
-description: "How a code knowledge graph compares with vector search, wiki-style repo docs, language servers and context-graph tools, and when each is the better fit."
-keywords: ["code knowledge graph", "graphify vs vector search", "graphify vs lsp", "code graph comparison", "knowledge graph vs vector database", "what is a code knowledge graph", "shared context for AI coding agents"]
+description: "How a code knowledge graph and Memory compare with RAG and vector search, wiki-style docs, language servers and context-graph tools, and when each fits."
+keywords: ["code knowledge graph", "graphify vs vector search", "graphify vs lsp", "code graph comparison", "knowledge graph vs vector database", "what is a code knowledge graph", "shared context for AI coding agents", "memory vs rag", "code graph vs rag", "agent memory vs rag", "incident memory", "rag for code"]
 surface: "both"
 icon: "split"
 ---
@@ -20,6 +20,24 @@ For a longer explanation of code graphs and how agents use them, read [What is a
 <Tip>
 **Try it on your own repo.** [Start with hosted Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=concepts-how-graphify-is-different), or build a graph locally with `uv tool install graphifyy`.
 </Tip>
+
+## Code graph vs Memory vs RAG
+
+Coding agents need three kinds of context, and each comes from a different place. Graphify gives your agents the first two. RAG is the common way to add the third.
+
+| | Code graph | Memory | RAG (vector search) |
+| --- | --- | --- | --- |
+| **What it holds** | Symbols in your code and how they connect: calls, imports, inheritance | Your team's decisions, incidents and lessons | Chunks of text from docs, comments or files |
+| **Where it comes from** | Extracted from the code itself | Recorded by your team, your agents and Graphify | Embedded from whatever you index |
+| **How it answers** | Follows edges from one symbol to the next | Recalls facts by meaning and keywords, ranked higher when tied to the code you name | Returns the chunks closest to the question |
+| **Stays current by** | Rebuilding on every push to the default branch | Anchors to code nodes that still resolve, with provenance and history | Re-embedding changed text |
+| **Ask it** | "What calls `map_status`, and what breaks if I change it?" | "Why does `map_status` treat PENDING as success?" | "Where do the docs explain retries?" |
+
+- **The code graph** tells an agent what the code is and how it fits together. See [How the graph is built](/concepts/architecture).
+- **Memory** tells an agent what the code alone can't: why a choice was made, what broke in production, and the trap to avoid next time. Facts are consolidated per code entity, not per conversation. See [Memory](/platform/memory) and [Remember incident lessons](/cookbooks/remember-incident-lessons).
+- **RAG** finds text that reads like the question. It works well for prose, but it doesn't know how code connects or which note is still true.
+
+Graphify anchors Memory to the code graph, so a lesson about a function travels with that function. That is the difference between shared context and a pile of similar-looking text.
 
 ## At a glance
 
@@ -82,7 +100,7 @@ Most teams don't pick one. A common setup:
 
 ## What Graphify is not
 
-- **Not a chat memory.** It doesn't store your conversations. It describes your code.
+- **Not a chat log.** The graph describes your code, and Memory keeps decisions, incidents and lessons per code entity, not per conversation.
 - **Not a search index.** It doesn't rank text by similarity. It records connections.
 - **Not a replacement for reading code.** Each answer points back to the source it came from.
 
@@ -91,6 +109,9 @@ Most teams don't pick one. A common setup:
 <AccordionGroup>
   <Accordion title="Knowledge graph vs vector database: which do I need for code?">
     It depends on the question. A vector database finds text that reads like your question. A knowledge graph follows how code is actually connected. For "what calls this?" or "what breaks if I change this?", you want the graph. For fuzzy search over docs, a vector index works well. Many setups use both.
+  </Accordion>
+  <Accordion title="Memory vs RAG: which do coding agents need?">
+    Both answer different questions. RAG returns text that looks like your question. Memory returns what your team decided and learned, tied to the files and functions it's about, with evidence and history. In Graphify, agents read Memory with the `recall` tool and the code graph with tools such as `graphify_callers`, both over the [hosted MCP server](/platform/graphify-mcp).
   </Accordion>
   <Accordion title="Does Graphify replace a language server?">
     No. Keep your language server for in-editor navigation. Graphify adds a saved graph your agent can query across languages and repositories.

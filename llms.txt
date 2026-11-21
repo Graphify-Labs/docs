@@ -24,7 +24,7 @@ Start here for an overview of Graphify.
 
 Use when setting up hosted Graphify: a Graphify account (create one for free while connecting), an indexed repository, and an agent on Graphify MCP.
 
-- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Graphify is shared codebase context for teams and coding agents: a codebase knowledge graph, Wiki, Memory, PR reviews, formal verification and Learning.
+- [What is Graphify? Shared context for coding agents](https://docs.graphify.com/platform/overview.md): Graphify is shared context for AI coding agents and developers: a code graph, Memory for decisions and incidents, a Wiki and cross-repo PR reviews.
 - [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
 - [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth: the code graph, team Memory and review status. Endpoint, tools, fixes.
@@ -40,7 +40,7 @@ Use when setting up hosted Graphify: a Graphify account (create one for free whi
 Use when explaining how the graph answers questions about code, and how to read its edges.
 
 - [How Graphify builds a code knowledge graph](https://docs.graphify.com/concepts/architecture.md): How Graphify works: from source files parsed with tree-sitter to a persistent knowledge graph your coding assistant can traverse and query.
-- [How is Graphify different?](https://docs.graphify.com/concepts/how-graphify-is-different.md): How a code knowledge graph compares with vector search, wiki-style repo docs, language servers and context-graph tools, and when each is the better fit.
+- [Code graph vs RAG vs memory: how Graphify differs](https://docs.graphify.com/concepts/how-graphify-is-different.md): How a code knowledge graph and Memory compare with RAG and vector search, wiki-style docs, language servers and context-graph tools, and when each fits.
 - [Ask a question about your code](https://docs.graphify.com/concepts/ask-about-your-code.md): Ask your agent a plain-English question and get back the definitions and files from your indexed repository that answer it.
 - [Follow calls and trace a path between symbols](https://docs.graphify.com/concepts/follow-calls.md): Ask your agent what calls a function, what it calls, and how one symbol reaches another. Hosted Graphify answers from real call edges in your indexed repo.
 - [Check the impact of a change before you make it](https://docs.graphify.com/concepts/check-impact.md): Ask your agent what a change reaches in your indexed repository, which hotspot files the graph ranks, and which tests cover them.

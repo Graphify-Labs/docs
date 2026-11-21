@@ -8,8 +8,32 @@ icon: "git-pull-request"
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+import WorksWith from '/snippets/works-with.mdx';
 
 **Reviews** brings pull requests, findings, and code-graph context together in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-reviews). Use it to understand a change and the code it can affect. Your coding agents can read the same review status over [MCP](/platform/graphify-mcp).
+
+<WorksWith />
+
+<CardGroup cols={2}>
+  <Card title="Merge confidence score" icon="gauge" href="#merge-confidence-score">
+    Read the 1 to 5 score and what each label means.
+  </Card>
+  <Card title="Review again after a fix" icon="rotate-cw" href="#review-again-after-a-fix">
+    Push a fix, then comment @graphify review for a fresh run.
+  </Card>
+  <Card title="Improve future reviews" icon="graduation-cap" href="#improve-future-reviews">
+    Teach Graphify with @graphify wrong, good, and suppress.
+  </Card>
+  <Card title="Review settings" icon="settings" href="#repository-review-settings">
+    Turn reviews, risky patterns, and stale docs checks on or off.
+  </Card>
+  <Card title="Fix review findings" icon="wrench" href="/cookbooks/fix-review-findings">
+    Have your coding agent check each finding, fix it, and ask again.
+  </Card>
+  <Card title="Review as a team" icon="users" href="/cookbooks/review-as-a-team">
+    Rank open PRs by impact and spot PRs that collide.
+  </Card>
+</CardGroup>
 
 ## When a review runs
 

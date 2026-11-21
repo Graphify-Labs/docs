@@ -18,16 +18,16 @@
 
 Start here for an overview of Graphify.
 
-- [Docs: code knowledge graph for AI coding agents](https://docs.graphify.com/index.md): Shared codebase context for Claude Code, Codex, Cursor and other agents: a code knowledge graph over hosted MCP and cross-repo PR review, or run locally.
+- [Docs: code knowledge graph for AI coding agents](https://docs.graphify.com/index.md): Shared context for AI coding agents and developers: a code graph of your repos with Memory, Wiki and cross-repo PR reviews. Agents connect over MCP.
 
 ## Graphify: Get started
 
 Use when setting up hosted Graphify: a Graphify account (create one for free while connecting), an indexed repository, and an agent on Graphify MCP.
 
-- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Graphify is shared codebase context for teams and coding agents: a codebase knowledge graph, Wiki, Memory, PR reviews, formal verification and Learning.
+- [Graphify overview: hosted code knowledge graph](https://docs.graphify.com/platform/overview.md): Graphify is shared context for AI coding agents and developers: a code graph, Memory of decisions and incidents, Wiki, PR reviews, verification, Learning.
 - [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
-- [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth. Endpoint, tools, workspaces, limits, and fixes.
+- [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth: the code graph, team Memory and review status. Endpoint, tools, fixes.
 - [Check your agent is using Graphify](https://docs.graphify.com/platform/verify-connection.md): Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix a missing workspace or repositories.
 - [Migrating from Sourcegraph Cody](https://docs.graphify.com/platform/migrate-from-cody.md): Move from Sourcegraph Cody to Graphify: sign in at app.graphify.com, index your repositories, and connect your agent over MCP.
 - [Index your first repository in Graphify](https://docs.graphify.com/concepts/index-a-repository.md): Connect a GitHub or GitLab repository to Graphify, switch on indexing, and confirm the build finished so your agent can query the graph.
@@ -65,7 +65,7 @@ Use when the user asks about a hosted feature: Ask, graphs, reviews, verificatio
 - [Read a formal verification check on GitHub](https://docs.graphify.com/platform/verification-check-results.md): Each Graphify verification check title and verdict: Behavior changed, Proven same, No change found, Not checked, Couldn't run, and what to do next.
 - [Insights: code findings across repositories](https://docs.graphify.com/platform/insights.md): Review code findings across your repositories and pull requests in Graphify, with evidence, priority, and a team decision on each one.
 - [Wiki: generated docs for every repository](https://docs.graphify.com/platform/wiki.md): Read, search, and ask questions about the wiki Graphify generates for each repository from its code knowledge graph, with a confidence trail on every page.
-- [Agent memory for coding agents](https://docs.graphify.com/platform/memory.md): Explore the facts your coding agents remember about a repository, organized by code entity, with provenance and graph anchors behind every fact.
+- [Agent memory for coding agents](https://docs.graphify.com/platform/memory.md): Shared memory for coding agents and developers: decisions, incidents and lessons tied to code entities, with provenance, recalled over MCP.
 - [Learning: tune AI code review findings](https://docs.graphify.com/platform/learning.md): Teach Graphify which review findings matter with @graphify wrong, good, and suppress. Learning reduces noise and never changes verification results.
 - [Connectors: agents, code hosts and tools](https://docs.graphify.com/platform/connectors.md): Connect coding agents over MCP and connect source providers, docs, issue trackers, and CI to Graphify from the Connectors page in the Console.
 
@@ -146,7 +146,7 @@ Use when Graphify CLI fails to install or build a graph.
 
 Use when connecting a specific coding agent. Each page has a Graphify tab and a Graphify CLI tab.
 
-- [Graphify for Claude Code, Cursor, VS Code, Codex](https://docs.graphify.com/integrations/overview.md): Connect Claude Code, Cursor, VS Code, Copilot, Codex, or Gemini CLI to Graphify over MCP, or install the open-source Graphify skill.
+- [Graphify for Claude Code, Cursor, VS Code, Codex](https://docs.graphify.com/integrations/overview.md): Connect Claude Code, Cursor, VS Code, Copilot, Codex, or Gemini CLI to Graphify's code graph and Memory over MCP, or install the open-source skill.
 - [Graphify for Claude](https://docs.graphify.com/integrations/claude-ai.md): Connect Graphify from the Claude connectors directory. Create your Graphify account for free while connecting, then enable the connector per chat.
 - [Graphify for Claude Code](https://docs.graphify.com/integrations/claude-code.md): Connect Claude Code to Graphify with your Claude account or claude mcp add. Create your Graphify account for free while connecting.
 - [Graphify for Cursor](https://docs.graphify.com/integrations/cursor.md): Connect Cursor to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine.

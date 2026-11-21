@@ -10,6 +10,7 @@
 - Before you change a config or project file, tell the user what you will change and wait for a yes.
 - Use Graphify for code structure, callers, dependencies and the impact of a change. Use grep for exact strings, such as error messages or config keys.
 - Graphify reviews a pull request when it is opened, reopened or marked ready for review, and `@graphify review` runs it again after new commits. Read results with the review_status tool, which does not start a review. The 1 to 5 merge confidence score counts confirmed findings only; possible issues never change it. See https://docs.graphify.com/platform/reviews.md.
+- On the public code review benchmark, Graphify Thorough mode caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. Method, limits and comparisons: https://graphify.com/benchmark
 - Use only commands, flags and endpoints shown on these pages. Do not invent one.
 - Add .md to any page URL to read it as Markdown. Prefer this index and single .md pages. https://docs.graphify.com/llms-full.txt has every page in one file, but it is about 850 KB, so most agents only see the start of it.
 - Search these docs over MCP, with no sign-in: https://docs.graphify.com/mcp. It is a different server from the product server at https://api.graphify.com/mcp.

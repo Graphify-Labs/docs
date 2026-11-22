@@ -27,7 +27,7 @@ If your client sends an `X-Request-Id` header, Graphify echoes it on the respons
 Your client hasn't finished the one-time browser sign-in. Graphify answers a request with no token with `401` and a `WWW-Authenticate` header, which starts the sign-in.
 
 - Claude Code: run `/mcp`, select **graphify**, and choose **Authenticate**.
-- Codex: run `codex mcp login graphify`.
+- Codex: start a new session after installing the plugin. If you added the server by hand, run `codex mcp login graphify`.
 - Cursor: select **Needs login** next to the server.
 - Claude.ai and Desktop: finish sign-in from [Graphify for Claude](/integrations/claude-ai), then turn Graphify on for the chat.
 

@@ -4,7 +4,7 @@ sidebarTitle: "Codex"
 description: "Install the Graphify plugin for Codex or add Graphify's MCP server with OAuth, or use the open-source Graphify skill. Create an account for free."
 surface: "both"
 hideFooterPagination: true
-keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex", "graphify plugin for codex", "install graphify plugin codex", "codex ide extension graphify", "codex plugin marketplace add graphify"]
+keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex", "graphify plugin for codex", "install graphify plugin codex", "codex ide extension graphify", "codex plugin marketplace add graphify", "codex no-daemon windows", "codex cli install graphify plugin"]
 ---
 
 import { InstallButton } from '/snippets/install-button.mdx';
@@ -49,7 +49,7 @@ Plugins work in Codex CLI and in Codex inside the ChatGPT desktop app. The Codex
 
 ### Install from GitHub
 
-You can also add Graphify's [plugin repository](https://github.com/Graphify-Labs/graphify-codex-plugin) as a Codex marketplace and install the plugin from the terminal:
+These commands run in Codex CLI in a terminal (install it with `npm i -g @openai/codex`). They add Graphify's [plugin repository](https://github.com/Graphify-Labs/graphify-codex-plugin) as a marketplace and install the plugin. In the ChatGPT desktop app, install from the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) above instead.
 
 ```bash
 codex plugin marketplace add Graphify-Labs/graphify-codex-plugin
@@ -135,6 +135,7 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | Every Graphify tool appears twice | You have both the plugin and a manual server entry. Remove one. |
 | Only a `graphify_setup` tool appears, or tools say **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex), enable a repository, wait until it is **Indexed**, start a new Codex session, and run `codex mcp login graphify` again if needed. |
 | Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories** in Graphify, wait for the first index to finish, then ask again. |
+| Codex CLI on Windows stops with `failed to open daemon process: Access is denied. (os error 5)` | This is a Codex CLI issue ([openai/codex #51283](https://github.com/openai/codex/issues/51283)), not Graphify. Run `codex --no-daemon`. The plugin stays installed. If that fails too, use Codex in the ChatGPT desktop app with the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4). |
 
 ## FAQ
 

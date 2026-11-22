@@ -37,11 +37,12 @@ To let the agent do the setup, choose **Copy quick-start prompt** and paste it i
 claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
 ```
 
-**Codex** (Codex CLI, in a terminal). Install the Graphify plugin, then start a new session:
+**Codex** (Codex CLI, in a terminal). Install the Graphify plugin and sign in, then start a new session:
 
 ```bash
 codex plugin marketplace add Graphify-Labs/graphify-codex-plugin
 codex plugin add graphify@graphify
+codex mcp login graphify
 ```
 
 In the Codex IDE extension, which doesn't support plugins yet, run `codex mcp add graphify --url https://api.graphify.com/mcp` and then `codex mcp login graphify`. See [Codex](/integrations/codex).

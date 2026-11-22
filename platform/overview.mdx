@@ -8,6 +8,8 @@ hideFooterPagination: true
 icon: "house"
 ---
 
+import HowItWorksDiagram from '/snippets/how-it-works-diagram.mdx';
+
 **One shared context for your coding agents and your team.** Graphify maps your repositories into a code graph, keeps your team's decisions, incidents and lessons in Memory, writes a Wiki in the Graphify app, and reviews your pull requests across repositories with the same graph.
 
 Your agents query it through one hosted MCP server, and your team reads the same context at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-overview). We run it for you, so there's nothing to deploy. Your work lives in a workspace: a personal one for you, or a team workspace you share. New to Graphify? [Graphify in 5 minutes](/platform/quickstart) takes you from sign in to asking your coding agent about an indexed repository.
@@ -20,6 +22,10 @@ Your agents query it through one hosted MCP server, and your team reads the same
 - **Context that stays current.** Every push to the default branch rebuilds the graph, and your agents keep using the previous one until the new build is ready.
 
 ## How it works
+
+<HowItWorksDiagram />
+
+Graphify turns your repositories into one code graph. Memory, the Wiki and PR reviews all build on that graph, so your agents and your team work from the same context.
 
 <Steps>
   <Step title="Connect your repositories">

@@ -2,7 +2,7 @@
 title: "Troubleshoot Graphify CLI"
 sidebarTitle: "Troubleshooting"
 description: "Fix common Graphify problems: install errors, an empty or stale graph, and MCP server connection issues in Claude Code, Cursor, and other clients."
-keywords: ["graphify install error", "command not found", "uv is not recognized", "uv command not found", "microsoft visual c++ 14.0 is required", "unrecognized command /graphify", "empty graph", "mcp connection issues", "first build cost", "what does the first graphify cli build cost", "cost.json"]
+keywords: ["graphify install error", "command not found", "uv is not recognized", "uv command not found", "microsoft visual c++ 14.0 is required", "unrecognized command /graphify", "empty graph", "mcp connection issues", "first build cost", "what does the first graphify cli build cost", "cost.json", "uninstall graphify"]
 surface: "both"
 hideFooterPagination: true
 icon: "life-buoy"
@@ -135,6 +135,35 @@ Not if you've run `graphify hook install`. A pull that merges fires the `post-me
 Code is extracted from the AST, with no LLM. Docs, PDFs and images go to the LLM. Video and audio are transcribed locally, then treated as text. Graphify CLI does not ask you to confirm a build, and it does not show an estimate first. After the build finishes, the cost is printed and saved to `graphify-out/cost.json`. To skip the LLM, run `graphify extract . --code-only`, set `GRAPHIFY_BACKEND=none`, or use `graphify update`, which is always AST only. See [What does the first build cost?](/open-source/installation#what-does-the-first-build-cost) and [Honest token savings](/open-source/features/honest-token-savings).
 </Accordion>
 </AccordionGroup>
+
+## How do I uninstall Graphify?
+
+**Graphify CLI.** Run `graphify uninstall` to remove the skill from every agent you registered. It also removes the git hooks and merge driver if you installed them.
+
+```bash
+graphify uninstall
+```
+
+If you installed the skill into one repository with `--project`, run `graphify uninstall --project` from that repository instead. Add `--purge` to `graphify uninstall` to also delete `graphify-out/` in the current folder; leave it off to keep your graph.
+
+To remove the package itself, run the uninstall command for the tool you installed it with:
+
+```bash
+uv tool uninstall graphifyy
+# or
+pipx uninstall graphifyy
+# or
+pip uninstall graphifyy
+```
+
+See [Remove the skill](/open-source/quickstart#remove-the-skill) and [Remove a registration](/open-source/installation#remove-a-registration) for more.
+
+**Hosted Graphify.** To stop an agent using the hosted MCP server:
+
+- **Claude Code:** if you added the server with `claude mcp add`, remove it with `claude mcp remove graphify`. If you connected through the Claude directory, disconnect Graphify in Claude, or turn the connector off under `/mcp`. See [Graphify for Claude Code](/integrations/claude-code) and [Graphify for Claude](/integrations/claude-ai).
+- **Cursor:** delete the `graphify` server entry from `~/.cursor/mcp.json` (or from `.cursor/mcp.json` if you scoped it to one repository), then reload Cursor. See [Graphify for Cursor](/integrations/cursor).
+
+If you uninstall the Graphify GitHub App, see [GitHub](/integrations/github) for what happens to your repositories. To export or delete your data, or to close an account, see [How do I delete my data?](/platform/support/faqs).
 
 ## Get help
 

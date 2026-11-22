@@ -83,7 +83,7 @@ With Graphify CLI, the graph is a file on the machine. Offer `graphify hook inst
 You can add the server, but only the user can finish the OAuth sign-in in a browser. Until they do, every tool call fails and the client shows the server as needing login.
 
 1. Don't retry in a loop, and don't switch to Graphify CLI unless the user asks.
-2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or `codex mcp login graphify` in Codex. The full list is in [Check your agent is using Graphify](/platform/verify-connection).
+2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or, in Codex, a new session after the plugin install (`codex mcp login graphify` only when the server was added by hand). The full list is in [Check your agent is using Graphify](/platform/verify-connection).
 3. Remind them that a new server loads only when a session starts, so they may need to reload the editor or start a new session.
 4. Meanwhile, answer from the local files and say that the answer did not come from Graphify.
 5. After sign-in, call `list_repositories` and show the result.

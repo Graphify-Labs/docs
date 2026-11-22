@@ -52,11 +52,21 @@ One-click installs: [Connect Graphify in Claude](https://claude.ai/directory/gra
     Endpoint: `https://api.graphify.com/mcp`. Streamable HTTP. OAuth only. There is no API key.
   </Tab>
   <Tab title="Codex">
+    Install the Graphify plugin. Open `/plugins` in Codex CLI and search for **Graphify**, or run:
+
+    ```bash
+    codex plugin marketplace add Graphify-Labs/graphify-codex-plugin
+    codex plugin add graphify@graphify
+    ```
+
+    Start a new session and sign in when asked. To keep the setup in your own config, or in the Codex IDE extension (which doesn't support plugins yet), add the server by hand:
+
     ```bash
     codex mcp add graphify --url https://api.graphify.com/mcp
     codex mcp login graphify
     ```
-    The login step is required. Without it, Graphify rejects the connection.
+
+    The login step is required for the manual setup. Without it, Graphify rejects the connection. Use one path, since two connections show every Graphify tool twice. Full steps are on [Codex](/integrations/codex).
   </Tab>
   <Tab title="Cursor">
     ```json ~/.cursor/mcp.json
@@ -304,7 +314,7 @@ Seeing the tools doesn't prove repository access. The last step does. For test p
 
 | What you see | What to do |
 | --- | --- |
-| Needs authentication / Needs login | You are connected, not signed in. Claude Code: `/mcp` → **Authenticate**. Codex: `codex mcp login graphify`. Cursor and VS Code: finish the browser sign-in. |
+| Needs authentication / Needs login | You are connected, not signed in. Claude Code: `/mcp` → **Authenticate**. Codex: start a new session after a plugin install, or run `codex mcp login graphify` if you added the server by hand. Cursor and VS Code: finish the browser sign-in. |
 | Verify your email to connect | The account email isn't verified. Open the verification email, or select **Resend the verification email**, then connect again. Google or GitHub sign-up: choose that option when you connect. |
 | `list_repositories` is empty | You are in the wrong workspace, or it has no repositories. Switch with `set_workspace`, or index a repository. |
 | A repository returns no results | It is not indexed, or you are in the wrong workspace. Wait for **Indexed** on **Repositories**, then confirm the workspace with `list_workspaces`. |

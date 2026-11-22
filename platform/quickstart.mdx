@@ -56,7 +56,11 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
     ```bash Claude Code
     claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
     ```
-    ```bash Codex
+    ```bash Codex plugin
+    codex plugin marketplace add Graphify-Labs/graphify-codex-plugin
+    codex plugin add graphify@graphify
+    ```
+    ```bash Codex (manual)
     codex mcp add graphify --url https://api.graphify.com/mcp
     codex mcp login graphify
     ```

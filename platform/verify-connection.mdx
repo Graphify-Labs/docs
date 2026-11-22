@@ -61,8 +61,9 @@ Then ask a code question without naming Graphify, such as `What calls <function>
 
 | Symptom | Fix |
 | --- | --- |
-| **Needs login** or **Needs authentication** next to `graphify` | You haven't signed in. Claude Code: `/mcp`, select **graphify**, choose **Authenticate**. Codex: `codex mcp login graphify`. Cursor: select **graphify** and finish the browser sign-in. VS Code: restart the server in **MCP: List Servers** and sign in. |
+| **Needs login** or **Needs authentication** next to `graphify` | You haven't signed in. Claude Code: `/mcp`, select **graphify**, choose **Authenticate**. Codex: start a new session after a plugin install, or run `codex mcp login graphify` if you added the server by hand. Cursor: select **graphify** and finish the browser sign-in. VS Code: restart the server in **MCP: List Servers** and sign in. |
 | `graphify` is missing from the list | Check the config file is valid JSON (or TOML for Codex) and the URL is `https://api.graphify.com/mcp`. Then reload the client or start a new session. |
+| Every Graphify tool appears twice | The Codex plugin and a manual server entry are both connected. Keep one: remove the plugin in `/plugins`, or run `codex mcp remove graphify`. |
 | The agent asks for an API key | Graphify uses OAuth sign-in, not a key. Check the URL is the hosted one above. |
 | `list_repositories` is empty | No repository is indexed in this workspace. Index one in the [Console](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-verify-connection), or switch workspace with `set_workspace`. |
 | A repository is listed but answers are empty | It's still indexing, or it's in another workspace. Wait for **Indexed** on **Repositories** in the Console. |

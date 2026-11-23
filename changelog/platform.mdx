@@ -9,10 +9,14 @@ rss: true
 icon: "cloud"
 ---
 
-<Update label="2026-11-20" description="Fairer score for one contained bug">
+<Update label="2026-11-20" description="Fairer scores, and reviews that finish after a merge">
 
 **Improved:**
 - **Reviews:** A review whose only confirmed bug is a single P2 with limited reach now scores 4/5 instead of 3/5. The verdict still says **Review before merging**, because there is a real bug to look at. Several P2 bugs, or a P2 that ordinary use can hit, still score 3/5. Older reviews keep their score. See [Merge confidence score](/platform/reviews#merge-confidence-score).
+- **Reviews:** A review that has already started now finishes even if the pull request is merged or closed in the meantime, so you get all of its findings. Reviews that haven't started yet are still canceled on merge.
+
+**Fixed:**
+- **Reviews:** When a push changes nothing that needs a new review, like a rebase onto main, the app now shows the earlier review's verdict, score, summary and findings, the same as the GitHub check. Before, the run showed no score, **No written summary was returned for this run**, and findings stuck on **Loading remaining review details**.
 
 </Update>
 
@@ -20,6 +24,13 @@ icon: "cloud"
 
 **Improved:**
 - **Reviews:** Possible issues that a review couldn't confirm no longer lower the merge confidence score. If a review has any, its verdict reads **Nothing blocking · N possible issues to check** instead of **Looks safe to merge**, so you still know to take a look. Bug counts now include confirmed bugs only.
+
+</Update>
+
+<Update label="2026-11-16" description="Approved GitHub install requests">
+
+**Fixed:**
+- **GitHub:** When a GitHub org member asks to install Graphify and an org owner approves the request, the member who asked now sees the org on Graphify with a **Claim** button and can connect it to their workspace. Before, only the approving owner could see it. The org shows up for 7 days after the approval, for members signed in to Graphify with GitHub.
 
 </Update>
 

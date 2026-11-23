@@ -1,7 +1,7 @@
 ---
 title: "MCP server quickstart: serve your graph"
 sidebarTitle: "MCP server quickstart"
-description: "Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and nine other graph tools from any MCP client."
+description: "Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and the other graph tools from any MCP client."
 keywords: ["graphify-mcp", "MCP server for codebase", "code graph MCP", "streamable http MCP"]
 surface: "local"
 icon: "server"
@@ -84,6 +84,7 @@ Clients send the key as `Authorization: Bearer <key>` or `X-API-Key: <key>`. A r
 | --- | --- |
 | `query_graph` | Get a token-budgeted subgraph for a question (`mode`: `bfs` or `dfs`, `depth` 1–6, `token_budget` default 2000) |
 | `get_node` | Read one node by label or ID |
+| `get_section` | Read the text of a Markdown section or page from the source file, after `query_graph` or `get_node` lands on a heading |
 | `get_neighbors` | List a node's connections, optionally by relation |
 | `get_community` | Read every node in one community |
 | `god_nodes` | List the most connected nodes |

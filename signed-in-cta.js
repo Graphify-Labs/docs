@@ -10,6 +10,14 @@
   const SIGNUP = /app\.graphify\.com\/signup/;
   const apply = () => {
     if (signedIn) {
+      // End-of-page Start free buttons opt in with data-gfy-swap. They keep their utm tags.
+      document.querySelectorAll('a[data-gfy-swap]').forEach((a) => {
+        if (a.getAttribute("data-gfy-swap") === "done") return;
+        a.setAttribute("data-gfy-swap", "done");
+        try { a.href = "https://app.graphify.com/" + new URL(a.href).search; } catch (_) { a.href = "https://app.graphify.com"; }
+        const walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT);
+        for (let n; (n = walker.nextNode());) if (n.nodeValue.trim() === "Start free") n.nodeValue = "Open Graphify";
+      });
       document.querySelectorAll('a[href*="app.graphify.com/signup"], a[data-gfy-cta]').forEach((a) => {
         // Header and mobile menu only; signup links in page content stay as written.
         if (!a.closest('#topbar-cta-button, #navbar, header, [role="dialog"]')) return;

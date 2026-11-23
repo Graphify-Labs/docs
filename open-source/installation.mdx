@@ -14,6 +14,17 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 **Want this for your whole team, with nothing to install?** Graphify indexes your GitHub repositories, hosts the graph for you and adds Memory, the Wiki and PR reviews. [Start free](https://app.graphify.com/signup?utm_source=docs&utm_medium=link&utm_campaign=open-source-installation&utm_content=oss-tip) or follow the [Graphify quickstart](/platform/quickstart).
 </Tip>
 
+## Install in two commands
+
+On macOS or Linux with [uv](#get-uv):
+
+```bash
+uv tool install --python 3.12 graphifyy
+graphify install
+```
+
+The first command installs the `graphifyy` package, which gives you the `graphify` command. The second adds the Graphify skill to your coding agent. Then open the agent in a repository and send `/graphify .`. For Windows, pipx or a virtual environment, read on.
+
 ## How do I install Graphify on Windows?
 
 On Windows, install uv from PowerShell, open a new terminal, then install the Graphify CLI package `graphifyy`:

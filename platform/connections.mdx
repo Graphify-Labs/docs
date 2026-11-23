@@ -7,6 +7,8 @@ hideFooterPagination: true
 icon: "cable"
 ---
 
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
 
 
 Connect your coding assistant to the hosted workspace from **MCP** in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-connections). This lets the assistant use your Graphify context while you work in its editor or terminal.
@@ -18,7 +20,7 @@ Connect your coding assistant to the hosted workspace from **MCP** in [Graphify]
 3. Complete the Graphify sign-in and select the intended workspace when prompted.
 4. Return to the assistant and confirm that its Graphify connection is available.
 
-The website's [MCP client guide](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=platform-connections) includes instructions for Claude Code, Codex, Cursor, GitHub Copilot, and other clients.
+Step by step guides for each client are in these docs: [Claude Code](/integrations/claude-code), [Codex](/integrations/codex), [Cursor](/integrations/cursor), [VS Code](/integrations/vscode), and [other agents](/integrations/other-agents). The website's [MCP client guide](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=platform-connections) covers the same clients.
 
 ## Shared knowledge alongside your own memory
 
@@ -52,11 +54,15 @@ Check that you signed in to the intended workspace and that the repository has f
 
 ## Next steps
 
-<Card title="Trace who calls this" icon="route" href="/platform/trace">
-  Ask your agent what a change affects.
-</Card>
+<StartFreeCta campaign="platform-connections" content="end-cta-connections" title="Connect your agent now" label="Open Graphify" href="https://app.graphify.com">Open Connectors, then Agents (MCP), pick your client, and ask one question about an indexed repository.</StartFreeCta>
 
 <Columns cols={2}>
+  <Card title="Setup for each agent" icon="blocks" href="/integrations/overview">
+    Claude Code, Codex, Cursor, VS Code and more.
+  </Card>
+  <Card title="Check it's working" icon="circle-check" href="/platform/verify-connection">
+    Three prompts that prove the agent used Graphify.
+  </Card>
   <Card title="Agent memory" icon="brain" href="/platform/memory">
     Memory your agents share.
   </Card>

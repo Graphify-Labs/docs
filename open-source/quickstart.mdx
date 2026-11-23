@@ -17,8 +17,17 @@ import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 The Graphify skill lets your coding agent build and query a local knowledge graph of the repository. You install `graphifyy` once, type `/graphify .`, and the agent builds the graph and reads `GRAPH_REPORT.md` before it answers questions about your code.
 
+**The short version.** Install the package and add the skill:
+
+```bash
+uv tool install --python 3.12 graphifyy
+graphify install
+```
+
+Then open your coding agent in the repository and type `/graphify .`. The steps below explain each command.
+
 <Note>
-**Use this skill quickstart** to install `graphifyy` and run `/graphify .` in your coding agent. For a graph, wiki, memory, and pull request reviews hosted for you, start with the [Graphify quickstart](/platform/quickstart). If you only want terminal commands, follow the [CLI quickstart](/open-source/cli-quickstart).
+Want the graph, Wiki, Memory and pull request reviews hosted for you? Start with the [Graphify quickstart](/platform/quickstart). Only want terminal commands? Follow the [CLI quickstart](/open-source/cli-quickstart).
 </Note>
 
 ## Before you start

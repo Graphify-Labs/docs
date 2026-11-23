@@ -83,7 +83,7 @@ surface: "cloud"
 - `title`: sentence case.
 - `description`: one plain sentence. It appears under the page title, in search, and in `llms.txt`. No `[Local]`, `[Cloud]`, or `[Both]` prefix.
 - Keep `title` at 60 characters or fewer and `description` at 155 or fewer. CI fails the build when either is longer.
-- Write the Free plan and trial line as plain text: "The Free plan (up to 3 repositories) needs no card. Pro and Teams start with a 14-day trial, card required." On the homepage card use "Free to start, no card required." Don't import JS variables into pages; the hosted build and the `.md`/`llms.txt` output don't render them. Search for the sentence with `git grep "14-day Pro trial"` when it changes.
+- Keep plan limits, trial terms and prices on [Plans and pricing](platform/support/pricing.mdx) only. Other pages say "The Free plan needs no card. See [Plans and pricing](/platform/support/pricing)." and link there for the rest. Write it as plain text; don't import JS variables into pages, because the hosted build and the `.md`/`llms.txt` output don't render them.
 - `surface`: `local`, `cloud`, or `both`. It's the source of truth for which product a page covers. Agents tell the surface from the page path, so keep Graphify pages under `platform/` and the hosted MCP group, and Graphify CLI pages under `open-source/` and the Graphify CLI tabs in Integrations. If you change that layout, update the surface rules in `docs.json` (`markdown.instructions`) and `for-agents.mdx`.
 
 ## Page icons

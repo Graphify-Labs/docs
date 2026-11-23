@@ -9,10 +9,25 @@ rss: true
 icon: "layout-dashboard"
 ---
 
-<Update label="2026-11-21" description="Large wikis load reliably">
+<Update label="2026-11-21" description="Wiki guides, directories and new diagrams">
+
+**New:**
+- **Wiki:** The sidebar now opens with **Guides** right after the **Overview**: pages like Getting Started, Architecture and Core Lifecycle that explain the whole codebase. Configuration comes after the code areas. A folder of many similar parts, like a `config/` or `pkg/cmd/` directory, gets its own page under **Directories**, with its path next to the title.
+- **Wiki:** Diagrams now include call sequences and class diagrams of the core types. Calls that only run under a condition sit in a labeled box, flowcharts show decisions with their **yes** and **no** answers, and boxes from the same file share a color, with a legend naming the files. Wikis built before this keep their old layout.
 
 **Fixed:**
 - **Wiki:** A large wiki keeps loading instead of switching to **Wiki temporarily unavailable** after a few seconds. While it loads, the page shows what it's doing, like **Downloading the wiki…** with the size so far.
+
+</Update>
+
+<Update label="2026-11-20" description="First and last page buttons, Codex setup commands">
+
+**Improved:**
+- **Lists:** Every paginated list now has **First page** and **Last page** buttons next to Previous and Next, so you can jump to either end in one click. Lists that load more as you go, like **Reviews** and **Memory**, show **Last page** once everything has loaded.
+- **MCP:** Codex setup on **Connectors** > **Agents (MCP)** keeps **Install in Codex** as the main option, and **Other connection methods** now also lists `codex mcp add graphify --url https://api.graphify.com/mcp` and `codex mcp login graphify` next to the `config.toml` entry. Before, copying only the config left you without the login step, so Graphify refused the connection.
+
+**Fixed:**
+- **Reviews:** **Needs attention** loads on large workspaces instead of giving up with **Reviews unavailable**.
 
 </Update>
 
@@ -23,6 +38,13 @@ icon: "layout-dashboard"
 
 **Fixed:**
 - **Ask:** Answers no longer end with leftover tags such as `]]>`, `</prose>` or `<citations>`.
+
+</Update>
+
+<Update label="2026-11-14" description="Easier to read Ask answers">
+
+**Fixed:**
+- **Ask:** Answers in the wiki's Ask panel and in the floating Ask bar now show code names as inline code instead of raw backticks, and lists and code blocks keep their formatting. Long file paths wrap between folders instead of breaking mid-word.
 
 </Update>
 

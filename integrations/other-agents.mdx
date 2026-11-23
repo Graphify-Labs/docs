@@ -2,7 +2,7 @@
 title: "Graphify for other MCP clients"
 sidebarTitle: "Other MCP clients"
 description: "Connect any MCP client to Graphify over Streamable HTTP, or run the open-source Graphify MCP server with a generic mcpServers entry."
-keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform", "pi coding agent", "pi guard", "oh my pi", "omp", "antigravity", "google antigravity", "opencode", "open code", "open cod", "openc", "opencode mcp", "how to use graphify with opencode", "anti", "antigr", "antigra", "antigrav", "anty", "antigravity install", "opencod", "graphify install opencode", "cline", "cline mcp", "zed", "zed mcp", "kilo", "kilo code", "kilo code mcp", "kimi", "kimi code"]
+keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform", "pi coding agent", "pi guard", "oh my pi", "omp", "antigravity", "google antigravity", "opencode", "open code", "open cod", "openc", "opencode mcp", "how to use graphify with opencode", "anti", "antigr", "antigra", "antigrav", "anty", "antigravity install", "opencod", "graphify install opencode", "cline", "cline mcp", "zed", "zed mcp", "kilo", "kilo code", "kilo code mcp", "kimi", "kimi code", "windsurf", "windsurf mcp", "how to use graphify with windsurf", "winds", "windsur", "devin desktop", "devin local", "cascade mcp", "mcp_config.json"]
 surface: "both"
 hideFooterPagination: true
 ---
@@ -76,12 +76,30 @@ In Zed, open Settings, then AI, then MCP Servers, and choose Add Remote Server. 
 
 With no `Authorization` header set, Zed prompts you to sign in with the standard MCP OAuth flow. For a local graph, run the [Graphify CLI MCP server](/open-source/mcp-server).
 
+## How do I use Graphify with Windsurf?
+
+Windsurf is now Devin Desktop. It was renamed on June 2, 2026, and its docs moved to [docs.devin.ai](https://docs.devin.ai/desktop/devin-desktop-faq), which is why the old Windsurf MCP links redirect there. New chats in Devin Desktop run on the Devin Local agent. It reads MCP servers from `~/.config/devin/mcp_config.json` for every project (`%APPDATA%\devin\mcp_config.json` on Windows), or from `.devin/mcp_config.json` to share one project's setup with your team. Add hosted Graphify:
+
+```json
+{
+  "mcpServers": {
+    "graphify": {
+      "url": "https://api.graphify.com/mcp"
+    }
+  }
+}
+```
+
+Or open **Customize** in the Agents window, then **MCPs**. Leave headers empty, because Graphify signs you in with OAuth in the browser. If the server shows **Needs authentication**, click **Authenticate**. Devin Local uses the same setup as Devin CLI, so `devin mcp add -s user graphify https://api.graphify.com/mcp` writes the same entry and `devin mcp login graphify` signs you in. The Windsurf plugin for JetBrains reads the same file and accepts `url` or `serverUrl`.
+
+For a local graph with the open-source Graphify CLI, run `graphify install --platform devin`. It installs the Graphify skill in `~/.config/devin/skills/graphify`. To set up one project instead, run `graphify devin install --project`. It writes the skill to `.devin/skills/graphify` and an always-on rule to `.windsurf/rules/graphify.md`, which Devin Desktop still reads.
+
 <Tabs>
 <Tab title="Graphify">
 
 The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), and [Vercel](/integrations/vercel) pages are install packages for one product. They are not the only way to use Graphify.
 
-Any coding assistant or IDE that can add a remote MCP server can use the same hosted server. That includes Antigravity, Windsurf, Cline, Continue, Zed, and clients that are not listed yet.
+Any coding assistant or IDE that can add a remote MCP server can use the same hosted server. That includes Antigravity, Windsurf (now Devin Desktop), Cline, Continue, Zed, and clients that are not listed yet.
 
 The server is `https://api.graphify.com/mcp`. It uses Streamable HTTP. The first connection signs you in with OAuth. There is no API key to paste.
 
@@ -182,7 +200,7 @@ graphify install --platform opencode
 | Hermes | `hermes` |
 | Kiro | `kiro` |
 | Pi | `pi` |
-| Devin CLI | `devin` |
+| Devin CLI and Devin Desktop (formerly Windsurf) | `devin` |
 | Google Antigravity | `antigravity` |
 | Kimi Code | `kimi` |
 | Shared agent skill convention | `agents` |

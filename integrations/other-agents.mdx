@@ -90,7 +90,13 @@ Windsurf is now Devin Desktop. It was renamed on June 2, 2026, and its docs move
 }
 ```
 
-Or open **Customize** in the Agents window, then **MCPs**. Leave headers empty, because Graphify signs you in with OAuth in the browser. If the server shows **Needs authentication**, click **Authenticate**. Devin Local uses the same setup as Devin CLI, so `devin mcp add -s user graphify https://api.graphify.com/mcp` writes the same entry and `devin mcp login graphify` signs you in. The Windsurf plugin for JetBrains reads the same file and accepts `url` or `serverUrl`.
+Or open **Customize** in the Agents window, then **MCPs**. Leave headers empty, because Graphify signs you in with OAuth in the browser. If the server shows **Needs authentication**, click **Authenticate**. Devin Local uses the same setup as Devin CLI, so `devin mcp add -s user graphify https://api.graphify.com/mcp` writes the same entry and `devin mcp login graphify` signs you in. The Windsurf plugin for JetBrains reads the same file and accepts `url` or `serverUrl`. Keep `url`, so one entry works for Devin Local and the plugin. In JetBrains, add it under **Settings**, **Tools**, **Windsurf Settings**, **Add Server**, then refresh.
+
+The editor's own MCP discovery uses a separate file, `~/.codeium/windsurf/mcp_config.json` (or `~/.codeium/windsurf-next/mcp_config.json` for Next). Add Graphify to `~/.config/devin/mcp_config.json` so the agent sees it.
+
+<Note>
+The Windsurf plugin for JetBrains is in maintenance mode and newer JetBrains releases can break it. Cognition recommends [Devin over ACP in JetBrains](https://docs.devin.ai/windsurf/plugins/getting-started) instead.
+</Note>
 
 For a local graph with the open-source Graphify CLI, run `graphify install --platform devin`. It installs the Graphify skill in `~/.config/devin/skills/graphify`. To set up one project instead, run `graphify devin install --project`. It writes the skill to `.devin/skills/graphify` and an always-on rule to `.windsurf/rules/graphify.md`, which Devin Desktop still reads.
 

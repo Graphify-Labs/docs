@@ -251,6 +251,7 @@
             "icon": "bot",
             "pages": [
               "cookbooks/claude-code-monorepo",
+              "cookbooks/opencode",
               "cookbooks/cloud-coding-agents",
               "cookbooks/make-agents-use-the-graph",
               "cookbooks/fix-review-findings",

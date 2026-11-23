@@ -25,8 +25,8 @@ You use OpenCode every day, sometimes with a hosted model, sometimes with a loca
 - A local code graph in `graphify-out/`, built by Graphify CLI.
 - OpenCode wired to it with three plain files: a skill, an `AGENTS.md` section and a small plugin.
 - Git hooks that rebuild the graph after commits, checkouts, merges and rebases.
-- Optional: the graph served to OpenCode as a local MCP server.
-- Optional: hosted Graphify over MCP, with OAuth sign-in and no API key.
+- The graph served to OpenCode as a local MCP server.
+- Hosted Graphify over MCP, with OAuth sign-in and no API key.
 
 ## Setup
 
@@ -188,7 +188,7 @@ This adds `post-commit`, `post-checkout`, `post-merge` and `post-rewrite` hooks 
 
 Keep vendored and generated folders out of the graph with a `.graphifyignore`. See [Ignoring files](/open-source/configuration/ignoring-files).
 
-## Step 6 (optional): Keep the whole loop on your machine
+## Step 6: Keep the whole loop on your machine
 
 OpenCode can run on a local model, and so can Graphify CLI. Code parsing never needs one. For docs, papers and community names, point Graphify at Ollama:
 
@@ -200,7 +200,7 @@ graphify label . --backend ollama
 
 Then no source file leaves your machine at any step. Tuning for a laptop GPU is in [Run a local code knowledge graph with Ollama](/cookbooks/local-with-ollama). For other OpenAI-compatible servers, see [LLM providers](/open-source/configuration/llm-providers).
 
-## Step 7 (optional): Serve the graph to OpenCode over MCP
+## Step 7: Serve the graph to OpenCode over MCP
 
 The skill and plugin have OpenCode run `graphify` commands in its shell. If you'd rather give it graph tools directly, serve the same `graph.json` as a local MCP server:
 

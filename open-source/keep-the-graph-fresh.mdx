@@ -2,7 +2,7 @@
 title: "Keep your code graph up to date"
 sidebarTitle: "Keeping the graph fresh"
 description: "Keep your Graphify code graph up to date with git hooks or graphify watch. See what each refreshes, how to check it works, and the known limits."
-keywords: ["graphify hook install", "graphify watch", "git hooks", "post-merge hook", "keep code graph up to date", "graphify update after git pull", "git hook", "hooks", "post-commit"]
+keywords: ["graphify hook install", "graphify watch", "git hooks", "post-merge hook", "keep code graph up to date", "graphify update after git pull", "git hook", "hooks", "post-commit", "worktree", "git worktree", "graphify worktree", "graphify_out worktree"]
 surface: "local"
 icon: "git-merge"
 ---
@@ -162,6 +162,9 @@ These are open issues in the Graphify CLI repository. We'll update this page whe
   </Accordion>
   <Accordion title="Should I use hooks and watch together?">
     You can. Rebuilds take a per-repository lock and queue behind each other, so they don't pile up. Most people only need hooks.
+  </Accordion>
+  <Accordion title="How do I use Graphify with git worktrees?">
+    The hooks skip rebuilds in a linked `git worktree`, so a commit there leaves the main checkout's graph alone. To give a worktree its own graph, set `GRAPHIFY_OUT` to a different folder in that worktree, for example `GRAPHIFY_OUT=graphify-out-feature graphify extract . --code-only`, and use the same value when you run `graphify update .` there. See [environment variables](/open-source/configuration/environment-variables). To see which pull requests are checked out in which worktree, run `graphify prs --worktrees`.
   </Accordion>
   <Accordion title="How do I turn the hooks off for one command?">
     Set `GRAPHIFY_SKIP_HOOK=1`, for example `GRAPHIFY_SKIP_HOOK=1 git pull`. To remove the hooks, see [Turn off or remove the hooks](#turn-off-or-remove-the-hooks).

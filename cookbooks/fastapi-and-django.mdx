@@ -1,0 +1,213 @@
+---
+title: "Map a FastAPI or Django app with Graphify CLI"
+sidebarTitle: "FastAPI and Django apps"
+description: "Build a code graph of a FastAPI or Django app with Graphify CLI, then trace routes, dependencies, models and views with real query output."
+keywords: ["fastapi", "django", "fastapi graphify", "django graphify", "graphify fastapi", "graphify django", "fastapi code graph", "django code graph", "python web framework", "python web app", "flask", "fastapi depends", "django urls", "django models", "django migrations", "alembic", "fastap", "djang", "python backend knowledge graph"]
+surface: "both"
+hideFooterPagination: true
+icon: "server"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+Graphify CLI parses FastAPI and Django code as Python, so there is no plugin to install and no framework setting to pick. This recipe builds a graph of two real open-source apps, the [FastAPI full stack template](https://github.com/fastapi/full-stack-fastapi-template) and the Django app behind [djangoproject.com](https://github.com/django/djangoproject.com), and shows the questions it answers well. Every output on this page is real, from Graphify CLI 0.9.115 on 23 November 2026, with long outputs trimmed. Your counts will differ.
+
+## The scenario
+
+You join a team with a FastAPI or Django backend. You want to know where login issues a token, which views read the blog model, and what breaks if you change a dependency. You want answers that cite files and lines, not a guess from your agent.
+
+## What you'll build
+
+- A local code graph of the backend in `graphify-out/`, with no API key and no model.
+- A `.graphifyignore` that keeps tests and generated migrations out of the first graph.
+- A set of `query`, `path` and `explain` commands you can reuse on your own app.
+
+## Setup
+
+- `uv` or `pipx`. See [Installation](/open-source/installation).
+- A FastAPI or Django repository. To follow along exactly, clone the two used here:
+
+```bash
+git clone --depth 1 https://github.com/fastapi/full-stack-fastapi-template
+git clone --depth 1 https://github.com/django/djangoproject.com
+```
+
+## Step 1: Install Graphify CLI
+
+```bash
+uv tool install --python 3.12 graphifyy    # or: pipx install graphifyy
+graphify --version
+```
+
+## Step 2: Keep tests and migrations out of the first graph
+
+Test files touch every model, so on a well tested app they crowd the top of every answer. On djangoproject.com, the first result for "how are blog entries published" was a test docstring. Add a `.graphifyignore` at the scan root:
+
+<Tabs>
+<Tab title="FastAPI">
+
+```gitignore .graphifyignore
+# Tests and generated migrations
+tests/
+app/alembic/versions/
+```
+
+</Tab>
+<Tab title="Django">
+
+```gitignore .graphifyignore
+# Tests and generated migrations
+**/tests.py
+**/tests/
+**/migrations/
+```
+
+</Tab>
+</Tabs>
+
+On djangoproject.com this took the graph from 2,944 nodes and 5,421 edges to 1,853 nodes and 3,174 edges, and the blog question then started from `blog/models.py`, `blog/admin.py` and `blog/feeds.py`. Remove the lines again when you want the graph to answer questions about the tests. See [Ignoring files](/open-source/configuration/ignoring-files) for the full syntax.
+
+If you keep migrations in the graph, Graphify still drops the module docstrings that Django and Alembic write at the top of each migration file, so change notes don't show up as design rationale. Docstrings on functions inside a migration are kept.
+
+## Step 3: Build the graph
+
+Run this in the backend folder. `--code-only` parses code locally and skips docs, so nothing is sent to a model:
+
+```bash
+graphify extract . --code-only
+```
+
+| App | Graph | Time |
+| --- | --- | --- |
+| FastAPI full stack template, `backend/` at `77e550a` | 188 nodes, 467 edges, 15 communities | about 1 second |
+| djangoproject.com at `9596082` | 1,853 nodes, 3,174 edges, 161 communities | about 4 seconds |
+
+Both runs used 8 workers. For scale, the same command on the Django framework source (3,141 files at `0eae0b2`) built 54,883 nodes and 131,242 edges in 57 seconds.
+
+## Step 4: Ask questions about a FastAPI app
+
+Find where login creates a token. `query` takes a plain English question and starts from the names it matches:
+
+```bash
+graphify query "how does login create an access token" --budget 400
+```
+
+```text
+Graph: graphify-out/graph.json (188 nodes) | Traversal: BFS depth=2 | Start: ['login_access_token()', 'Token', 'create_access_token()', 'login.py', 'create_user()'] | 115 nodes found
+
+NODE login_access_token() [src=app/api/routes/login.py loc=L24 community=2]
+NODE login.py [src=app/api/routes/login.py loc=L1 community=0]
+NODE Token [src=app/models.py loc=L114 community=4]
+NODE create_access_token() [src=app/core/security.py loc=L22 community=2]
+```
+
+Confirm the call with `path`:
+
+```text
+$ graphify path "login_access_token" "create_access_token"
+Shortest path (1 hops):
+  login_access_token() --calls [EXTRACTED]--> create_access_token()
+Path confidence: EXTRACTED (weakest hop 1: calls)
+```
+
+See what a dependency reads with `explain`:
+
+```text
+$ graphify explain "get_current_user"
+Node: get_current_user()
+  Source:    app/api/deps.py L30
+
+Connections (6):
+  <-- deps.py [contains] [EXTRACTED] app/api/deps.py:L30
+  --> User [uses] [INFERRED 0.95] app/api/deps.py:L30
+  --> jwt [calls] [EXTRACTED] app/api/deps.py:L32
+  --> TokenPayload [calls] [EXTRACTED] app/api/deps.py:L35
+  --> SessionDep [references] [EXTRACTED] app/api/deps.py:L30
+  --> TokenDep [references] [EXTRACTED] app/api/deps.py:L30
+```
+
+## Step 5: Ask questions about a Django app
+
+Find everything that reads the blog `Entry` model:
+
+```text
+$ graphify explain "Entry"
+Node: Entry
+  Source:    blog/models.py L177
+
+Connections (21):
+  <-- blog/admin.py [imports] [EXTRACTED] blog/admin.py:L9
+  <-- blog/views.py [imports] [EXTRACTED] blog/views.py:L10
+  <-- BlogViewMixin [uses] [INFERRED 0.95] blog/views.py:L22
+  <-- WeblogEntryFeed [uses] [INFERRED 0.95] blog/feeds.py:L13
+  <-- WeblogSitemap [uses] [INFERRED 0.95] blog/sitemaps.py:L11
+  <-- BlogDateDetailView [uses] [INFERRED 0.95] blog/views.py:L59
+  ...
+```
+
+That one command lists the admin, views, feed, sitemap and template tag that depend on the model, which is the list you need before you change a field. Trace one of them:
+
+```text
+$ graphify path "BlogDateDetailView" "Entry"
+Shortest path (1 hops):
+  BlogDateDetailView --uses [INFERRED 0.95]--> Entry
+```
+
+`EXTRACTED` edges are read straight from the source. `INFERRED` edges come from resolving names across files, so open the cited line before you rely on one.
+
+## How framework wiring shows up
+
+Graphify links functions, classes, calls, imports and inheritance. Wiring that lives in module level code, outside any function, is linked through the file rather than with a direct edge:
+
+- **FastAPI dependencies.** An alias like `CurrentUser = Annotated[User, Depends(get_current_user)]` has no edge to `get_current_user`. A route that uses it reaches the dependency through its file: `read_items() <-- items.py --> deps.py --> get_current_user()`.
+- **FastAPI routers.** `api_router.include_router(login.router)` in `app/api/main.py` adds no call edges. `explain "app/api/main.py"` still lists every routes file it imports.
+- **Django URLs.** `urlpatterns` entries don't point at their views. `path "blog/urls.py" "BlogDateDetailView"` goes through `blog/views.py`.
+
+So for "which routes use this dependency" or "which URL serves this view", ask `explain` on the dependency or the `urls.py` file, or run `path` between the route and the dependency. Both answer from the import edges.
+
+## Keep the graph fresh
+
+After you change code, update the graph. It reparses only what changed and needs no model:
+
+```bash
+graphify update .
+```
+
+To do this on every commit and branch switch, run `graphify hook install`. See [Keep the graph current](/open-source/keep-the-graph-fresh).
+
+## How accurate are the cross-file edges?
+
+The graph on the Graphify CLI [README](https://github.com/Graphify-Labs/graphify#see-it-in-action) is the FastAPI library itself, built from code only. The maintainers audited every `INFERRED` cross-file edge whose two ends both sit in the `fastapi/` package, on a fresh build on 5 October 2026, and all 12 were correct. It's a dated spot check on one codebase, not a running metric, and results vary by codebase. The method is in [BENCHMARKS.md](https://github.com/Graphify-Labs/graphify/blob/v8/BENCHMARKS.md).
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does Graphify support FastAPI and Django?" icon="circle-check">
+    Yes. Both are Python, and Graphify CLI parses them with its Python extractor. Routes, dependencies, models, views, admin classes and template tags all become nodes you can query.
+  </Accordion>
+  <Accordion title="Does it work for Flask or other Python frameworks?" icon="circle-help">
+    Any Python web app is parsed the same way. This page only shows runs on FastAPI and Django apps.
+  </Accordion>
+  <Accordion title="Do I need an API key?" icon="key-round">
+    No. `graphify extract . --code-only` parses code locally. A model is only used for docs, papers and images.
+  </Accordion>
+  <Accordion title="My app has a TypeScript frontend too. Does that work?" icon="layers">
+    Yes. Run Graphify at the repository root and it parses the Python backend and the JavaScript or TypeScript frontend into one graph. See [Supported inputs](/open-source/features/languages).
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Ask better graph questions" icon="search" href="/open-source/features/querying">
+    Pick query, path or explain for each kind of question.
+  </Card>
+  <Card title="Plan a safe refactor" icon="compass" href="/cookbooks/plan-a-refactor">
+    List every caller and the tests to run before you change code.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

@@ -231,6 +231,7 @@
             "pages": [
               "cookbooks/overview",
               "cookbooks/onboard-to-a-codebase",
+              "cookbooks/fastapi-and-django",
               "cookbooks/plan-a-refactor",
               "cookbooks/read-your-graph",
               "cookbooks/govern-codebase-non-engineer",

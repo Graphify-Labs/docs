@@ -1,7 +1,7 @@
 ---
 title: "Ask better graph questions"
 description: "Ask better questions of your code knowledge graph with graphify query, path, and explain, and pick the right command for each kind of question."
-keywords: ["graphify query", "graphify path", "graphify explain", "ask the graph", "token budget", "token_budget", "--budget"]
+keywords: ["graphify query", "graphify path", "graphify explain", "ask the graph", "token budget", "token_budget", "--budget", "natural language", "natural language query", "plain english", "ask in plain english", "ask a question", "natural langu"]
 surface: "local"
 icon: "search"
 ---
@@ -113,6 +113,8 @@ Retry with one of the listed IDs, or a `path::symbol` form. If you get `No node 
 ## FAQ
 
 **Does querying call an LLM?** No. `query`, `path` and `explain` read `graph.json` locally.
+
+**Can I ask in natural language?** Yes. `graphify query` takes a plain English question, such as `graphify query "how does the client send a request"`. It drops question and filler words, matches the rest against node names, docstrings and file paths, and returns the matching part of the graph. No model is involved, so use words that appear in your code. In the httpx example above, "send a request" starts from `send()` and `Request`. `path` and `explain` take names, not questions. To have your agent ask the graph for you while you describe changes in plain English, see [Vibe coding with Graphify CLI](/open-source/vibe-coding).
 
 **What does INFERRED mean?** The edge came from a resolution step, not a direct syntax match. EXTRACTED edges were read straight from the source. Check INFERRED edges before you rely on them.
 

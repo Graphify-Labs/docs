@@ -131,6 +131,7 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | What you see | What to do |
 | --- | --- |
 | Graphify rejects the connection | You added the server but did not sign in. Run `codex mcp login graphify`. |
+| `/mcp` lists `graphify` as **authentication required** (common after installing the plugin from the terminal) | Installing from the terminal does not sign you in. Quit Codex, run `codex mcp login graphify`, finish the browser sign-in, then start a new session. |
 | `graphify` is missing from `/mcp` | Start a new Codex session after adding it, and check the `[mcp_servers.graphify]` entry in `config.toml`. |
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
 | Every Graphify tool appears twice | You have both the plugin and a manual server entry. Remove one. |

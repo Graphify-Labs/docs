@@ -1,0 +1,331 @@
+---
+title: "Go fully open source with OpenCode and Graphify CLI"
+sidebarTitle: "OpenCode, fully open source"
+description: "Run OpenCode on a code graph from the open-source Graphify CLI: setup, AGENTS.md and plugin, git hooks, local MCP, hosted MCP with OAuth, and workflows."
+keywords: ["opencode", "open code", "opencode graphify", "graphify opencode", "how to use graphify with opencode", "opencode mcp", "opencode mcp add", "opencode knowledge graph", "opencode code graph", "opencode skill", "opencode plugin", "graphify opencode install", "graphify install --platform opencode", "open source coding agent", "fully open source ai coding", "opencode local model", "opencode ollama", "opencode agents.md", "openc", "opencod", "open cod"]
+surface: "both"
+hideFooterPagination: true
+icon: "terminal"
+---
+
+import TryCloudCard from '/snippets/try-cloud-card.mdx';
+
+[OpenCode](https://opencode.ai) is an open-source coding agent. [Graphify CLI](https://github.com/Graphify-Labs/graphify) is the open-source Graphify. Put them together and every part of the loop is code you can read: the agent, the code graph it answers from, and the files that wire them together. This recipe sets that up, shows the workflows people run with it, and covers hosted Graphify for when you want a team graph instead.
+
+## The scenario
+
+You use OpenCode every day, sometimes with a hosted model, sometimes with a local one. Each new session starts cold. Ask "what does the payments module do?" and OpenCode opens the README, then a config file, then source files one by one, and rebuilds the same picture it built yesterday. You want three things:
+
+1. OpenCode answers structural questions from a graph of the repository, with file and line citations.
+2. The graph stays current as you commit, pull and switch branches.
+3. Nothing in the setup is a black box. Every file it writes sits in your repository, readable and diffable.
+
+## What you'll build
+
+- A local code graph in `graphify-out/`, built by Graphify CLI.
+- OpenCode wired to it with three plain files: a skill, an `AGENTS.md` section and a small plugin.
+- Git hooks that rebuild the graph after commits, checkouts, merges and rebases.
+- Optional: the graph served to OpenCode as a local MCP server.
+- Optional: hosted Graphify over MCP, with OAuth sign-in and no API key.
+
+## Setup
+
+- OpenCode installed. See [opencode.ai](https://opencode.ai).
+- `uv` or `pipx`. See [Installation](/open-source/installation) for each operating system, including Windows.
+- A git repository to try it on.
+
+## Step 1: Install Graphify CLI
+
+```bash
+uv tool install --python 3.12 graphifyy    # or: pipx install graphifyy
+graphify --version
+```
+
+The package is `graphifyy` with two y's. The command is `graphify`.
+
+## Step 2: Wire Graphify into OpenCode
+
+In the repository root, run the OpenCode installer with `--project`:
+
+```bash
+graphify opencode install --project
+```
+
+```text
+  references       ->  .opencode/skills/graphify/references
+  skill installed  ->  .opencode/skills/graphify/SKILL.md
+graphify section written to /home/you/your-repo/AGENTS.md
+  .opencode/plugins/graphify.js  ->  tool.execute.before hook written
+
+Opencode will now check the knowledge graph before answering
+codebase questions and rebuild it after code changes.
+
+Project-scoped install. Add to version control:
+  git add .opencode/ AGENTS.md
+```
+
+That writes three files, all in your repository:
+
+| File | What it does |
+| --- | --- |
+| `.opencode/skills/graphify/SKILL.md` | The Graphify skill. OpenCode lists it to the agent and loads it when a task calls for it. |
+| `AGENTS.md` | A `## graphify` section telling the agent to query the graph before it greps or reads files. |
+| `.opencode/plugins/graphify.js` | A plugin OpenCode loads on its own. Before the first shell command of a session, if `graphify-out/graph.json` exists, it adds a one-line reminder to use `graphify query`. It never blocks a command. |
+
+Commit them so everyone on the repository gets the same setup:
+
+```bash
+git add .opencode/ AGENTS.md
+git commit -m "add graphify for opencode"
+```
+
+<Tip>
+**Personal instead of per repository?** `graphify install --platform opencode` writes the skill and the plugin to `~/.config/opencode/` for every project, without an `AGENTS.md` section.
+</Tip>
+
+<Warning>
+Use the OpenCode command, not the bare `graphify install`. With no platform, `graphify install` sets up Claude Code. If an agent ran the bare command for you, run `graphify claude uninstall` to remove those files, then run `graphify opencode install --project`.
+</Warning>
+
+## Step 3: Build the graph
+
+You can build from the terminal or let OpenCode do it.
+
+<Tabs>
+  <Tab title="From the terminal">
+    Code is parsed locally with tree-sitter. No model and no API key are involved:
+
+    ```bash
+    graphify extract . --code-only
+    graphify cluster-only . --no-label
+    ```
+
+    This is the fastest path, and the same commands work in scripts and CI.
+  </Tab>
+  <Tab title="From OpenCode">
+    Start OpenCode in the repository, switch to build mode, and ask:
+
+    ```text
+    Use the graphify skill to build a knowledge graph of this project.
+    ```
+
+    Typing `/graphify .` also works for many people. OpenCode loads skills through its skill tool rather than the `/` menu, so if `/graphify` isn't listed there, ask in plain words as above.
+
+    Code is still parsed locally. If the repository has docs, PDFs or images, the skill hands those to OpenCode subagents, so your OpenCode model reads them. Each subagent is a separate model call, so check how your model provider counts requests. A code-only build makes no model calls.
+  </Tab>
+</Tabs>
+
+Either way you get:
+
+| Output | Use it for |
+| --- | --- |
+| `graphify-out/graph.json` | The graph the agent queries. |
+| `graphify-out/GRAPH_REPORT.md` | Hubs, code areas and suggested questions, for broad architecture context. |
+| `graphify-out/graph.html` | An interactive view you open in a browser. |
+
+## Step 4: Ask OpenCode real questions
+
+Start a new OpenCode session so it reads the updated `AGENTS.md`. When the plugin fires, the first shell command of the session shows this line:
+
+```text
+[graphify] knowledge graph at graphify-out/. For focused questions, run graphify query with your question (scoped subgraph, usually much smaller than GRAPH_REPORT.md) instead of grepping raw files. Read GRAPH_REPORT.md only for broad architecture context.
+```
+
+These are the workflows people run most often with OpenCode and Graphify.
+
+### Understand a module before you touch it
+
+```text
+What does the payments module do? Give me a short summary of each file and how they connect. Use the Graphify graph first and cite file paths.
+```
+
+OpenCode runs a scoped query instead of opening every file:
+
+```bash
+graphify query "payments module" --budget 1500
+```
+
+### Trace a flow end to end
+
+```text
+Use the Graphify knowledge graph to explain how a login request reaches the database. Show the path and the files involved.
+```
+
+Behind the scenes:
+
+```bash
+graphify path "LoginHandler" "UserRepository"
+graphify explain "AuthService"
+```
+
+`path` returns the shortest chain of calls and imports between two symbols. `explain` shows one symbol, where it lives, and everything connected to it. Swap in names from your code.
+
+### Check impact before a refactor
+
+```text
+I want to rename normalizeAddress. Use Graphify to list every caller and the tests that cover them, then propose a plan. Don't edit anything yet.
+```
+
+The answer comes from edges in the graph, each tagged `EXTRACTED` (read from the source), `INFERRED` (worked out by a resolver) or `AMBIGUOUS` (several possible targets). Treat `INFERRED` and `AMBIGUOUS` as leads to verify. For the full routine, see [Plan a safe refactor](/cookbooks/plan-a-refactor).
+
+### Onboard to a repository you didn't write
+
+```text
+Read graphify-out/GRAPH_REPORT.md, then tell me the five most connected parts of this codebase and what each one is for.
+```
+
+For a longer version, see [Understand a new codebase in 30 minutes](/cookbooks/onboard-to-a-codebase).
+
+## Step 5: Keep the graph fresh
+
+OpenCode answers from the saved graph, not the files on disk, so an old graph gives old answers. Install the git hooks once per repository:
+
+```bash
+graphify hook install
+```
+
+This adds `post-commit`, `post-checkout`, `post-merge` and `post-rewrite` hooks that rebuild the code graph in the background, so it follows you across branches. Hook rebuilds are code-only, so they never call a model. To refresh by hand, run `graphify update .`. See [Keep your code graph up to date](/open-source/keep-the-graph-fresh) for what each hook does and the cases it skips on purpose.
+
+Keep vendored and generated folders out of the graph with a `.graphifyignore`. See [Ignoring files](/open-source/configuration/ignoring-files).
+
+## Step 6 (optional): Keep the whole loop on your machine
+
+OpenCode can run on a local model, and so can Graphify CLI. Code parsing never needs one. For docs, papers and community names, point Graphify at Ollama:
+
+```bash
+uv tool install --python 3.12 "graphifyy[ollama]"
+graphify extract . --backend ollama
+graphify label . --backend ollama
+```
+
+Then no source file leaves your machine at any step. Tuning for a laptop GPU is in [Run a local code knowledge graph with Ollama](/cookbooks/local-with-ollama). For other OpenAI-compatible servers, see [LLM providers](/open-source/configuration/llm-providers).
+
+## Step 7 (optional): Serve the graph to OpenCode over MCP
+
+The skill and plugin have OpenCode run `graphify` commands in its shell. If you'd rather give it graph tools directly, serve the same `graph.json` as a local MCP server:
+
+```bash
+uv tool install --python 3.12 "graphifyy[mcp]"
+opencode mcp add graphify-local -- graphify-mcp /absolute/path/to/your-repo/graphify-out/graph.json
+opencode mcp list
+```
+
+OpenCode starts `graphify-mcp` over stdio. Use an absolute path. The tool list is in the [MCP tool reference](/open-source/features/mcp-tools), and server flags are in the [MCP server quickstart](/open-source/mcp-server).
+
+## Use hosted Graphify instead
+
+[Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbook-opencode) hosts the graph for your team, rebuilds it on every push, and adds Memory, the Wiki and pull request reviews. OpenCode connects to it as a remote MCP server.
+
+<Steps>
+  <Step title="Add the server">
+    In the project, run:
+
+    ```bash
+    opencode mcp add graphify --url https://api.graphify.com/mcp
+    ```
+
+    Add `--global` to use it in every project. Or add it to `opencode.jsonc` by hand:
+
+    ```jsonc opencode.jsonc
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "mcp": {
+        "servers": {
+          "graphify": {
+            "type": "remote",
+            "url": "https://api.graphify.com/mcp"
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+  <Step title="Sign in">
+    OpenCode uses OAuth for remote servers by default, and Graphify needs no API key. Run `opencode mcp list`. If `graphify` shows `needs authentication`, open OpenCode, run `/mcps`, select `graphify` and sign in in the browser. `opencode mcp auth graphify` starts the same sign-in from the terminal.
+
+    Running OpenCode over SSH or in a container? After you sign in, the browser lands on a local callback page that doesn't load. Copy that page's URL and paste it into OpenCode's sign-in prompt.
+  </Step>
+  <Step title="Check it works">
+    Start a session and paste:
+
+    ```text
+    Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+    ```
+
+    You should see your indexed repositories. If the list is empty, index one first in the [Quickstart](/platform/quickstart).
+  </Step>
+</Steps>
+
+Hosted repository tools include `query_graph`, `graphify_find`, `graphify_callers`, `graphify_impact` and `recall`. Your client shows the current list. To make OpenCode reach for them before it greps, add the hosted rule block from [Make your AI coding agent use the graph](/cookbooks/make-agents-use-the-graph) to `AGENTS.md`. To skip a lookup, set a default repository on the URL, such as `https://api.graphify.com/mcp?repo=acme/web-app`.
+
+OpenCode exposes MCP tools through its Code Mode by default. Set `"codemode": false` on the `graphify` server if you want its tools on the model's native tool list instead.
+
+## When it goes wrong
+
+| What you see | What to do |
+| --- | --- |
+| `/graphify` isn't in OpenCode's `/` menu | OpenCode loads skills through its skill tool, not the `/` menu. Ask: "Use the graphify skill to build a knowledge graph of this project." |
+| OpenCode says the `graphify.js` plugin failed to load | The file came from an older Graphify CLI. Run `uv tool upgrade graphifyy`, then `graphify opencode install --project` again. |
+| You find Claude Code files but no OpenCode files | The bare `graphify install` ran. Run `graphify claude uninstall`, then `graphify opencode install --project`. |
+| Answers miss code you just wrote | The graph is older than your edits. Run `graphify update .`, or install the hooks from Step 5. |
+| `opencode mcp list` shows `needs authentication` | Open OpenCode, run `/mcps`, select `graphify` and sign in. |
+| The tools are the local ones, not the hosted ones | You are talking to `graphify-local`. Hosted tools include `list_repositories`. Keep separate server names for the two. |
+
+## Remove it
+
+```bash
+graphify opencode uninstall --project
+```
+
+This removes the skill, the plugin and the `## graphify` section from `AGENTS.md`, and leaves the rest of the file alone. Add `graphify hook uninstall` to drop the git hooks. To remove a hosted or local MCP server, delete its entry from your OpenCode config.
+
+## Complete example
+
+```bash
+uv tool install --python 3.12 graphifyy
+cd your-repo
+graphify opencode install --project
+graphify extract . --code-only
+graphify cluster-only . --no-label
+graphify hook install
+git add .opencode/ AGENTS.md
+git commit -m "add graphify for opencode"
+opencode
+```
+
+## What you built
+
+An open-source coding agent that starts from an open-source code graph, with the wiring committed to your repository and the graph rebuilt on every git event. Swap the model, swap the machine, and the setup still works.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does Graphify work with OpenCode?" icon="circle-check">
+    Yes, two ways. Graphify CLI installs a skill, an `AGENTS.md` section and a plugin with `graphify opencode install --project`. Hosted Graphify connects as a remote MCP server at `https://api.graphify.com/mcp`.
+  </Accordion>
+  <Accordion title="Do I need an API key?" icon="key-round">
+    No. Code parsing is local and needs no model. Hosted Graphify signs you in with OAuth. A model is only used for docs, papers and images, and in OpenCode that can be your OpenCode model or a local one.
+  </Accordion>
+  <Accordion title="Can OpenCode and Claude Code share one graph?" icon="share-2">
+    Yes. Both read the same `graphify-out/`. Run each agent's installer, such as `graphify opencode install --project` and `graphify claude install`, and they query the same graph.
+  </Accordion>
+  <Accordion title="Should I use the skill or the local MCP server?" icon="split">
+    Start with the skill and plugin. They need nothing running. Add the local MCP server when you want OpenCode to call graph tools directly, or when several agents should read one graph.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Make agents use the graph" icon="crosshair" href="/cookbooks/make-agents-use-the-graph">
+    Rules that make the agent query before it greps.
+  </Card>
+  <Card title="Fully local with Ollama" icon="hard-drive-download" href="/cookbooks/local-with-ollama">
+    Docs and community names on a local model.
+  </Card>
+  <TryCloudCard />
+</CardGroup>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

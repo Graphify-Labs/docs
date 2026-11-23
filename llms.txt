@@ -223,6 +223,7 @@ Use for team workflows: reviews, a shared graph and cross-repo dependencies.
 Use when making coding agents use the graph, including cloud agents and local models.
 
 - [Claude Code MCP and hooks for your monorepo](https://docs.graphify.com/cookbooks/claude-code-monorepo.md): Set up Claude Code MCP and hooks for a monorepo: install the Graphify skill, add always-on hooks and a local MCP server, then measure token savings.
+- [Go fully open source with OpenCode and Graphify CLI](https://docs.graphify.com/cookbooks/opencode.md): Run OpenCode on a code graph from the open-source Graphify CLI: setup, AGENTS.md and plugin, git hooks, local MCP, hosted MCP with OAuth, and workflows.
 - [Connect cloud coding agents to remote MCP](https://docs.graphify.com/cookbooks/cloud-coding-agents.md): Add Graphify's remote MCP server to Claude Code, Codex, Cursor or VS Code, sign in with OAuth, and let your coding agent query your indexed repos.
 - [Make your AI coding agent use the graph](https://docs.graphify.com/cookbooks/make-agents-use-the-graph.md): Get Claude Code, Codex and Cursor to query Graphify before they grep, using CLAUDE.md, AGENTS.md and Cursor rules, then prove the agent used it.
 - [Fix code review findings with a coding agent](https://docs.graphify.com/cookbooks/fix-review-findings.md): Have Claude Code or Codex fix code review findings: wait for the Graphify review, check each finding against the graph, fix it and ask for a fresh review.

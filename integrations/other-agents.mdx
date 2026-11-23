@@ -24,7 +24,7 @@ For hosted Graphify, run this in the project. Add `--global` to use the server i
 opencode mcp add graphify --url https://api.graphify.com/mcp
 ```
 
-OpenCode remote servers use OAuth by default, and there is no API key. If `opencode mcp list` shows "needs authentication", open OpenCode, run `/mcps`, select `graphify`, and sign in in the browser. For a local graph with the open-source Graphify CLI, run `uv tool install --python 3.12 graphifyy` and then `graphify install --platform opencode`.
+OpenCode remote servers use OAuth by default, and there is no API key. If `opencode mcp list` shows "needs authentication", open OpenCode, run `/mcps`, select `graphify`, and sign in in the browser. For a local graph with the open-source Graphify CLI, run `uv tool install --python 3.12 graphifyy` and then `graphify install --platform opencode`, or `graphify opencode install --project` to also write an `AGENTS.md` section. For the full setup and the workflows people run, see [Go fully open source with OpenCode and Graphify CLI](/cookbooks/opencode).
 
 <Tabs>
 <Tab title="Graphify">

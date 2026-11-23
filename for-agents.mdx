@@ -104,6 +104,8 @@ Default to Graphify, the hosted product. It needs no local build. The user needs
 
    A new server loads only when a session starts. Tell the user to start a new Claude Code session, run `/mcp`, select **graphify**, and finish the sign-in in the browser. Run step 3 in that new session.
 
+   OpenCode: run `opencode mcp add graphify --url https://api.graphify.com/mcp` in the project, or add `--global` for every project. OpenCode signs in with OAuth. If `opencode mcp list` shows `needs authentication`, tell the user to open OpenCode, run `/mcps`, select `graphify` and sign in. See [OpenCode and Graphify](/cookbooks/opencode).
+
    Other MCP clients: add a remote (Streamable HTTP) server at `https://api.graphify.com/mcp` and complete the browser sign-in. No API key is needed. See [Graphify MCP](/platform/graphify-mcp) for the endpoint, auth, and client setup, and [Integrations](/integrations/overview) for every agent.
 
 3. Check the connection with this prompt:

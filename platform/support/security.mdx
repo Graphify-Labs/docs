@@ -57,6 +57,7 @@ Assistants reach Graphify through the hosted MCP server at `https://api.graphify
 - When a member leaves or is removed, Graphify revokes the workspace API tokens that member created in that workspace. Remint any CI or MCP token they owned before reconnecting pipelines or agents.
 - An assistant reaches only the workspace it signed in to, and only repositories indexed in that workspace.
 - Some tools save notes or switch workspaces. Approve a tool call only when that is what you meant.
+- Graphify adds no hidden instructions to tool results. Results carry code, pull request text and notes from your repositories as they were written, so treat them like any other repository content.
 
 ## Graphify CLI
 

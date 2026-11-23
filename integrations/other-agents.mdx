@@ -2,7 +2,7 @@
 title: "Graphify for other MCP clients"
 sidebarTitle: "Other MCP clients"
 description: "Connect any MCP client to Graphify over Streamable HTTP, or run the open-source Graphify MCP server with a generic mcpServers entry."
-keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform", "pi coding agent", "pi guard", "oh my pi", "omp", "antigravity", "google antigravity", "opencode", "open code", "open cod", "openc", "opencode mcp", "how to use graphify with opencode", "anti", "antigr", "antigra", "antigrav", "anty", "antigravity install", "opencod", "graphify install opencode"]
+keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform", "pi coding agent", "pi guard", "oh my pi", "omp", "antigravity", "google antigravity", "opencode", "open code", "open cod", "openc", "opencode mcp", "how to use graphify with opencode", "anti", "antigr", "antigra", "antigrav", "anty", "antigravity install", "opencod", "graphify install opencode", "cline", "cline mcp", "zed", "zed mcp", "kilo", "kilo code", "kilo code mcp", "kimi", "kimi code"]
 surface: "both"
 hideFooterPagination: true
 ---
@@ -25,6 +25,56 @@ opencode mcp add graphify --url https://api.graphify.com/mcp
 ```
 
 OpenCode remote servers use OAuth by default, and there is no API key. If `opencode mcp list` shows "needs authentication", open OpenCode, run `/mcps`, select `graphify`, and sign in in the browser. For a local graph with the open-source Graphify CLI, run `uv tool install --python 3.12 graphifyy` and then `graphify install --platform opencode`, or `graphify opencode install --project` to also write an `AGENTS.md` section. For the full setup and the workflows people run, see [Go fully open source with OpenCode and Graphify CLI](/cookbooks/opencode).
+
+## How do I use Graphify with Kilo Code?
+
+Add hosted Graphify under the `mcp` key in `kilo.jsonc` in the project, or in `~/.config/kilo/kilo.jsonc` for every project:
+
+```jsonc
+{
+  "mcp": {
+    "graphify": {
+      "type": "remote",
+      "url": "https://api.graphify.com/mcp"
+    }
+  }
+}
+```
+
+Kilo Code starts the OAuth sign-in in the browser when the server asks for it, and there is no API key. For a local graph with the open-source Graphify CLI, run `graphify install --platform kilo`. It installs the Graphify skill and a `/graphify` command in `~/.config/kilo`.
+
+## How do I use Graphify with Cline?
+
+In Cline, open MCP Servers, choose the Remote Servers tab, name the server `graphify`, enter `https://api.graphify.com/mcp`, and pick Streamable HTTP. The same entry in `cline_mcp_settings.json` looks like this:
+
+```json
+{
+  "mcpServers": {
+    "graphify": {
+      "type": "streamableHttp",
+      "url": "https://api.graphify.com/mcp"
+    }
+  }
+}
+```
+
+Leave headers empty, because Graphify signs you in with OAuth. In Cline CLI, run `cline mcp add graphify https://api.graphify.com/mcp --transport http`, then run `cline mcp` and choose Authorize OAuth. For a local graph, run the [Graphify CLI MCP server](/open-source/mcp-server).
+
+## How do I use Graphify with Zed?
+
+In Zed, open Settings, then AI, then MCP Servers, and choose Add Remote Server. Or add it to `settings.json`:
+
+```json
+{
+  "context_servers": {
+    "graphify": {
+      "url": "https://api.graphify.com/mcp"
+    }
+  }
+}
+```
+
+With no `Authorization` header set, Zed prompts you to sign in with the standard MCP OAuth flow. For a local graph, run the [Graphify CLI MCP server](/open-source/mcp-server).
 
 <Tabs>
 <Tab title="Graphify">
@@ -134,6 +184,7 @@ graphify install --platform opencode
 | Pi | `pi` |
 | Devin CLI | `devin` |
 | Google Antigravity | `antigravity` |
+| Kimi Code | `kimi` |
 | Shared agent skill convention | `agents` |
 
 For example, run `graphify install --platform antigravity` for Google Antigravity.

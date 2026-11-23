@@ -22,7 +22,7 @@ To keep docs in sync with code, generate the structural part of them from the co
 ## Setup
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 cd your-repo
 graphify extract . --code-only
 ```
@@ -50,7 +50,7 @@ The commit should match `git rev-parse HEAD`.
 When you want the graph to follow you between commits, install the `watch` extra and run watch:
 
 ```bash
-uv tool install "graphifyy[watch]"
+uv tool install --python 3.12 "graphifyy[watch]"
 graphify watch .
 ```
 

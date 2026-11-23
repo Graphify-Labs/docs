@@ -19,7 +19,7 @@ Default to the hosted server. Use open-source Graphify only when the user asks f
 | --- | --- | --- |
 | Hosted MCP server | Default. The user's repositories are indexed at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=agents-overview). | Add `https://api.graphify.com/mcp` as a remote Streamable HTTP server. Sign-in is OAuth in the browser; there is no API key. Commands per agent: [Setup for AI agents](/for-agents#setup-for-ai-agents), step 2. |
 | One-click installs and plugins | The user prefers to click instead of editing config. | [Install in Cursor](/integrations/cursor), the [VS Code extension](/integrations/vscode), and the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) (setup: [Codex](/integrations/codex), [ChatGPT](/integrations/chatgpt)). All three connect to the same hosted server. |
-| Graphify CLI | The user asks for an offline or on-machine graph. | `uv tool install graphifyy`, then `graphify install`. See the [Graphify CLI quickstart](/open-source/quickstart). Its MCP tools are in the [MCP tool reference](/open-source/features/mcp-tools), and the names differ from the hosted ones. |
+| Graphify CLI | The user asks for an offline or on-machine graph. | `uv tool install --python 3.12 graphifyy`, then `graphify install`. See the [Graphify CLI quickstart](/open-source/quickstart). Its MCP tools are in the [MCP tool reference](/open-source/features/mcp-tools), and the names differ from the hosted ones. |
 
 Before you change a config file, tell the user what you will change and wait for a yes. After you connect, check the connection with `list_repositories`. If anything fails, use [Check your agent is using Graphify](/platform/verify-connection).
 
@@ -83,7 +83,7 @@ With Graphify CLI, the graph is a file on the machine. Offer `graphify hook inst
 You can add the server, but only the user can finish the OAuth sign-in in a browser. Until they do, every tool call fails and the client shows the server as needing login.
 
 1. Don't retry in a loop, and don't switch to Graphify CLI unless the user asks.
-2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or `codex mcp login graphify` in Codex. The full list is in [Check your agent is using Graphify](/platform/verify-connection).
+2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or `codex mcp login graphify` in Codex, then a new session. The full list is in [Check your agent is using Graphify](/platform/verify-connection).
 3. Remind them that a new server loads only when a session starts, so they may need to reload the editor or start a new session.
 4. Meanwhile, answer from the local files and say that the answer did not come from Graphify.
 5. After sign-in, call `list_repositories` and show the result.

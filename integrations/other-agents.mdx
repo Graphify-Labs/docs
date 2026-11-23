@@ -104,7 +104,7 @@ The skill is the same [skill.md](https://docs.graphify.com/skill.md) these docs 
 Install the package once, then select your platform:
 
 ```bash
-uv tool install graphifyy
+uv tool install --python 3.12 graphifyy
 graphify install --platform opencode
 ```
 
@@ -132,7 +132,7 @@ Some integrations use skills plus instructions; others also install native rules
 
 ### Pi and Oh My Pi
 
-Pi has no `PreToolUse` hook, so Graphify CLI ships a native Pi extension instead. It runs the same graph check before Pi's `read`, `grep`, `find` and search-style `bash` calls. It needs Pi 0.58.4 or newer, and Graphify installed persistently with `uv tool install graphifyy` or `pipx install graphifyy`, not `uvx`.
+Pi has no `PreToolUse` hook, so Graphify CLI ships a native Pi extension instead. It runs the same graph check before Pi's `read`, `grep`, `find` and search-style `bash` calls. It needs Pi 0.58.4 or newer, and Graphify installed persistently with `uv tool install --python 3.12 graphifyy` or `pipx install graphifyy`, not `uvx`.
 
 ```bash
 graphify install --platform pi

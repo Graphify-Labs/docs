@@ -8,12 +8,36 @@ icon: "brain"
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+import WorksWith from '/snippets/works-with.mdx';
 
 **Memory** holds your repository's decisions, incidents, and lessons as your coding agents record them, with evidence and history for your team and your agents. Facts are consolidated per code entity, not per conversation, so when an agent edits a function, it recalls what's known about that function.
+
+<WorksWith />
 
 <Note>
 **Use Memory when** you want to know why something is the way it is, what an agent learned in an earlier session, or which facts are tied to code that still exists.
 </Note>
+
+<CardGroup cols={2}>
+  <Card title="How Memory works" icon="workflow" href="#how-it-works">
+    Record, distil, merge by rule, then anchor each fact to code.
+  </Card>
+  <Card title="Add a memory" icon="circle-plus" href="#add-a-memory">
+    Save one fact your team should keep, right in Graphify.
+  </Card>
+  <Card title="Grounded facts" icon="anchor" href="#grounded-and-ungrounded-facts">
+    See which facts are tied to code that still exists.
+  </Card>
+  <Card title="Tell your agent" icon="bot" href="#tell-your-agent-to-use-memory">
+    Add an AGENTS.md block so agents call recall and remember.
+  </Card>
+  <Card title="Remember incident lessons" icon="siren" href="/cookbooks/remember-incident-lessons">
+    Save a lesson once so agents recall it before they edit that code.
+  </Card>
+  <Card title="Document the why" icon="lightbulb" href="/cookbooks/document-the-why">
+    Explain code that is odd on purpose so agents leave it alone.
+  </Card>
+</CardGroup>
 
 ## Before you start
 
@@ -242,6 +266,12 @@ Each row shows whether that version is **Published** or **Unreviewed**. You can 
 ## Remove and restore
 
 Removing a memory means Ask and agents stop using it. Its history is kept, and you can restore it. The confirm and the message Graphify shows after you remove one are in [Evidence and history](#evidence-and-history).
+
+## How long Memory is kept
+
+Memories and retained conversation turns don't expire with age. They stay until someone removes them, and a removed memory keeps its history so you can restore it. Graphify doesn't record raw tool-call activity for Memory.
+
+To export your memories or have them deleted, contact the [Graphify team](https://graphify.com/contact?utm_source=docs&utm_medium=link&utm_campaign=platform-memory). There's no export option in the app or over MCP. For how long data is kept after you delete it or close your account, see [Security](/platform/support/security#what-graphify-stores).
 
 ## Ask what your team knows
 

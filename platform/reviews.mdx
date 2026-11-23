@@ -3,13 +3,37 @@ title: "AI pull request reviews with code graph context"
 sidebarTitle: "Pull request reviews"
 description: "How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how the 1 to 5 merge confidence score works."
 surface: "cloud"
-keywords: ["AI code review", "pull request review", "@graphify review", "merge confidence score", "possible issues", "AI code review context", "cross-repo PR review"]
+keywords: ["AI code review", "pull request review", "@graphify review", "merge confidence score", "possible issues", "AI code review context", "cross-repo PR review", "code review benchmark", "AI code review accuracy"]
 icon: "git-pull-request"
 ---
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
+import WorksWith from '/snippets/works-with.mdx';
 
 **Reviews** brings pull requests, findings, and code-graph context together in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-reviews). Use it to understand a change and the code it can affect. Your coding agents can read the same review status over [MCP](/platform/graphify-mcp).
+
+<WorksWith />
+
+<CardGroup cols={2}>
+  <Card title="Merge confidence score" icon="gauge" href="#merge-confidence-score">
+    Read the 1 to 5 score and what each label means.
+  </Card>
+  <Card title="Review again after a fix" icon="rotate-cw" href="#review-again-after-a-fix">
+    Push a fix, then comment @graphify review for a fresh run.
+  </Card>
+  <Card title="Improve future reviews" icon="graduation-cap" href="#improve-future-reviews">
+    Teach Graphify with @graphify wrong, good, and suppress.
+  </Card>
+  <Card title="Review settings" icon="settings" href="#repository-review-settings">
+    Turn reviews, risky patterns, and stale docs checks on or off.
+  </Card>
+  <Card title="Fix review findings" icon="wrench" href="/cookbooks/fix-review-findings">
+    Have your coding agent check each finding, fix it, and ask again.
+  </Card>
+  <Card title="Review as a team" icon="users" href="/cookbooks/review-as-a-team">
+    Rank open PRs by impact and spot PRs that collide.
+  </Card>
+</CardGroup>
 
 ## When a review runs
 
@@ -76,6 +100,20 @@ A possible issue is a lead the review found but couldn't confirm. The review com
 ### Reviews that stopped early
 
 A review that skipped files or stopped early, for example because time ran out or the pull request was merged or closed first, is scored on what it found, like any other review. There is no "Partly reviewed" label. The comment says **Review finished**, and a collapsed **What this review covered** section lists how many files were inspected and why the review stopped.
+
+## How accurate are Graphify reviews?
+
+Graphify caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. That 71% is the mean of 3 independent runs (35.3 of 50) in November 2026, on bug-introducing pull requests from 5 production repositories and 5 languages. Results vary by codebase.
+
+On 56 pull requests from the same five repositories that were never used in development, Graphify caught 64% (36 of 56). Reviews can show up to 20 possible issues, and 49% of comments were rated real. Possible issues never change the merge verdict. See [Possible issues](#possible-issues).
+
+The method, limits, and comparisons are on the [code review benchmark](https://graphify.com/benchmarks).
+
+<AccordionGroup>
+  <Accordion title="How accurate is Graphify code review?">
+    Graphify caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. That figure is the mean of 3 runs (35.3 of 50) in November 2026. On 56 pull requests never used in development, Graphify caught 64% (36 of 56). See the [code review benchmark](https://graphify.com/benchmarks) for the method, limits, and comparisons.
+  </Accordion>
+</AccordionGroup>
 
 ## Review again after a fix
 

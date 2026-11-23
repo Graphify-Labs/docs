@@ -23,17 +23,17 @@ The Graphify skill lets your coding agent build and query a local knowledge grap
 
 ## Before you start
 
-- Python 3.10 or later
+- Python 3.11.5 or later
 - A coding agent that `graphify install` supports (Claude Code is the default)
 
 ## Build your first graph
 
 <Steps>
   <Step title="Install the package">
-    Run one of these. uv is recommended: it installs Python 3.10 or later for you and keeps Graphify in its own environment.
+    Run one of these. uv is recommended: it installs Python 3.11.5 or later for you and keeps Graphify in its own environment.
 
     ```bash
-    uv tool install graphifyy
+    uv tool install --python 3.12 graphifyy
     ```
 
     If you already install command line tools with pipx, use it instead. It also gives Graphify its own environment.
@@ -168,7 +168,7 @@ See [Remove a registration](/open-source/installation#remove-a-registration) for
 ## What's next
 
 <Columns cols={2}>
-  <Card title="Vibe coding with Graphify CLI" icon="wand-magic-sparkles" href="/open-source/vibe-coding">
+  <Card title="Vibe coding with Graphify CLI" icon="wand-sparkles" href="/open-source/vibe-coding">
     Make your agent check the graph before every search.
   </Card>
   <Card title="CLI quickstart" icon="terminal" href="/open-source/cli-quickstart">

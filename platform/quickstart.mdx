@@ -20,14 +20,14 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
   <Step title="Sign in" titleSize="h2">
     Open the Graphify app at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-quickstart) and sign in. You land on **Overview**. It may ask **What would you like to do first?** You can pick an option or skip it, since the steps below cover the same ground.
 
-    <img src="/images/console/overview.webp" alt="Overview with code findings, recent activity, continue work, and indexed repository cards" width="1920" height="1080" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/overview.webp" alt="Overview with needs attention, code findings, recent activity, and pick up where you left off" width="2400" height="1350" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Connect GitHub" titleSize="h2">
     Go to **Repositories** and click **Add GitHub repositories**, then grant the Graphify GitHub App access to the repositories you want. You can also connect from **Connectors → Integrations**.
 
     Connected repositories show up as **Paused** and **Not indexed**. That's expected, because nothing is indexed until you choose to.
 
-    <img src="/images/console/integrations.webp" alt="Connectors Integrations tab with GitHub, Google Workspace, and other tool tiles" width="1920" height="1080" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/integrations.webp" alt="Connectors Integrations tab with GitHub, Google Workspace, and other tool tiles" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Index a repository" titleSize="h2">
     Find the repository, open its **…** menu, and switch on **Indexing**. This queues the first build. You can also click **Index** next to a repository card on **Overview**.
@@ -38,15 +38,15 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
 
     Follow the run on **Builds**. When it finishes, the repository's status changes to **Indexed**.
 
-    <img src="/images/console/builds.webp" alt="Builds with indexing totals and a list of recent indexing runs" width="1920" height="1080" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/builds.webp" alt="Builds with indexing totals and a list of recent indexing runs" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Look at the graph and wiki" titleSize="h2">
     Open **Graphs** to explore the repository's nodes and their most connected areas. Then open **Wiki**, which writes an article for each area of the repository automatically. **Memory** lets you ask or search across what Graphify knows. For a guided tour of the graph, see [Read your code graph and clean up your repos](/cookbooks/read-your-graph).
 
-    <img src="/images/console/graph.webp" alt="Single repository graph with node counts, the canvas, and the most connected areas" width="1920" height="1080" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/graph.webp" alt="Single repository graph with function and file counts, the canvas, and the most connected areas" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Connect your agent" titleSize="h2">
-    Go to **Connectors → MCP**. The wizard has three steps: **Choose agent**, **Connect**, and **Try a query**. It writes setup steps for Claude Code, Codex, Cursor, GitHub Copilot, VS Code, and many more agents (open **Browse all agents** for the full list).
+    Go to **Connectors → Agents (MCP)**. The wizard has three steps: **Choose agent**, **Connect**, and **Try a query**. It writes setup steps for Claude Code, Codex, Cursor, GitHub Copilot, VS Code, and many more agents (open **Browse all agents** for the full list).
 
     Prefer one click? Use [Connect Graphify in Claude](https://claude.ai/directory/graphify) ([Claude.ai and Desktop](/integrations/claude-ai), [Claude Code](/integrations/claude-code)), [Connect to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D), the [Graphify extension for VS Code](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp), or the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4). Each one connects to the same hosted server, and you sign in with OAuth.
 
@@ -56,7 +56,12 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
     ```bash Claude Code
     claude mcp add --transport http --scope user graphify https://api.graphify.com/mcp
     ```
-    ```bash Codex
+    ```bash Codex plugin
+    codex plugin marketplace add Graphify-Labs/graphify-codex-plugin
+    codex plugin add graphify@graphify
+    codex mcp login graphify
+    ```
+    ```bash Codex (manual)
     codex mcp add graphify --url https://api.graphify.com/mcp
     codex mcp login graphify
     ```
@@ -79,7 +84,7 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
 
 Watch the connection status on **Try a query**: it shows **Connected. Graphify just received a tool call from your account.** when a call lands, or **Connected. Last tool call from your account: …** if Graphify already has a call from the last 30 days. After indexing finishes, use the starter tasks under **Try it on your repository**, and copy the rules block into your agent's instructions file. Details and fixes: [Check it's working](/platform/verify-connection).
 
-    <img src="/images/console/connectors.webp" alt="Connectors MCP tab on Choose agent, with Claude Code, Codex, and Cursor" width="1920" height="1080" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+    <img src="/images/console/connectors.webp" alt="Connectors Agents (MCP) tab on Choose agent, with Claude Code, Codex, Cursor, GitHub Copilot, and VS Code" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
 
     Agent-specific guides: [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), [Vercel](/integrations/vercel), and [any other MCP client](/integrations/other-agents).
   </Step>
@@ -101,12 +106,14 @@ Watch the connection status on **Try a query**: it shows **Connected. Graphify j
 | A banner says **Your agent is pointed at a different workspace** | Click **Point my agent at _workspace name_** on the banner, or switch to the workspace your agent uses. |
 | The agent asks for an API key | The server uses OAuth. Check the URL is `https://api.graphify.com/mcp`. |
 | You only see the local tools | That connection reads a local graph file. Add the hosted URL above instead. The hosted list is whatever your client shows from `tools/list`. |
-| The agent says there are no repositories | Wait for **Indexed** on **Repositories**, or set a default repository in **Connectors → MCP**. |
+| The agent says there are no repositories | Wait for **Indexed** on **Repositories**, or set a default repository in **Connectors → Agents (MCP)**. |
 | Setup says **This repository has no commits yet, so there is nothing to index.** | Push a commit to the default branch, then select **Re-sync repositories**, or choose another repository. |
 
 To confirm your agent is connected and picks Graphify over grep, see [Check your agent is using Graphify](/platform/verify-connection). More fixes are in [When you're stuck](/platform/support/faqs).
 
 ## Next steps
+
+Not sure what to try first? The [tour](/platform/tour) walks through three everyday jobs: onboarding to a repository, checking what a change breaks, and remembering an incident.
 
 <Columns cols={2}>
   <Card title="Trace a change" icon="route" href="/platform/trace">

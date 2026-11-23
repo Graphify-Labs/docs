@@ -38,7 +38,7 @@ Installing the plugin does not sign you in by itself. The connection is ready on
 
 Codex and a Dot use this same install. For the launch story and what the plugin can do, read [Graphify is now a ChatGPT plugin](https://graphify.com/blog/graphify-chatgpt-plugin).
 
-**Codex.** In the ChatGPT desktop app, switch to Codex, open **Plugins**, and install Graphify if it is not already installed. Connect and sign in the same way, then start a new chat. In Codex CLI, enter `/plugins`, install Graphify, and start a new session.
+**Codex.** In the ChatGPT desktop app, switch to Codex, open **Plugins**, and install Graphify if it is not already installed. Connect and sign in the same way, then start a new chat. In Codex CLI, enter `/plugins`, install Graphify, and start a new session. You can also install it from the terminal with `codex plugin marketplace add Graphify-Labs/graphify-codex-plugin` and `codex plugin add graphify@graphify`, then sign in with `codex mcp login graphify`; see [Codex](/integrations/codex#install-from-github).
 
 **Dots.** Open **Settings → Customize → Plugins** and choose Graphify. Decide which actions the Dot may run on its own, and which ones it has to ask you about. While a Dot is researching in the background, OpenAI keeps connected apps read-only, so it will not save a note or switch workspace until you ask and you approve that request.
 
@@ -90,7 +90,7 @@ These tools read the indexed graph. They do not edit source files. An empty resu
 
 | What you see | What to do |
 | --- | --- |
-| Graphify is not listed | Search for it under **Plugins** in the ChatGPT sidebar. If it is still missing, the plugin is not available on this plan, region, or workspace. An admin turns it on under **Workspace settings → Plugins**. |
+| Graphify is not listed | Open the **Plugins** tab in ChatGPT and search for it. If it is still missing, the plugin is not available on this plan, region, or workspace. An admin turns it on under **Workspace settings → Plugins**. |
 | **Connect** is unavailable, or it says disabled by an admin | Ask a workspace admin to enable Graphify for your role, then connect again. |
 | Codex shows Graphify, but no tools | Connect it from ChatGPT in the browser, then start a new Codex chat. A directory change can take up to six hours to show up in Codex. |
 | No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories), then ask Graphify to list repositories again. |

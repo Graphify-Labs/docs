@@ -26,6 +26,7 @@
               "platform/overview",
               "platform/how-it-works",
               "platform/quickstart",
+              "platform/tour",
               "platform/graphify-mcp",
               "platform/verify-connection",
               "platform/migrate-from-cody",

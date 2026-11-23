@@ -27,11 +27,6 @@ export const HeroInstall = () => {
       label: "Agent prompt",
       code: "Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow it.",
     },
-    {
-      id: "local",
-      label: "Graphify CLI",
-      code: "uv tool install graphifyy\ngraphify install\n# then, in your assistant chat:\n/graphify .",
-    },
   ];
   const [active, setActive] = useState(0);
   const select = (i, focus) => {

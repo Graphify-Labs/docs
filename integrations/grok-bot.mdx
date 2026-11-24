@@ -62,11 +62,15 @@ Check that the list matches the workspace you chose when you signed in.
 
 ## 4. Ask a question
 
-Name the repository and the symbol, file, or area you care about:
+Name the repository and the symbol, file, or area you care about.
 
-- `In my-repo, who calls the function that validates a session token?`
-- `What would break if I changed the billing module's public interface?`
-- `What did the team decide about retries in the payments service?`
+| You want to | Ask Grok Bot |
+| --- | --- |
+| Get your bearings in a repository | `Using Graphify, explain how requests reach the billing service in my-repo.` |
+| Find who uses something | `In my-repo, who calls the function that validates a session token?` |
+| Check a change before you make it | `What would break if I changed the billing module's public interface?` |
+| Find the tests to run | `Which tests are linked to the checkout flow?` |
+| Recall a team decision | `What did the team decide about retries in the payments service?` |
 
 Answers are graph evidence from the files Graphify indexed. Open the source lines an answer cites before you rely on it. Some tools save workspace memory, so read what a tool will do before you approve it.
 

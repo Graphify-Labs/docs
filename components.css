@@ -105,7 +105,7 @@
 .gfy-agents { display: flex; align-items: center; gap: 4px; }
 .gfy-agent { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; color: #586b60; background: transparent; border: 1px solid transparent; border-radius: 6px; cursor: pointer; text-decoration: none !important; border-bottom-width: 1px !important; }
 .gfy-agent:hover { background: #edf6f0; color: #062314; }
-.gfy-agent[aria-pressed="true"] { background: #ffffff; border-color: #118d4f !important; box-shadow: 0 0 0 1px rgba(17,141,79,.15); }
+.gfy-agent[aria-pressed="true"] { background: #ffffff; border-color: #000000 !important; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
 .gfy-agent:focus-visible { outline: 2px solid #118d4f; outline-offset: 1px; }
 .gfy-agent-logo { display: block; width: 18px; height: 18px; margin: 0; object-fit: contain; }
 .gfy-logo-dark { display: none; }
@@ -130,7 +130,7 @@
 :is(.dark) .gfy-pre { color: #ededed; }
 :is(.dark) .gfy-agent { color: #a3a3a3; }
 :is(.dark) .gfy-agent:hover { background: #1c1d1d; color: #ededed; }
-:is(.dark) .gfy-agent[aria-pressed="true"] { background: #1c1d1d; border-color: #4dea9c !important; box-shadow: 0 0 0 1px rgba(77,234,156,.15); }
+:is(.dark) .gfy-agent[aria-pressed="true"] { background: #1c1d1d; border-color: #ffffff !important; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
 :is(.dark) .gfy-agent:focus-visible { outline-color: #4dea9c; }
 :is(.dark) .gfy-logo-light { display: none; }
 :is(.dark) .gfy-logo-dark { display: block; }

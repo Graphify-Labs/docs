@@ -206,13 +206,22 @@ Use these first when you are an AI agent reading or acting on these docs.
 
 Use for step-by-step recipes: onboarding, refactors, reading the graph and keeping docs current.
 
-- [Graphify cookbooks: step-by-step recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: onboard to a codebase, fix PR review findings, share a team graph, connect coding agents, and add graph impact to CI.
+- [Graphify cookbooks: step-by-step recipes](https://docs.graphify.com/cookbooks/overview.md): Step-by-step Graphify recipes: codebase Q&A for your team, PR blast radius, automated PR review, Wiki onboarding, agents, and CI.
 - [How to understand a new codebase in 30 minutes](https://docs.graphify.com/cookbooks/onboard-to-a-codebase.md): Understand a new codebase in 30 minutes: build a knowledge graph, read its report and hub nodes, then ask questions that cite real files and lines.
 - [Map a FastAPI or Django app with Graphify CLI](https://docs.graphify.com/cookbooks/fastapi-and-django.md): Build a code graph of a FastAPI or Django app with Graphify CLI, then trace routes, dependencies, models and views with real query output.
 - [Plan a safe refactor with change impact analysis](https://docs.graphify.com/cookbooks/plan-a-refactor.md): Run change impact analysis before a refactor: list the callers of a function, trace paths between modules and find the tests to run, with Graphify.
 - [Find dead and duplicate code in your repos](https://docs.graphify.com/cookbooks/read-your-graph.md): Turn your code graph into a cleanup plan: read code areas, hubs and change impact, find dead and duplicate code, then hand it to your agent safely.
 - [Track code quality when you don't write code](https://docs.graphify.com/cookbooks/govern-codebase-non-engineer.md): A weekly routine for founders and managers to track code quality: read what changed, decide which findings matter and hand fixes to an agent.
 - [Keep a code wiki in sync using git hooks](https://docs.graphify.com/cookbooks/keep-docs-in-sync.md): Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
+
+## Cookbooks: Team rollout
+
+Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blast radius, automated PR review and Wiki onboarding.
+
+- [Build a codebase Q&A assistant for non-engineers](https://docs.graphify.com/cookbooks/codebase-qa-for-non-engineers.md): Let product, support and sales ask how your code works in Slack, Claude, ChatGPT or your own chat app, with answers cited from the Graphify code graph.
+- [Check a pull request's blast radius in a monorepo](https://docs.graphify.com/cookbooks/pr-blast-radius.md): Before you merge, find every caller, dependent file, test and repository a pull request can affect, using the Graphify code graph from your coding agent.
+- [Set up automated PR review on a budget](https://docs.graphify.com/cookbooks/automated-pr-review.md): Turn on Graphify PR reviews, read the 1 to 5 merge confidence score, let agents read results over MCP, and keep review usage predictable as you grow.
+- [Onboard engineers with a generated code wiki](https://docs.graphify.com/cookbooks/onboard-with-the-wiki.md): Give new engineers a first-week reading path through the Graphify Wiki: architecture, subsystems, glossary, cited answers, and team decisions from Memory.
 
 ## Cookbooks: Team
 

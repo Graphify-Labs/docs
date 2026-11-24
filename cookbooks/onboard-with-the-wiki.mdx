@@ -1,0 +1,129 @@
+---
+title: "Onboard engineers with a generated code wiki"
+sidebarTitle: "Onboard with the Wiki"
+description: "Give new engineers a first-week reading path through the Graphify Wiki: architecture, subsystems, glossary, cited answers, and team decisions from Memory."
+keywords: ["developer onboarding", "codebase onboarding", "code wiki", "architecture documentation", "onboarding new engineers", "generated documentation", "explain codebase architecture"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "book-open-text"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+A new engineer's first week usually goes to finding out where things live and why. The Graphify Wiki answers most of that before anyone books a walkthrough: it's generated from the code graph of each repository, organized by subsystem, and every claim about your code links to the lines it came from. This recipe turns it into a reading path for a new hire, and shows where to go when the Wiki isn't enough.
+
+<Info>
+**Works with:** Graphify. **Time:** about 5 minutes for you to set up, then the new hire's first week.
+</Info>
+
+## What you'll build
+
+- A first-week plan that takes a new engineer from the architecture diagram to their first change.
+- A habit of checking confidence labels and citations, so nobody learns a wrong fact.
+- A path from the Wiki to the graph, Ask and team Memory for the questions the Wiki doesn't cover.
+
+## Before you start
+
+- A repository marked **Indexed** in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-onboard-with-the-wiki). The Wiki is built from a build, so a new repository shows **No wiki for this build yet** until its first build finishes.
+- **Wiki** in your workspace navigation. If you don't see it, it isn't turned on for your workspace.
+- The new engineer invited to the workspace. See [Workspaces and members](/platform/workspaces-and-members).
+
+## Set it up for a new hire
+
+<Steps>
+  <Step title="Open the repository's Wiki">
+    Open **Wiki** in the console and choose the **Repository**. Copy the link from your browser to send to the new engineer.
+  </Step>
+  <Step title="Start at Overview">
+    The **Overview** page has an architecture diagram of the repository. Click a box to open its page. This is the map for the week.
+  </Step>
+  <Step title="Read the subsystems in order">
+    The sidebar lists **Subsystems**, the main parts of the code, with each one's areas underneath. **Next page** (or <kbd>]</kbd>) moves through the Wiki in order. Turn on **Reading mode** (<kbd>R</kbd>) to hide the rest of the console.
+  </Step>
+  <Step title="Keep the Glossary open">
+    The **Glossary** comes last in the sidebar. It's where the team's own names for things get explained.
+  </Step>
+</Steps>
+
+## A first-week plan
+
+| Day | Do | Where |
+| --- | --- | --- |
+| 1 | Read **Overview** and its diagram. Write down three parts of the system you don't understand yet. | Wiki |
+| 2 | Read the subsystem you'll work in first. Open each **Relevant source files** link. | Wiki and your editor |
+| 3 | Ask what you wrote down on day 1. | **Ask the wiki** |
+| 4 | Pick a function you'll change. See who calls it with **Show in the graph**. | [Graph explorer](/platform/graphs) |
+| 5 | Ask why the code is built that way before changing it. | Team [Memory](/platform/memory) through your agent |
+
+## Check what you read
+
+Every Wiki statement has a confidence label:
+
+| Label | Means | What to do |
+| --- | --- | --- |
+| Verified | Read directly from the code. | Trust it, and follow the citation if it matters. |
+| Inferred | Worked out by analysis. | Open the source before you rely on it. |
+| Needs review | A low-confidence guess. | Check the source, or ask a teammate. |
+
+Some pages also carry short notes on general concepts, such as how a B-tree works. They're general knowledge, not claims about your code, so they aren't checked against it. See [How accurate is the wiki?](/platform/wiki#how-accurate-is-the-wiki) for the benchmark.
+
+## Ask the Wiki
+
+Select **Ask about this project** for starter questions that need no code terms:
+
+```text
+What does this project do? Explain it in plain language.
+What are the main parts of this project, and how do they work together?
+Where does a request or user action start in this project?
+```
+
+Answers use the indexed code and say when evidence is missing. For one function or one call path, [Ask](/platform/ask) is more direct.
+
+## Go past the Wiki with your agent
+
+Once the new engineer's coding agent is connected to [Graphify MCP](/platform/graphify-mcp), the same graph answers deeper questions:
+
+```text
+Use Graphify on acme/platform. I'm new to the billing subsystem.
+1. query_graph: how does an invoice get created, from the API call to the database write?
+2. graphify_callers on the function that writes the invoice.
+3. recall: any decisions or incident lessons about invoices I should know before I change this code?
+Cite file and line for every claim.
+```
+
+`recall` returns decisions, gotchas and incident lessons your team saved to Memory. That's the "why" the code alone can't explain.
+
+## Large repositories
+
+For a very large graph, the Wiki covers only the largest areas, and some cross-links may not resolve. The page says **This is a large graph. The wiki only covers its largest areas.** To reach the rest:
+
+- Use **Search pages** to jump to a topic. Search covers subsystem pages and the glossary.
+- Use [Ask](/platform/ask) for a specific function, file or feature. Ask answers from the code graph, so it isn't limited to the areas the Wiki covers.
+- Open the code in [Graph explorer](/platform/graphs) from any page with **Show in the graph**.
+- If a Wiki is **too large to load**, contact support to raise its size limit.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| **No wiki for this build yet** | Wait for the build to finish. |
+| **Behind the latest commit** | A new build is running. The page shows **Updating to the latest commit** until it's done. |
+| **Wiki is locked** | Update your subscription to restore Wiki access. |
+| **Repository indexing failed** | Index the repository again. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Codebase Q&A for your team" icon="messages-square" href="/cookbooks/codebase-qa-for-non-engineers">
+    Let non-engineers ask the same graph in Slack or Claude.
+  </Card>
+  <Card title="Keep a code wiki in sync" icon="refresh-ccw" href="/cookbooks/keep-docs-in-sync">
+    Generate a Markdown wiki locally with Graphify CLI.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-onboard-with-the-wiki" content="end-cta-onboard-with-the-wiki" title="Get a Wiki for your repository">Connect a repository and Graphify writes a page for each part of it.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

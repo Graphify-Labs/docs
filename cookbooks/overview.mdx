@@ -1,16 +1,47 @@
 ---
 title: "Graphify cookbooks: step-by-step recipes"
 sidebarTitle: "Overview"
-description: "Step-by-step Graphify recipes: onboard to a codebase, fix PR review findings, share a team graph, connect coding agents, and add graph impact to CI."
+description: "Step-by-step Graphify recipes: codebase Q&A for your team, PR blast radius, automated PR review, Wiki onboarding, agents, and CI."
 keywords: ["graphify cookbooks", "code knowledge graph recipes", "ai coding agent recipes"]
 surface: "both"
 hideFooterPagination: true
 icon: "house"
 ---
 
-import TryCloudCard from '/snippets/try-cloud-card.mdx';
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
 
-Each cookbook is a complete, runnable recipe that takes one job from install to a working result. They run on the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) CLI, with notes where Graphify, the hosted product, does the work for you. For Graphify's cross-repo PR review, start with [Review PRs as a team](/cookbooks/review-as-a-team) and [Fix code review findings with a coding agent](/cookbooks/fix-review-findings).
+Each cookbook is a complete, runnable recipe that takes one job from setup to a working result. The badge at the top of each one says whether it runs on Graphify, the hosted product, on the open-source [Graphify CLI](https://github.com/Graphify-Labs/graphify), or on both.
+
+## Pick a recipe by job
+
+| You want to | Start with | Works with |
+| --- | --- | --- |
+| Let non-engineers ask how the code works | [Codebase Q&A for your team](/cookbooks/codebase-qa-for-non-engineers) | Graphify |
+| Know what a pull request can break before you merge | [Check a PR's blast radius](/cookbooks/pr-blast-radius) | Graphify |
+| Review every pull request without a surprise bill | [Set up automated PR review](/cookbooks/automated-pr-review) | Graphify |
+| Get a new engineer productive in their first week | [Onboard with the Wiki](/cookbooks/onboard-with-the-wiki) | Graphify |
+| Understand a codebase on your own machine | [Onboard to a codebase](/cookbooks/onboard-to-a-codebase) | Both |
+| Have an agent fix review findings | [Fix review findings](/cookbooks/fix-review-findings) | Graphify |
+| Trace changes across repositories | [Cross-repo dependencies](/cookbooks/cross-repo-dependencies) | Both |
+
+## Roll out to a team
+
+Four recipes that take a team from its first question to reviewed pull requests.
+
+<Columns cols={2}>
+  <Card title="Build a codebase Q&A assistant for non-engineers" icon="briefcase" href="/cookbooks/codebase-qa-for-non-engineers">
+    Let product, support and sales ask how the code works in Slack, Claude, ChatGPT or your own app, with cited answers.
+  </Card>
+  <Card title="Check a pull request's blast radius in a monorepo" icon="briefcase" href="/cookbooks/pr-blast-radius">
+    Find every caller, dependent file, test and repository a pull request can affect, before you merge.
+  </Card>
+  <Card title="Set up automated PR review on a budget" icon="briefcase" href="/cookbooks/automated-pr-review">
+    Turn on scored reviews, let agents read them over MCP, and keep review usage predictable.
+  </Card>
+  <Card title="Onboard engineers with a generated code wiki" icon="briefcase" href="/cookbooks/onboard-with-the-wiki">
+    A first-week reading path through the Wiki, with cited answers and team decisions from Memory.
+  </Card>
+</Columns>
 
 ## Essentials
 
@@ -109,7 +140,7 @@ Each cookbook is a complete, runnable recipe that takes one job from install to 
   </Card>
 </Columns>
 
-<TryCloudCard />
+<StartFreeCta campaign="cookbooks-overview" content="end-cta-cookbooks-overview" title="Run these recipes on your own code">Connect a repository and Graphify builds the graph, the Wiki and reviews from it. The Free plan needs no card.</StartFreeCta>
 
 <Visibility for="humans">
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

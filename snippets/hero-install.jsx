@@ -20,7 +20,7 @@ export const HeroInstall = () => {
     {
       id: "mcp",
       label: "Hosted MCP",
-      code: "claude mcp add --transport http --scope user \\\n  graphify https://api.graphify.com/mcp",
+      code: "claude mcp add --transport http graphify https://api.graphify.com/mcp",
     },
     {
       id: "prompt",

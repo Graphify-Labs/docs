@@ -1,8 +1,8 @@
 ---
 title: "Graphify for Cursor"
 sidebarTitle: "Cursor"
-description: "Connect Cursor to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
-keywords: ["cursor mcp", "cursor oauth", "graphify skill for cursor", "cursor background agents"]
+description: "Install the official Graphify plugin from the Cursor Marketplace, or add Graphify's hosted MCP server yourself. OAuth sign-in, or use the open-source Graphify skill."
+keywords: ["graphify cursor plugin", "cursor marketplace graphify", "cursor plugin", "cursor mcp", "cursor oauth", "graphify skill for cursor", "cursor background agents"]
 surface: "both"
 hideFooterPagination: true
 ---
@@ -18,7 +18,7 @@ New to MCP in Cursor? Read [how to add MCP servers to Cursor](https://graphify.c
 <Tabs>
 <Tab title="Graphify">
 
-Connect Cursor to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Cursor can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-cursor) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
+Install the official [Graphify plugin from the Cursor Marketplace](https://cursor.com/marketplace/graphify), or connect Cursor to Graphify's hosted MCP server at `https://api.graphify.com/mcp` yourself. Either way, Cursor can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-cursor) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
 
 The server uses Streamable HTTP and OAuth. You sign in once in the browser, so there is no API key to paste and no local process to run.
 
@@ -27,10 +27,19 @@ The server uses Streamable HTTP and OAuth. You sign in once in the browser, so t
 - A Graphify account. If you don't have one yet, you can create one for free while connecting. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing).
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
-## 1. Add the server
+## 1. Install the Graphify plugin
 
+<InstallButton href="https://cursor.com/marketplace/graphify" label="Get the Cursor plugin">
+The official Graphify plugin for Cursor. It adds the hosted MCP server and a rule that tells the agent when to use Graphify and how to cite what it finds.
+</InstallButton>
 
-**One-click install**
+In Cursor, open **Customize** in the sidebar, search for **Graphify**, select **Install**, and choose user or project scope. Team admins can open the [Marketplace listing](https://cursor.com/marketplace/graphify), select **Add to Cursor**, then **Add to Team** to roll it out to a team marketplace.
+
+The plugin source is public at [Graphify-Labs/graphify-cursor-plugin](https://github.com/Graphify-Labs/graphify-cursor-plugin).
+
+### Or add the MCP server yourself
+
+Use this if you want the server without the plugin, or your team blocks marketplace plugins. Pick one route: the plugin and a manual entry together show every tool twice.
 
 <InstallButton href="cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D" label="Install in Cursor">
 One click: Cursor opens and asks you to confirm the `graphify` server at `https://api.graphify.com/mcp`. Requires the Cursor desktop app.
@@ -40,7 +49,7 @@ Or, in the console, open **Connectors → MCP**, choose **Cursor**, and select *
 
 **Edit mcp.json**
 
-Add Graphify to `~/.cursor/mcp.json` to use it in every project:
+Or add Graphify to `~/.cursor/mcp.json` to use it in every project:
 
 ```json ~/.cursor/mcp.json
 {
@@ -70,9 +79,9 @@ Use Graphify's list_repositories tool and show the repositories I can access. If
 
 This is the same test prompt the console shows on **Connectors → MCP → Try a query**. Check that the list matches the workspace you chose when you signed in.
 
-### Optional: set a default repository
+### Set a default repository
 
-Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
+If you added the server yourself, add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
 
 ## 4. Ask a question
 
@@ -91,9 +100,14 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | **Needs login** next to `graphify` | Select it in Cursor's MCP settings and finish the browser sign-in. |
 | `graphify` is missing from the MCP list | Check that `mcp.json` is valid JSON and the entry is inside `mcpServers`, then reload Cursor. |
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
-| Every Graphify tool appears twice | You have the server in both `~/.cursor/mcp.json` and `.cursor/mcp.json`. Remove one. |
+| Every Graphify tool appears twice | Graphify is connected twice: the plugin plus an `mcp.json` entry, or both `~/.cursor/mcp.json` and `.cursor/mcp.json`. Keep one. |
+| Graphify is missing from **Customize** search | Update Cursor. On Enterprise, an admin may need to allow the plugin; until then, add the MCP server yourself. |
 
 ## FAQ
+
+### Is there an official Graphify plugin for Cursor?
+
+Yes. The [Graphify plugin](https://cursor.com/marketplace/graphify) is listed in the Cursor Marketplace. It connects Cursor to Graphify's hosted MCP server and adds a rule for using indexed code and repository memory. Install it from **Customize** in Cursor.
 
 ### Do I need an API key to connect Cursor to Graphify?
 

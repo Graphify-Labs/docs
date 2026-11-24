@@ -91,7 +91,7 @@
 
 /* Home hero snippet: custom tablist, wrapped code, copy button */
 .gfy-snippet { border: 1px solid #d6e5dc; border-radius: 12px; background: #ffffff; overflow: hidden; }
-.gfy-snippet-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 8px 0 4px; border-bottom: 1px solid #d6e5dc; background: #f6faf7; }
+.gfy-snippet-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 8px 0 4px; border-bottom: 1px solid #d6e5dc; background: #f6faf7; }
 .gfy-tablist { display: flex; flex-wrap: wrap; }
 .gfy-tab { padding: 10px 10px; font-size: 12px; font-weight: 500; color: #586b60; background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
 .gfy-tab[aria-selected="true"] { color: #118d4f; border-bottom-color: #118d4f; }
@@ -101,6 +101,21 @@
 .gfy-copy { font-size: 12px; font-weight: 500; color: #254d37; background: transparent; border: 1px solid #c7dbd0; border-radius: 6px; padding: 3px 10px; cursor: pointer; }
 .gfy-copy:hover { background: #edf6f0; }
 .gfy-panel { padding: 14px 16px; }
+.gfy-bar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 4px 0; }
+.gfy-agents { display: flex; align-items: center; gap: 4px; }
+.gfy-agent { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; color: #586b60; background: transparent; border: 1px solid transparent; border-radius: 6px; cursor: pointer; text-decoration: none !important; border-bottom-width: 1px !important; }
+.gfy-agent:hover { background: #edf6f0; color: #062314; }
+.gfy-agent[aria-pressed="true"] { background: #ffffff; border-color: #118d4f !important; box-shadow: 0 0 0 1px rgba(17,141,79,.15); }
+.gfy-agent:focus-visible { outline: 2px solid #118d4f; outline-offset: 1px; }
+.gfy-agent-logo { display: block; width: 18px; height: 18px; margin: 0; object-fit: contain; }
+.gfy-logo-dark { display: none; }
+.gfy-agent-more { margin-left: 2px; border-color: #c7dbd0 !important; border-style: dashed; }
+.gfy-agent[data-tip]::after { content: attr(data-tip); position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); z-index: 5; padding: 3px 7px; border-radius: 5px; background: #062314; color: #ffffff; font-size: 11px; font-weight: 500; line-height: 1.4; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .12s; }
+.gfy-agent:nth-last-child(-n+2)[data-tip]::after { left: auto; right: 0; transform: none; }
+.gfy-agent[data-tip]:focus-visible::after { opacity: 1; }
+@media (hover: hover) { .gfy-agent[data-tip]:hover::after { opacity: 1; } }
+.gfy-line { display: block; }
+.gfy-line + .gfy-line { margin-top: 8px; }
 .gfy-pre { margin: 0; padding: 0; background: none; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 13px; line-height: 1.65; color: #062314; }
 .gfy-link { color: #118d4f !important; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17,141,79,.45); border-bottom: 0 !important; }
 .gfy-link:hover { text-decoration-color: currentColor; }
@@ -113,4 +128,12 @@
 :is(.dark) .gfy-copy { color: #d4d4d4; border-color: #262626; }
 :is(.dark) .gfy-copy:hover { background: #1c1d1d; }
 :is(.dark) .gfy-pre { color: #ededed; }
+:is(.dark) .gfy-agent { color: #a3a3a3; }
+:is(.dark) .gfy-agent:hover { background: #1c1d1d; color: #ededed; }
+:is(.dark) .gfy-agent[aria-pressed="true"] { background: #1c1d1d; border-color: #4dea9c !important; box-shadow: 0 0 0 1px rgba(77,234,156,.15); }
+:is(.dark) .gfy-agent:focus-visible { outline-color: #4dea9c; }
+:is(.dark) .gfy-logo-light { display: none; }
+:is(.dark) .gfy-logo-dark { display: block; }
+:is(.dark) .gfy-agent-more { border-color: #3a3a3a !important; }
+:is(.dark) .gfy-agent[data-tip]::after { background: #ededed; color: #062314; }
 :is(.dark) .gfy-link { color: #4dea9c !important; text-decoration-color: rgba(77,234,156,.45); }

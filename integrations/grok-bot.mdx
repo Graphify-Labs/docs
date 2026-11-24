@@ -1,0 +1,92 @@
+---
+title: "Graphify for Grok Bot"
+sidebarTitle: "Grok Bot"
+description: "Add the official Graphify plugin to Grok Bot. Sign in with OAuth once, then ask Grok Bot about your indexed repositories, dependencies and change impact."
+surface: "cloud"
+hideFooterPagination: true
+keywords: ["graphify grok bot", "grok bot plugin", "add graphify to grok bot", "grok bot mcp", "grok bot code context"]
+---
+
+import { InstallButton } from '/snippets/install-button.mdx';
+
+The **Graphify** plugin connects [Grok Bot](https://x.ai/bot) to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Grok Bot can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-grok-bot) workspace, follow callers and dependencies, check what a change reaches, and recall your team's saved memory.
+
+It is the same plugin Graphify publishes on the [Cursor Marketplace](https://cursor.com/marketplace/graphify). The server uses Streamable HTTP and OAuth, so there is no API key to paste.
+
+<InstallButton href="https://x.ai/bot/plugin/90729235" label="Add to Grok Bot">
+The official Graphify listing for Grok Bot. Select **Add to Grok Bot**, then sign in to Graphify.
+</InstallButton>
+
+## Before you start
+
+- A Graphify account. If you don't have one yet, you can create one for free while connecting. See [Plans and pricing](/platform/support/pricing).
+- At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
+
+## 1. Add the plugin
+
+Open [Graphify for Grok Bot](https://x.ai/bot/plugin/90729235) and select **Add to Grok Bot**.
+
+You can also do it from a chat. Ask your bot:
+
+```text
+Connect the Graphify plugin.
+```
+
+Grok Bot finds Graphify in its plugin search and shows a card to add it.
+
+## 2. Sign in
+
+The first time Grok Bot uses Graphify, it asks you to sign in. Finish the Graphify sign-in in your browser and pick the workspace that holds your repositories.
+
+## 3. Check the connection
+
+In a chat, paste:
+
+```text
+List the repositories I can access in Graphify. If a tool fails, report the error instead of guessing.
+```
+
+Check that the list matches the workspace you chose when you signed in.
+
+## 4. Ask a question
+
+Name the repository and the symbol, file, or area you care about:
+
+- `In my-repo, who calls the function that validates a session token?`
+- `What would break if I changed the billing module's public interface?`
+- `What did the team decide about retries in the payments service?`
+
+Answers are graph evidence from the files Graphify indexed. Open the source lines an answer cites before you rely on it. Some tools save workspace memory, so read what a tool will do before you approve it.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| Grok Bot says Graphify needs sign-in | Ask it to connect Graphify again and finish the browser sign-in. |
+| The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
+| Answers look out of date | Graphify answers from the last indexed snapshot. Reindex the repository in Graphify. |
+
+## FAQ
+
+### Is there an official Graphify plugin for Grok Bot?
+
+Yes. [Graphify for Grok Bot](https://x.ai/bot/plugin/90729235) is the official listing, published by Graphify. It connects Grok Bot to Graphify's hosted MCP server.
+
+### Do I need an API key?
+
+No. Grok Bot signs in with OAuth in your browser. There is no key to paste or store.
+
+### Does it read files on my computer?
+
+No. Graphify answers from repositories already indexed in your Graphify workspace.
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>
+
+<Visibility for="humans">
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/integrations/chatgpt" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">ChatGPT, Codex, and Dots</span></a>
+  <a href="/integrations/openclaw" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify MCP for OpenClaw</span></a>
+</div>
+</Visibility>

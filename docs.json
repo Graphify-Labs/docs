@@ -180,6 +180,7 @@
             "icon": "bot",
             "pages": [
               "integrations/chatgpt",
+              "integrations/grok-bot",
               "integrations/openclaw",
               "integrations/hermes",
               "integrations/other-agents"

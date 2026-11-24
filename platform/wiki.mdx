@@ -76,6 +76,28 @@ A wiki built before subsystems were added keeps its older sidebar, grouped by fo
 | Inferred | Worked out by analysis. |
 | Needs review | A low-confidence guess. Check the source. |
 
+### Notes on general concepts
+
+Some pages include short notes that explain a general concept the page relies on, such as how a B-tree works. These notes are general knowledge, not statements about your repository, so they aren't checked against your code. Every claim about your code links to the lines it came from.
+
+## How accurate is the wiki?
+
+We benchmarked the wiki on 11 open-source repositories: nanoGPT, requests, express, ripgrep, lodash, cli/cli, redis, spring-boot, shadcn-ui, react and fastapi. About 20 claims were sampled per wiki, about 220 in all, and checked against the code. Two LLM judges, Claude Opus 5.5 and GPT-6.2 Sol, scored readability from 1 to 5. The run was on 18 and 19 November 2026, on the production wiki settings. Results vary by codebase.
+
+| Metric | Graphify wiki | Leading hosted wiki tool |
+| --- | --- | --- |
+| Accuracy, strict (claims checked against the code) | 94% | 89% |
+| Contradicted claims, of about 220 sampled | 0 | 3 |
+| Important code explained | 100% | 94% |
+| Citations that resolve to source | 99.8% | 93.7% |
+| Diagrams that render | 100% | 94.6% |
+| Readability, GPT-6.2 Sol judge (1 to 5) | 3.36 | 3.68 |
+| Readability, Claude Opus 5.5 judge (1 to 5) | 2.82 | 3.64 |
+
+Accuracy is on par: the difference is within the margin on all 11 repositories, so we do not call the Graphify wiki more accurate. None of the claims sampled from the Graphify wiki contradicted the code. The wiki explained 100% of the important code on every repository, and more on three of them. The other tool scored higher on readability under both judges, and its diagrams were rated more useful. The benchmark did not include very large repositories such as next.js and transformers.
+
+Of 116 general-concept notes in this benchmark, 114 were correct, 1 was partly wrong and 1 could not be judged. Accuracy of claims about the code was the same with and without them.
+
 ## Ask the wiki
 
 Select **Ask the wiki** (or **Ask about this project**) and type what you'd like to understand. Answers draw on the same graph as the wiki. For questions about one function or call path, [Ask](/platform/ask) is more direct. Overview questions asked from Ask can also be answered from the wiki, and those answers are labeled **From the repo wiki**.
@@ -132,6 +154,9 @@ A synced [Google Drive](/platform/connectors) folder gets a wiki too, built from
   </Accordion>
   <Accordion title="What do Verified, Inferred and Needs review mean?">
     Verified means read directly from the code. Inferred means worked out by analysis. Needs review means a low-confidence guess, so check the source.
+  </Accordion>
+  <Accordion title="How accurate is the wiki?">
+    On 11 open-source repositories, 94% of sampled claims were strictly accurate, and none of those claims contradicted the code. The wiki explained 100% of the important code, 99.8% of its citations resolve, and all of its diagrams render. Accuracy was on par with a leading hosted wiki tool, which scored higher on readability. See [How accurate is the wiki?](#how-accurate-is-the-wiki).
   </Accordion>
 </AccordionGroup>
 

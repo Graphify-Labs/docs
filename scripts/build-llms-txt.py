@@ -50,6 +50,7 @@ WHEN_TO_USE = {
     ("Integrations", "Knowledge sources"): "Use when adding documents from Google Drive.",
     ("Integrations", "For agents"): "Use these first when you are an AI agent reading or acting on these docs.",
     ("Cookbooks", "Essentials"): "Use for step-by-step recipes: onboarding, refactors, reading the graph and keeping docs current.",
+    ("Cookbooks", "Team rollout"): "Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blast radius, automated PR review and Wiki onboarding.",
     ("Cookbooks", "Team"): "Use for team workflows: reviews, a shared graph and cross-repo dependencies.",
     ("Cookbooks", "Agents"): "Use when making coding agents use the graph, including cloud agents and local models.",
     ("Cookbooks", "Data"): "Use for databases, graph exports and meeting or video sources.",

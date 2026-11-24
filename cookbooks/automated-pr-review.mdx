@@ -1,0 +1,167 @@
+---
+title: "Set up automated PR review on a budget"
+sidebarTitle: "Automated PR review"
+description: "Turn on Graphify PR reviews, read the 1 to 5 merge confidence score, let agents read results over MCP, and keep review usage predictable as you grow."
+keywords: ["automated code review", "ai pr review", "ai code review setup", "affordable code review", "merge confidence score", "code review for monorepo", "review_status"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "git-pull-request-arrow"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+Automated review is only worth it if the team reads it and the bill doesn't surprise anyone. Graphify reviews each pull request with the code graph behind it, gives it a merge confidence score from 1 to 5, and only reviews again when someone asks. This recipe sets that up for a team, wires the result into your coding agents, and shows the switches that keep usage predictable.
+
+<Info>
+**Works with:** Graphify, on GitHub or GitLab.com. **Time:** about 10 minutes, plus the first index.
+</Info>
+
+## What you'll build
+
+- Reviews on every pull request when it's ready, scored 1 to 5.
+- A team habit for re-reviews and feedback that keeps reviews quiet over time.
+- Agents that read the review over MCP instead of someone copying findings into a chat.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-automated-pr-review) workspace.
+- Owner or admin rights on the repositories, so you can install the [Graphify GitHub App](/integrations/github) or connect [GitLab.com](/integrations/gitlab).
+
+## Turn reviews on
+
+<Steps>
+  <Step title="Connect your repositories">
+    Install the Graphify GitHub App and choose the repositories, or connect GitLab.com. Graphify indexes each one from its default branch. Wait until the repository shows **Indexed**. See [Repositories and builds](/platform/repositories).
+  </Step>
+  <Step title="Check the review switches">
+    On **Repositories**, open **Options** for the repository.
+
+    | Switch | What it does |
+    | --- | --- |
+    | **PR reviews** | Turns reviews on or off for this repository. |
+    | **Risky patterns** | Adds **Risky patterns (advisory)** for risky lines the pull request adds. On unless you turn it off. |
+    | **Stale docs** | Adds **Docs that may be stale (advisory)** for docs that mention code the pull request changed. On unless you turn it off. |
+
+    Make sure **PR reviews** is on. None of these switches blocks a merge.
+  </Step>
+  <Step title="Open a pull request">
+    Graphify reviews it when it's opened, reopened or marked ready for review. On GitHub, you get a review comment from the Graphify app and a check run named **Graphify** on the reviewed commit. On GitLab.com, you get an advisory commit status and one merge request note, which Graphify updates rather than repeats.
+  </Step>
+</Steps>
+
+## Read the score
+
+Each completed review has a merge confidence score and a label. The score comes only from confirmed findings: ones checked against the code or confirmed by a test.
+
+| Score | Label | Means |
+| --- | --- | --- |
+| 1/5 or 2/5 | **Fix before merging** | The review confirmed a P0 or P1 bug. |
+| 3/5 | **Review before merging** | The review confirmed a P2 bug, or a bug with no priority. |
+| 4/5 | **Review before merging** or **Looks safe to merge** | One P2 bug with limited reach, or only P3 bugs and cleanup. |
+| 5/5 | **Looks safe to merge** | Nothing confirmed. |
+
+Leads the review couldn't confirm are listed apart as possible issues. They never change the score, and a review with possible issues says **Nothing blocking · N possible issues to check** instead of **Looks safe to merge**. The full rules are in [Merge confidence score](/platform/reviews#merge-confidence-score).
+
+Graphify caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule: the mean of 3 runs in November 2026, on pull requests from 5 production repositories. Results vary by codebase. See the [code review benchmark](https://graphify.com/benchmarks?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-automated-pr-review) for the method.
+
+## Keep review usage predictable
+
+Review cost comes from how many reviews run. These are the levers, all built in:
+
+| Lever | How it works |
+| --- | --- |
+| No review on every push | A later push doesn't start a new review. Reviews run when a pull request opens, reopens or is marked ready. |
+| Drafts wait | A draft is skipped until it's marked ready. Open work in progress as a draft. |
+| Re-review on request | On GitHub, after fixes, an owner, member or collaborator comments `@graphify review`. One comment, one review of the full pull request. |
+| Per-repository switch | Turn **PR reviews** off for repositories that don't need them. Indexing keeps running. |
+| Usage you can see | **Usage** shows PR reviews left and when the limit resets. |
+| No overage | At a limit, new reviews wait for the reset, and the **Graphify** check says so. Reaching a limit never adds a charge. |
+| A queue, not drops | When your plan's concurrent reviews are all running, a new review waits in line and the check shows **Queued**. |
+
+Plan allowances for reviews and concurrent reviews are on [Plans and pricing](/platform/support/pricing).
+
+## Re-review after a fix
+
+On GitHub, push the fix, then comment on the pull request:
+
+```text
+@graphify review
+```
+
+The new review analyzes the full pull request, from where it branched to its latest commit. It doesn't list which earlier findings were fixed, so check each one against your change.
+
+## Teach Graphify what matters
+
+On GitHub, reply on the pull request with the exact finding name from the review:
+
+```text
+@graphify wrong <finding>
+@graphify good <finding>
+@graphify suppress <rule>
+```
+
+The [Learn](/platform/learning) view shows what Graphify has learned. Feedback changes which advisory findings show up. It never changes formal verification results.
+
+## Let agents read the review
+
+Your coding agents can read review results over MCP with `review_status`. It doesn't start or re-run a review.
+
+```text
+Use Graphify's review_status for Graphify-Labs/graphify PR 5426. Summarize the gate, confirmed bugs and possible issues.
+```
+
+Real output from the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, trimmed:
+
+```json review_status
+{
+  "pr_number": 5426,
+  "pr_title": "feat(cobol): resolve a PERFORM between a program and its copybooks",
+  "status": "completed",
+  "superseded": false,
+  "gate": "pass",
+  "blocking_count": 0,
+  "advisory_count": 1,
+  "investigation": {
+    "complete": true,
+    "bug_count": 1,
+    "possible_issue_count": 4,
+    "findings": [
+      {
+        "category": "bug",
+        "title": "Warm caches can hide the new COBOL links",
+        "file": "graphify/extractors/cobol.py",
+        "line": 438,
+        "evidence": "supported_by_code"
+      }
+    ]
+  }
+}
+```
+
+`bug_count` counts confirmed bugs only. `evidence: "needs_checking"` marks a possible issue. While a review is still queued or running, the response says how long it has been in flight and suggests checking again in about 20 to 30 minutes. See [what review_status returns](/platform/graphify-mcp#what-review_status-returns). To have the agent fix findings too, see [Fix code review findings with a coding agent](/cookbooks/fix-review-findings).
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| No review on a pull request | Check **PR reviews** is on and the pull request isn't a draft. |
+| `@graphify review` did nothing | The comment has to come from an owner, member or collaborator on the repository. |
+| The check says a review limit was reached | Reviews resume at the next reset. **Usage** shows when. |
+| The check shows **Queued** | Your plan's concurrent reviews are all running. It starts when one finishes. If it's dropped, comment `@graphify review`. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Check a PR's blast radius" icon="radar" href="/cookbooks/pr-blast-radius">
+    See every caller, file and test a pull request can affect.
+  </Card>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    Every rule behind reviews, scores and settings.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-automated-pr-review" content="end-cta-automated-pr-review" title="Get a review on your next pull request">Connect a repository and Graphify reviews each new pull request with the code graph. The Free plan needs no card.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

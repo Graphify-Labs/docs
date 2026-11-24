@@ -1,0 +1,177 @@
+---
+title: "Check a pull request's blast radius in a monorepo"
+sidebarTitle: "PR blast radius"
+description: "Before you merge, find every caller, dependent file, test and repository a pull request can affect, using the Graphify code graph from your coding agent."
+keywords: ["blast radius", "pull request impact analysis", "change impact analysis", "monorepo impact analysis", "what does this pr break", "cross-repo impact", "affected tests"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "radar"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+import { PromptBlock } from '/snippets/hero-install.jsx';
+
+In a large monorepo, a ten-line pull request can change behavior three packages away. The diff shows what changed. It doesn't show who depends on it. This recipe has your coding agent read a pull request, look up each changed file and function in the Graphify code graph, and write a blast radius summary: the callers, the dependent files, the tests to run, and the other repositories involved.
+
+<Info>
+**Works with:** Graphify, with Claude Code, Codex, Cursor or any agent that can run the GitHub CLI. **Time:** about 10 minutes to set up, then one prompt per pull request.
+</Info>
+
+## The short version
+
+Already connected? Paste this into your agent:
+
+<PromptBlock text="Check the blast radius of PR 123. Run gh pr diff 123 --name-only. For each changed source file, call graphify_file_neighbors. For each changed function, call graphify_impact with include_risk true and graphify_tests_for. Then write a summary: dependent files, direct callers, untested hotspots, tests to run, and anything Graphify had no coverage for." />
+
+## What you'll build
+
+- A repeatable check your agent runs on any pull request.
+- A blast radius summary you paste into the pull request, so reviewers start from the riskiest code.
+- The same check across repositories, through a combined graph.
+
+## Before you start
+
+- A repository marked **Indexed** in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-pr-blast-radius). See [Repositories and builds](/platform/repositories).
+- A coding agent connected to the hosted MCP server. See [Graphify MCP](/platform/graphify-mcp).
+- The GitHub CLI (`gh`) signed in where the agent runs.
+
+## The tools
+
+| Tool | Answers |
+| --- | --- |
+| `graphify_file_neighbors` | What a file imports, what imports it, and the per-file blast radius. |
+| `graphify_impact` | The callers and callees directly connected to a symbol. With `include_risk: true`, it also ranks hotspot files by linked tests. |
+| `graphify_tests_for` | Tests linked to a symbol or a file. |
+| `graphify_callers` | Every caller of a symbol, when you need to go past the first pass. |
+
+## Run it on a pull request
+
+<Steps>
+  <Step title="List what changed">
+    ```bash
+    gh pr diff 123 --name-only
+    ```
+
+    The agent works from the changed files and the functions the diff touches.
+  </Step>
+  <Step title="Find the dependent files">
+    For each changed source file, the agent calls `graphify_file_neighbors` with the path, such as `graphify/detect.py`. The result lists the file's symbols and its `neighbor_files`, each with the edges that link them and a direction: `in` means the other file depends on this one.
+  </Step>
+  <Step title="Fan out from each changed function">
+    For each changed function, the agent calls `graphify_impact`:
+
+    ```json
+    { "repository_id": "Graphify-Labs/graphify", "target": "classify_manifest_files", "include_risk": true }
+    ```
+
+    Real output from the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, trimmed:
+
+    ```json graphify_impact
+    {
+      "resolved": { "label": "classify_manifest_files()", "src": "graphify/detect.py", "loc": "L3104" },
+      "files": [
+        { "src": "graphify/detect.py", "nodes": [
+          { "label": "detect_incremental()", "loc": "L3255", "call_site": "L3318", "rel": "calls", "dir": "in" }
+        ]},
+        { "src": "graphify/watch.py", "nodes": [
+          { "label": "_inputs_unchanged()", "loc": "L2008", "call_site": "L2055", "rel": "calls", "dir": "in" },
+          { "label": "_rebuild_code()", "loc": "L2365", "call_site": "L2615", "rel": "calls", "dir": "in" }
+        ]}
+      ],
+      "hotspot_files": [
+        { "src": "graphify/detect.py", "score": 5.0, "n_nodes": 5, "has_tests": true },
+        { "src": "graphify/watch.py", "score": 2.0, "n_nodes": 2, "has_tests": true }
+      ],
+      "untested_hotspots": [],
+      "note": "static graph-derived blast radius -- not a verification or review verdict"
+    }
+    ```
+
+    `dir: "in"` marks callers, the code that breaks if the function's behavior changes. `call_site` is the exact line. `untested_hotspots` lists hotspot files with no linked tests, which is where to look first.
+  </Step>
+  <Step title="List the tests to run">
+    `graphify_impact` with `include_risk` also returns linked `tests`. For a file or a symbol on its own, call `graphify_tests_for`. In the example above, the change to `classify_manifest_files()` links to tests in `tests/test_detect.py` through its caller `detect_incremental()`.
+  </Step>
+  <Step title="Write the summary">
+    Ask the agent to write it in this shape and paste it into the pull request:
+
+    ```md
+    ## Blast radius
+    - Changed: classify_manifest_files() in graphify/detect.py
+    - Direct callers: detect_incremental() (detect.py:3318), _inputs_unchanged() (watch.py:2055), _rebuild_code() (watch.py:2615)
+    - Dependent files: graphify/watch.py
+    - Untested hotspots: none
+    - Tests to run: tests/test_detect.py
+    - No graph coverage: (list anything Graphify returned nothing for)
+    ```
+  </Step>
+</Steps>
+
+## Make it repeatable
+
+Add this to `AGENTS.md` or `CLAUDE.md` so "check the blast radius of PR 123" always runs the same way:
+
+```md AGENTS.md
+## Blast radius check
+
+Repository in Graphify: acme/platform
+
+When asked for the blast radius of a pull request:
+
+1. Run `gh pr diff <number> --name-only`.
+2. For each changed source file, call `graphify_file_neighbors`.
+3. For each changed function, call `graphify_impact` with `include_risk: true`.
+   If the result is truncated, call `graphify_callers` for the full list.
+4. Call `graphify_tests_for` for each changed file.
+5. Write the summary: changed symbols, direct callers with file:line,
+   dependent files, untested hotspots, tests to run, and no-coverage gaps.
+6. Never call a change safe. Report what the graph shows.
+```
+
+## Across repositories
+
+When a change in one repository can break another, put them in one graph.
+
+<Steps>
+  <Step title="Combine the repositories">
+    In the console, open the cross-repository view in **Graphs** and select **Combine repositories**. Pick two or more repositories and wait until the combined graph is ready. See [Combine repositories](/platform/graphs#combine-repositories).
+  </Step>
+  <Step title="Point the agent at the combined graph">
+    Ask the agent to run `list_repositories`. A combined graph appears with `kind: "workspace"` and its own `repositoryId`. Pass that id as `repository_id` to `graphify_impact`, `graphify_callers` and `graphify_file_neighbors`.
+  </Step>
+  <Step title="Read the review too">
+    Once a repository is part of a combined graph, its [pull request reviews](/platform/reviews#cross-repo-impact) add a **Cross-repo impact** section: "This change impacts N symbol(s) across M peer repo(s)", with up to 10 symbols for each affected repository. The section is advisory and never changes whether the **Graphify** check passes.
+  </Step>
+</Steps>
+
+## Read the result honestly
+
+- `graphify_impact` is a first pass. It returns direct connections, not every path through the code. Ask for `graphify_callers` or [`graphify_trace`](/concepts/follow-calls) to go further.
+- The hosted graph describes the indexed default branch. A function the pull request adds isn't in it yet, so check the existing functions that the new code calls or replaces. For uncommitted work, run the [local MCP server](/open-source/mcp-server) from Graphify CLI.
+- An empty or truncated answer carries a `coverage` note. `n=0` means no edge was indexed, not that the code has none. Code reached through reflection or string lookups may not appear.
+- The hotspot ranking is a signal from the graph, not a verdict that the change is safe.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| The tool refuses with several candidate ids | The name matches more than one definition. Pass the id of the one you changed. |
+| The wrong repository answers | Pass `repository_id` as `owner/name`, or add `?repo=owner/name` to the MCP URL. |
+| A combined graph returns nothing | Check `queryable` in `list_repositories`. A combined graph answers only once its current merge is promoted. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Set up automated PR review" icon="git-pull-request-arrow" href="/cookbooks/automated-pr-review">
+    Get a scored review on every pull request.
+  </Card>
+  <Card title="PR impact in CI" icon="message-square-code" href="/cookbooks/pr-impact-comment-ci">
+    Post a graph impact comment from GitHub Actions with Graphify CLI.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-pr-blast-radius" content="end-cta-pr-blast-radius" title="See what your next pull request touches">Index your monorepo, connect your agent, and run the check on a real pull request.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

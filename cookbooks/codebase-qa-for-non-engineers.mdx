@@ -1,0 +1,214 @@
+---
+title: "Build a codebase Q&A assistant for non-engineers"
+sidebarTitle: "Codebase Q&A for your team"
+description: "Let product, support and sales ask how your code works in Slack, Claude, ChatGPT or your own chat app, with answers cited from the Graphify code graph."
+keywords: ["codebase q&a", "ask questions about code", "slack bot for codebase", "codebase knowledge agent", "mcp knowledge agent", "non-technical questions about code", "ask your codebase"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "messages-square"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+Your product manager wants to know what happens when a trial ends. Support wants to know why an invoice email didn't send. Both questions have answers in the code, and today both land in an engineer's DMs. This recipe gives those people a place to ask directly and get a plain-language answer that cites the files it came from.
+
+Graphify already holds the answer: an indexed graph of your repositories that any MCP client can query. You pick where people ask. Slack and the Claude or ChatGPT apps need no code. A chat app of your own needs one short server route.
+
+<Info>
+**Works with:** Graphify. **Time:** about 15 minutes for Slack, Claude or ChatGPT. Longer for your own app.
+</Info>
+
+## What you'll build
+
+- A place where anyone on the team asks "how does X work?" in plain words.
+- Answers that name the files and functions they came from, so an engineer can check them in seconds.
+- Clear rules for who can ask and which code each channel can see.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-codebase-qa) workspace with at least one repository marked **Indexed**. See [Repositories and builds](/platform/repositories).
+- Everyone who asks is a member of that Graphify workspace, signed up with the same email they use in Slack. Invite them from [Workspaces and members](/platform/workspaces-and-members).
+- For Slack, a Graphify workspace owner or admin, and permission to install apps in your Slack workspace.
+
+## Pick where people ask
+
+| Where | Best for | Setup |
+| --- | --- | --- |
+| Slack | A shared channel where the whole team sees answers | Console only, no code |
+| Claude or ChatGPT | People who already work in those apps | One connector per person |
+| Your own chat app | An internal tool with your own prompt and sign-in | Server code with the AI SDK |
+
+<Tabs>
+  <Tab title="Slack">
+    <Steps>
+      <Step title="Connect Slack">
+        In the console, open **Connectors**, then the **Integrations** tab, and select the **Slack** tile. Check that Slack shows the right workspace, then authorize Graphify. Each Graphify workspace links to one Slack workspace.
+      </Step>
+      <Step title="Choose a default repository">
+        In the Slack settings, pick the repository Graphify uses for direct messages. People can still name another one in a DM with `owner/repo`.
+      </Step>
+      <Step title="Enable a channel">
+        Add the channel, choose the one repository it answers from, then invite `@Graphify` to the channel. Everyone in that channel can read the answers, so only enable channels whose members should see that code.
+      </Step>
+      <Step title="Ask a first question">
+        In the channel, mention the app:
+
+        ```text
+        @Graphify what happens when a customer's trial ends?
+        ```
+
+        Graphify replies in a thread with the answer and its sources. In a DM, ask without the mention.
+      </Step>
+    </Steps>
+
+    Graphify doesn't answer in channels shared with other organizations. Nothing people ask in Slack is saved to Graphify memory. The full setup is on the [Slack integration page](https://graphify.com/integrations/slack?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-codebase-qa).
+  </Tab>
+  <Tab title="Claude or ChatGPT">
+    Each person connects Graphify once in their own app and signs in with their Graphify account. There is no key to share.
+
+    | App | Connect |
+    | --- | --- |
+    | Claude.ai, Desktop and mobile | [Connect in Claude](https://claude.ai/directory/graphify), then turn Graphify on in the chat under **+**, then **Connectors**. See [Graphify for Claude](/integrations/claude-ai). |
+    | ChatGPT | Install the [Graphify plugin for ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4). See [ChatGPT](/integrations/chatgpt). |
+
+    Then paste this once at the start of a chat, or save it as project instructions:
+
+    ```text
+    You answer questions about our software for people who don't write code.
+    Use the Graphify tools for every answer. Start with list_repositories if you
+    don't know the repository. Explain in plain language first, then list the
+    files and functions you used. If Graphify returns no evidence, say so. Never guess.
+    ```
+  </Tab>
+  <Tab title="Your own chat app">
+    Use this when you want your own prompt, your own sign-in, or answers inside an internal tool. Install [Graphify for Vercel](/integrations/vercel) on the project. It adds `GRAPHIFY_MCP_URL` and a sensitive `GRAPHIFY_MCP_TOKEN` to the project, scoped to one Graphify workspace.
+
+    ```typescript app/api/ask/route.ts
+    import { createMCPClient } from '@ai-sdk/mcp'
+    import { generateText, isStepCount } from 'ai'
+
+    const SYSTEM = `You answer questions about our software for people who don't write code.
+    Use the Graphify tools for every answer. Explain in plain language first,
+    then list the files and functions you used. If Graphify returns no evidence, say so.`
+
+    export async function POST(req: Request) {
+      const { question } = await req.json()
+      const url = process.env.GRAPHIFY_MCP_URL
+      const token = process.env.GRAPHIFY_MCP_TOKEN
+      if (!url || !token) throw new Error('Graphify MCP environment variables are missing')
+
+      const client = await createMCPClient({
+        transport: { type: 'http', url, headers: { Authorization: `Bearer ${token}` } },
+      })
+      try {
+        const { text } = await generateText({
+          model: 'openai/gpt-5.4',
+          system: SYSTEM,
+          tools: await client.tools(),
+          stopWhen: isStepCount(10),
+          prompt: question,
+        })
+        return Response.json({ answer: text })
+      } finally {
+        await client.close()
+      }
+    }
+    ```
+
+    The model id comes from the Vercel listing's sample. Use any model your app already uses.
+
+    <Warning>
+    The project token answers for the whole Graphify workspace. Keep it in server code, and put the app behind your company sign-in, because anyone who can use the app can read answers about that code. If each person should use their own Graphify access, use the [Vercel Connect path](/integrations/vercel#vercel-connect-connector) instead.
+    </Warning>
+  </Tab>
+</Tabs>
+
+## What a good answer looks like
+
+Ask the question the way a non-engineer would:
+
+```text
+Does Graphify read files that might hold passwords or API keys?
+```
+
+Behind the scenes, the assistant calls `graphify_rank_files` to find where the answer lives, then `graphify_node` to read it. This is real output from the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, trimmed:
+
+```json graphify_node
+{
+  "symbol": "_is_sensitive()",
+  "src": "graphify/detect.py",
+  "loc": "L295",
+  "resolved": "exact",
+  "callers": [
+    { "label": "detect()", "src": "graphify/detect.py", "loc": "L2129", "call_site": "L2371" },
+    { "label": "_stale_graph_sources()", "src": "graphify/cli.py", "loc": "L604", "call_site": "L721" }
+  ]
+}
+```
+
+From that code, the assistant can answer in plain words: Graphify skips files in folders used to store credentials, files whose names match secret patterns such as `.env` (but keeps templates such as `.env.example`), and files named only after keywords like "token", unless they're real source code. The check runs while Graphify scans the folder, in `_is_sensitive()` in `graphify/detect.py`.
+
+That's the shape to expect: the answer first, then where it came from. Every result also carries `freshness`, which says which commit the graph was built from.
+
+## Questions that work well
+
+| Team | Ask |
+| --- | --- |
+| Product | "What happens, step by step, when a user cancels their subscription?" |
+| Support | "Where does the app decide to send the password reset email, and what can stop it?" |
+| Sales and solutions | "Which login methods does the app support, and where is each one handled?" |
+| Leadership | "What are the main parts of this product, and how do they work together?" |
+
+Name the feature or the screen people know. If the answer is too broad, ask the assistant to "list the files first", then pick one.
+
+## Make it reliable
+
+- **Pin the repository.** In Slack, each channel answers from one repository. In your own app, add `?repo=owner/name` to the MCP URL so every question targets the right code. See [Target a repository](/platform/graphify-mcp#target-a-repository-or-group).
+- **Ask across repositories.** [Combine repositories](/platform/graphs#combine-repositories) into one graph, then point the assistant at the combined graph. It appears in `list_repositories` with `kind: "workspace"`.
+- **Keep answers current.** Graphify rebuilds the graph on every push to the default branch. Answers describe that branch, not open pull requests. See [Keep the graph fresh](/platform/keep-the-graph-fresh).
+- **Add team knowledge.** Decisions and incident lessons saved to [Memory](/platform/memory) can be read back with `recall`, so "why is it built this way?" gets an answer too.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| "I couldn't match your Slack email to a member of this Graphify workspace." | Invite that Slack email to the Graphify workspace. |
+| "Graphify isn't enabled in this channel." | An admin enables the channel and picks its repository in the Slack settings. |
+| "In this channel I answer from `owner/repo` only." | Ask in a DM and name the other repository, or enable another channel for it. |
+| "No repository is set for Slack yet." | Name `owner/repo` in the question, or ask an admin to set a default repository. |
+| No reply in a channel | Check the channel is enabled, the repository is **Indexed**, and `@Graphify` is a member of the channel. |
+| Claude doesn't use Graphify | Turn Graphify on for the chat under **+**, then **Connectors**. |
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do people need a Graphify account to ask in Slack?">
+    Yes. Graphify matches each person by their Slack email to a member of the Graphify workspace. In your own app with the Vercel project token, the app asks on their behalf, so you control access with your app's sign-in.
+  </Accordion>
+  <Accordion title="Can a channel see every repository?">
+    No. Each enabled channel answers from the one repository an admin picked for it. Direct messages can name any repository the person can access.
+  </Accordion>
+  <Accordion title="Does Graphify learn from what people ask in Slack?">
+    No. Nothing from Slack is saved to Graphify memory.
+  </Accordion>
+  <Accordion title="How do I know an answer is right?">
+    Every answer lists the files and functions it used. Open them, or ask an engineer to check the citation. If Graphify finds no evidence, the answer says so.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Onboard engineers with the Wiki" icon="book-open-text" href="/cookbooks/onboard-with-the-wiki">
+    Give new people a generated guide to each repository.
+  </Card>
+  <Card title="Graphify MCP reference" icon="plug" href="/platform/graphify-mcp">
+    Every client, the endpoint, and fixes for sign-in errors.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-codebase-qa" content="end-cta-codebase-qa" title="Let your whole team ask the codebase">Connect a repository, then turn on Slack or connect Claude. The Free plan needs no card.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

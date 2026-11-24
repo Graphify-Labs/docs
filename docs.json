@@ -240,6 +240,16 @@
             ]
           },
           {
+            "group": "Team rollout",
+            "icon": "briefcase",
+            "pages": [
+              "cookbooks/codebase-qa-for-non-engineers",
+              "cookbooks/pr-blast-radius",
+              "cookbooks/automated-pr-review",
+              "cookbooks/onboard-with-the-wiki"
+            ]
+          },
+          {
             "group": "Team",
             "icon": "users",
             "pages": [

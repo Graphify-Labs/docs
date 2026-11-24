@@ -341,10 +341,10 @@
         "href": "/mcp/docs-search"
       },
       {
-        "title": "Install Graphify MCP in Cursor",
-        "description": "Add the product server at api.graphify.com/mcp so Cursor can query your code graph",
+        "title": "Get the Graphify plugin for Cursor",
+        "description": "Official Cursor Marketplace plugin: hosted MCP server plus a rule for using the code graph",
         "icon": "plug",
-        "href": "cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D"
+        "href": "https://cursor.com/marketplace/graphify"
       },
       {
         "title": "Install Graphify MCP in VS Code",

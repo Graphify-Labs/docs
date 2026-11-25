@@ -140,7 +140,7 @@ When a change in one repository can break another, put them in one graph.
     Ask the agent to run `list_repositories`. A combined graph appears with `kind: "workspace"` and its own `repositoryId`. Pass that id as `repository_id` to `graphify_impact`, `graphify_callers` and `graphify_file_neighbors`.
   </Step>
   <Step title="Read the review too">
-    Once a repository is part of a combined graph, its [pull request reviews](/platform/reviews#cross-repo-impact) add a **Cross-repo impact** section: "This change impacts N symbol(s) across M peer repo(s)", with up to 10 symbols for each affected repository. The section is advisory and never changes whether the **Graphify** check passes.
+    Once a repository is part of a combined graph, its [pull request reviews](/platform/reviews#cross-repo-pull-request-reviews) add a **Cross-repo impact** section: "This change impacts N symbol(s) across M peer repo(s)", with up to 10 symbols for each affected repository. The section is advisory and never changes whether the **Graphify** check passes.
   </Step>
 </Steps>
 

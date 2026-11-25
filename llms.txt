@@ -98,7 +98,7 @@ Use for errors, rate limits, pricing, security, or moving from Graphify CLI to h
 
 Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.
 
-- [Introduction](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
+- [Introduction to Graphify CLI](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
 - [Graphify CLI quickstart: map a repo and ask it](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, map a repository with the agent skill or the terminal, and ask your first question. Code is parsed on your machine with no API key.
 - [Install graphifyy (Graphify CLI) with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify.
 - [MCP server quickstart: serve your graph](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and the other graph tools from any MCP client.

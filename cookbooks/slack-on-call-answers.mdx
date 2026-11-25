@@ -1,0 +1,101 @@
+---
+title: "Answer on-call and support questions in Slack"
+sidebarTitle: "On-call answers in Slack"
+description: "Set up a Slack channel where on-call and support ask Graphify about the code, get cited answers and review status, and see lessons your team kept."
+keywords: ["on-call slack bot", "support questions about code", "slack codebase answers", "incident questions slack", "graphify slack channel"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "headset"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+At 2am, the on-call engineer needs to know what calls the failing function and whether last night's pull request touched it. Support needs to know why a customer hit an error, without paging an engineer. This recipe sets up one Slack channel for those questions, and feeds it the incident lessons your team already kept, so answers carry what you learned last time.
+
+<Info>
+**Works with:** Graphify and Slack. **Time:** about 20 minutes, once Slack is connected.
+</Info>
+
+## What you'll build
+
+- An `#ask-the-code` channel bound to your main service's repository.
+- A short list of questions on-call and support can ask, with answers that cite code.
+- Incident lessons kept in Memory, so answers in the channel can use them.
+- A clear rule for when to move a question to a direct message.
+
+## Before you start
+
+- Slack connected to your Graphify workspace. If it isn't yet, follow [Slack](/integrations/slack) first.
+- You are a workspace Owner or Admin, to enable the channel.
+- Everyone in the channel is a member of the Graphify workspace, with the same email in Slack and in Graphify. Invite them from [Workspaces and members](/platform/workspaces-and-members).
+
+## Set up the channel
+
+<Steps>
+  <Step title="Create the channel and pick its repository">
+    Create a channel such as `#ask-the-code` inside your own Slack workspace. Graphify doesn't answer in channels shared with other organizations. In the Slack integration settings in Graphify, add the channel and choose the repository on-call asks about most, then invite `@Graphify` to it.
+
+    A channel answers from that one repository. For other repositories, people ask in a direct message with `owner/repo`.
+  </Step>
+  <Step title="Pin the questions that work">
+    Pin a message with questions that name a function, a file or a pull request:
+
+    ```text
+    @Graphify what calls charge_with_retry?
+    @Graphify where do we set the webhook timeout?
+    @Graphify what could be affected if I change validate_token?
+    @Graphify has PR 1234 been reviewed? What did the review find?
+    ```
+
+    Graphify replies in a thread with sources. A question about a pull request is answered from its completed review, or Graphify says the review is still running.
+  </Step>
+  <Step title="Keep the lessons on-call needs">
+    Answers use kept memory only. After each incident, record it in **Memory** with **Record an incident**, list the files in **Related code paths**, and make sure the memory is kept, not left as a suggestion. See [Remember incident lessons](/cookbooks/remember-incident-lessons) and [Review team memory](/cookbooks/review-team-memory).
+  </Step>
+  <Step title="Agree when to use a direct message">
+    Everyone in the channel reads every answer. Post this in the channel description: questions about code people in the channel shouldn't see go to a direct message with `@Graphify`, where only the asker sees the answer.
+  </Step>
+</Steps>
+
+## Read the answers well
+
+| Reply | Means | Do this |
+| --- | --- | --- |
+| An answer with sources | Grounded in the code graph | Open a source before you act on it. |
+| "I don't have a grounded answer for that from this codebase." | Graphify found no code to support an answer | Name the function or file, or ask an engineer. |
+| "In this channel I answer from `owner/repo` only." | The question named another repository | Ask in a direct message with `owner/repo`. |
+| "You're asking faster than I can answer. Give it a minute." | The per-person rate limit | Wait a minute. |
+
+Answers reflect the latest build of the repository's default branch. A fix pushed to a branch, or still building, isn't in the answer yet.
+
+## Check that it works
+
+- Ask a pinned question in the channel. The reply arrives in a thread and cites at least one file.
+- Ask about a function a kept incident memory names. The answer reflects that lesson.
+- Ask a teammate who isn't in the Graphify workspace to ask. Graphify asks them to get invited instead of answering.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| No reply in the channel | Check the channel is enabled and `@Graphify` is a member of it. |
+| "Graphify isn't enabled in this channel." | An admin enables the channel in the Slack integration settings. |
+| An incident lesson doesn't show up | It's still a suggestion. Keep it in **Memory**. |
+| A teammate's email doesn't match | Invite the email they use in Slack to the Graphify workspace. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Slack" icon="hash" href="/integrations/slack">
+    Every Slack setting, limit and reply.
+  </Card>
+  <Card title="Write a postmortem" icon="history" href="/cookbooks/incident-postmortem">
+    Turn the next incident into lessons the channel can use.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-slack-on-call-answers" content="end-cta-slack-on-call-answers" title="Bring your code into Slack">Connect a repository and Slack, and your team asks about the code with cited answers.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

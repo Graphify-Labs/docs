@@ -1,0 +1,115 @@
+---
+title: "Keep your team's memory accurate with a weekly review"
+sidebarTitle: "Review team memory"
+description: "A weekly Memory review: keep or discard suggestions, clear empty ones, recheck memories whose code changed, and test what agents will recall."
+keywords: ["graphify memory review", "agent memory hygiene", "memory suggestions", "clear empty suggestions", "test recall", "shared memory for coding agents"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "list-checks"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+Agents save memories quickly. Your team keeps them true. Memories from agents and conversations start as suggestions. Ask, and Graphify in Slack, only use a suggestion after someone keeps it. Connected agents may see it sooner, labelled unverified. A short weekly review keeps what every agent and teammate reads accurate.
+
+<Info>
+**Works with:** Graphify. **Time:** about 15 minutes a week.
+</Info>
+
+## What you'll build
+
+- A weekly routine that turns good suggestions into kept memories and drops the rest.
+- A check on memories whose code changed since they were saved.
+- A recall test that shows exactly what an agent or Ask receives for a real question.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-review-team-memory) workspace with an indexed repository.
+- Some memories to review. They come from agents that call `remember`, from you, and from Graphify itself when a review finishes or a pull request merges. To get agents saving them, see [Tell your agent to use memory](/platform/memory#tell-your-agent-to-use-memory).
+
+## The weekly review
+
+<Steps>
+  <Step title="Open the Memory console">
+    Open **Memory**, choose the **Repository**, then switch to **Advanced** at the top right. The four tiles summarize the repository:
+
+    | Tile | Means |
+    | --- | --- |
+    | **Kept** | Ask can use these. |
+    | **Suggestions** | Waiting to be kept. |
+    | **Conflicting** | Has a conflicting version. |
+    | **Needs a closer look** | Waiting on a person. |
+  </Step>
+  <Step title="Clear empty suggestions first">
+    Some pull request suggestions only repeat a title, a merge or a review count. Select **Clear all empty suggestions** and confirm. It discards every empty suggestion in the repository, including ones the page hasn't loaded. Suggestions that name a finding stay. You can restore any of them from its history.
+  </Step>
+  <Step title="Keep, correct or discard the rest">
+    Open the **Review** tab. Open each suggestion, read its evidence, then choose one:
+
+    - **Keep suggestion** when it's true and useful as written.
+    - **Correct & accept** when it's true but needs better wording. Name the file or function so it anchors to code.
+    - **Discard suggestion** when it's wrong, a one-off, or session chatter.
+
+    Use **Select all on this page** to act on several at once.
+  </Step>
+  <Step title="Recheck memories whose code changed">
+    Still in **Review**, look for memories flagged "The code this refers to changed after it was saved. Check that it is still true." Open the code from the memory's anchor. If the fact still holds, keep it. If it changed, use **Correct memory** or **Update status** in the drawer. If it no longer applies, **Remove memory**. A removed memory keeps its history and can be restored.
+  </Step>
+  <Step title="Test what agents will recall">
+    Open **Test what agents can recall**. Enter a question someone will really ask, such as *Why do we retry card charges only three times?* Pick **Recall for**:
+
+    - **Ask / Published only** sends what Ask sends: kept memories only.
+    - **Agents / MCP / Published, unreviewed, and conversation turns** (the default) adds unreviewed suggestions, labelled unverified, and matching conversation turns.
+
+    Select **Check recall**. **What the agent receives** lists the memories that came back. If the right one is missing, correct its wording so it names the code, or keep it if it's still a suggestion.
+  </Step>
+</Steps>
+
+## Check from an agent
+
+Your agent can run the same check over MCP with `recall`. `profile: "team"` returns kept memories, like Ask:
+
+```text
+Call Graphify recall for acme/payments with profile "team", query "card charge retry policy",
+and paths ["app/billing/charge.py"]. List each memory and say whether it is published or a candidate.
+```
+
+`paths` and `symbols` only boost memories anchored to that code. They are not a filter. See [the recall options](/platform/graphify-mcp).
+
+## A routine that holds
+
+| When | What |
+| --- | --- |
+| Every week | Clear empty suggestions, then work through **Review**. |
+| After an incident | Record it with **Record an incident**. See [Remember incident lessons](/cookbooks/remember-incident-lessons). |
+| After a big refactor | Recheck memories flagged because their code changed. |
+| Before onboarding someone | Run **Test what agents can recall** on the questions a new hire asks. |
+
+When you're the only member of a workspace, agent memories can publish without review. They show under **Recently added by your agent**, and **Undo** takes one back.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| Memory is empty | Add a memory yourself, or select **Connect an agent** and connect one over MCP. |
+| A kept memory doesn't show in Ask yet | It shows **Publishing** until it finishes. Reload in a moment. |
+| "It is back in suggestions. Try again." | The keep didn't go through. Keep it again. |
+| Many facts are ungrounded | Expected for process decisions. For code facts, check the code still exists. |
+| **No saved memories match that.** | Try fewer words, or include suggestions in the search options. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Keep a decision log" icon="scale" href="/cookbooks/decision-log">
+    Save decisions agents follow before they edit that code.
+  </Card>
+  <Card title="Memory" icon="brain" href="/platform/memory">
+    Every view, label and action in Memory.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-review-team-memory" content="end-cta-review-team-memory" title="Start your team's shared memory">Connect a repository and your agents can recall and save notes tied to the code.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

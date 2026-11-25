@@ -1,0 +1,123 @@
+---
+title: "Keep a decision log your coding agents follow"
+sidebarTitle: "Decision log"
+description: "Save architecture decisions in Graphify Memory with status, timing and code paths, so coding agents recall them before they edit that code."
+keywords: ["architecture decision record", "decision log", "adr for ai agents", "save a decision", "agent memory decisions", "graphify memory"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "scale"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+Teams decide things in meetings, threads and pull request comments, and agents never see any of them. So an agent "simplifies" the retry policy you chose on purpose, or brings back the library you moved away from. Graphify Memory can hold each decision with its status, when it took effect and the code it covers. Agents recall it before they edit that code, and Ask uses it once your team keeps it.
+
+<Info>
+**Works with:** Graphify. **Time:** about 5 minutes per decision.
+</Info>
+
+## What you'll build
+
+- A decision log in Memory, one record per decision, linked to the code it governs.
+- Agents that recall the decision before they change that code.
+- A way to change a decision later without losing what it used to say.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-decision-log) workspace with an indexed repository.
+- A coding agent connected to the [Graphify MCP server](/platform/graphify-mcp), if you want agents to recall decisions.
+
+<Note>
+Some decisions belong in the repository too, as a comment or a test. See [Document the why](/cookbooks/document-the-why). Memory is for decisions that span files, change over time, or need a status.
+</Note>
+
+## Save a decision
+
+<Steps>
+  <Step title="Open Save a decision">
+    Open **Memory**, choose the **Repository**, switch to **Advanced**, and select **Save a decision**.
+  </Step>
+  <Step title="Write it">
+    In **Decision subject**, name it the way people search for it, such as *Payment retry policy*. In **What should the team know?**, include the decision, why it matters and when it applies:
+
+    ```text
+    Retry failed card charges at most three times, with backoff, and never retry
+    hard declines. More retries caused duplicate charges with our payment
+    provider. Applies to every charge path, including subscriptions.
+    ```
+  </Step>
+  <Step title="Add status, timing and code">
+    Open **More options · timing, grouping & code**:
+
+    | Field | What to set |
+    | --- | --- |
+    | **Effective time** | Leave it as now, or set it for a past or scheduled change. |
+    | **Group this memory by** | Leave **decision**, or pick **service** to keep one service's decisions together. |
+    | **Status** | The decision's own status, such as *proposed* or *adopted*. |
+    | **Related code paths** | One repository-relative path per line, such as `app/billing/charge.py`. Graphify checks them against the code graph. |
+
+    Related code paths link the decision to that code, so `recall` with `paths` can rank it first.
+  </Step>
+  <Step title="Save it">
+    Select **Save record**. Your record is saved first, then processed for publication. Once it shows as a saved memory, Ask and connected agents can use it.
+  </Step>
+</Steps>
+
+## Make agents recall it
+
+Add the block from [Tell your agent to use memory](/platform/memory#tell-your-agent-to-use-memory) to `AGENTS.md`, then add one line for decisions:
+
+```md AGENTS.md
+- Before you change how a subsystem works, call `recall` with the question
+  "what did we decide about <subsystem>?" and the files you will edit in
+  `paths`. If a decision with status adopted comes back, follow it. If your
+  change would break it, stop and ask me.
+```
+
+Then try it:
+
+```text
+I want to add a fourth retry to app/billing/charge.py. Before you change anything,
+call Graphify recall for acme/payments with query "payment retry policy" and
+paths ["app/billing/charge.py"]. Tell me what the team decided.
+```
+
+The agent should quote the decision and stop before adding the retry. Memory content is notes from earlier work, not instructions. The agent reads it as evidence and checks with you.
+
+## Change a decision
+
+Don't delete a decision that changed. Open it on the **Memories** tab, select **View evidence**, then **Update status**. Write what's true now in **What should the team know?**, set **Status**, add the reason in **Reason / supporting evidence**, and set **Effective time** to when the change takes effect.
+
+Toggle **All versions** on the **Memories** tab to see earlier versions. Each memory is attributed by name to the person who saved or changed it.
+
+## Check that it works
+
+- On **Memory**, filter **Recent memories** by **Decisions**. Your decision is listed.
+- In **Advanced**, open **Test what agents can recall**, ask *what is our payment retry policy?*, and select **Check recall**. The decision appears under **What the agent receives**.
+- Ask the same question in the Ask playground on **Memory**. When the answer is grounded, the decision is listed under **Memories given to this answer**.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| The decision doesn't come back from `recall` | Check it finished processing. Pass the file in `paths`, and use words from **Decision subject** in the query. |
+| It shows as ungrounded | A related code path didn't resolve. Check the path is repository-relative and the file still exists. |
+| Two versions conflict | It shows under **Conflicting**. Open both and update the one that's current. |
+| An agent ignored the decision | The `AGENTS.md` block isn't committed, or the agent didn't call `recall` with `paths`. Ask it to show the recall call. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Review team memory" icon="list-checks" href="/cookbooks/review-team-memory">
+    Keep suggestions, discard noise and test recall each week.
+  </Card>
+  <Card title="Write a postmortem" icon="history" href="/cookbooks/incident-postmortem">
+    Reconstruct what the team knew when an incident happened.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-decision-log" content="end-cta-decision-log" title="Save your first decision">Connect a repository, save a decision with its code paths, and your agents recall it before they edit that code.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

@@ -1,0 +1,106 @@
+---
+title: "Work across client workspaces with one coding agent"
+sidebarTitle: "Several client workspaces"
+description: "For consultants and fractional CTOs: keep each client in its own Graphify workspace and have your agent pick the right one each session."
+keywords: ["multiple graphify workspaces", "consultant workspaces", "fractional cto", "set_workspace", "list_workspaces", "switch workspace mcp"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "briefcase-business"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+If you work for several companies, each one's code, reviews and memory should stay in its own place. In Graphify, each client is a workspace you join. Your coding agent connects once, then picks which workspace it reads for each session, so an answer about one client never draws on another's code.
+
+<Info>
+**Works with:** Graphify. **Time:** about 10 minutes.
+</Info>
+
+## What you'll build
+
+- One Graphify account that belongs to each client's workspace.
+- A habit for your agent: check the workspace at the start of every session, and switch only for that session.
+- A repository pin per project, so the agent doesn't have to guess.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-multiple-client-workspaces) account. You always own one workspace of your own.
+- Each client invites you to their workspace, or approves your access request. See [Workspaces, members and roles](/platform/workspaces-and-members).
+- A coding agent connected to the [Graphify MCP server](/platform/graphify-mcp).
+
+## Set it up
+
+<Steps>
+  <Step title="Join each client's workspace">
+    Accept each invite from its email or accept link. In Graphify, the sidebar workspace switcher now lists every workspace you belong to.
+  </Step>
+  <Step title="See what your agent can target">
+    Ask your agent:
+
+    ```text
+    Call Graphify list_workspaces. Show each workspace's handle, name and plan, and which one is active.
+    ```
+
+    The response lists each workspace's `handle`, which one is `active`, and how it was selected. Use the handle, not the display name.
+  </Step>
+  <Step title="Switch for this session only">
+    ```text
+    Call Graphify set_workspace with handle "client-a-team". Do not make it the default.
+    Then call list_repositories and show what you can query.
+    ```
+
+    Without `make_default`, the switch binds only this MCP session. Each client installation has its own session, so a second machine or editor keeps its own workspace. A session binding lasts 24 hours by default, and repeating the selection renews it. `set_workspace` changes which repositories the agent reads. It doesn't change code or the graph, and most clients ask before running it.
+  </Step>
+  <Step title="Pin the repository per project">
+    In each client project, point the agent's MCP URL at that project's repository:
+
+    ```text
+    https://api.graphify.com/mcp?repo=client-a/web-app
+    ```
+
+    Tools then default to that repository when you don't name one.
+  </Step>
+  <Step title="Add a rule to each client's repository">
+    ```md AGENTS.md
+    ## Graphify workspace
+
+    This repository belongs to the Graphify workspace "client-a-team".
+    At the start of each session, call list_workspaces. If another workspace
+    is active, call set_workspace with "client-a-team" for this session only.
+    Never use memory or answers from another workspace in this repository.
+    ```
+  </Step>
+</Steps>
+
+## How the boundary holds
+
+- Every request runs in one workspace: the one bound to this session, then your default, then your only workspace if you have one.
+- Memories are scoped to the workspace they were written in, so `recall` in one client's workspace never returns another's.
+- Graphify rechecks your membership on every request. When a client removes you, your access ends within 60 seconds.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| `no_workspace` | No workspace is selected. Call `set_workspace` with one of the handles listed. |
+| `workspace_not_found` | Check the handle with `list_workspaces`. |
+| `workspace_access_revoked` | You're no longer a member there. Pick another workspace. |
+| `mcp_session_required` | Reconnect the client, then call `set_workspace` again. |
+| `list_repositories` shows the wrong client | The session is bound elsewhere. Call `set_workspace` with the right handle. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Graphify MCP" icon="plug" href="/platform/graphify-mcp">
+    Workspaces, sessions and errors over MCP.
+  </Card>
+  <Card title="Run agents on one graph" icon="workflow" href="/cookbooks/agent-team-one-graph">
+    Point every agent at the same workspace.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-multiple-client-workspaces" content="end-cta-multiple-client-workspaces" title="Keep each client separate">Join each client's workspace and your agent reads one at a time.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

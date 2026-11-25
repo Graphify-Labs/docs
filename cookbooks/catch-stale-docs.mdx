@@ -1,0 +1,105 @@
+---
+title: "Catch docs that a pull request made stale"
+sidebarTitle: "Catch stale docs"
+description: "Use the Graphify Stale docs check to find README, AGENTS.md and docs sections that mention code a pull request changed, and fix them in the same PR."
+keywords: ["stale docs", "docs drift", "outdated documentation", "agents.md stale", "claude.md stale", "docs in pull request review"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "file-warning"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+Docs go stale one pull request at a time. Someone renames a function, and the README, the architecture page and the `AGENTS.md` rule that mention it keep the old name. Agents then follow the old rule. Graphify's Stale docs check lists those sections on the pull request that changed the code, so the fix lands in the same pull request.
+
+<Info>
+**Works with:** Graphify, on GitHub. **Time:** about 5 minutes to set up.
+</Info>
+
+## What you'll build
+
+- Pull request reviews that list doc sections which mention code the pull request changed.
+- An agent rule that updates those sections before the pull request merges.
+- A Wiki that rebuilds from the merged code, so it never needs the same fix.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-catch-stale-docs) workspace with the repository indexed and **PR reviews** on.
+- Docs kept in the same repository as the code.
+
+## How the check works
+
+It's a plain name match, with no model and no graph behind it. When a pull request adds or removes a function or class, the review lists sections of untouched, git tracked `.md`, `.markdown`, `.mdx` and `.rst` files that mention those names. `AGENTS.md` and `CLAUDE.md` are `.md` files, so they're included.
+
+It's advisory and never blocks a merge. It doesn't cover Cursor `.mdc` rules, doesn't check whether a path or name in a doc still exists, and doesn't judge whether a rule is still true.
+
+## Set it up
+
+<Steps>
+  <Step title="Check the switch">
+    On **Repositories**, open the repository's **…** options menu. **Stale docs** is on unless someone turned it off.
+  </Step>
+  <Step title="Open a pull request that renames or removes something">
+    When the review lands, it can include a section titled **Docs that may be stale (advisory)**. Each line names a doc file, its heading and lines, and the changed names it mentions, for example:
+
+    ```text
+    - docs/billing.md § Retries (lines 12-30): references changed symbols `charge_with_retry`
+    - AGENTS.md § Payments (line 41): references changed symbols `charge_with_retry`
+    ```
+
+    Up to 10 sections are listed. If there are more, the list ends with how many more.
+  </Step>
+  <Step title="Have the agent fix them in the same pull request">
+    Commit this rule:
+
+    ```md AGENTS.md
+    ## Stale docs
+
+    - After the Graphify review lands on your pull request, read its
+      "Docs that may be stale (advisory)" section:
+      gh pr view <number> --comments
+    - Open each listed section. If it describes the old behavior or an old
+      name, update it in this pull request. If it's still true, leave it.
+    - Say which sections you changed and which you left, and why.
+    ```
+
+    The stale docs list is on the review comment. `review_status` returns the gate and findings, not this list, so the agent reads the comment.
+  </Step>
+  <Step title="Ask for a fresh review">
+    On GitHub, after the fixes, comment `@graphify review`. The new review analyzes the full pull request again.
+  </Step>
+</Steps>
+
+## Let the Wiki keep itself current
+
+You don't fix the Wiki by hand. Graphify rebuilds the graph on every push to the default branch, and the Wiki reflects the latest build. Once the pull request merges, the Wiki catches up. See [How Graphify keeps your graph fresh](/platform/keep-the-graph-fresh).
+
+## Check that it works
+
+Rename a function that a doc mentions, open a pull request, and wait for the review. The doc section shows under **Docs that may be stale (advisory)**. After the agent updates it and you ask for a fresh review, that section is gone.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| No stale docs section | Nothing matched, or **Stale docs** is off. The check only runs on added or removed functions and classes. |
+| A doc you edited in the pull request isn't listed | Expected. The check lists untouched docs only. |
+| A Cursor rule wasn't flagged | `.mdc` files aren't covered. Check them by hand, or ask your agent to search them. |
+| A listed section is still correct | The check matches names, not meaning. Leave it as is. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Fix review findings" icon="wrench" href="/cookbooks/fix-review-findings">
+    Have the agent fix what the review found.
+  </Card>
+  <Card title="Pull request reviews" icon="git-pull-request" href="/platform/reviews">
+    Every review section and repository setting.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-catch-stale-docs" content="end-cta-catch-stale-docs" title="Catch stale docs on your next PR">Connect a repository and Graphify lists docs that mention the code each pull request changed.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

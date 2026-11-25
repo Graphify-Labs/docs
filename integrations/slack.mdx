@@ -1,0 +1,121 @@
+---
+title: "Slack integration: ask about your code in Slack"
+sidebarTitle: "Slack"
+description: "Connect Slack to Graphify so workspace members can ask about indexed code in direct messages and enabled channels, with cited answers in a thread."
+keywords: ["graphify slack", "slack bot for codebase", "ask code questions in slack", "slack code search", "codebase q&a slack"]
+surface: "cloud"
+hideFooterPagination: true
+---
+
+Ask Graphify about your indexed repositories without leaving Slack. Mention `@Graphify` in an enabled channel, or send the app a direct message. Graphify answers from the code graph and cites the code behind each answer. Slack is available on every plan, including Free.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-slack) workspace with at least one indexed repository.
+- You are a workspace Owner or Admin.
+- Permission to install apps in your Slack workspace. Your Slack administrator may need to approve the install.
+- Everyone who asks is an Owner, Admin or Member of the Graphify workspace, using the same verified email in Graphify and in Slack.
+
+One Slack workspace connects to one Graphify workspace, and each Graphify workspace has one Slack connection.
+
+## Connect Slack
+
+<Steps>
+  <Step title="Open the Slack tile">
+    In Graphify, open **Connectors**, then the **Integrations** tab, and select the **Slack** tile. Choose **Connect Slack**.
+  </Step>
+  <Step title="Authorize Graphify">
+    Check that Slack shows the right workspace, review the permissions, and authorize Graphify. You return to Graphify when the install finishes.
+  </Step>
+  <Step title="Choose a default repository">
+    In the Slack integration settings, pick the repository Graphify answers from in direct messages. People can still name another repository in a direct message with `owner/repo`.
+  </Step>
+  <Step title="Enable a channel">
+    Add the channel, choose the one repository it answers from, then invite `@Graphify` to that channel in Slack.
+  </Step>
+</Steps>
+
+## Ask a question
+
+In an enabled channel, mention the app. Graphify replies in a thread:
+
+```text
+@Graphify where is the webhook retry logic?
+@Graphify what calls validate_token?
+```
+
+In a direct message, ask without the mention. Name a repository to choose one:
+
+```text
+In acme/payments, what could be affected if I change the checkout handler?
+```
+
+Include the function and repository in each question. Every question is answered on its own.
+
+### Ask about a pull request
+
+Mention a pull request, such as `PR 1234` or `#1234`, and Graphify answers from that pull request's completed review. If the review is still running, Graphify says so instead of guessing.
+
+## What Graphify answers with
+
+- **Cited answers only.** Graphify posts an answer only when it's grounded: it has text and cites at least one real code location. Otherwise it replies "I don't have a grounded answer for that from this codebase." That's a normal answer, not an error.
+- **Kept memory only.** Answers can use memories your team has kept in [Memory](/platform/memory). Unreviewed suggestions aren't used.
+- **Nothing is saved.** Nothing people ask in Slack is saved to Graphify memory.
+
+## Who sees what
+
+| Where | Who can ask | Who sees the answer |
+| --- | --- | --- |
+| Direct message | Workspace Owners, Admins and Members | Only the person asking |
+| Enabled channel | Workspace Owners, Admins and Members in the channel | Everyone in the channel |
+| Channel shared with another organization | No one. Graphify doesn't answer there. | |
+
+Enabling a channel lets Graphify share answers from that channel's repository with everyone in it. Only enable channels whose members should see that code, and review the choice when membership changes. Use a direct message for questions that should stay private.
+
+Graphify matches each person by their Slack profile email to a member of the workspace. Its Slack permissions let it identify channels, receive mentions and direct messages, post answers, and react to acknowledge a question.
+
+## Limits
+
+| Limit | What happens | Fix |
+| --- | --- | --- |
+| Each channel answers from one repository | Asking about another repository in that channel gets "In this channel I answer from `owner/repo` only. DM me to ask about other repositories." | Ask in a direct message, naming `owner/repo`. |
+| Each person has a rate limit | Over it, Graphify replies "You're asking faster than I can answer. Give it a minute." | Wait a minute and ask again. |
+| Answers depend on the graph | Answers reflect the latest build of the repository and may be incomplete. | Check the citations before acting. Make sure indexing has finished. |
+| Shared channels | Graphify doesn't answer in channels shared with other organizations. | Use a channel inside your workspace, or a direct message. |
+
+## Disconnect
+
+A workspace Owner or Admin can disconnect Slack from the Slack integration settings. You can also remove Graphify from Slack's app management. Disconnecting stops future access. It doesn't delete messages already posted in Slack.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| No reply | Check Slack is connected, indexing has finished, the channel is enabled, and `@Graphify` is a member of it. |
+| "I couldn't match your Slack email to a member of this Graphify workspace." | Ask an admin to invite that email to the Graphify workspace, or change your Slack email to match. |
+| "Graphify isn't enabled in this channel." | Ask in a direct message, or ask an admin to enable the channel. |
+| "No repository is set for Slack yet." | Name a repository with `owner/repo`, or ask an admin to set a default. |
+| "Graphify can't answer right now." | Try again in a few minutes. |
+| The wrong repository answered | Check the channel's repository setting, or name `owner/repo` in a direct message. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Answer on-call questions in Slack" icon="headset" href="/cookbooks/slack-on-call-answers">
+    Set up a channel where on-call and support get cited answers.
+  </Card>
+  <Card title="Codebase Q&A for your team" icon="messages-square" href="/cookbooks/codebase-qa-for-non-engineers">
+    Slack, Claude, ChatGPT or your own app, side by side.
+  </Card>
+</Columns>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>
+
+<Visibility for="humans">
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/integrations/other-agents" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Other MCP clients</span></a>
+  <a href="/integrations/github" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">GitHub</span></a>
+</div>
+</Visibility>

@@ -183,7 +183,8 @@
               "integrations/grok-bot",
               "integrations/openclaw",
               "integrations/hermes",
-              "integrations/other-agents"
+              "integrations/other-agents",
+              "integrations/slack"
             ]
           },
           {
@@ -243,13 +244,33 @@
             "group": "Team",
             "icon": "users",
             "pages": [
+              "cookbooks/team-setup",
               "cookbooks/codebase-qa-for-non-engineers",
               "cookbooks/pr-blast-radius",
               "cookbooks/automated-pr-review",
               "cookbooks/onboard-with-the-wiki",
               "cookbooks/review-as-a-team",
               "cookbooks/shared-team-graph",
-              "cookbooks/cross-repo-dependencies"
+              "cookbooks/cross-repo-dependencies",
+              "cookbooks/slack-on-call-answers",
+              "cookbooks/multiple-client-workspaces"
+            ]
+          },
+          {
+            "group": "Memory",
+            "icon": "brain",
+            "pages": [
+              "cookbooks/review-team-memory",
+              "cookbooks/decision-log",
+              "cookbooks/incident-postmortem"
+            ]
+          },
+          {
+            "group": "Reviews",
+            "icon": "git-pull-request",
+            "pages": [
+              "cookbooks/prove-refactor-behavior",
+              "cookbooks/catch-stale-docs"
             ]
           },
           {

@@ -163,13 +163,14 @@ Use when connecting a specific coding agent. Each page has a Graphify tab and a 
 
 ## Integrations: Assistants
 
-Use when connecting a chat assistant or an MCP client without its own page.
+Use when connecting a chat assistant, Slack, or an MCP client without its own page.
 
 - [Graphify for ChatGPT, Codex, and Dots](https://docs.graphify.com/integrations/chatgpt.md): Connect ChatGPT, Codex, and Dots to your indexed repositories with one OpenAI plugin that uses Graphify's hosted MCP server.
 - [Graphify for Grok Bot](https://docs.graphify.com/integrations/grok-bot.md): Add the official Graphify plugin to Grok Bot. Sign in with OAuth once, then ask Grok Bot about your indexed repositories, dependencies and change impact.
 - [Graphify MCP for OpenClaw](https://docs.graphify.com/integrations/openclaw.md): Install the Graphify MCP plugin from ClawHub to connect OpenClaw to hosted Graphify, then search indexed repos and follow callers and dependencies.
 - [Graphify for Hermes Agent](https://docs.graphify.com/integrations/hermes.md): Connect Nous Research's Hermes Agent to Graphify's hosted MCP server with browser OAuth, or install the open-source Graphify skill for Hermes.
 - [Graphify for other MCP clients](https://docs.graphify.com/integrations/other-agents.md): Connect any MCP client to Graphify over Streamable HTTP, or run the open-source Graphify MCP server with a generic mcpServers entry.
+- [Slack integration: ask about your code in Slack](https://docs.graphify.com/integrations/slack.md): Connect Slack to Graphify so workspace members can ask about indexed code in direct messages and enabled channels, with cited answers in a thread.
 
 ## Integrations: Source control
 
@@ -216,8 +217,9 @@ Use for step-by-step recipes: onboarding, refactors, reading the graph and keepi
 
 ## Cookbooks: Team
 
-Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blast radius, automated PR review, Wiki onboarding, team reviews, a shared graph and cross-repo dependencies.
+Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blast radius, automated PR review, Wiki onboarding, team reviews, a shared graph, cross-repo dependencies, Slack answers for on-call and several client workspaces.
 
+- [Set up Graphify for your whole team](https://docs.graphify.com/cookbooks/team-setup.md): Roll Graphify out to a team: connect GitHub, choose review switches, invite people with the right roles, connect every agent and add Slack.
 - [Build a codebase Q&A assistant for non-engineers](https://docs.graphify.com/cookbooks/codebase-qa-for-non-engineers.md): Let product, support and sales ask how your code works in Slack, Claude, ChatGPT or your own chat app, with answers cited from the Graphify code graph.
 - [Check a pull request's blast radius in a monorepo](https://docs.graphify.com/cookbooks/pr-blast-radius.md): Before you merge, find every caller, dependent file, test and repository a pull request can affect, using the Graphify code graph from your coding agent.
 - [Set up automated PR review on a budget](https://docs.graphify.com/cookbooks/automated-pr-review.md): Turn on Graphify PR reviews, read the 1 to 5 merge confidence score, let agents read results over MCP, and keep review usage predictable as you grow.
@@ -225,6 +227,23 @@ Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blas
 - [Review PRs as a team and avoid merge conflicts](https://docs.graphify.com/cookbooks/review-as-a-team.md): Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code and agree a safe merge order early.
 - [Share a code graph with your team using git](https://docs.graphify.com/cookbooks/shared-team-graph.md): Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
 - [Map a dependency graph across multiple repos](https://docs.graphify.com/cookbooks/cross-repo-dependencies.md): Build a dependency graph across multiple repos with Graphify, then ask your coding agent what a change in one repository breaks in the others.
+- [Answer on-call and support questions in Slack](https://docs.graphify.com/cookbooks/slack-on-call-answers.md): Set up a Slack channel where on-call and support ask Graphify about the code, get cited answers and review status, and see lessons your team kept.
+- [Work across client workspaces with one coding agent](https://docs.graphify.com/cookbooks/multiple-client-workspaces.md): For consultants and fractional CTOs: keep each client in its own Graphify workspace and have your agent pick the right one each session.
+
+## Cookbooks: Memory
+
+Use for keeping team Memory accurate: weekly review, a decision log and incident postmortems.
+
+- [Keep your team's memory accurate with a weekly review](https://docs.graphify.com/cookbooks/review-team-memory.md): A weekly Memory review: keep or discard suggestions, clear empty ones, recheck memories whose code changed, and test what agents will recall.
+- [Keep a decision log your coding agents follow](https://docs.graphify.com/cookbooks/decision-log.md): Save architecture decisions in Graphify Memory with status, timing and code paths, so coding agents recall them before they edit that code.
+- [Write a postmortem from what your team knew then](https://docs.graphify.com/cookbooks/incident-postmortem.md): Reconstruct an incident from Graphify Memory: record it, pull the pull request history Graphify saved, and recall what the team knew at that time.
+
+## Cookbooks: Reviews
+
+Use for getting more from pull request reviews: proving a refactor kept behavior and catching stale docs.
+
+- [Prove a refactor kept its behavior before you merge](https://docs.graphify.com/cookbooks/prove-refactor-behavior.md): Use Graphify formal verification on an agent's refactor: read each function's result, turn a differing input into a test, and merge with evidence.
+- [Catch docs that a pull request made stale](https://docs.graphify.com/cookbooks/catch-stale-docs.md): Use the Graphify Stale docs check to find README, AGENTS.md and docs sections that mention code a pull request changed, and fix them in the same PR.
 
 ## Cookbooks: Agents
 

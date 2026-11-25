@@ -221,7 +221,11 @@
   function build(items) {
     const content = document.getElementById("content");
     if (!content) return;
-    document.querySelector(".graphify-mobile-outline")?.remove();
+    const previous = document.querySelector(".graphify-mobile-outline");
+    // Keep the outline open across rebuilds, so a re-render right after a tap
+    // doesn't snap it shut.
+    const wasOpen = Boolean(previous && previous.open);
+    previous?.remove();
     const box = document.createElement("details");
     box.className = "graphify-mobile-outline";
     const summary = document.createElement("summary");
@@ -234,7 +238,12 @@
       link.textContent = item.text;
       nav.append(link);
     }
+    // Close the outline after a jump, so it doesn't cover the section.
+    nav.addEventListener("click", (event) => {
+      if (event.target.closest("a")) box.open = false;
+    });
     box.append(summary, nav);
+    box.open = wasOpen;
     content.prepend(box);
     builtFrom = items.map((item) => item.id).join("|");
     sync(box);

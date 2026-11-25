@@ -4,7 +4,7 @@ sidebarTitle: "Migrating from Cody"
 description: "Move from Sourcegraph Cody to Graphify: sign in at app.graphify.com, index your repositories, and connect your agent over MCP."
 keywords: ["migrate from cody", "sourcegraph cody", "cody end of life", "connect agent mcp"]
 surface: "cloud"
-icon: "arrow-right-left"
+icon: "replace"
 ---
 
 Cody reaches end of life on January 31, 2027. Sourcegraph [announced](https://sourcegraph.com/blog/sunsetting-cody-future-of-code-intelligence) that date on November 9, 2026, and said Deep Search and their MCP integrations "aren't one-for-one replacements for every Cody capability."
@@ -34,7 +34,7 @@ You'll need a Graphify account, a repository on GitHub or GitLab that you can co
   <Step title="Connect and index repositories">
     Add the repositories you want Graphify to read, switch on **Indexing**, and wait until the status is **Indexed**. Graphify indexes the latest commit on the default branch. After that, a push to the default branch updates the graph. Pushes to other branches don't.
 
-    The full walkthrough is in the [Quickstart](/platform/quickstart). For GitHub and GitLab details, build states, and retries, see [Index your first repository](/concepts/index-a-repository) and [Repositories and builds](/platform/repositories).
+    The full walkthrough is in the [Quickstart](/platform/quickstart). For GitHub and GitLab details, build states, and retries, see [What updates the graph](/platform/quickstart#what-updates-the-graph) and [Repositories and builds](/platform/repositories).
   </Step>
   <Step title="Connect your agent">
     Add the MCP server at `https://api.graphify.com/mcp` and sign in with OAuth. There is no API key to paste.

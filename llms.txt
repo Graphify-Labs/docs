@@ -30,22 +30,18 @@ Start here for an overview of Graphify.
 Use when setting up hosted Graphify: a Graphify account (create one for free while connecting), an indexed repository, and an agent on Graphify MCP.
 
 - [What is Graphify? Shared context for coding agents](https://docs.graphify.com/platform/overview.md): Graphify is shared context for AI coding agents and developers: a code graph, Memory for decisions and incidents, a Wiki and cross-repo PR reviews.
-- [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
-- [Tour Graphify through three everyday jobs](https://docs.graphify.com/platform/tour.md): A short tour of Graphify built around real jobs: onboard to a repository, check what a change breaks, and remember an incident so agents don't repeat it.
 - [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth: the code graph, team Memory and review status. Endpoint, tools, fixes.
 - [Check your agent is using Graphify](https://docs.graphify.com/platform/verify-connection.md): Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix a missing workspace or repositories.
-- [Migrating from Sourcegraph Cody](https://docs.graphify.com/platform/migrate-from-cody.md): Move from Sourcegraph Cody to Graphify: sign in at app.graphify.com, index your repositories, and connect your agent over MCP.
-- [Index your first repository in Graphify](https://docs.graphify.com/concepts/index-a-repository.md): Connect a GitHub or GitLab repository to Graphify, switch on indexing, and confirm the build finished so your agent can query the graph.
-- [How Graphify keeps your graph fresh](https://docs.graphify.com/platform/keep-the-graph-fresh.md): Graphify rebuilds your code graph on every push to the default branch, re-processing only the files that changed. See what triggers a build and when.
-- [Console tour: the Graphify web app](https://docs.graphify.com/platform/console.md): A tour of the Graphify web app at app.graphify.com: Overview, repository graphs, pull request reviews, formal verification, Wiki, memory and connectors.
 - [Graphify vs Graphify CLI: hosted or open source](https://docs.graphify.com/platform/graphify-vs-local.md): Compare hosted Graphify with Graphify CLI, the open-source graphifyy package: how each builds, updates and serves the graph, and what needs hosted.
 
 ## Graphify: Core concepts
 
 Use when explaining how the graph answers questions about code, and how to read its edges.
 
+- [How Graphify works](https://docs.graphify.com/platform/how-it-works.md): What happens between connecting a repository and your agent asking the graph a question: indexing, updates, and the hosted MCP server.
 - [How Graphify builds a code knowledge graph](https://docs.graphify.com/concepts/architecture.md): How Graphify works: from source files parsed with tree-sitter to a persistent knowledge graph your coding assistant can traverse and query.
+- [How Graphify keeps your graph fresh](https://docs.graphify.com/platform/keep-the-graph-fresh.md): Graphify rebuilds your code graph on every push to the default branch, re-processing only the files that changed. See what triggers a build and when.
 - [Code graph vs RAG vs memory: how Graphify differs](https://docs.graphify.com/concepts/how-graphify-is-different.md): How a code knowledge graph and Memory compare with RAG and vector search, wiki-style docs, language servers and context-graph tools, and when each fits.
 - [Ask a question about your code](https://docs.graphify.com/concepts/ask-about-your-code.md): Ask your agent a plain-English question and get back the definitions and files from your indexed repository that answer it.
 - [Follow calls and trace a path between symbols](https://docs.graphify.com/concepts/follow-calls.md): Ask your agent what calls a function, what it calls, and how one symbol reaches another. Hosted Graphify answers from real call edges in your indexed repo.
@@ -60,6 +56,7 @@ Use when explaining how the graph answers questions about code, and how to read 
 
 Use when the user asks about a hosted feature: Ask, graphs, reviews, verification, Wiki, Memory, or connectors.
 
+- [Console tour: the Graphify web app](https://docs.graphify.com/platform/console.md): A tour of the Graphify web app at app.graphify.com: Overview, repository graphs, pull request reviews, formal verification, Wiki, memory and connectors.
 - [Ask your codebase: answers with citations](https://docs.graphify.com/platform/ask.md): Ask your codebase plain-language questions. Graphify answers from the graph or the wiki, handles PR questions, and abstains when it has no answer.
 - [Code knowledge graph: explore and query repos](https://docs.graphify.com/platform/graphs.md): Explore and query Graphify's code knowledge graph, see what a change affects, and combine up to 100 repositories into one cross-repo workspace graph.
 - [AI pull request reviews with code graph context](https://docs.graphify.com/platform/reviews.md): How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how the 1 to 5 merge confidence score works.
@@ -95,26 +92,24 @@ Use for errors, rate limits, pricing, security, or moving from Graphify CLI to h
 - [Rate limits and plan limits](https://docs.graphify.com/platform/support/rate-limits.md): Per-minute request limits for Ask, query, and MCP, memory limits, plan allowances, and how to handle a 429 from Graphify.
 - [Security and data handling](https://docs.graphify.com/platform/support/security.md): What Graphify stores, how long it keeps it, which GitHub and Google Drive permissions it asks for, and how assistants reach your graphs.
 - [Move from Graphify CLI](https://docs.graphify.com/platform/support/move-from-local.md): Move a repository from the local graphifyy package to Graphify: connect it, point assistants at the hosted MCP server, and keep a way back.
+- [Migrating from Sourcegraph Cody](https://docs.graphify.com/platform/migrate-from-cody.md): Move from Sourcegraph Cody to Graphify: sign in at app.graphify.com, index your repositories, and connect your agent over MCP.
 
 ## Graphify CLI: Get started
 
 Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.
 
 - [Graphify CLI: open-source code knowledge graph](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
-- [Graphify skill: install graphifyy and run /graphify .](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, run graphify install to add the Graphify skill, then type /graphify . in your coding agent to map the repository.
+- [Graphify CLI quickstart: map a repo and ask it](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, map a repository with the agent skill or the terminal, and ask your first question. Code is parsed on your machine with no API key.
 - [Install graphifyy (Graphify CLI) with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify.
-- [CLI quickstart: build and query a code graph](https://docs.graphify.com/open-source/cli-quickstart.md): Build a code knowledge graph with graphify extract, then query it with query, path, explain, and god-nodes. No agent or API key needed.
 - [MCP server quickstart: serve your graph](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and the other graph tools from any MCP client.
 - [Self-host the Graphify MCP server with Docker](https://docs.graphify.com/open-source/self-host.md): Build the open-source Graphify Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph.
-- [Vibe coding with Graphify CLI](https://docs.graphify.com/open-source/vibe-coding.md): Set up open-source Graphify so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code.
-- [Run Graphify locally](https://docs.graphify.com/open-source/local-development.md): Run Graphify entirely on your machine: a code-only workflow, or semantic extraction with a local model backend such as Ollama.
-- [Ask your agent one question](https://docs.graphify.com/open-source/ask-your-agent.md): The shortest path with the open-source Graphify CLI: install graphifyy, add the skill for your assistant, map the repo and check the files it writes.
-- [Trace callers and paths between symbols](https://docs.graphify.com/platform/trace.md): Use open-source Graphify CLI commands to find a symbol, see who calls it, and check whether two names connect in the code graph, or ask a hosted agent.
 
 ## Graphify CLI: Features
 
 Use for what Graphify CLI can map and query: inputs, updates, PR impact, exports and its MCP tools.
 
+- [Vibe coding with Graphify CLI](https://docs.graphify.com/open-source/vibe-coding.md): Set up open-source Graphify so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code.
+- [Trace callers and paths between symbols](https://docs.graphify.com/platform/trace.md): Use open-source Graphify CLI commands to find a symbol, see who calls it, and check whether two names connect in the code graph, or ask a hosted agent.
 - [Supported inputs](https://docs.graphify.com/open-source/features/languages.md): The languages, schemas, documents, and media Graphify can map, which extractor handles each, and the optional extras to install.
 - [Documents, papers, and media](https://docs.graphify.com/open-source/features/documents-and-media.md): Add Markdown, PDFs, Office files, images, video, audio, web pages, and Google Workspace files to your open-source Graphify graph with semantic extraction.
 - [Databases and package graphs](https://docs.graphify.com/open-source/features/databases.md): Map a live PostgreSQL schema and Rust crate dependencies into your open-source Graphify graph, alongside the code that uses them.

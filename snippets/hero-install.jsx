@@ -46,7 +46,7 @@ export const graphifyAgents = () => [
     id: "codex",
     name: "Codex",
     logo: "/images/logos/codex.png",
-    code: "codex mcp add graphify --url https://api.graphify.com/mcp\ncodex mcp login graphify",
+    code: "codex mcp add graphify --url https://api.graphify.com/mcp && codex mcp login graphify",
     setup: {
       name: "ChatGPT and Codex",
       sub: "Install plugin",
@@ -61,7 +61,7 @@ export const graphifyAgents = () => [
     name: "OpenCode",
     logo: "/images/logos/opencode-light.svg",
     logoDark: "/images/logos/opencode-dark.svg",
-    code: "opencode mcp add graphify --url https://api.graphify.com/mcp\nopencode mcp auth graphify",
+    code: "opencode mcp add graphify --url https://api.graphify.com/mcp && opencode mcp auth graphify",
     setup: {
       sub: "Run in terminal",
       line: "Run this in your project to add Graphify as a remote MCP server and sign in.",
@@ -83,59 +83,26 @@ export const graphifyAgents = () => [
   },
 ];
 
-export const HeroInstall = () => {
+const AGENT_PROMPT = "Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow it.";
+
+export const HeroInstall = ({ mode }) => {
+  const mcp = mode === "mcp";
   const agents = graphifyAgents();
-  const tabs = [
-    { id: "mcp", label: "Hosted MCP" },
-    {
-      id: "prompt",
-      label: "Agent prompt",
-      code: "Set up Graphify for me. Fetch https://docs.graphify.com/for-agents.md and follow it.",
-    },
-  ];
-  const [active, setActive] = useState(0);
   const [agent, setAgent] = useState(0);
-  const select = (i, focus) => {
-    const n = (i + tabs.length) % tabs.length;
-    setActive(n);
-    if (focus && typeof document !== "undefined") {
-      const el = document.getElementById("gfy-tab-" + tabs[n].id);
-      if (el) el.focus();
-    }
-  };
-  const onKeyDown = (e) => {
-    if (e.key === "ArrowRight") { e.preventDefault(); select(active + 1, true); }
-    else if (e.key === "ArrowLeft") { e.preventDefault(); select(active - 1, true); }
-    else if (e.key === "Home") { e.preventDefault(); select(0, true); }
-    else if (e.key === "End") { e.preventDefault(); select(tabs.length - 1, true); }
-  };
-  const t = tabs[active];
-  const isMcp = t.id === "mcp";
   const a = agents[agent];
-  const code = isMcp ? a.code : t.code;
-  const copyLabel = isMcp ? "Copy " + a.name + " setup" : "Copy " + t.label;
+  const code = mcp ? a.code : AGENT_PROMPT;
+  const tabId = mcp ? "gfy-tab-mcp" : "gfy-tab-prompt";
+  const panelId = mcp ? "gfy-panel-mcp" : "gfy-panel-prompt";
   return (
-    <div className="gfy-snippet">
+    <div className={mcp ? "gfy-snippet gfy-snippet-mcp" : "gfy-snippet"}>
       <div className="gfy-snippet-bar">
-        <div role="tablist" aria-label="Ways to install Graphify" className="gfy-tablist" onKeyDown={onKeyDown}>
-          {tabs.map((tab, i) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              id={"gfy-tab-" + tab.id}
-              aria-selected={i === active}
-              aria-controls={"gfy-panel-" + tab.id}
-              tabIndex={i === active ? 0 : -1}
-              className="gfy-tab"
-              onClick={() => select(i, false)}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div role="tablist" aria-label={mcp ? "Hosted MCP" : "Agent prompt"} className="gfy-tablist">
+          <button type="button" role="tab" id={tabId} aria-selected="true" aria-controls={panelId} className="gfy-tab">
+            {mcp ? "Hosted MCP" : "Agent prompt"}
+          </button>
         </div>
         <div className="gfy-bar-actions">
-          {isMcp ? (
+          {mcp ? (
             <div role="group" aria-label="Choose your agent" className="gfy-agents">
               {agents.map((ag, i) => (
                 <button
@@ -156,10 +123,10 @@ export const HeroInstall = () => {
               </a>
             </div>
           ) : null}
-          <CopyButton text={code} label={copyLabel} />
+          <CopyButton text={code} label={mcp ? "Copy " + a.name + " setup" : "Copy Agent prompt"} />
         </div>
       </div>
-      <div role="tabpanel" id={"gfy-panel-" + t.id} aria-labelledby={"gfy-tab-" + t.id} tabIndex={0} className="gfy-panel">
+      <div role="tabpanel" id={panelId} aria-labelledby={tabId} tabIndex={0} className="gfy-panel">
         <pre className="gfy-pre"><code>{code.split("\n").map((line, i) => (<span key={i} className="gfy-line">{line}</span>))}</code></pre>
       </div>
     </div>

@@ -9,9 +9,10 @@
   const LOGO_URL = "https://graphify.com/assets/logo-icon.svg";
   const MAX_CHARS = 2000;
   const STARTERS = [
-    "How do I install Graphify?",
-    "What is the package name?",
-    "How do I connect Cursor?",
+    "How do I use Graphify with MCP?",
+    "How do I connect a repository?",
+    "How do pull request reviews work?",
+    "Where do I read the code graph?",
   ];
 
   const root = document.createElement("div");
@@ -85,6 +86,18 @@
   log.setAttribute("role", "log");
   log.setAttribute("aria-live", "polite");
 
+  const empty = document.createElement("div");
+  empty.className = "graphify-ask-empty";
+  const welcome = document.createElement("div");
+  welcome.className = "graphify-ask-welcome";
+  const welcomeTitle = document.createElement("h3");
+  const welcomeAccent = document.createElement("span");
+  welcomeAccent.className = "graphify-ask-accent";
+  welcomeAccent.textContent = "Graphify";
+  welcomeTitle.append(document.createTextNode("Ask about "), welcomeAccent);
+  const welcomeText = document.createElement("p");
+  welcomeText.textContent = "Questions about the product, MCP, and the app. Answers come from these docs.";
+  welcome.append(welcomeTitle, welcomeText);
   const starters = document.createElement("div");
   starters.className = "graphify-ask-starters";
   for (const prompt of STARTERS) {
@@ -94,6 +107,26 @@
     button.addEventListener("click", () => send(prompt));
     starters.append(button);
   }
+  const help = document.createElement("p");
+  help.className = "graphify-ask-help";
+  const signIn = document.createElement("a");
+  signIn.href = "https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=ask-graphify";
+  signIn.textContent = "Sign in";
+  const support = document.createElement("a");
+  support.href = "https://discord.gg/graphify";
+  support.textContent = "Support";
+  for (const link of [signIn, support]) {
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  }
+  help.append(
+    document.createTextNode("Need help with your account, or want to reach the team? "),
+    signIn,
+    document.createTextNode(" and ask in "),
+    support,
+    document.createTextNode("."),
+  );
+  empty.append(welcome, starters, help);
 
   const apple = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const coarse = window.matchMedia("(pointer: coarse)").matches;
@@ -131,9 +164,12 @@
   keysDot.setAttribute("aria-hidden", "true");
   keysDot.textContent = "·";
   keys.append(keysDot, keycap("Shift"), keycap("Enter"), document.createTextNode(" for a new line"));
-  form.append(composer, keys);
+  const disclaimer = document.createElement("p");
+  disclaimer.className = "graphify-ask-disclaimer";
+  disclaimer.textContent = "AI may make mistakes. Verify important information.";
+  form.append(composer, keys, disclaimer);
 
-  panel.append(head, log, starters, form);
+  panel.append(head, empty, log, form);
   root.append(launcher, panel);
   document.body.append(root);
 
@@ -1057,7 +1093,10 @@
     if (!panel.hidden) input.focus();
   }
 
+  let closeTimer = 0;
+
   function openPanel() {
+    clearTimeout(closeTimer);
     lastFocus = document.activeElement;
     panel.hidden = false;
     launcher.hidden = true;
@@ -1070,11 +1109,14 @@
   function closePanel() {
     setMode("dock");
     panel.classList.remove("is-open");
-    panel.hidden = true;
     launcher.hidden = false;
     launcher.setAttribute("aria-expanded", "false");
     if (inflight) inflight.abort();
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => {
+      if (!panel.classList.contains("is-open")) panel.hidden = true;
+    }, 200);
   }
 
   /* Mintlify shows an "Add to assistant" tooltip when text is selected.

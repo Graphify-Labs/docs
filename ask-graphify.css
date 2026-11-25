@@ -33,21 +33,46 @@ div:has(> #chat-assistant-sheet),
 .graphify-ask-launcher {
   position: fixed;
   z-index: 35;
-  right: calc(24px + env(safe-area-inset-right, 0px));
-  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-  display: inline-flex;
+  right: calc(20px + env(safe-area-inset-right, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 6px 14px 6px 6px;
-  border: 1px solid var(--ask-line);
-  border-radius: var(--g-radius-lg);
-  background: var(--g-surface);
-  color: var(--ask-ink);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--g-brand, #0e7a43);
+  color: #ffffff;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgb(14 122 67 / 30%), 0 8px 10px rgb(17 141 79 / 16%);
+}
+
+.graphify-ask-launcher .graphify-ask-avatar {
+  width: 22px;
+  height: 22px;
+  flex-basis: 22px;
+  border: 0;
+  background: transparent;
+}
+
+.graphify-ask-launcher .graphify-ask-avatar img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+}
+
+.graphify-ask-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .graphify-ask-avatar {
@@ -75,7 +100,7 @@ div:has(> #chat-assistant-sheet),
 }
 
 .graphify-ask-launcher:hover {
-  background: var(--ask-mint);
+  background: #0b6637;
 }
 
 .graphify-ask-launcher:focus-visible,
@@ -96,43 +121,89 @@ div:has(> #chat-assistant-sheet),
 }
 
 .graphify-ask-panel {
+  /* The sheet stays white in light and dark, the way the reference chat does.
+     Local tokens keep type, code, and buttons readable on that white. */
+  --ask-ink: #171717;
+  --ask-quiet: #5c5c5c;
+  --ask-line: #ededed;
+  --ask-mint: #eef8f3;
+  --ask-green: #0e7a43;
+  --ask-focus: #0e7a43;
+  --g-surface: #ffffff;
+  --g-surface-subtle: #f7f7f7;
+  --g-surface-hover: #f3faf6;
+  --g-border: #e5e5e5;
+  --g-border-subtle: #ededed;
+  --g-border-strong: #d4d4d4;
+  --g-accent-ring: rgb(14 122 67 / 35%);
   position: fixed;
   z-index: 40;
   box-sizing: border-box;
-  right: max(16px, env(safe-area-inset-right));
-  bottom: max(16px, env(safe-area-inset-bottom));
+  top: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
-  width: min(420px, calc(100vw - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
-  max-width: min(420px, calc(100vw - max(16px, env(safe-area-inset-left)) - max(16px, env(safe-area-inset-right))));
-  height: min(640px, calc(100dvh - max(16px, env(safe-area-inset-top)) - max(16px, env(safe-area-inset-bottom))));
-  max-height: min(640px, calc(100dvh - max(16px, env(safe-area-inset-top)) - max(16px, env(safe-area-inset-bottom))));
+  width: 100%;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--ask-line);
-  border-radius: var(--g-radius-lg);
-  background: var(--g-surface);
-  box-shadow: 0 16px 40px var(--g-shadow-color);
+  border-radius: 0;
+  background: #ffffff;
+  color: var(--ask-ink);
+  color-scheme: light;
+  box-shadow: -8px 0 24px rgb(0 0 0 / 8%);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(24px);
+  pointer-events: none;
+  transition:
+    transform 0.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 0.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+    visibility 0s 0.2s;
+}
+
+.graphify-ask-panel.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition:
+    transform 0.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 0.2s cubic-bezier(0.215, 0.61, 0.355, 1),
+    visibility 0s;
+}
+
+@media (min-width: 768px) {
+  .graphify-ask-panel {
+    width: 420px;
+    border-left: 1px solid rgb(0 0 0 / 5%);
+    border-radius: 16px 0 0 16px;
+  }
+
+  html.dark .graphify-ask-panel {
+    border-left-color: rgb(255 255 255 / 16%);
+  }
 }
 
 .graphify-ask-panel.is-full {
-  top: max(12px, env(safe-area-inset-top));
-  right: max(12px, env(safe-area-inset-right));
-  bottom: max(12px, env(safe-area-inset-bottom));
-  left: max(12px, env(safe-area-inset-left));
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: auto;
   max-width: none;
   height: auto;
-  max-height: none;
+  border-radius: 0;
 }
 
 .graphify-ask-panel.is-min {
+  top: auto;
   height: auto;
-  max-height: none;
+  border-radius: 16px 16px 0 0;
 }
 
 .graphify-ask-panel.is-min .graphify-ask-log,
-.graphify-ask-panel.is-min .graphify-ask-starters,
+.graphify-ask-panel.is-min .graphify-ask-empty,
 .graphify-ask-panel.is-min .graphify-ask-form {
   display: none;
 }
@@ -706,11 +777,72 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   margin: 4px 0 0;
 }
 
+.graphify-ask-empty {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+.graphify-ask-panel:has(.graphify-ask-turn) .graphify-ask-empty,
+.graphify-ask-panel:not(:has(.graphify-ask-turn)) .graphify-ask-log {
+  display: none;
+}
+
+.graphify-ask-welcome {
+  padding: 28px 20px 8px;
+}
+
+.graphify-ask-welcome h3 {
+  margin: 0;
+  color: #171717;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.graphify-ask-accent {
+  color: #0e7a43;
+}
+
+.graphify-ask-welcome p {
+  margin: 8px 0 0;
+  max-width: 36em;
+  color: #737373;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
 .graphify-ask-starters {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
-  padding: 4px 16px 14px;
+  margin-top: auto;
+  padding: 16px 20px;
+}
+
+.graphify-ask-help {
+  margin: 0;
+  padding: 16px 20px 18px;
+  border-top: 1px solid #ededed;
+  color: #737373;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.graphify-ask-help a {
+  color: #171717;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.graphify-ask-help a:hover {
+  color: #0e7a43;
 }
 
 .graphify-ask-starters button,
@@ -720,26 +852,27 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
 }
 
 .graphify-ask-starters button {
-  min-height: 44px;
-  padding: 6px 10px;
-  border: 1px solid var(--ask-line);
-  border-radius: var(--g-radius-full);
-  background: var(--g-surface);
-  color: var(--ask-ink);
-  font-size: 13px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #0e7a43;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #171717;
+  font-size: 14px;
+  line-height: 1.35;
   text-align: left;
   cursor: pointer;
 }
 
 .graphify-ask-starters button:hover {
-  background: var(--ask-mint);
+  background: #eef8f3;
 }
 
 .graphify-ask-form {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px 12px 14px;
+  padding: 12px 12px calc(14px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--ask-line);
 }
 
@@ -784,11 +917,22 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   padding: 0 14px;
   border: 0;
   border-radius: var(--g-radius-md);
-  background: var(--ask-green);
-  color: var(--g-surface);
+  background: #0e7a43;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.graphify-ask-form button:hover {
+  background: #0b6637;
+}
+
+.graphify-ask-disclaimer {
+  margin: 0;
+  color: #8a8a8a;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .graphify-ask-keys {
@@ -833,10 +977,6 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
     transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .graphify-ask-panel.is-open {
-    animation: graphify-ask-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
   .graphify-ask-turn {
     animation: graphify-ask-in 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -857,26 +997,8 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
 }
 
 @media (max-width: 640px) {
-  .graphify-ask-launcher {
-    width: 48px;
-    height: 48px;
-    min-height: 48px;
-    justify-content: center;
-    gap: 0;
-    padding: 0;
-    border-radius: var(--g-radius-full);
-  }
-
-  .graphify-ask-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  .graphify-ask-welcome h3 {
+    font-size: 24px;
   }
 }
 
@@ -907,6 +1029,12 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .graphify-ask-panel,
+  .graphify-ask-panel.is-open {
+    transform: none;
+    transition: none;
+  }
+
   .graphify-ask-panel.is-busy .graphify-ask-bar {
     transform: scaleX(1);
   }
@@ -944,9 +1072,10 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   }
 }
 
-/* The avatar logo is the Ink mark; turn it white on dark surfaces. */
-html.dark .graphify-ask-avatar img {
-  filter: brightness(0) invert(0.93);
+/* The launcher sits on a green circle, so the mark is white there.
+   The sheet stays white, so the mark in the header stays ink. */
+.graphify-ask-launcher .graphify-ask-avatar img {
+  filter: brightness(0) invert(1);
 }
 
 /* Shown over selected article text, in place of Mintlify's tooltip. */

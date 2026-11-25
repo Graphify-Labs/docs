@@ -214,19 +214,14 @@ Use for step-by-step recipes: onboarding, refactors, reading the graph and keepi
 - [Track code quality when you don't write code](https://docs.graphify.com/cookbooks/govern-codebase-non-engineer.md): A weekly routine for founders and managers to track code quality: read what changed, decide which findings matter and hand fixes to an agent.
 - [Keep a code wiki in sync using git hooks](https://docs.graphify.com/cookbooks/keep-docs-in-sync.md): Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
 
-## Cookbooks: Team rollout
+## Cookbooks: Team
 
-Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blast radius, automated PR review and Wiki onboarding.
+Use when rolling Graphify out to a team: codebase Q&A for non-engineers, PR blast radius, automated PR review, Wiki onboarding, team reviews, a shared graph and cross-repo dependencies.
 
 - [Build a codebase Q&A assistant for non-engineers](https://docs.graphify.com/cookbooks/codebase-qa-for-non-engineers.md): Let product, support and sales ask how your code works in Slack, Claude, ChatGPT or your own chat app, with answers cited from the Graphify code graph.
 - [Check a pull request's blast radius in a monorepo](https://docs.graphify.com/cookbooks/pr-blast-radius.md): Before you merge, find every caller, dependent file, test and repository a pull request can affect, using the Graphify code graph from your coding agent.
 - [Set up automated PR review on a budget](https://docs.graphify.com/cookbooks/automated-pr-review.md): Turn on Graphify PR reviews, read the 1 to 5 merge confidence score, let agents read results over MCP, and keep review usage predictable as you grow.
 - [Onboard engineers with a generated code wiki](https://docs.graphify.com/cookbooks/onboard-with-the-wiki.md): Give new engineers a first-week reading path through the Graphify Wiki: architecture, subsystems, glossary, cited answers, and team decisions from Memory.
-
-## Cookbooks: Team
-
-Use for team workflows: reviews, a shared graph and cross-repo dependencies.
-
 - [Review PRs as a team and avoid merge conflicts](https://docs.graphify.com/cookbooks/review-as-a-team.md): Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code and agree a safe merge order early.
 - [Share a code graph with your team using git](https://docs.graphify.com/cookbooks/shared-team-graph.md): Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
 - [Map a dependency graph across multiple repos](https://docs.graphify.com/cookbooks/cross-repo-dependencies.md): Build a dependency graph across multiple repos with Graphify, then ask your coding agent what a change in one repository breaks in the others.

@@ -24,22 +24,31 @@ Each cookbook is a complete, runnable recipe that takes one job from setup to a 
 | Have an agent fix review findings | [Fix review findings](/cookbooks/fix-review-findings) | Graphify |
 | Trace changes across repositories | [Cross-repo dependencies](/cookbooks/cross-repo-dependencies) | Both |
 
-## Roll out to a team
+## Team
 
-Four recipes that take a team from its first question to reviewed pull requests.
+Recipes that take a team from its first question to reviewed pull requests, a shared graph and work across repositories.
 
 <Columns cols={2}>
-  <Card title="Build a codebase Q&A assistant for non-engineers" icon="briefcase" href="/cookbooks/codebase-qa-for-non-engineers">
+  <Card title="Build a codebase Q&A assistant for non-engineers" icon="users" href="/cookbooks/codebase-qa-for-non-engineers">
     Let product, support and sales ask how the code works in Slack, Claude, ChatGPT or your own app, with cited answers.
   </Card>
-  <Card title="Check a pull request's blast radius in a monorepo" icon="briefcase" href="/cookbooks/pr-blast-radius">
+  <Card title="Check a pull request's blast radius in a monorepo" icon="users" href="/cookbooks/pr-blast-radius">
     Find every caller, dependent file, test and repository a pull request can affect, before you merge.
   </Card>
-  <Card title="Set up automated PR review on a budget" icon="briefcase" href="/cookbooks/automated-pr-review">
+  <Card title="Set up automated PR review on a budget" icon="users" href="/cookbooks/automated-pr-review">
     Turn on scored reviews, let agents read them over MCP, and keep review usage predictable.
   </Card>
-  <Card title="Onboard engineers with a generated code wiki" icon="briefcase" href="/cookbooks/onboard-with-the-wiki">
+  <Card title="Onboard engineers with a generated code wiki" icon="users" href="/cookbooks/onboard-with-the-wiki">
     A first-week reading path through the Wiki, with cited answers and team decisions from Memory.
+  </Card>
+  <Card title="Review PRs as a team and avoid merge conflicts" icon="users" href="/cookbooks/review-as-a-team">
+    Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code, and pick a safe merge order early.
+  </Card>
+  <Card title="Share a code graph with your team using git" icon="users" href="/cookbooks/shared-team-graph">
+    Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
+  </Card>
+  <Card title="Map a dependency graph across multiple repos" icon="users" href="/cookbooks/cross-repo-dependencies">
+    Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others.
   </Card>
 </Columns>
 
@@ -63,20 +72,6 @@ Four recipes that take a team from its first question to reviewed pull requests.
   </Card>
   <Card title="Keep a code wiki in sync using git hooks" icon="compass" href="/cookbooks/keep-docs-in-sync">
     Keep docs in sync with code: rebuild the Graphify graph on every commit with git hooks or watch mode, then regenerate a code wiki that never goes stale.
-  </Card>
-</Columns>
-
-## Team
-
-<Columns cols={2}>
-  <Card title="Review PRs as a team and avoid merge conflicts" icon="users" href="/cookbooks/review-as-a-team">
-    Review pull requests as a team with Graphify: rank open PRs by impact, spot PRs that collide on the same code, and pick a safe merge order early.
-  </Card>
-  <Card title="Share a code graph with your team using git" icon="users" href="/cookbooks/shared-team-graph">
-    Share one code graph with your team: commit graph.json, register Graphify's git merge driver so branches merge cleanly, and tag who added each source.
-  </Card>
-  <Card title="Map a dependency graph across multiple repos" icon="users" href="/cookbooks/cross-repo-dependencies">
-    Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others.
   </Card>
 </Columns>
 

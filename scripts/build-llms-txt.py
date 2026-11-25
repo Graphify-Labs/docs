@@ -69,6 +69,16 @@ def frontmatter(page):
             fm[k.strip()] = v.strip().strip('"')
     return fm
 
+def flatten(pages):
+    """Pages in sidebar order. A nested group lists its root page first."""
+    for p in pages:
+        if isinstance(p, str):
+            yield p
+        else:
+            if p.get("root"):
+                yield p["root"]
+            yield from flatten(p.get("pages", []))
+
 def main():
     nav = json.loads((ROOT / "docs.json").read_text())["navigation"]
     out = [HEADER]
@@ -81,7 +91,7 @@ def main():
             name = tab["tab"] if not g["group"] else (f"{tab['tab']}: {g['group']}" if g["group"] != tab["tab"] else tab["tab"])
             name = name.replace("Open Source", "Graphify CLI")
             out.append(f"## {name}\n\n{WHEN_TO_USE[key]}\n")
-            for p in g["pages"]:
+            for p in flatten(g["pages"]):
                 fm = frontmatter(p)
                 desc = fm.get("description", "")
                 out.append(f"- [{fm.get('title', p)}]({BASE}/{p}.md)" + (f": {desc}" if desc else ""))

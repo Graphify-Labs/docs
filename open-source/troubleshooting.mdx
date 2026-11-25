@@ -129,7 +129,7 @@ Run its configured command manually and inspect stderr. Check the MCP extra, exe
 Confirm `gh` is installed and authenticated for the repository. Check the repo and base-branch options. CLI `--triage` additionally needs a configured model backend.
 </Accordion>
 <Accordion title="Do I need to rebuild after git pull?">
-Not if you've run `graphify hook install`. A pull that merges fires the `post-merge` hook, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Docs, PDFs and images still need `/graphify . --update`. See [Keep your code graph up to date](/open-source/keep-the-graph-fresh).
+Not if you've run `graphify hook install`. A pull that merges fires the `post-merge` hook, and `git pull --rebase` fires `post-rewrite`. Both rebuild the code graph in the background. Docs, PDFs and images still need `/graphify . --update`. See [Keep your code graph up to date](/open-source/features/keep-the-graph-fresh).
 </Accordion>
 <Accordion title="What does the first Graphify CLI build cost?">
 Code is extracted from the AST, with no LLM. Docs, PDFs and images go to the LLM. Video and audio are transcribed locally, then treated as text. Graphify CLI does not ask you to confirm a build, and it does not show an estimate first. After the build finishes, the cost is printed and saved to `graphify-out/cost.json`. To skip the LLM, run `graphify extract . --code-only`, set `GRAPHIFY_BACKEND=none`, or use `graphify update`, which is always AST only. See [What does the first build cost?](/open-source/installation#what-does-the-first-build-cost) and [Honest token savings](/open-source/features/honest-token-savings).

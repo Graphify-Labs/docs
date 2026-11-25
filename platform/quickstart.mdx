@@ -97,7 +97,7 @@ Watch the connection status on **Try a query**: it shows "Connected. Graphify ju
     Using Graphify, explain what this repository does, trace one main entry point, and show the files involved.
     ```
 
-    The answer cites source locations from the indexed graph. Open them to check. For help reading the answer, see [Read a result](/platform/read-a-result).
+    The answer cites source locations from the indexed graph. Open them to check. For help reading the answer, see [Read a result](/platform/reviews/read-a-result).
   </Step>
 </Steps>
 
@@ -112,7 +112,7 @@ After the first build, Graphify keeps the graph in step with your default branch
 | A pull request | Nothing from the pull request's branch is saved as an index. The review analyzes the full pull request, from where it branched to its latest commit. It uses the graph to understand how the changes affect the surrounding code. |
 | **Retry** on a failed build | Graphify indexes the current head of the default branch. |
 
-One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/platform/support/pricing) and [How Graphify keeps your graph fresh](/platform/keep-the-graph-fresh).
+One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/platform/support/pricing) and [How Graphify keeps your graph fresh](/concepts/keep-the-graph-fresh).
 
 ## If something looks wrong
 
@@ -136,7 +136,7 @@ To confirm your agent is connected and picks Graphify over grep, see [Check your
 Not sure what to try first? [Three everyday jobs](/platform/console#three-everyday-jobs) walks through: onboarding to a repository, checking what a change breaks, and remembering an incident.
 
 <Columns cols={2}>
-  <Card title="Trace a change" icon="route" href="/platform/trace">
+  <Card title="Trace a change" icon="route" href="/open-source/features/trace">
     Follow a relationship across files and repositories.
   </Card>
   <Card title="Tour the Graphify app" icon="layout-dashboard" href="/platform/console">

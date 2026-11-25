@@ -180,10 +180,10 @@ For one PR, the tool returns a `review` object (or `null` with a message if Grap
 
 Each review includes the repository, PR number and title, status (`queued`, `running`, `completed`, `failed`, or `cancelled`), and whether a newer push superseded it. A completed review also includes:
 
-- **`gate`:** `pass` or `advisory` (not a `passed` field)
-- **Finding counts:** `blocking_count`, `advisory_count`, and `findings_total`
-- **`top_findings`:** the top findings, worst severity first
-- **`investigation`:** the review's bug investigation, when it ran. `bug_count` counts confirmed bugs only, and `cleanup_count` counts cleanup suggestions. `possible_issue_count` counts possible issues the review couldn't confirm, and `unconfirmed_bug_count` counts the possible issues that are bug leads. `findings` lists bugs first, and each one's `evidence` says how it was checked: `needs_checking` marks a possible issue. `complete` is `false` when the investigation didn't finish. Possible issues never change the merge confidence score. See [Merge confidence score](/platform/reviews#merge-confidence-score).
+- `gate`: `pass` or `advisory` (not a `passed` field)
+- Finding counts: `blocking_count`, `advisory_count`, and `findings_total`
+- `top_findings`: the top findings, worst severity first
+- `investigation`: the review's bug investigation, when it ran. `bug_count` counts confirmed bugs only, and `cleanup_count` counts cleanup suggestions. `possible_issue_count` counts possible issues the review couldn't confirm, and `unconfirmed_bug_count` counts the possible issues that are bug leads. `findings` lists bugs first, and each one's `evidence` says how it was checked: `needs_checking` marks a possible issue. `complete` is `false` when the investigation didn't finish. Possible issues never change the merge confidence score. See [Merge confidence score](/platform/reviews#merge-confidence-score).
 
 If the review is still queued or running, the response includes how many minutes it has been in flight and a hint to check again in about 20 to 30 minutes instead of polling continuously. See [Pull request reviews](/platform/reviews).
 
@@ -204,7 +204,7 @@ If a token doesn't verify, you get the same discovery `401`, and your client sta
 
 ## Server card vs the MCP connection
 
-**Your client can find Graphify on its own.** Graphify publishes an [MCP server card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards): a small public JSON file that says what the server is and where to connect. A client can read it before it connects or signs in, so you don't have to type the server URL.
+Your client can find Graphify on its own. Graphify publishes an [MCP server card](https://modelcontextprotocol.io/seps/2127-mcp-server-cards): a small public JSON file that says what the server is and where to connect. A client can read it before it connects or signs in, so you don't have to type the server URL.
 
 The server card is discovery only. It is not the MCP connection, and it does not list your tools. After connect and OAuth, your client gets tools from `tools/list`. Clients that don't read server cards keep working with the setup steps above.
 

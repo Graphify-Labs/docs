@@ -9,10 +9,10 @@ icon: "message-square-text"
 
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-**Ask** is where you question a repository in plain language. Graphify answers from the code knowledge graph of that repository, not from a model's guess: every answer cites the nodes it used and the path it followed. Overview questions, such as what the repository is about or how it's structured, can be answered from the [wiki](/platform/wiki) first, and are labeled **From the repo wiki**. When neither the graph nor the wiki supports an answer, Ask tells you it found no answer instead of inventing one.
+Ask is where you question a repository in plain language. Graphify answers from the code knowledge graph of that repository, not from a model's guess: every answer cites the nodes it used and the path it followed. Overview questions, such as what the repository is about or how it's structured, can be answered from the [wiki](/platform/wiki) first, and are labeled **From the repo wiki**. When neither the graph nor the wiki supports an answer, Ask tells you it found no answer instead of inventing one.
 
 <Note>
-**Use Ask when** you want to know who owns some behavior, how two parts of the code connect, or where something actually lives, before you open an editor.
+Use Ask when you want to know who owns some behavior, how two parts of the code connect, or where something actually lives, before you open an editor.
 </Note>
 
 ## Before you start
@@ -56,10 +56,10 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
 ## What Ask detects in a question
 
-- **Pull request questions.** Mention `#1234`, `PR 1234`, or a pull request URL. Ask answers from that pull request's completed review.
-- **Task descriptions.** Paste a task, such as a ticket body. Ask returns guidance on where the change goes.
-- **Overview questions.** Questions about the repository as a whole, such as what it's about or how it's structured, can be answered from the wiki.
-- **Code questions.** Everything else. Ask searches the graph and cites the nodes it used.
+- Pull request questions. Mention `#1234`, `PR 1234`, or a pull request URL. Ask answers from that pull request's completed review.
+- Task descriptions. Paste a task, such as a ticket body. Ask returns guidance on where the change goes.
+- Overview questions. Questions about the repository as a whole, such as what it's about or how it's structured, can be answered from the wiki.
+- Code questions. Everything else. Ask searches the graph and cites the nodes it used.
 
 Each code answer has prose, citations, and graph paths. Wiki answers are labeled **From the repo wiki** and list the **Wiki pages** they used. When no grounded path or wiki page supports an answer, Ask abstains. That's a normal answer, not an error.
 
@@ -78,7 +78,7 @@ Ask reads the URL, so you can share a question or open a mode directly:
 
 ## When Ask has no answer
 
-When a question has no grounded answer, Ask says **I couldn't match that to specific code in [repository]. Try naming a function, file, or feature.** If code was found but still couldn't be turned into an answer, it says **I couldn't answer that from the code in [repository]. Try rephrasing, or name a function, file, or feature.** When the repository has a wiki, either reply ends with **, or check the Wiki for an overview**, and **the Wiki** links to it.
+When a question has no grounded answer, Ask says "I couldn't match that to specific code in [repository]. Try naming a function, file, or feature." If code was found but still couldn't be turned into an answer, it says "I couldn't answer that from the code in [repository]. Try rephrasing, or name a function, file, or feature." When the repository has a wiki, either reply ends with **, or check the Wiki for an overview**, and **the Wiki** links to it.
 
 This is deliberate: a near-miss is reported as no answer rather than a confident guess. To get an answer:
 

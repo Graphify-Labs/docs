@@ -11,12 +11,12 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 import WorksWith from '/snippets/works-with.mdx';
 import { StartFreeCta } from '/snippets/start-free-cta.mdx';
 
-**Memory** holds your repository's decisions, incidents, and lessons as your coding agents record them, with evidence and history for your team and your agents. Facts are consolidated per code entity, not per conversation, so when an agent edits a function, it recalls what's known about that function.
+Memory holds your repository's decisions, incidents, and lessons as your coding agents record them, with evidence and history for your team and your agents. Facts are consolidated per code entity, not per conversation, so when an agent edits a function, it recalls what's known about that function.
 
 <WorksWith />
 
 <Note>
-**Use Memory when** you want to know why something is the way it is, what an agent learned in an earlier session, or which facts are tied to code that still exists.
+Use Memory when you want to know why something is the way it is, what an agent learned in an earlier session, or which facts are tied to code that still exists.
 </Note>
 
 <CardGroup cols={2}>
@@ -89,7 +89,7 @@ Use **Advanced** when you want to review suggestions, record a decision or an in
     Pick a kind: **Lesson** (the default; *Something the team learned or should keep doing*), **Decision**, **Incident** (*Something that broke, and what happened.*), or **Owner**. Fill in **About**, such as *Payment retry policy*. Graphify suggests an About line from your text, and you can change it. The helper text is *Keeps related memories together. Suggested from your text; change it if you like.*
   </Step>
   <Step title="Save">
-    Select **Save memory**. Graphify shows **Saved. Graphify is processing it, and it will appear here shortly.** The footer says **Attributed to you. Your GitHub files aren't changed.** You can select **Cancel** if you don't want to save.
+    Select **Save memory**. Graphify shows "Saved. Graphify is processing it, and it will appear here shortly." The footer says "Attributed to you. Your GitHub files aren't changed." You can select **Cancel** if you don't want to save.
   </Step>
 </Steps>
 
@@ -97,7 +97,7 @@ In **Advanced**, **Save a decision** and **Record an incident** open their own f
 
 ## The Advanced view
 
-Switch to **Advanced** at the top right. The heading is **Memory console**, with the subheading **Review and manage saved memories.** Pick a repository, then use the shortcuts **Save a decision**, **Record an incident**, and **Connect an agent**. The tabs are **Memories**, **Review**, and **Test what agents can recall**.
+Switch to **Advanced** at the top right. The heading is **Memory console**, with the subheading "Review and manage saved memories." Pick a repository, then use the shortcuts **Save a decision**, **Record an incident**, and **Connect an agent**. The tabs are **Memories**, **Review**, and **Test what agents can recall**.
 
 Four tiles summarize the repository:
 
@@ -126,7 +126,7 @@ Fill in **Decision subject** (placeholder *Payment retry policy*) and **What sho
 - **Status**: Optional, for example proposed or adopted. This is the decision's own status, and it is separate from team review.
 - **Related code paths**: Optional. One repository-relative file path per line. Graphify checks these against the code graph.
 
-The footer says **Attributed to your account. Your record is saved first, then processed for publication.** Select **Save record**, or **Cancel**.
+The footer says "Attributed to your account. Your record is saved first, then processed for publication." Select **Save record**, or **Cancel**.
 
 ### Record an incident
 
@@ -136,7 +136,7 @@ Fill in **Incident identifier** (placeholder *INC-42 or the affected service*) a
 
 Under **More options**, set **Effective time** to when the incident happened, leave **Group this memory by** as **incident** unless another grouping fits better, and add the files in **Related code paths**. Graphify checks those paths against the code graph, which links the memory to that code, so `recall` with `paths` can rank it higher.
 
-After you select **Save record**, Graphify shows **Saved securely · Processing. You can leave this page; publication and agent availability are checked separately.** When that finishes, it shows **Processing finished. Check the memory's publication state or preview recall to confirm availability.**
+After you select **Save record**, Graphify shows "Saved securely · Processing. You can leave this page; publication and agent availability are checked separately." When that finishes, it shows "Processing finished. Check the memory's publication state or preview recall to confirm availability."
 
 ### Connect an agent
 
@@ -162,9 +162,9 @@ Each memory is attributed to the person who saved or changed it, by their name. 
 
 The **Review** tab, which shows a count badge, is for memories that need a person. The heading tells you how many need a person, broken into suggestions, withheld memories, memories whose code changed, and memories whose code could not be found.
 
-The helper text is **Accepted memory is used by Ask and agents. Open a memory to read all of it, with its evidence, history and actions.** You can **Select all on this page** to act on several at once.
+The helper text is "Accepted memory is used by Ask and agents. Open a memory to read all of it, with its evidence, history and actions." You can **Select all on this page** to act on several at once.
 
-When you open a suggestion, the drawer says **Suggested. Check the evidence, then keep or discard it.** It also explains: **Not yet reviewed by the team. Agents using MCP may receive it, labelled unverified. Ask uses it only after it is accepted.** The actions are **Keep suggestion**, **Correct & accept**, and **Discard suggestion**.
+When you open a suggestion, the drawer says "Suggested. Check the evidence, then keep or discard it." It also explains: "Not yet reviewed by the team. Agents using MCP may receive it, labelled unverified. Ask uses it only after it is accepted." The actions are **Keep suggestion**, **Correct & accept**, and **Discard suggestion**.
 
 ### Test what agents can recall
 
@@ -183,16 +183,16 @@ The result shows how many memories and conversation turns were returned, and how
 
 Opening a memory, or selecting **View evidence**, opens the drawer titled **Memory · evidence & history**.
 
-**Can Ask or an agent use this?** includes or excludes the memory. The drawer explains that **Evidence identifies where a claim came from. A code link does not establish that the claim is correct.**
+**Can Ask or an agent use this?** includes or excludes the memory. The drawer explains that "Evidence identifies where a claim came from. A code link does not establish that the claim is correct."
 
 The actions are:
 
 - **Correct memory**
 - **Update status**, with **What should the team know?**, **Status**, **Reason / supporting evidence**, and **Effective time**
 - **Attach evidence**, with **Reason / supporting evidence**
-- **Remove memory**. The confirm asks **Remove this memory? Ask and agents will stop using it. Its history is kept, and it can be restored.** After you confirm, Graphify shows **Removed from this list. Graphify is finishing the change in the background.**
+- **Remove memory**. The confirm asks "Remove this memory? Ask and agents will stop using it. Its history is kept, and it can be restored." After you confirm, Graphify shows "Removed from this list. Graphify is finishing the change in the background."
 
-The footer on those dialogs says **Memories are team notes, not an authority for inventory, ledgers or production access.**
+The footer on those dialogs says "Memories are team notes, not an authority for inventory, ledgers or production access."
 
 **When this memory was returned** shows observations of a memory version being delivered. They do not prove an agent followed it or that it changed an answer. The drawer also has **History** and **Technical details**.
 
@@ -242,7 +242,7 @@ Graphify also writes memories on its own: a status record when a review finishes
 
 Keep a suggestion as it is, edit it and keep it, or discard it. In the Advanced **Review** tab, those actions are **Keep suggestion**, **Correct & accept**, and **Discard suggestion**. If the code a memory refers to changes after it was saved, the memory is flagged: "The code this refers to changed after it was saved. Check that it is still true." When two current versions disagree, Ask and agents use neither until you edit one to say which is right.
 
-When you keep a suggestion, it moves into your memories with a **Publishing** label and stays there if you reload. The drawer says **Publishing. This will show as a saved memory once that finishes.** If the keep doesn't go through, the row returns to suggestions with **It is back in suggestions. Try again.** A discarded suggestion stays hidden while Graphify is still processing the change. You can restore it later from its history.
+When you keep a suggestion, it moves into your memories with a **Publishing** label and stays there if you reload. The drawer says "Publishing. This will show as a saved memory once that finishes." If the keep doesn't go through, the row returns to suggestions with "It is back in suggestions. Try again." A discarded suggestion stays hidden while Graphify is still processing the change. You can restore it later from its history.
 
 ### Clear empty suggestions
 
@@ -250,7 +250,7 @@ Some pull request suggestions only repeat a title, a merge, or a review count, w
 
 **Clear all empty suggestions** discards every empty suggestion in the repository, including any the page has not loaded. Suggestions that name a finding stay. You can restore any of them from its history.
 
-When Graphify knows the exact number, the button reads **Clear all N empty suggestions**, or **Clear 1 empty suggestion** if there is only one. If the exact count isn't available, it reads **Clear all empty suggestions**. The confirm asks you to discard every empty suggestion in this repository, including any this page has not loaded. While it runs, the page says **Finding the empty suggestions in this repository…**, then **Cleared N empty suggestions so far…**. Keep the page open until it finishes.
+When Graphify knows the exact number, the button reads **Clear all N empty suggestions**, or **Clear 1 empty suggestion** if there is only one. If the exact count isn't available, it reads **Clear all empty suggestions**. The confirm asks you to discard every empty suggestion in this repository, including any this page has not loaded. While it runs, the page says "Finding the empty suggestions in this repository…", then "Cleared N empty suggestions so far…". Keep the page open until it finishes.
 
 ### Recently added by your agent
 
@@ -276,7 +276,7 @@ To export your memories or have them deleted, contact the [Graphify team](https:
 
 ## Ask what your team knows
 
-The playground has **Ask** and **Search**. Search memory with plain words to find saved decisions, incidents and lessons. Search options include **Results** (10 by default), **Kind** (All kinds), and **Source** (All sources). Turn on **Only linked to code** to see only memories anchored to code, or turn on **Include suggestions not yet kept** or **Include what was said in conversations** to search more widely. The helper text is **Search uses the same retrieval as your AI agents.** Ask answers each question on its own, so name what you mean in follow-ups.
+The playground has **Ask** and **Search**. Search memory with plain words to find saved decisions, incidents and lessons. Search options include **Results** (10 by default), **Kind** (All kinds), and **Source** (All sources). Turn on **Only linked to code** to see only memories anchored to code, or turn on **Include suggestions not yet kept** or **Include what was said in conversations** to search more widely. The helper text is "Search uses the same retrieval as your AI agents." Ask answers each question on its own, so name what you mean in follow-ups.
 
 To preview what an agent or Ask would receive for a question, use [Test what agents can recall](#test-what-agents-can-recall) in the Advanced view.
 

@@ -24,15 +24,9 @@
             "icon": "rocket",
             "pages": [
               "platform/overview",
-              "platform/how-it-works",
               "platform/quickstart",
-              "platform/tour",
               "platform/graphify-mcp",
               "platform/verify-connection",
-              "platform/migrate-from-cody",
-              "concepts/index-a-repository",
-              "platform/keep-the-graph-fresh",
-              "platform/console",
               "platform/graphify-vs-local"
             ]
           },
@@ -40,7 +34,9 @@
             "group": "Core concepts",
             "icon": "brain",
             "pages": [
+              "platform/how-it-works",
               "concepts/architecture",
+              "platform/keep-the-graph-fresh",
               "concepts/how-graphify-is-different",
               "concepts/ask-about-your-code",
               "concepts/follow-calls",
@@ -56,6 +52,7 @@
             "group": "Features",
             "icon": "sparkles",
             "pages": [
+              "platform/console",
               "platform/ask",
               "platform/graphs",
               "platform/reviews",
@@ -92,7 +89,8 @@
               "platform/support/pricing",
               "platform/support/rate-limits",
               "platform/support/security",
-              "platform/support/move-from-local"
+              "platform/support/move-from-local",
+              "platform/migrate-from-cody"
             ]
           }
         ]
@@ -857,6 +855,14 @@
     {
       "source": "/cookbooks/obsidian-knowledge-graph",
       "destination": "/open-source/features/exports#write-to-an-existing-obsidian-vault"
+    },
+    {
+      "source": "/platform/tour",
+      "destination": "/platform/console#three-everyday-jobs"
+    },
+    {
+      "source": "/concepts/index-a-repository",
+      "destination": "/platform/quickstart"
     }
   ]
 }

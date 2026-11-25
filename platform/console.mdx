@@ -2,7 +2,7 @@
 title: "Console tour: the Graphify web app"
 sidebarTitle: "Console tour"
 description: "A tour of the Graphify web app at app.graphify.com: Overview, repository graphs, pull request reviews, formal verification, Wiki, memory and connectors."
-keywords: ["console tour", "app.graphify.com", "overview graphs wiki", "pull request reviews"]
+keywords: ["console tour", "app.graphify.com", "overview graphs wiki", "pull request reviews", "graphify tour", "onboard to a repository", "check what a change breaks", "remember an incident"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "layout-dashboard"
@@ -102,9 +102,87 @@ The sidebar label and the page title are **Learn**. The section under the title 
 
 Some views depend on workspace access or a completed repository index. Their guides explain what to check when a view is unavailable or empty.
 
-## Next steps
+## Three everyday jobs
 
-To see how these pages fit together on real work, take the [tour](/platform/tour).
+Graphify gives your team and your coding agents the same context: a code graph, a Wiki, pull request reviews and Memory. Here is how the pages above help with three jobs you do every week. Each takes a few minutes, and the agent steps need an agent connected to the [hosted MCP server](/platform/graphify-mcp).
+
+### Onboard to a repository
+
+**New to a codebase? Read the parts that matter first, not every file.**
+
+<Steps>
+  <Step title="Open the Wiki">
+    Open **Wiki** and choose the repository. Start with **Overview**, then read the **Subsystems**. Each article lists **Key components** and **Relevant source files**. If you don't see **Wiki**, it isn't turned on for your workspace.
+  </Step>
+  <Step title="Look at the graph">
+    Open **Graphs** to see the most connected areas. Select a node to read its **Incoming** and **Outgoing** connections, or use **Explain this code** for a plain explanation.
+  </Step>
+  <Step title="Ask your agent">
+    Ask your connected agent the questions you'd ask a teammate. The answer cites files from the indexed graph, so you can open them and check.
+  </Step>
+</Steps>
+
+<img src="/images/console/wiki.webp" alt="Wiki for one repository, with areas on the left and the overview article on the right" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+
+```text Agent prompt
+I'm new to this repository. Use Graphify: call graphify_rank_files for the most important files, then query_graph to explain how a request flows from the API layer to the database. Keep it to one page and cite files.
+```
+
+Go deeper: [Wiki](/platform/wiki), [Graph explorer](/platform/graphs), and the cookbook [Understand a new codebase in 30 minutes](/cookbooks/onboard-to-a-codebase).
+
+### Check what a change breaks
+
+**Know what a change reaches before you merge it, even in other repositories.**
+
+<Steps>
+  <Step title="Ask before you change code">
+    Ask your agent what a function's change reaches, which files are riskiest, and which tests cover them. In **Graphs**, **What a change could affect** shows the same idea on the canvas.
+  </Step>
+  <Step title="Open a pull request">
+    Graphify reviews a pull request when it is opened, reopened, or marked ready for review. The review comment and a **Graphify** check run show up on the pull request. After you push a fix, comment `@graphify review` for a fresh run.
+  </Step>
+  <Step title="Read the review">
+    Open **Reviews** to see each pull request's state and finding count. Your agent can read the same result with the `review_status` tool.
+  </Step>
+  <Step title="See impact across repositories">
+    Combine two or more repositories in **Graphs** > **Cross-Repository**. Reviews in those repositories then add a **Cross-repo impact** section that lists affected symbols in the other repositories.
+  </Step>
+</Steps>
+
+<img src="/images/console/reviews.webp" alt="Reviews list with pull requests, review state, and finding counts" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+
+```text Agent prompt
+Use Graphify on Graphify-Labs/graphify: I want to change build_from_json.
+What does that change reach, which files are riskiest, and which tests cover them?
+```
+
+Go deeper: [Pull request reviews](/platform/reviews), [Check the impact of a change](/concepts/check-impact), and the cookbooks [Map a dependency graph across multiple repos](/cookbooks/cross-repo-dependencies) and [Fix review findings](/cookbooks/fix-review-findings).
+
+### Remember an incident
+
+**The fix lands in git. The lesson should land somewhere your agents will read it.**
+
+<Steps>
+  <Step title="Record it">
+    Open **Memory**, choose the repository, and switch to **Advanced**. Select **Record an incident**. Write what broke, the root cause, the fix, and the trap to avoid.
+  </Step>
+  <Step title="Link it to code">
+    Under **More options**, set **Effective time** and add the files in **Related code paths**. Graphify checks them against the code graph and links the memory to that code.
+  </Step>
+  <Step title="Let agents recall it">
+    Connected agents call `recall` before they edit that code. Add a short block to `AGENTS.md` or `CLAUDE.md` so they know when to call it.
+  </Step>
+</Steps>
+
+<img src="/images/console/memory.webp" alt="Memory for one repository, with Add memory, Ask, and Search" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
+
+```text Agent prompt
+Before you edit src/payments/status.py, call recall about map_status and payment retries. Pass that path in paths and map_status in symbols.
+```
+
+Go deeper: [Memory](/platform/memory) and the cookbooks [Remember incident lessons](/cookbooks/remember-incident-lessons) and [Document the why](/cookbooks/document-the-why).
+
+## Next steps
 
 <HostedMcpCard />
 
@@ -123,7 +201,7 @@ To see how these pages fit together on real work, take the [tour](/platform/tour
 
 <Visibility for="humans">
 <div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
-  <a href="/platform/overview" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Graphify</span></a>
-  <a href="/platform/graphify-vs-local" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Graphify vs Graphify CLI</span></a>
+  <a href="/concepts/bring-your-stack" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Bring your stack to Graphify</span></a>
+  <a href="/platform/ask" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#c7dbd0] dark:border-[#262626] !border-b-[#c7dbd0] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#062314] dark:text-[#ededed] no-underline transition-colors hover:border-[#94b6a2] dark:hover:border-[#404040] hover:!border-b-[#94b6a2] dark:hover:!border-b-[#404040] hover:bg-[#edf6f0] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4dea9c] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#586b60] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Ask</span></a>
 </div>
 </Visibility>

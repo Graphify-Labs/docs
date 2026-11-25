@@ -11,10 +11,14 @@
 }
 
 .graphify-ready-card {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
   padding: 20px;
   border: 1px solid rgb(17 141 79 / 18%);
   border-radius: 12px;
   background: linear-gradient(180deg, rgb(17 141 79 / 5%) 0%, rgb(17 141 79 / 2%) 100%);
+  overflow-wrap: break-word;
 }
 
 .graphify-ready-logo {
@@ -124,9 +128,12 @@ html.dark .graphify-ready-card a.graphify-ready-button-secondary:hover {
     display: none !important;
   }
   /* Stop the column above the Ask Graphify button in the corner; a long
-     outline scrolls inside it, with the card at the end. */
+     outline scrolls inside it, with the card at the end.
+     overflow-y: auto would also turn overflow-x into auto, and the
+     scrollbar thumb sticks out, so the column paints a horizontal bar. */
   body:has(#graphify-ready-card) #table-of-contents-layout {
     max-height: min(100%, calc(100vh - 232px));
+    overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
   }

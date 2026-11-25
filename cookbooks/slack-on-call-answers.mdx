@@ -26,14 +26,14 @@ At 2am, the on-call engineer needs to know what calls the failing function and w
 ## Before you start
 
 - Slack connected to your Graphify workspace. If it isn't yet, follow [Slack](/integrations/slack) first.
-- You are a workspace Owner or Admin, to enable the channel.
+- You are a workspace Owner or Admin. Only they can add channels in the Slack settings.
 - Everyone in the channel is a member of the Graphify workspace, with the same email in Slack and in Graphify. Invite them from [Workspaces and members](/platform/workspaces-and-members).
 
 ## Set up the channel
 
 <Steps>
   <Step title="Create the channel and pick its repository">
-    Create a channel such as `#ask-the-code` inside your own Slack workspace. Graphify doesn't answer in channels shared with other organizations. In the Slack integration settings in Graphify, add the channel and choose the repository on-call asks about most, then invite `@Graphify` to it.
+    Create a channel such as `#ask-the-code` inside your own Slack workspace. Graphify doesn't answer in channels shared with other organizations. In Graphify, open **Connectors**, then the **Integrations** tab, and click **Manage** on the **Slack** tile. Under **Channels**, choose the channel from **Add a channel…**, pick the repository on-call asks about most, click **Add**, then **Save**. In Slack, invite `@Graphify` to the channel. Until you do, Graphify shows "Invite @Graphify to this channel so it can reply."
 
     A channel answers from that one repository. For other repositories, people ask in a direct message with `owner/repo`.
   </Step>
@@ -79,7 +79,7 @@ Answers reflect the latest build of the repository's default branch. A fix pushe
 | What you see | What to do |
 | --- | --- |
 | No reply in the channel | Check the channel is enabled and `@Graphify` is a member of it. |
-| "Graphify isn't enabled in this channel." | An admin enables the channel in the Slack integration settings. |
+| "Graphify isn't enabled in this channel." | An Owner or Admin adds the channel under **Channels** in the Slack settings. |
 | An incident lesson doesn't show up | It's still a suggestion. Keep it in **Memory**. |
 | A teammate's email doesn't match | Invite the email they use in Slack to the Graphify workspace. |
 

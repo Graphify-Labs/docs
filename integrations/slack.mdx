@@ -7,12 +7,12 @@ surface: "cloud"
 hideFooterPagination: true
 ---
 
-Ask Graphify about your indexed repositories without leaving Slack. Mention `@Graphify` in an enabled channel, or send the app a direct message. Graphify answers from the code graph and cites the code behind each answer. Slack is available on every plan, including Free.
+Ask Graphify about your indexed repositories without leaving Slack. Mention `@Graphify` in an enabled channel, or send the app a direct message. Graphify answers from the code graph and cites the code behind each answer. Slack is part of hosted Graphify at app.graphify.com. It isn't available on self-hosted or private deployments.
 
 ## Before you start
 
 - A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-slack) workspace with at least one indexed repository.
-- You are a workspace Owner or Admin.
+- You are a workspace Owner or Admin. Only Owners and Admins can connect Slack or change its settings. Members can open the Slack settings, but the controls are disabled.
 - Permission to install apps in your Slack workspace. Your Slack administrator may need to approve the install.
 - Everyone who asks is an Owner, Admin or Member of the Graphify workspace, using the same verified email in Graphify and in Slack.
 
@@ -22,18 +22,23 @@ One Slack workspace connects to one Graphify workspace, and each Graphify worksp
 
 <Steps>
   <Step title="Open the Slack tile">
-    In Graphify, open **Connectors**, then the **Integrations** tab, and select the **Slack** tile. Choose **Connect Slack**.
+    In Graphify, open **Connectors** in the sidebar, then the **Integrations** tab. Under **Connect your tools**, find **Slack** in the **Communication** filter. The tile shows **Set up** until Slack is connected. Select it.
   </Step>
-  <Step title="Authorize Graphify">
-    Check that Slack shows the right workspace, review the permissions, and authorize Graphify. You return to Graphify when the install finishes.
+  <Step title="Connect Slack">
+    In the Slack window, click **Connect Slack**. Check that Slack shows the right workspace, review the permissions, and authorize Graphify. Back in Graphify, the window says "Connected to {your workspace}." and the tile shows **Manage** with a **Connected** label.
   </Step>
-  <Step title="Choose a default repository">
-    In the Slack integration settings, pick the repository Graphify answers from in direct messages. People can still name another repository in a direct message with `owner/repo`.
+  <Step title="Pick the repository for direct messages">
+    Under **Direct messages**, pick the repository Graphify answers from when someone doesn't name one. People can still name any repository in a direct message with `owner/repo`. Leave it on **No default** to make people name a repository every time.
   </Step>
-  <Step title="Enable a channel">
-    Add the channel, choose the one repository it answers from, then invite `@Graphify` to that channel in Slack.
+  <Step title="Add a channel">
+    Under **Channels**, choose a channel from **Add a channel…**, pick the one repository it answers from, and click **Add**. Private channels show as `#name (private)`. Channels shared with other organizations aren't listed.
+  </Step>
+  <Step title="Invite Graphify and save">
+    In Slack, invite `@Graphify` to each channel you added. Until you do, the channel shows "Invite @Graphify to this channel so it can reply." Click **Save**.
   </Step>
 </Steps>
+
+With no channels added, the settings show "No channels yet. Graphify only answers DMs." To stop answering in a channel, click **Remove** next to it, then **Save**.
 
 ## Ask a question
 
@@ -85,18 +90,19 @@ Graphify matches each person by their Slack profile email to a member of the wor
 
 ## Disconnect
 
-A workspace Owner or Admin can disconnect Slack from the Slack integration settings. You can also remove Graphify from Slack's app management. Disconnecting stops future access. It doesn't delete messages already posted in Slack.
+A workspace Owner or Admin can disconnect Slack: open the **Slack** tile, click **Manage**, then **Disconnect Slack**. You can also remove Graphify from Slack's app management. Disconnecting stops future access. It doesn't delete messages already posted in Slack.
 
 ## Troubleshooting
 
 | What you see | What to do |
 | --- | --- |
-| No reply | Check Slack is connected, indexing has finished, the channel is enabled, and `@Graphify` is a member of it. |
+| No reply | Check Slack is connected, indexing has finished, the channel is added under **Channels**, and `@Graphify` is a member of it. |
 | "I couldn't match your Slack email to a member of this Graphify workspace." | Ask an admin to invite that email to the Graphify workspace, or change your Slack email to match. |
-| "Graphify isn't enabled in this channel." | Ask in a direct message, or ask an admin to enable the channel. |
-| "No repository is set for Slack yet." | Name a repository with `owner/repo`, or ask an admin to set a default. |
+| "Graphify isn't enabled in this channel." | Ask in a direct message, or ask an admin to add the channel under **Channels**. |
+| "No repository is set for Slack yet." | Name a repository with `owner/repo`, or ask an admin to pick one under **Direct messages**. |
 | "Graphify can't answer right now." | Try again in a few minutes. |
-| The wrong repository answered | Check the channel's repository setting, or name `owner/repo` in a direct message. |
+| The wrong repository answered | Check the repository set for that channel under **Channels**, or name `owner/repo` in a direct message. |
+| "A workspace owner or admin can connect Slack." | You're a Member. Ask an Owner or Admin to connect Slack. |
 
 ## Next steps
 

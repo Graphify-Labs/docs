@@ -1006,6 +1006,7 @@ html.dark .graphify-ask-avatar img {
 @media (min-width: 1280px) {
   #table-of-contents-layout {
     max-height: min(100%, calc(var(--graphify-overlay-top, 100vh) - 168px));
+    overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
   }

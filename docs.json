@@ -495,15 +495,12 @@
   },
   "fonts": {
     "heading": {
-      "family": "Poppins",
-      "source": "/fonts/poppins-600-latin.woff2",
-      "format": "woff2",
-      "weight": 600
+      "family": "Inter",
+      "weight": 500
     },
     "body": {
-      "family": "Geist",
-      "source": "/fonts/geist-regular-latin.woff2",
-      "format": "woff2"
+      "family": "Inter",
+      "weight": 400
     }
   },
   "icons": {

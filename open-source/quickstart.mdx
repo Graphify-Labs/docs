@@ -1,21 +1,17 @@
 ---
-title: "Graphify skill: install graphifyy and run /graphify ."
-sidebarTitle: "Skill quickstart"
-description: "Install graphifyy, run graphify install to add the Graphify skill, then type /graphify . in your coding agent to map the repository."
-keywords: ["graphify skill", "graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph", "uninstall graphify", "remove graphify skill", "uninstall", "unin", "unins"]
+title: "Graphify CLI quickstart: map a repo and ask it"
+sidebarTitle: "Quickstart"
+description: "Install graphifyy, map a repository with the agent skill or the terminal, and ask your first question. Code is parsed on your machine with no API key."
+keywords: ["graphify skill", "graphify quickstart", "claude code skill", "graphifyy install", "code knowledge graph", "uninstall graphify", "remove graphify skill", "uninstall", "unin", "unins", "graphify cli", "graphify extract", "graphify query", "code graph terminal", "cli quickstart", "graphify cli quickstart", "ask your agent", "run graphify locally", "offline code graph", "code only", "graphify extract code-only", "ollama", "local model", "graphify path", "graphify explain", "god-nodes"]
 surface: "local"
 icon: "zap"
 ---
-
-import TryCloudCard from '/snippets/try-cloud-card.mdx';
 
 <Tip>
 **Want this for your whole team?** Graphify hosts the graph for you and adds Memory, the Wiki and PR reviews. [Start free](https://app.graphify.com/signup?utm_source=docs&utm_medium=link&utm_campaign=open-source-quickstart&utm_content=oss-tip)
 </Tip>
 
-## What is the Graphify skill?
-
-The Graphify skill lets your coding agent build and query a local knowledge graph of the repository. You install `graphifyy` once, type `/graphify .`, and the agent builds the graph and reads `GRAPH_REPORT.md` before it answers questions about your code.
+Graphify CLI builds a knowledge graph of your repository on your machine. You can let your coding agent drive it with the Graphify skill, or run the `graphify` command yourself in a terminal. Both write the same files to `graphify-out/`.
 
 **The short version.** Install the package and add the skill:
 
@@ -24,86 +20,106 @@ uv tool install --python 3.12 graphifyy
 graphify install
 ```
 
-Then open your coding agent in the repository and type `/graphify .`. The steps below explain each command. Only want terminal commands? Follow the [CLI quickstart](/open-source/cli-quickstart).
+Then open your coding agent in the repository and type `/graphify .`. The steps below explain each command.
 
 ## Before you start
 
-- Python 3.11.5 or later
-- A coding agent that `graphify install` supports (Claude Code is the default)
+- Python 3.11.5 or later. uv installs it for you.
+- For the skill: a coding agent that `graphify install` supports. Claude Code is the default.
+- For the terminal: nothing else. Code extraction needs no agent and no API key.
 
 ## Build your first graph
 
-<Steps>
-  <Step title="Install the package">
-    Run one of these. uv is recommended: it installs Python 3.11.5 or later for you and keeps Graphify in its own environment.
+Pick how you want to work. The **Skill** tab lets your agent build and query the graph. The **Terminal** tab is for scripts, CI, or checking what your agent will see.
 
-    ```bash
-    uv tool install --python 3.12 graphifyy
-    ```
+<Tabs>
+  <Tab title="Skill">
+    <Steps>
+      <Step title="Install the package">
+        Run one of these. uv is recommended: it installs Python 3.11.5 or later for you and keeps Graphify in its own environment.
 
-    If you already install command line tools with pipx, use it instead. It also gives Graphify its own environment.
+        ```bash
+        uv tool install --python 3.12 graphifyy
+        ```
 
-    ```bash
-    pipx install graphifyy
-    ```
+        If you already install command line tools with pipx, use it instead. It also gives Graphify its own environment.
 
-    If you manage Python yourself, for example inside a virtual environment, use pip.
+        ```bash
+        pipx install graphifyy
+        ```
 
-    ```bash
-    pip install graphifyy
-    ```
+        If you manage Python yourself, for example inside a virtual environment, use pip.
 
-    The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands. If your shell cannot find `graphify`, see [Command not found](/open-source/installation#command-not-found).
-  </Step>
-  <Step title="Install the skill">
-    ```bash
-    graphify install
-    ```
+        ```bash
+        pip install graphifyy
+        ```
 
-    With no flag, this targets Claude Code. It copies the skill to `~/.claude/skills/graphify/SKILL.md` and registers it in `~/.claude/CLAUDE.md`. For another agent, pass `--platform`, for example `graphify install --platform codex` or `graphify install --platform opencode`. OpenCode users can follow [OpenCode and Graphify CLI](/cookbooks/opencode).
-  </Step>
-  <Step title="Run it in your agent">
-    Open your agent in the repository and type:
+        The package is `graphifyy` (two y's). It installs the `graphify` and `graphify-mcp` commands. Run `graphify --version` to check which version you have. If your shell cannot find `graphify`, see [Command not found](/open-source/installation#command-not-found).
+      </Step>
+      <Step title="Install the skill">
+        ```bash
+        graphify install
+        ```
 
-    ```text
-    /graphify .
-    ```
+        With no flag, this targets Claude Code. It copies the skill to `~/.claude/skills/graphify/SKILL.md` and registers it in `~/.claude/CLAUDE.md`. For another agent, pass `--platform`, for example `graphify install --platform codex`, `graphify install --platform cursor` or `graphify install --platform opencode`. Copilot in VS Code uses `graphify vscode install`. OpenCode users can follow [OpenCode and Graphify CLI](/cookbooks/opencode), and every agent is listed in [Integrations](/integrations/overview).
+      </Step>
+      <Step title="Map the repository">
+        Open your agent in the repository and type:
 
-    The agent runs detection, extraction, and clustering, then summarises the report. Code is parsed locally. Documents, papers, and images go through the agent's own model.
-  </Step>
-  <Step title="Ask a question">
-    ```text
-    /graphify query "how does authentication reach the database"
-    ```
+        ```text
+        /graphify .
+        ```
 
-    The skill traverses the graph and returns only the nodes and edges that answer the question, trimmed to a token budget.
-  </Step>
-  <Step title="Keep it fresh">
-    ```bash
-    graphify hook install
-    ```
+        In Codex, select the Graphify skill with `$graphify` and ask it to map the current repository. This is an instruction for the agent, not a shell command.
 
-    Git hooks rebuild the code graph in the background after commits, branch switches, merges, pulls and rebases. You don't need to run `graphify update .` after `git pull`. When docs or images change, run `/graphify . --update`.
+        The agent runs detection, extraction, and clustering, then summarises the report. Code is parsed locally. Documents, papers, and images go through the agent's own model.
+      </Step>
+      <Step title="Ask a question">
+        ```text
+        /graphify query "how does authentication reach the database"
+        ```
 
-    Check that the hooks are in place:
+        The skill traverses the graph and returns only the nodes and edges that answer the question, trimmed to a token budget.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Terminal">
+    <Steps>
+      <Step title="Install the package">
+        ```bash
+        uv tool install --python 3.12 graphifyy    # or: pipx install graphifyy / pip install graphifyy
+        graphify --help
+        ```
+      </Step>
+      <Step title="Extract the code">
+        ```bash
+        cd your-repo
+        graphify extract . --code-only
+        ```
 
-    ```bash
-    graphify hook status
-    ```
+        `--code-only` skips documents and media, so no model is called. On a copy of the Graphify package (98 code files) this took about 6 seconds.
 
-    You should see:
+        ```text
+        [graphify extract] next: run `graphify cluster-only .` to generate GRAPH_REPORT.md and name communities
+        ```
+      </Step>
+      <Step title="Write the report and HTML view">
+        ```bash
+        graphify cluster-only . --no-label
+        ```
 
-    ```text
-    post-commit: installed
-    post-checkout: installed
-    post-merge: installed
-    post-rewrite: installed
-    merge driver: registered
-    ```
+        This writes `graphify-out/GRAPH_REPORT.md` and `graphify-out/graph.html`. Drop `--no-label` to name communities with an LLM backend.
+      </Step>
+      <Step title="Ask a question">
+        ```bash
+        graphify query "how does authentication reach the database?"
+        ```
 
-    See [Incremental updates](/open-source/features/incremental-updates) for what each refresh covers.
-  </Step>
-</Steps>
+        The first line names the graph and the nodes the search started from. Each `NODE` line is a concept with its source file and line. Each `EDGE` line is a relationship and where it happens in the code. If the output says `TRUNCATED`, raise `--budget` or ask about a narrower name.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 ## What changes in your repository
 
@@ -118,7 +134,78 @@ graphify-out/
 └── cache/
 ```
 
-Open `graph.html` in a browser to explore the graph. Commit `graph.json` and `GRAPH_REPORT.md` if you want teammates and CI to share the same graph; add `cache/` to `.gitignore`.
+`graph.html` is the interactive graph. `GRAPH_REPORT.md` lists concepts, communities and suggested questions. `graph.json` is the graph that CLI and MCP queries read. Open `graph.html` in a browser to explore. Commit `graph.json` and `GRAPH_REPORT.md` if you want teammates and CI to share the same graph; add `cache/` to `.gitignore`.
+
+## Verify it worked
+
+```bash
+graphify god-nodes --top 5
+```
+
+You should see the five most connected symbols in your code. If the command says it can't find a graph, run it from the folder that contains `graphify-out/`, or pass `--graph graphify-out/graph.json`.
+
+## Ask better questions
+
+Four commands cover most questions. They work the same from a terminal and, with a `/graphify` prefix, inside your agent.
+
+<Tabs>
+  <Tab title="query">
+    Traverse from the nodes that match your words and return a token-budgeted subgraph.
+
+    ```bash
+    graphify query "cluster leiden" --budget 300
+    ```
+
+    ```text
+    Graph: graphify-out/graph.json (4856 nodes) | Traversal: BFS depth=2 | Start: ['cluster()', '_native_leiden()'] | 34 nodes found
+
+    [!] TRUNCATED: showing 12 of 34 nodes (~300-token budget). ...
+
+    NODE cluster() [src=corpus/cluster.py loc=L233 community=cluster.py]
+    NODE _native_leiden() [src=corpus/cluster.py loc=L23 community=cluster.py]
+    NODE dispatch_command() [src=corpus/cli.py loc=L1447 community=dispatch_command]
+    ```
+
+    Add `--dfs` to follow one chain deeply instead of exploring broadly.
+  </Tab>
+  <Tab title="path">
+    Find the shortest path between two symbols.
+
+    ```bash
+    graphify path "cluster()" "build()" --undirected
+    ```
+
+    ```text
+    Shortest path (3 hops):
+      cluster() <--calls [INFERRED]-- dispatch_command() --calls [INFERRED]--> build_from_json() <--calls [EXTRACTED]-- build()
+    ```
+  </Tab>
+  <Tab title="explain">
+    Show one node, where it lives, and everything connected to it.
+
+    ```bash
+    graphify explain "reflect()"
+    ```
+
+    ```text
+    Node: reflect()
+      ID:        corpus_reflect_reflect
+      Source:    corpus/reflect.py L564
+      Type:      code
+      Community: reflect
+      Degree:    25
+    ```
+  </Tab>
+  <Tab title="god-nodes">
+    List the most connected symbols, the ones most changes touch.
+
+    ```bash
+    graphify god-nodes --top 5
+    ```
+  </Tab>
+</Tabs>
+
+Each edge shows its confidence: `EXTRACTED` was read from the source, `INFERRED` was derived by a resolver, and `AMBIGUOUS` had several possible targets. This is graph context from the files Graphify analyzed, not a verified answer. Open the source lines it cites before you rely on it. For every flag, see [Querying](/open-source/features/querying) and the [CLI reference](/open-source/configuration/cli#query).
 
 ## Useful skill commands
 
@@ -131,22 +218,77 @@ Open `graph.html` in a browser to explore the graph. Commit `graph.json` and `GR
 | `/graphify explain "SessionStore"` | Plain-language explanation of one node |
 | `/graphify https://github.com/<owner>/<repo>` | Clone a repository and graph it |
 
-## Verify it worked
+## Keep it fresh
 
 ```bash
-graphify god-nodes --top 5
+graphify hook install
 ```
 
-You should see the five most connected symbols in your code. If the command says it can't find a graph, run it from the folder that contains `graphify-out/`, or pass `--graph graphify-out/graph.json`.
+Git hooks rebuild the code graph in the background after commits, branch switches, merges, pulls and rebases. You don't need to run `graphify update .` after `git pull`. To refresh by hand, `graphify update .` re-parses only code files whose hashes changed. When docs or images change, run `/graphify . --update`.
 
-<AccordionGroup>
-  <Accordion title="The agent doesn't recognise /graphify">
-    Restart the agent so it reloads skills. For Claude Code, check that `~/.claude/skills/graphify/SKILL.md` exists. For other agents, re-run `graphify install --platform <name>`.
-  </Accordion>
-  <Accordion title="Can I skip the LLM step?">
-    Yes. Run `graphify extract . --code-only` from a terminal. It builds the code graph with no model calls.
-  </Accordion>
-</AccordionGroup>
+Check that the hooks are in place:
+
+```bash
+graphify hook status
+```
+
+You should see:
+
+```text
+post-commit: installed
+post-checkout: installed
+post-merge: installed
+post-rewrite: installed
+merge driver: registered
+```
+
+See [Incremental updates](/open-source/features/incremental-updates) for what each refresh covers.
+
+## Keep everything on your machine
+
+Graphify CLI stores its graph on your filesystem and does not need a Graphify account. For a code graph with no model calls at all:
+
+```bash
+graphify extract . --code-only
+graphify cluster-only . --no-label
+graphify export html
+graphify query "entry points"
+```
+
+`--code-only` is an `extract` flag. It skips semantic document and media extraction. It is not a flag you need to pass to the agent skill.
+
+To include documents with a local model, install the Ollama extra, run an Ollama model suitable for your content, and select it in `OLLAMA_MODEL`:
+
+```bash
+uv tool install --python 3.12 "graphifyy[ollama]"
+graphify extract ./docs --backend ollama
+```
+
+Graphify defaults to the local Ollama endpoint. If you override the endpoint to a remote host, that changes where the content is sent. Large documents may need a smaller `--token-budget` or lower `--max-concurrency`.
+
+What stays local and what doesn't:
+
+- Local structural parsing does not send code to a model.
+- A cloud coding agent still controls where its own prompts and context go.
+- A headless semantic backend receives the documents or media you ask it to process.
+- PR commands contact GitHub, and model-assisted CLI triage can call your configured provider.
+- Query logging is off by default in the current implementation; [configuration](/open-source/configuration/graphifyrc) describes the opt-in controls.
+
+The generated graph can contain source text, labels, paths, and document concepts. Keep it in a location appropriate for that source material. For a full local setup, see [Run a local code knowledge graph with Ollama](/cookbooks/local-with-ollama).
+
+## If a step fails
+
+| What you see | What to do |
+| --- | --- |
+| The shell cannot find `graphify` | Run `uv tool update-shell`, then open a new terminal. See [Troubleshooting](/open-source/troubleshooting). |
+| The agent doesn't recognise `/graphify` | Restart the agent so it reloads skills. For Claude Code, check that `~/.claude/skills/graphify/SKILL.md` exists. For other agents, run `graphify install --platform <name>` again. |
+| No `graphify-out/` after `/graphify .` | Run it in the agent chat at the repository root, not in a shell. |
+| You want to skip the LLM step | Run `graphify extract . --code-only` from a terminal. It builds the code graph with no model calls. |
+| `No matching nodes found.` (exit code 4) | `query` matches words in node labels. Use symbol or file names, such as `"cluster leiden"`, rather than a full sentence. |
+| Exit code 3 from `query` | Several nodes matched equally. Use a more specific term. |
+| `No directed path` from `path` | Add `--undirected` to ignore edge direction. |
+| `No unique node match` from `explain` or `affected` | Include the parentheses for functions, for example `"reflect()"`. |
+| The query returns nothing useful | Ask about a function, class, or file in this repository. If the code changed since the map, run `graphify update .` first. |
 
 ## Remove the skill
 
@@ -176,12 +318,16 @@ See [Remove a registration](/open-source/installation#remove-a-registration) for
   <Card title="Vibe coding with Graphify CLI" icon="wand-sparkles" href="/open-source/vibe-coding">
     Make your agent check the graph before every search.
   </Card>
-  <Card title="CLI quickstart" icon="terminal" href="/open-source/cli-quickstart">
-    Build and query the graph straight from a terminal.
+  <Card title="MCP server quickstart" icon="plug" href="/open-source/mcp-server">
+    Give any MCP client the same queries as tools.
+  </Card>
+  <Card title="Self-host with Docker" icon="container" href="/open-source/self-host">
+    Share one graph with your team over HTTP.
+  </Card>
+  <Card title="Extract without an IDE" icon="cpu" href="/open-source/features/headless-extraction">
+    Build graphs in scripts and CI.
   </Card>
 </Columns>
-
-<TryCloudCard />
 
 <Visibility for="humans">
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />

@@ -99,20 +99,17 @@ Use for errors, rate limits, pricing, security, or moving from Graphify CLI to h
 Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.
 
 - [Graphify CLI: open-source code knowledge graph](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
-- [Graphify skill: install graphifyy and run /graphify .](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, run graphify install to add the Graphify skill, then type /graphify . in your coding agent to map the repository.
+- [Graphify CLI quickstart: map a repo and ask it](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, map a repository with the agent skill or the terminal, and ask your first question. Code is parsed on your machine with no API key.
 - [Install graphifyy (Graphify CLI) with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify.
-- [CLI quickstart: build and query a code graph](https://docs.graphify.com/open-source/cli-quickstart.md): Build a code knowledge graph with graphify extract, then query it with query, path, explain, and god-nodes. No agent or API key needed.
 - [MCP server quickstart: serve your graph](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and the other graph tools from any MCP client.
 - [Self-host the Graphify MCP server with Docker](https://docs.graphify.com/open-source/self-host.md): Build the open-source Graphify Docker image from source and run graphify-mcp over streamable HTTP so your whole team queries one graph.
-- [Vibe coding with Graphify CLI](https://docs.graphify.com/open-source/vibe-coding.md): Set up open-source Graphify so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code.
-- [Run Graphify locally](https://docs.graphify.com/open-source/local-development.md): Run Graphify entirely on your machine: a code-only workflow, or semantic extraction with a local model backend such as Ollama.
-- [Ask your agent one question](https://docs.graphify.com/open-source/ask-your-agent.md): The shortest path with the open-source Graphify CLI: install graphifyy, add the skill for your assistant, map the repo and check the files it writes.
-- [Trace callers and paths between symbols](https://docs.graphify.com/platform/trace.md): Use open-source Graphify CLI commands to find a symbol, see who calls it, and check whether two names connect in the code graph, or ask a hosted agent.
 
 ## Graphify CLI: Features
 
 Use for what Graphify CLI can map and query: inputs, updates, PR impact, exports and its MCP tools.
 
+- [Vibe coding with Graphify CLI](https://docs.graphify.com/open-source/vibe-coding.md): Set up open-source Graphify so your coding agent checks the knowledge graph before it greps or reads files, and the graph stays current while you code.
+- [Trace callers and paths between symbols](https://docs.graphify.com/platform/trace.md): Use open-source Graphify CLI commands to find a symbol, see who calls it, and check whether two names connect in the code graph, or ask a hosted agent.
 - [Supported inputs](https://docs.graphify.com/open-source/features/languages.md): The languages, schemas, documents, and media Graphify can map, which extractor handles each, and the optional extras to install.
 - [Documents, papers, and media](https://docs.graphify.com/open-source/features/documents-and-media.md): Add Markdown, PDFs, Office files, images, video, audio, web pages, and Google Workspace files to your open-source Graphify graph with semantic extraction.
 - [Databases and package graphs](https://docs.graphify.com/open-source/features/databases.md): Map a live PostgreSQL schema and Rust crate dependencies into your open-source Graphify graph, alongside the code that uses them.

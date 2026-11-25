@@ -105,19 +105,16 @@
               "open-source/overview",
               "open-source/quickstart",
               "open-source/installation",
-              "open-source/cli-quickstart",
               "open-source/mcp-server",
-              "open-source/self-host",
-              "open-source/vibe-coding",
-              "open-source/local-development",
-              "open-source/ask-your-agent",
-              "platform/trace"
+              "open-source/self-host"
             ]
           },
           {
             "group": "Features",
             "icon": "sparkles",
             "pages": [
+              "open-source/vibe-coding",
+              "platform/trace",
               "open-source/features/languages",
               "open-source/features/documents-and-media",
               "open-source/features/databases",
@@ -546,7 +543,7 @@
     },
     {
       "source": "/cli/quickstart",
-      "destination": "/open-source/cli-quickstart"
+      "destination": "/open-source/quickstart"
     },
     {
       "source": "/open-source/always-on",
@@ -582,15 +579,15 @@
     },
     {
       "source": "/guides/first-graph",
-      "destination": "/open-source/cli-quickstart"
+      "destination": "/open-source/quickstart"
     },
     {
       "source": "/guides/local-development",
-      "destination": "/open-source/local-development"
+      "destination": "/open-source/quickstart#keep-everything-on-your-machine"
     },
     {
       "source": "/guides/ask-your-agent",
-      "destination": "/open-source/ask-your-agent"
+      "destination": "/open-source/quickstart"
     },
     {
       "source": "/guides/headless-extraction",
@@ -706,7 +703,7 @@
     },
     {
       "source": "/guides",
-      "destination": "/open-source/cli-quickstart"
+      "destination": "/open-source/quickstart"
     },
     {
       "source": "/reference",
@@ -863,6 +860,18 @@
     {
       "source": "/concepts/index-a-repository",
       "destination": "/platform/quickstart"
+    },
+    {
+      "source": "/open-source/cli-quickstart",
+      "destination": "/open-source/quickstart"
+    },
+    {
+      "source": "/open-source/ask-your-agent",
+      "destination": "/open-source/quickstart"
+    },
+    {
+      "source": "/open-source/local-development",
+      "destination": "/open-source/quickstart#keep-everything-on-your-machine"
     }
   ]
 }

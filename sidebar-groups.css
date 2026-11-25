@@ -50,8 +50,8 @@ html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
   inset: -7px 0;
 }
 
-/* Sidebar page and group icons (Lucide, 16px masks): neutral ink, not green.
-   Active page keeps the green accent. Scoped to nav icons only. */
+/* Sidebar page and group icons (Lucide, 16px masks): neutral ink.
+   The active page icon matches its text. Scoped to nav icons only. */
 :is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header) svg {
   background-color: #3f3f46 !important;
   color: #3f3f46 !important;
@@ -61,10 +61,10 @@ html.dark :is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header
   color: #d4d4d4 !important;
 }
 :is(#sidebar, #mobile-nav) .sidebar-group a:is([aria-current="page"], .active) svg {
-  background-color: #118d4f !important;
-  color: #118d4f !important;
+  background-color: #0a0a0a !important;
+  color: #0a0a0a !important;
 }
 html.dark :is(#sidebar, #mobile-nav) .sidebar-group a:is([aria-current="page"], .active) svg {
-  background-color: #4dea9c !important;
-  color: #4dea9c !important;
+  background-color: #ffffff !important;
+  color: #ffffff !important;
 }

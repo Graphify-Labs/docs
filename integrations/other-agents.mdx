@@ -14,7 +14,19 @@ import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
 ## How do I use Graphify with Antigravity?
 
-Add the hosted Graphify MCP server at `https://api.graphify.com/mcp` and sign in with OAuth in the browser. Antigravity can use that server like any other MCP client. For a local graph, install `graphifyy` and run `graphify install --platform antigravity`.
+Add the hosted Graphify MCP server to Antigravity's `mcp_config.json`. Antigravity uses `serverUrl` for remote servers:
+
+```json mcp_config.json
+{
+  "mcpServers": {
+    "graphify": {
+      "serverUrl": "https://api.graphify.com/mcp"
+    }
+  }
+}
+```
+
+Save the file, then sign in with OAuth in the browser when Antigravity connects. There is no API key. For a local graph, install `graphifyy` and run `graphify install --platform antigravity`.
 
 ## How do I use Graphify with OpenCode?
 

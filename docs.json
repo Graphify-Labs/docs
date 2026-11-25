@@ -240,19 +240,13 @@
             ]
           },
           {
-            "group": "Team rollout",
-            "icon": "briefcase",
+            "group": "Team",
+            "icon": "users",
             "pages": [
               "cookbooks/codebase-qa-for-non-engineers",
               "cookbooks/pr-blast-radius",
               "cookbooks/automated-pr-review",
-              "cookbooks/onboard-with-the-wiki"
-            ]
-          },
-          {
-            "group": "Team",
-            "icon": "users",
-            "pages": [
+              "cookbooks/onboard-with-the-wiki",
               "cookbooks/review-as-a-team",
               "cookbooks/shared-team-graph",
               "cookbooks/cross-repo-dependencies"
@@ -342,6 +336,7 @@
     "options": [
       "copy",
       "view",
+      "assistant",
       "chatgpt",
       "claude",
       "perplexity",

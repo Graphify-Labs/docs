@@ -55,13 +55,16 @@
     return card;
   }
 
+  // The card sits under the outline, outside its scroll area, so the outline
+  // can scroll on its own while the card stays in view.
   function place() {
-    const list = document.getElementById("table-of-contents-content");
-    if (!list || list.querySelector("#" + CARD_ID)) return;
-    const item = document.createElement("li");
-    item.className = "graphify-ready-item";
-    item.append(build());
-    list.append(item);
+    const layout = document.getElementById("table-of-contents-layout");
+    const outline = document.getElementById("table-of-contents");
+    if (!layout || !outline || layout.querySelector("#" + CARD_ID)) return;
+    const wrap = document.createElement("div");
+    wrap.className = "graphify-ready-item";
+    wrap.append(build());
+    layout.append(wrap);
   }
 
   let pending = 0;

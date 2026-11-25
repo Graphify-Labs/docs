@@ -2,7 +2,7 @@
 title: "Graphify in 5 minutes"
 sidebarTitle: "Quickstart"
 description: "Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server."
-keywords: ["graphify quickstart", "shared context for AI coding agents", "index a github repository", "hosted mcp", "get started in 5 minutes"]
+keywords: ["graphify quickstart", "shared context for AI coding agents", "index a github repository", "hosted mcp", "get started in 5 minutes", "index a repository", "index your first repository", "connect github", "connect gitlab", "indexing build"]
 surface: "cloud"
 hideFooterPagination: true
 icon: "zap"
@@ -25,7 +25,7 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
     <img src="/images/console/overview.webp" alt="Overview with needs attention, code findings, recent activity, and pick up where you left off" width="2400" height="1350" className="block h-auto w-full rounded-lg" />
   </Step>
   <Step title="Connect GitHub" titleSize="h2">
-    Go to **Repositories** and click **Add GitHub repositories**, then grant the Graphify GitHub App access to the repositories you want. You can also connect from **Connectors → Integrations**.
+    Go to **Repositories** and click **Add GitHub repositories**, then grant the Graphify GitHub App access to the repositories you want. You can also connect from **Connectors → Integrations**. For GitLab, click **Connect** on the GitLab card in **Connectors** and grant access in GitLab's flow.
 
     Connected repositories show up as **Paused** and **Not indexed**. That's expected, because nothing is indexed until you choose to.
 
@@ -38,7 +38,7 @@ If you are an agent, read [Notes for agents](/for-agents) before these steps.
 
     Hosted Graphify lists 63 grammars. Open-source Graphify supports 40 languages (33 tree-sitter, 7 built-in). See [Bring your stack to Graphify](/concepts/bring-your-stack).
 
-    Follow the run on **Builds**. When it finishes, the repository's status changes to **Indexed**.
+    Follow the run on **Builds**. When it finishes, the repository's status changes to **Indexed**. To try it on a public codebase, index a fork of [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify).
 
     <img src="/images/console/builds.webp" alt="Builds with indexing totals and a list of recent indexing runs" width="2400" height="1350" loading="lazy" decoding="async" className="block h-auto w-full rounded-lg" />
   </Step>
@@ -101,7 +101,21 @@ Watch the connection status on **Try a query**: it shows **Connected. Graphify j
   </Step>
 </Steps>
 
+## What updates the graph
+
+After the first build, Graphify keeps the graph in step with your default branch.
+
+| Event | What happens |
+| --- | --- |
+| A push to the default branch | Graphify indexes that commit. |
+| A push to any other branch | Nothing. The graph follows the default branch only. |
+| A pull request | Nothing from the pull request's branch is saved as an index. The review analyzes the full pull request, from where it branched to its latest commit. It uses the graph to understand how the changes affect the surrounding code. |
+| **Retry** on a failed build | Graphify indexes the current head of the default branch. |
+
+One index of a repository runs at a time. A later push waits, or joins the build already queued. Hosted plans can limit how many push-triggered indexes finish in a UTC day; a manual reindex does not count. See [Plans and pricing](/platform/support/pricing) and [How Graphify keeps your graph fresh](/platform/keep-the-graph-fresh).
+
 ## If something looks wrong
+
 
 | Symptom | Fix |
 | --- | --- |
@@ -110,12 +124,16 @@ Watch the connection status on **Try a query**: it shows **Connected. Graphify j
 | You only see the local tools | That connection reads a local graph file. Add the hosted URL above instead. The hosted list is whatever your client shows from `tools/list`. |
 | The agent says there are no repositories | Wait for **Indexed** on **Repositories**, or set a default repository in **Connectors → Agents (MCP)**. |
 | Setup says **This repository has no commits yet, so there is nothing to index.** | Push a commit to the default branch, then select **Re-sync repositories**, or choose another repository. |
+| The repository is not in the list | Grant the Graphify app access to it on GitHub or GitLab, then return to **Repositories**. |
+| You can't switch on indexing | On Free, check that fewer than 3 repositories are indexed. |
+| The status is **Failed** | Open **Builds**, read the failed run, then choose **Retry**. |
+| The status is **Out of date** | The newest default-branch commit is not the one the graph serves, and no build is running. Start a reindex. |
 
-To confirm your agent is connected and picks Graphify over grep, see [Check your agent is using Graphify](/platform/verify-connection). More fixes are in [When you're stuck](/platform/support/faqs).
+To confirm your agent is connected and picks Graphify over grep, see [Check your agent is using Graphify](/platform/verify-connection). [Repositories and builds](/platform/repositories) covers every status and control, and more fixes are in [When you're stuck](/platform/support/faqs).
 
 ## Next steps
 
-Not sure what to try first? The [tour](/platform/tour) walks through three everyday jobs: onboarding to a repository, checking what a change breaks, and remembering an incident.
+Not sure what to try first? [Three everyday jobs](/platform/console#three-everyday-jobs) walks through: onboarding to a repository, checking what a change breaks, and remembering an incident.
 
 <Columns cols={2}>
   <Card title="Trace a change" icon="route" href="/platform/trace">

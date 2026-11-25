@@ -1,7 +1,7 @@
 ---
 title: "AI pull request reviews with code graph context"
 sidebarTitle: "Pull request reviews"
-description: "How Graphify reviews pull requests: when a review runs, how to re-run it with @graphify review, and how the 1 to 5 merge confidence score works."
+description: "How Graphify reviews pull requests: when a review runs, cross-repo impact in combined repos, @graphify review, and the 1 to 5 merge confidence score."
 surface: "cloud"
 keywords: ["AI code review", "pull request review", "@graphify review", "merge confidence score", "possible issues", "AI code review context", "cross-repo PR review", "code review benchmark", "AI code review accuracy"]
 icon: "git-pull-request"
@@ -42,15 +42,60 @@ Graphify reviews a pull request when it is opened, reopened, or marked ready for
 
 After new commits, a repository owner, member, or collaborator comments `@graphify review` on the pull request. Each review analyzes the full pull request, from where it branched to its latest commit. Reviews use the graph to understand how the changes affect the surrounding code. Reviews compare the pull request's changes against the indexed default branch. Nothing from the pull request's branch is saved as an index. [Repositories and builds](/platform/repositories) explains which branch the graph follows.
 
-## Cross-repo impact
+## Cross-repo pull request reviews
 
-When a repository is part of a cross-repository graph, its pull request reviews also load the latest graphs of the other repositories in that graph. Graphify links those repositories through the types they share and the calls between them.
+A pull request can break code in a repository it never touches: a service that calls the changed function, or a consumer of a shared type. A review that reads only one repository can't see that. When the repository is part of a [combined graph](/platform/graphs#combine-repositories), Graphify reviews its pull requests against the other repositories in that graph too, and lists the code in them that the change affects before you merge.
 
-The review comment then includes a **Cross-repo impact** section. It says "This change impacts N symbol(s) across M peer repo(s)" and lists each affected repository with up to 10 of its symbols. It covers callers and dependents in the other repositories. If nothing is affected, the section says no cross-repo impact was detected among the indexed peer repositories. It also warns you when some repositories in the group aren't indexed yet.
+### How Graphify links repositories
 
-The section is advisory. It never changes whether the **Graphify** check passes or fails.
+A combined graph keeps each repository's own graph and adds edges across the boundary in two deterministic passes. No model is involved.
 
-There's nothing to turn on. To set it up, open **Graphs** > **Cross-Repository** in the app and select **Combine repositories**. A combined graph needs at least two repositories. See [Combine repositories](/platform/graphs#combine-repositories).
+- **Calls across repositories.** A call whose receiver type is declared in another repository, and resolves to exactly one declaration there, gets a `calls` edge.
+- **Shared types.** Two repositories that declare a type with the same namespace and name, such as an event contract, get a `same_type_as` edge.
+
+The review then walks from the changed code across those edges into the other repositories. For the details, see [How Graphify finds dependencies](/concepts/how-graphify-finds-dependencies#step-4-link-repositories).
+
+### Set up cross-repo reviews
+
+<Steps>
+  <Step title="Index each repository">
+    Switch on indexing for every repository you want reviewed together, and wait until each one shows **Indexed** on **Repositories**.
+  </Step>
+  <Step title="Combine them">
+    Open **Graphs** > **Cross-Repository** in the app, select **Combine repositories**, pick two or more repositories, and name the graph. See [Combine repositories](/platform/graphs#combine-repositories).
+  </Step>
+  <Step title="Open a pull request">
+    There's nothing to turn on. The next review of a pull request in any of those repositories includes the cross-repo check.
+  </Step>
+</Steps>
+
+### What the review shows
+
+The review loads the latest indexed graph of each other repository in the combined graph. The review comment then includes a **Cross-repo impact** section. It says "This change impacts N symbol(s) across M peer repo(s)" and lists each affected repository with up to 10 of its symbols. It covers callers and dependents in the other repositories. A symbol linked directly to the change also says how it was linked, marked sound or heuristic, so you know how much to trust it.
+
+If nothing is affected, the section says no cross-repo impact was detected among the indexed peer repositories. It also warns you when some repositories in the group aren't indexed yet, because the result may be incomplete.
+
+The section is advisory. It never changes whether the **Graphify** check passes or fails, or the [merge confidence score](#merge-confidence-score).
+
+### Read it from your agent
+
+`review_status` returns a review's status, gate, finding counts, and top findings. It doesn't include the cross-repo list, so have your agent read the review comment:
+
+```bash
+gh pr view 123 --comments
+```
+
+To dig further, your agent can query the combined graph itself over the hosted MCP. `list_repositories` returns it with `kind: "workspace"`, and graph tools take its id. See [Query a repository group](/platform/graphify-mcp#query-a-repository-group). Combined graphs have no pull requests, so call `review_status` on the repository, not the group.
+
+### Cross-repo review limits
+
+| Fact | Fix |
+| --- | --- |
+| Other repositories are read at their latest indexed graph, so a change still open in another repository's pull request isn't seen. | Merge or index that change first, then comment `@graphify review`. |
+| A review reads at most 25 other repositories from a combined graph. | Combine the repositories that call each other or share types, not the whole organization. |
+| A repository in more than one combined graph is reviewed against one of them, the same one every time. | Put repositories that need to be reviewed together in a single combined graph. |
+| Repositories in the group that aren't indexed are skipped, and the section warns that impact may be incomplete. | Index them, then comment `@graphify review`. |
+| Combining fails with "Cross-repo graphs need an active plan; reactivate to combine." | Reactivate your subscription in **Billing**. See [Plans and pricing](/platform/support/pricing). |
 
 ## Know when a review is ready
 

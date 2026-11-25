@@ -29,7 +29,7 @@ Start here for an overview of Graphify.
 
 Use when setting up hosted Graphify: a Graphify account (create one for free while connecting), an indexed repository, and an agent on Graphify MCP.
 
-- [What is Graphify? Shared context for coding agents](https://docs.graphify.com/platform/overview.md): Graphify is shared context for AI coding agents and developers: a code graph, Memory for decisions and incidents, a Wiki and cross-repo PR reviews.
+- [Introduction](https://docs.graphify.com/platform/overview.md): Graphify is shared context for AI coding agents and developers: a code graph, Memory for decisions and incidents, a Wiki and cross-repo PR reviews.
 - [Graphify in 5 minutes](https://docs.graphify.com/platform/quickstart.md): Get started with hosted Graphify in 5 minutes: sign in, index a GitHub repository, and ask your coding agent about it through the hosted MCP server.
 - [Graphify MCP: connect your coding agent](https://docs.graphify.com/platform/graphify-mcp.md): Connect Claude Code, Cursor, Codex, or VS Code to Graphify over MCP with OAuth: the code graph, team Memory and review status. Endpoint, tools, fixes.
 - [Check your agent is using Graphify](https://docs.graphify.com/platform/verify-connection.md): Confirm Cursor, Claude Code, Codex or VS Code is connected to Graphify, run three test prompts, and fix a missing workspace or repositories.
@@ -98,7 +98,7 @@ Use for errors, rate limits, pricing, security, or moving from Graphify CLI to h
 
 Use only when the user wants open-source Graphify on their machine: install graphifyy, build a graph, or serve it over MCP.
 
-- [Graphify CLI: open-source code knowledge graph](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
+- [Introduction](https://docs.graphify.com/open-source/overview.md): Open-source Graphify, the graphifyy package, builds a deterministic code knowledge graph on your machine with no vector store or hosted service.
 - [Graphify CLI quickstart: map a repo and ask it](https://docs.graphify.com/open-source/quickstart.md): Install graphifyy, map a repository with the agent skill or the terminal, and ask your first question. Code is parsed on your machine with no API key.
 - [Install graphifyy (Graphify CLI) with uv or pipx](https://docs.graphify.com/open-source/installation.md): Install the official graphifyy package with uv or pipx, fix PATH if graphify is missing, and register the Graphify skill. Or use hosted Graphify.
 - [MCP server quickstart: serve your graph](https://docs.graphify.com/open-source/mcp-server.md): Run graphify-mcp over stdio for one agent or over streamable HTTP for a team, then call query_graph and the other graph tools from any MCP client.

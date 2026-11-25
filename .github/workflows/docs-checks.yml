@@ -120,9 +120,12 @@ jobs:
                   f, i = icon(p)
                   if not f: continue
                   if product(p):
-                      if i:
+                      if i and not i.startswith("/images/logos/"):
                           dupes.append(f)
-                          print(f"::error file={f}::Product-name pages have no icon. Remove icon: (see 'Page icons' in CONTRIBUTING.md).")
+                          print(f"::error file={f}::Product-name pages use the brand logo from /images/logos/ or no icon, never a generic glyph (see 'Page icons' in CONTRIBUTING.md).")
+                      elif i and not os.path.exists(i.lstrip("/")):
+                          dupes.append(f)
+                          print(f"::error file={f}::Logo {i} does not exist.")
                       continue
                   # Section intro pages (Introduction, Overview) may go without one.
                   if p.endswith("/overview") and not i: continue

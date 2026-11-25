@@ -24,3 +24,10 @@ html.dark img[src$="/logos/vercel.svg"],
 html.dark img[src$="/logos/windsurf.svg"],
 html.dark img[src$="/logos/cline.svg"],
 html.dark img[src$="/logos/codex.svg"] { filter: invert(1); }
+
+/* Brand logos used as sidebar icons on integration pages. Single colour
+   black marks (file names ending in -light) turn white in dark mode, the
+   way those brands publish a white mark for dark backgrounds. */
+html.dark :is(#sidebar, #sidebar-content, #mobile-nav) img[src*="/images/logos/"][src*="-light."] {
+  filter: invert(1);
+}

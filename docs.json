@@ -443,72 +443,34 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/graphify",
-      "github": "https://github.com/Graphify-Labs",
+      "github": "https://github.com/Graphify-Labs/graphify",
       "linkedin": "https://www.linkedin.com/company/graphify-labs",
-      "discord": "https://discord.gg/graphify"
+      "discord": "https://discord.gg/graphify",
+      "x": "https://x.com/graphify"
     },
     "links": [
-      {
-        "header": "Product",
-        "items": [
-          {
-            "label": "Graphify",
-            "href": "https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=nav"
-          },
-          {
-            "label": "Pricing",
-            "href": "/platform/support/pricing"
-          },
-          {
-            "label": "Changelog",
-            "href": "/changelog/highlights"
-          },
-          {
-            "label": "graphify.com",
-            "href": "https://graphify.com?utm_source=docs&utm_medium=link&utm_campaign=nav"
-          }
-        ]
-      },
-      {
-        "header": "Resources",
-        "items": [
-          {
-            "label": "Local quickstart",
-            "href": "/open-source/quickstart"
-          },
-          {
-            "label": "Quickstart",
-            "href": "/platform/quickstart"
-          },
-          {
-            "label": "Cookbooks",
-            "href": "/cookbooks/overview"
-          },
-          {
-            "label": "GitHub",
-            "href": "https://github.com/Graphify-Labs"
-          },
-          {
-            "label": "Contributing",
-            "href": "https://github.com/Graphify-Labs/graphify/blob/v8/CONTRIBUTING.md"
-          }
-        ]
-      },
       {
         "header": "For AI agents",
         "items": [
           {
-            "label": "llms.txt",
+            "label": "Get started",
+            "href": "https://app.graphify.com/signup?utm_source=docs&utm_medium=link&utm_campaign=nav"
+          },
+          {
+            "label": "Agent onboarding (skill.md)",
+            "href": "https://docs.graphify.com/skill.md"
+          },
+          {
+            "label": "Agent docs (llms.txt)",
             "href": "https://docs.graphify.com/llms.txt"
           },
           {
-            "label": "llms-full.txt",
+            "label": "Full docs (llms-full.txt)",
             "href": "https://docs.graphify.com/llms-full.txt"
           },
           {
             "label": "MCP server",
-            "href": "/open-source/mcp-server"
+            "href": "/platform/graphify-mcp"
           },
           {
             "label": "Docs search MCP",

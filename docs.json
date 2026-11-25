@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Graphify",
   "colors": {
-    "primary": "#118D4F",
-    "light": "#4DEA9C",
-    "dark": "#118D4F"
+    "primary": "#0A0A0A",
+    "light": "#FFFFFF",
+    "dark": "#0A0A0A"
   },
   "favicon": "/favicon.svg",
   "navigation": {

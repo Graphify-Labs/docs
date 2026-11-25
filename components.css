@@ -157,7 +157,8 @@
 
 
 
-/* Introduction: Set up Graphify MCP box. Neutral ink only, no brand color. */
+/* Introduction: Set up Graphify MCP box. Neutral ink, with the green accent
+   only on the selected tab, Copied, focus rings and hover. */
 .gfy-mcp { --mcp-ink: #262626; --mcp-muted: rgba(38, 38, 38, 0.56); --mcp-line: #ededed; --mcp-soft: rgba(0, 0, 0, 0.02); --mcp-chip: rgba(0, 0, 0, 0.06); position: relative; margin: 20px 0 32px; border: 1px solid var(--mcp-line); background: #ffffff; color: var(--mcp-ink); font-size: 16px; line-height: 28px; }
 :is(.dark) .gfy-mcp { --mcp-ink: #f5f5f5; --mcp-muted: rgba(255, 255, 255, 0.56); --mcp-line: #2a2a2a; --mcp-soft: rgba(255, 255, 255, 0.02); --mcp-chip: rgba(255, 255, 255, 0.08); background: #171717; }
 .gfy-mcp p, .gfy-mcp h3 { margin: 0; }

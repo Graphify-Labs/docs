@@ -9,7 +9,7 @@ export const CopyButton = ({ text, label }) => {
     }
   };
   return (
-    <button type="button" className="gfy-copy" onClick={onCopy} aria-label={label}>
+    <button type="button" className={copied ? "gfy-copy is-copied" : "gfy-copy"} onClick={onCopy} aria-label={label}>
       {copied ? "Copied" : "Copy"}
     </button>
   );
@@ -180,7 +180,7 @@ export const PromptBlock = ({ text }) => {
     <div className="gfy-snippet">
       <div className="gfy-snippet-bar">
         <span className="gfy-snippet-title">Prompt for your coding agent</span>
-        <button type="button" className="gfy-copy" onClick={onCopy} aria-label="Copy prompt for your coding agent">
+        <button type="button" className={copied ? "gfy-copy is-copied" : "gfy-copy"} onClick={onCopy} aria-label="Copy prompt for your coding agent">
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
@@ -203,7 +203,7 @@ export const SetupCopy = ({ text, label }) => {
     }
   };
   return (
-    <button type="button" className="gfy-mcp-copy" onClick={onCopy} aria-label={label}>
+    <button type="button" className={copied ? "gfy-mcp-copy is-copied" : "gfy-mcp-copy"} onClick={onCopy} aria-label={label}>
       {copied ? (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" /></svg>
       ) : (

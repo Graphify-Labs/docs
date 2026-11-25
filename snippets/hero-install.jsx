@@ -15,41 +15,71 @@ export const CopyButton = ({ text, label }) => {
   );
 };
 
+export const graphifyAgents = () => [
+  {
+    id: "claude-code",
+    name: "Claude Code",
+    logo: "/images/logos/claude-code.svg",
+    code: "claude mcp add --transport http graphify https://api.graphify.com/mcp",
+    setup: {
+      sub: "Run in terminal",
+      line: "Run this in a terminal to add the Graphify server.",
+      after: "Then run `/mcp` in Claude Code, select `graphify` and choose Authenticate.",
+    },
+  },
+  {
+    id: "cursor",
+    name: "Cursor",
+    logo: "/images/logos/cursor-light.svg",
+    logoDark: "/images/logos/cursor-dark.svg",
+    code: "/add-plugin graphify",
+    setup: {
+      sub: "Install plugin",
+      line: "Type this in a Cursor agent chat to install the Graphify plugin.",
+    },
+  },
+  {
+    id: "codex",
+    name: "Codex",
+    logo: "/images/logos/codex.png",
+    code: "codex mcp add graphify --url https://api.graphify.com/mcp\ncodex mcp login graphify",
+    setup: {
+      name: "ChatGPT and Codex",
+      logo: "/images/logos/codex-light.svg",
+      logoDark: "/images/logos/codex-dark.svg",
+      sub: "One click",
+      line: "Install the Graphify plugin from the OpenAI plugin directory, then connect your Graphify account.",
+      button: { label: "Add to ChatGPT and Codex", href: "https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" },
+      code: "",
+      after: "Then start a new Codex session and run `/mcp` to check that `graphify` is listed.",
+    },
+  },
+  {
+    id: "opencode",
+    name: "OpenCode",
+    logo: "/images/logos/opencode-light.svg",
+    logoDark: "/images/logos/opencode-dark.svg",
+    code: "opencode mcp add graphify --url https://api.graphify.com/mcp\nopencode mcp auth graphify",
+    setup: {
+      sub: "Run in terminal",
+      line: "Run these in your project. The second command signs you in through the browser.",
+    },
+  },
+  {
+    id: "antigravity",
+    name: "Antigravity",
+    logo: "/images/logos/antigravity.png",
+    code: "{\n  \"mcpServers\": {\n    \"graphify\": {\n      \"serverUrl\": \"https://api.graphify.com/mcp\"\n    }\n  }\n}",
+    setup: {
+      sub: "Copy config",
+      line: "Add this to Antigravity's `mcp_config.json`.",
+      after: "Then sign in with OAuth in the browser when Antigravity connects.",
+    },
+  },
+];
+
 export const HeroInstall = () => {
-  const agents = [
-    {
-      id: "claude-code",
-      name: "Claude Code",
-      logo: "/images/logos/claude-code.svg",
-      code: "claude mcp add --transport http graphify https://api.graphify.com/mcp",
-    },
-    {
-      id: "cursor",
-      name: "Cursor",
-      logo: "/images/logos/cursor-light.svg",
-      logoDark: "/images/logos/cursor-dark.svg",
-      code: "/add-plugin graphify",
-    },
-    {
-      id: "codex",
-      name: "Codex",
-      logo: "/images/logos/codex.png",
-      code: "codex mcp add graphify --url https://api.graphify.com/mcp\ncodex mcp login graphify",
-    },
-    {
-      id: "opencode",
-      name: "OpenCode",
-      logo: "/images/logos/opencode-light.svg",
-      logoDark: "/images/logos/opencode-dark.svg",
-      code: "opencode mcp add graphify --url https://api.graphify.com/mcp\nopencode mcp auth graphify",
-    },
-    {
-      id: "antigravity",
-      name: "Antigravity",
-      logo: "/images/logos/antigravity.png",
-      code: "{\n  \"mcpServers\": {\n    \"graphify\": {\n      \"serverUrl\": \"https://api.graphify.com/mcp\"\n    }\n  }\n}",
-    },
-  ];
+  const agents = graphifyAgents();
   const tabs = [
     { id: "mcp", label: "Hosted MCP" },
     {
@@ -151,6 +181,101 @@ export const PromptBlock = ({ text }) => {
       </div>
       <div className="gfy-panel">
         <pre className="gfy-pre"><code>{text}</code></pre>
+      </div>
+    </div>
+  );
+};
+
+export const SetupBox = () => {
+  const order = ["codex", "claude-code", "cursor", "opencode", "antigravity"];
+  const all = graphifyAgents();
+  const clients = order.map((id) => {
+    const a = all.find((x) => x.id === id);
+    const st = a.setup || {};
+    return {
+      id: a.id,
+      name: st.name || a.name,
+      logo: st.logo || a.logo,
+      logoDark: st.logo ? st.logoDark : a.logoDark,
+      sub: st.sub,
+      line: st.line,
+      after: st.after,
+      button: st.button,
+      code: st.code !== undefined ? st.code : a.code,
+    };
+  });
+  const endpoint = "https://api.graphify.com/mcp";
+  const [active, setActive] = useState(0);
+  const select = (i, focus) => {
+    const n = (i + clients.length) % clients.length;
+    setActive(n);
+    if (focus && typeof document !== "undefined") {
+      const el = document.getElementById("gfy-setup-tab-" + clients[n].id);
+      if (el) el.focus();
+    }
+  };
+  const onKeyDown = (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); select(active + 1, true); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); select(active - 1, true); }
+    else if (e.key === "Home") { e.preventDefault(); select(0, true); }
+    else if (e.key === "End") { e.preventDefault(); select(clients.length - 1, true); }
+  };
+  const c = clients[active];
+  const rich = (text) => text.split("`").map((part, i) => (i % 2 === 1 ? <code key={i} className="gfy-setup-inline">{part}</code> : part));
+  return (
+    <div className="gfy-setup not-prose">
+      <div className="gfy-setup-head">
+        <div>
+          <p className="gfy-setup-title">Set up Graphify MCP</p>
+          <p className="gfy-setup-sub">Sign in with OAuth</p>
+        </div>
+        <a href="/platform/graphify-mcp" className="gfy-setup-all">See all setup options <span aria-hidden="true">→</span></a>
+      </div>
+      <div role="tablist" aria-label="Choose your coding agent" className="gfy-setup-tabs" onKeyDown={onKeyDown}>
+        {clients.map((cl, i) => (
+          <button
+            key={cl.id}
+            type="button"
+            role="tab"
+            id={"gfy-setup-tab-" + cl.id}
+            aria-selected={i === active}
+            aria-controls={"gfy-setup-panel-" + cl.id}
+            tabIndex={i === active ? 0 : -1}
+            className="gfy-setup-tab"
+            onClick={() => select(i, false)}
+          >
+            <span className="gfy-setup-icon">
+              <img src={cl.logo} alt="" width="20" height="20" className={cl.logoDark ? "gfy-setup-logo gfy-logo-light" : "gfy-setup-logo"} noZoom />
+              {cl.logoDark ? <img src={cl.logoDark} alt="" width="20" height="20" className="gfy-setup-logo gfy-logo-dark" noZoom /> : null}
+            </span>
+            <span className="gfy-setup-tabtext">
+              <span className="gfy-setup-name">{cl.name}</span>
+              <span className="gfy-setup-tabsub">{cl.sub}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+      <div role="tabpanel" id={"gfy-setup-panel-" + c.id} aria-labelledby={"gfy-setup-tab-" + c.id} className="gfy-setup-panel">
+        <p className="gfy-setup-line">{rich(c.line)}</p>
+        {c.button ? (
+          <a href={c.button.href} target="_blank" rel="noopener noreferrer" className="gfy-setup-button" aria-label={c.button.label + " (opens in a new tab)"}>
+            {c.button.label} <span aria-hidden="true">→</span>
+          </a>
+        ) : null}
+        {c.code ? (
+          <div className="gfy-setup-code">
+            <pre className="gfy-pre"><code>{c.code.split("\n").map((line, i) => (<span key={i} className="gfy-line">{line}</span>))}</code></pre>
+            <CopyButton text={c.code} label={"Copy " + c.name + " setup"} />
+          </div>
+        ) : null}
+        {c.after ? <p className="gfy-setup-after">{rich(c.after)}</p> : null}
+      </div>
+      <div className="gfy-setup-foot">
+        <span>Using another MCP client? Point it at:</span>
+        <div className="gfy-setup-url">
+          <code>{endpoint}</code>
+          <CopyButton text={endpoint} label="Copy the Graphify MCP URL" />
+        </div>
       </div>
     </div>
   );

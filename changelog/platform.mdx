@@ -9,6 +9,20 @@ rss: true
 icon: "cloud"
 ---
 
+<Update label="2026-11-24" description="Combined graphs re-merge when you remove a repository">
+
+**Fixed:**
+- **Combined graphs:** When you remove a repository from a combined graph, the graph stops serving that repository's code and re-merges the remaining repositories on its own. This also happens when a repository leaves because you disconnected its code host. Before, the graph kept serving the old build with the removed repository in it until another repository in the group was indexed again. On the Free plan, this doesn't use an extra graph while it re-merges.
+
+</Update>
+
+<Update label="2026-11-23" description="Finished reviews show as complete">
+
+**Fixed:**
+- **Reviews:** A finished review of a pull request that also changes files Graphify doesn't review, like docs, config or data files, now shows as complete. Before, it was marked incomplete with "Earlier findings are retained because this check did not report complete changed-file coverage", even though every file Graphify reviews was checked. Reviews that really skipped files still show as incomplete.
+
+</Update>
+
 <Update label="2026-11-20" description="Fairer scores, and reviews that finish after a merge">
 
 **Improved:**

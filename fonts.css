@@ -28,8 +28,9 @@
   letter-spacing: normal;
 }
 
-/* Current "On this page" item reads a step heavier than the rest. */
-a[data-layout-item="toc-item-link"][data-active="true"] {
+/* Top-level "On this page" links use the medium weight and nested ones
+   the regular weight; the current one is marked by the rail and darker text. */
+li[data-depth="0"] > a[data-layout-item="toc-item-link"] {
   font-weight: 500;
 }
 

@@ -1,0 +1,121 @@
+---
+title: "Write a postmortem from what your team knew then"
+sidebarTitle: "Incident postmortem"
+description: "Reconstruct an incident from Graphify Memory: record it, pull the pull request history Graphify saved, and recall what the team knew at that time."
+keywords: ["incident postmortem", "blameless postmortem", "incident timeline", "what did we know", "graphify memory recall", "known_at", "valid_at"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "history"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+A good postmortem asks what the team knew when it made each call, not what it knows now. That's hard to rebuild from memory. Graphify already keeps part of the record: when a review finishes, a fix is drafted or a pull request merges, it saves a memory with the commit behind it. Memory keeps every version with when it was recorded and when it took effect, so your agent can recall what was known on the day.
+
+<Info>
+**Works with:** Graphify. **Time:** about 30 minutes per incident.
+</Info>
+
+## What you'll build
+
+- An incident record in Memory, linked to the code that broke.
+- A timeline of the pull requests around the incident, from records Graphify saved itself.
+- A recall of what the team knew before the incident, next to what it knows now.
+- A lesson agents recall the next time someone edits that code.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-incident-postmortem) workspace with the affected repository indexed.
+- Pull request reviews on for that repository, so Graphify has been saving review and merge records.
+- A coding agent connected to the [Graphify MCP server](/platform/graphify-mcp).
+
+## Run the postmortem
+
+<Steps>
+  <Step title="Record the incident">
+    Open **Memory**, choose the **Repository**, switch to **Advanced**, and select **Record an incident**. Fill in **Incident identifier**, such as *INC-42* or the affected service, and **What should the team know?** **Status** starts as **Open**.
+
+    Under **More options**, set **Effective time** to when the incident happened, and list the files involved in **Related code paths**. Select **Save record**.
+  </Step>
+  <Step title="Pull the pull request history">
+    On the **Memories** tab, filter **Type** by **Decision**, **Fix** or **Status**, or browse **Pull requests** in the entities panel. Pull request memories are titled with the number and title, such as **PR #442 · Fix login redirect**. Ones that record a review, a verification or a merge are labelled **Review result**, **Verification** or **Merged**.
+
+    Your agent can read a review's findings too. `review_status` with a `pr_number` returns the gate result, finding counts and the top findings for that pull request.
+  </Step>
+  <Step title="Recall what was known before the incident">
+    Ask your agent to recall as of a moment just before the incident:
+
+    ```text
+    Call Graphify recall for acme/payments with profile "team",
+    query "checkout retry and timeouts", paths ["app/billing/charge.py"],
+    and known_at "2026-11-10T09:00:00+05:30". List each record with its
+    recorded time, the commit in its evidence, and what it said.
+    ```
+
+    | Option | Answers |
+    | --- | --- |
+    | `known_at` | What had been recorded on or before that moment. Later memories are left out. |
+    | `valid_at` | Which version of each memory was in effect at that moment, separate from when it was recorded. |
+
+    Both take an ISO 8601 time with a timezone, and both need an explicit `profile`.
+  </Step>
+  <Step title="Compare with now">
+    Run the same recall without `known_at`. The difference is what the team learned since. Anything in the first answer that turned out wrong is a candidate cause. Anything missing from the first answer is knowledge nobody had written down.
+  </Step>
+  <Step title="Plan the fix">
+    In **Ask**, select **Plan a change** and describe the fix, adding the **File or function** you know. Graphify suggests a plan with source links. It won't edit your code.
+  </Step>
+  <Step title="Close it and save the lesson">
+    Open the incident's memory, select **View evidence**, then **Update status**. Set **Status** to **Closed** and write what the team should do differently. Agents now recall the lesson when someone edits those files. See [Remember incident lessons](/cookbooks/remember-incident-lessons).
+  </Step>
+</Steps>
+
+## What a recalled record looks like
+
+Real output from the open-source [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository, recalled with `known_at` and `valid_at` set to 1 November 2026, trimmed:
+
+```json recall
+{
+  "type": "status",
+  "subject_id": "PR-4324",
+  "text": "Automated review passed for PR #4324. PR title: docs(always-on): say large graph.json diffs in pull requests are expected. 0 blocking findings. 1 suggestion.",
+  "valid_from": "2026-10-11T10:29:40.583824Z",
+  "recorded_at": "2026-10-11T10:29:40.583824Z",
+  "evidence": [
+    { "kind": "review", "verified": true, "commit_sha": "e6cf17c17131f1293c1a0657634a7f6d5e9427a9" }
+  ],
+  "publication": "published"
+}
+```
+
+`recorded_at` is when Graphify learned it. `valid_from` is when it took effect. The evidence names the commit, so you can open exactly the code the review saw.
+
+## Keep it blameless
+
+Each memory is attributed to the person who saved or changed it. That tells you where a fact came from, not who caused an incident. A remembered fact is evidence, not proof: follow its anchor to the code before you draw a conclusion.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| `recall` ignores `known_at` | Pass an explicit `profile`, such as `"team"`. Time options only apply with one. |
+| Nothing comes back before the incident | Nothing relevant was recorded yet. That's a finding in itself. |
+| No pull request records | Reviews were off for that repository when those pull requests ran. |
+| The incident is ungrounded | A related code path didn't resolve. Check it's repository-relative. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Remember incident lessons" icon="life-buoy" href="/cookbooks/remember-incident-lessons">
+    Save the lesson so agents recall it before they edit that code.
+  </Card>
+  <Card title="Keep a decision log" icon="scale" href="/cookbooks/decision-log">
+    Record the decision that came out of the postmortem.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-incident-postmortem" content="end-cta-incident-postmortem" title="Keep your team's history">Connect a repository and Graphify saves review and merge records you can recall later.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

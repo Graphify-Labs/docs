@@ -23,6 +23,14 @@ Each cookbook is a complete, runnable recipe that takes one job from setup to a 
 | Understand a codebase on your own machine | [Onboard to a codebase](/cookbooks/onboard-to-a-codebase) | Both |
 | Have an agent fix review findings | [Fix review findings](/cookbooks/fix-review-findings) | Graphify |
 | Trace changes across repositories | [Cross-repo dependencies](/cookbooks/cross-repo-dependencies) | Both |
+| Give your whole team one shared workspace | [Set up your team](/cookbooks/team-setup) | Graphify |
+| Keep what agents remember accurate | [Review team memory](/cookbooks/review-team-memory) | Graphify |
+| Merge an agent's refactor with proof it kept behavior | [Prove a refactor](/cookbooks/prove-refactor-behavior) | Graphify |
+| Make agents follow decisions your team made | [Keep a decision log](/cookbooks/decision-log) | Graphify |
+| Rebuild what the team knew when an incident hit | [Write a postmortem](/cookbooks/incident-postmortem) | Graphify |
+| Fix docs a pull request made stale | [Catch stale docs](/cookbooks/catch-stale-docs) | Graphify |
+| Answer on-call and support questions in Slack | [On-call answers in Slack](/cookbooks/slack-on-call-answers) | Graphify |
+| Work for several clients with one agent | [Several client workspaces](/cookbooks/multiple-client-workspaces) | Graphify |
 
 ## Team
 
@@ -49,6 +57,44 @@ Recipes that take a team from its first question to reviewed pull requests, a sh
   </Card>
   <Card title="Map a dependency graph across multiple repos" icon="users" href="/cookbooks/cross-repo-dependencies">
     Combine two or more repositories into one cross-repo dependency graph, then ask your coding agent what a change in one repository breaks in the others.
+  </Card>
+  <Card title="Set up Graphify for your whole team" icon="users" href="/cookbooks/team-setup">
+    Connect GitHub, choose review switches, invite people with the right roles, connect every agent and add Slack.
+  </Card>
+  <Card title="Answer on-call and support questions in Slack" icon="users" href="/cookbooks/slack-on-call-answers">
+    One channel where on-call and support get cited answers, review status and the lessons your team kept.
+  </Card>
+  <Card title="Work across client workspaces with one coding agent" icon="users" href="/cookbooks/multiple-client-workspaces">
+    Keep each client in its own workspace and have your agent pick the right one each session.
+  </Card>
+</Columns>
+
+## Memory
+
+Recipes that keep what your team and its agents remember accurate and useful.
+
+<Columns cols={2}>
+  <Card title="Keep your team's memory accurate with a weekly review" icon="brain" href="/cookbooks/review-team-memory">
+    Keep or discard suggestions, clear empty ones, recheck memories whose code changed, and test recall.
+  </Card>
+  <Card title="Keep a decision log your coding agents follow" icon="brain" href="/cookbooks/decision-log">
+    Save decisions with status, timing and code paths, so agents recall them before they edit that code.
+  </Card>
+  <Card title="Write a postmortem from what your team knew then" icon="brain" href="/cookbooks/incident-postmortem">
+    Record the incident, pull the pull request history and recall what was known at the time.
+  </Card>
+</Columns>
+
+## Reviews
+
+Recipes that get more out of each pull request review.
+
+<Columns cols={2}>
+  <Card title="Prove a refactor kept its behavior before you merge" icon="git-pull-request" href="/cookbooks/prove-refactor-behavior">
+    Read each function's verification result and turn a differing input into a test.
+  </Card>
+  <Card title="Catch docs that a pull request made stale" icon="git-pull-request" href="/cookbooks/catch-stale-docs">
+    Find doc sections that mention changed code and fix them in the same pull request.
   </Card>
 </Columns>
 

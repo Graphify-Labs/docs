@@ -1,0 +1,120 @@
+---
+title: "Set up Graphify for your whole team"
+sidebarTitle: "Set up your team"
+description: "Roll Graphify out to a team: connect GitHub, choose review switches, invite people with the right roles, connect every agent and add Slack."
+keywords: ["graphify team setup", "share code graph with team", "invite teammates", "workspace roles", "team rollout", "hosted code graph for teams"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "user-plus"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+A shared graph only helps if everyone, and every agent, reads the same one. With Graphify, the graph, the Wiki, Memory and pull request reviews live in one hosted workspace. Nobody commits graph files, and nothing needs merging. This recipe takes a team from an empty workspace to everyone's agent querying the same repositories.
+
+<Info>
+**Works with:** Graphify, on a Teams workspace. **Time:** about 20 minutes, plus the first index.
+</Info>
+
+## What you'll build
+
+- One workspace with your repositories indexed from their default branch and kept current on every push.
+- Pull request reviews switched on where you want them.
+- Teammates invited with the right role.
+- Every teammate's coding agent connected to the same workspace, with one instruction block in the repository.
+- A Slack channel where people who don't code can ask questions.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-team-setup) workspace on **Teams**. Member management is only on Teams workspaces. See [Plans and pricing](/platform/support/pricing).
+- You are the workspace Owner, or an Admin.
+- Permission to install apps on your GitHub organization.
+
+<Note>
+Want to share a graph built by the open-source Graphify CLI through git instead? See [Share a code graph with your team using git](/cookbooks/shared-team-graph).
+</Note>
+
+## Set it up
+
+<Steps>
+  <Step title="Connect your repositories">
+    Open **Repositories** and click **Add GitHub repositories**. GitHub asks where to install the Graphify GitHub App and which repositories it can access. Back on **Repositories**, each repository builds its first graph. Wait until it shows **Indexed**.
+
+    If someone already installed the app from github.com, owners and admins see that install on **Repositories** with a **Claim** button. **Claim** binds it to your workspace. See [Claim an install from github.com](/integrations/github).
+  </Step>
+  <Step title="Choose the review switches">
+    Open a repository's **…** options menu on **Repositories**.
+
+    | Control | Turn it off when |
+    | --- | --- |
+    | **PR reviews** | The repository doesn't need reviews. Indexing keeps running. |
+    | **Formal verification** | You don't want the **Graphify Formal Verification** check on its pull requests. |
+    | **Risky patterns** | The team doesn't want the advisory list of risky added lines. |
+    | **Stale docs** | The repository has no docs worth flagging. |
+
+    All four are on unless someone turns them off. None of them blocks a merge. See [Repositories and builds](/platform/repositories#repository-controls).
+  </Step>
+  <Step title="Invite your team">
+    Open **Members**, click **Invite**, enter an email and choose **Admin** or **Member**. Each person uses one seat. Invites expire after 48 hours, and **Resend** starts a fresh window.
+
+    | Give this role | To |
+    | --- | --- |
+    | **Admin** | Leads who invite people and connect integrations. |
+    | **Member** | Everyone who uses repositories, graphs, reviews, Ask and agents. |
+    | **Billing** | Whoever manages payment and seats. |
+
+    Teammates whose GitHub organization you already connected can also **request access**. Only the Owner approves requests. See [Workspaces, members and roles](/platform/workspaces-and-members).
+  </Step>
+  <Step title="Connect every agent">
+    Open **Memory**, switch to **Advanced**, and select **Connect an agent**. **Copy setup prompt** copies a prompt each teammate pastes into their coding agent. It connects the Graphify MCP server at `https://api.graphify.com/mcp` and says when to recall and when to remember. Each person signs in with OAuth. There is no shared key.
+
+    Then ask each agent to check where it landed:
+
+    ```text
+    Call list_workspaces and list_repositories. Tell me which Graphify workspace is active and which repositories you can query.
+    ```
+
+    The active workspace should be your team's, and the repositories should match **Repositories**. If not, see [Switch workspaces](#troubleshooting).
+  </Step>
+  <Step title="Commit one instruction block">
+    Agents rarely call `recall` or `remember` unless told when. Add the block from [Tell your agent to use memory](/platform/memory#tell-your-agent-to-use-memory) to `AGENTS.md` or `CLAUDE.md` in each repository and commit it. Every agent that opens the repository now reads the same rule.
+  </Step>
+  <Step title="Add Slack for everyone else">
+    An Owner or Admin opens **Connectors**, then the **Integrations** tab, clicks **Set up** on the **Slack** tile, and clicks **Connect Slack**. Pick a repository under **Direct messages** and add channels under **Channels**. People who don't code can then ask questions in a direct message or an enabled channel. See [Slack](/integrations/slack).
+  </Step>
+</Steps>
+
+## Check that it works
+
+- **Repositories** shows every repository as **Indexed**.
+- **Members** lists everyone. **Last active** for each person combines console use and agent calls, so you can see whose agent is connected.
+- Open a pull request. A review comment from the Graphify app and a check run named **Graphify** appear on the reviewed commit.
+- Ask one teammate's agent a question about the code, then ask another's. Both cite the same files.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| **Invite** isn't there | The workspace isn't on **Teams**, or you're a **Member**. Ask the Owner. |
+| An invite can't be sent because every seat is in use | Only the Owner can add a seat, by sending the invite. |
+| The invite link says it expired | Use **Resend** on **Members**. |
+| Repositories are missing after installing the app | Change the app's repository access on GitHub, or click **Add GitHub repositories** again. |
+| An agent lists different repositories | It's in another workspace. Ask it to call `list_workspaces`, then `set_workspace` with your team's handle. |
+| An agent never calls `recall` | The instruction block isn't committed in that repository, or the agent didn't reload it. Start a new session. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Keep memory accurate" icon="list-checks" href="/cookbooks/review-team-memory">
+    A weekly review so agents get facts the team checked.
+  </Card>
+  <Card title="Run agents on one graph" icon="workflow" href="/cookbooks/agent-team-one-graph">
+    Point Claude Code, Codex, Cursor and cloud agents at one workspace.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-team-setup" content="end-cta-team-setup" title="Give your team one shared context">Connect a repository and invite your team. Graphify builds the graph, the Wiki and reviews from it.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

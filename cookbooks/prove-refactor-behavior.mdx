@@ -1,0 +1,120 @@
+---
+title: "Prove a refactor kept its behavior before you merge"
+sidebarTitle: "Prove a refactor"
+description: "Use Graphify formal verification on an agent's refactor: read each function's result, turn a differing input into a test, and merge with evidence."
+keywords: ["formal verification", "prove refactor behavior", "behavior preserving refactor", "equivalence check", "ai refactor safety", "graphify formal verification"]
+surface: "cloud"
+hideFooterPagination: true
+icon: "badge-check"
+---
+
+import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+
+A refactor is supposed to change how code looks, not what it does. When an agent writes the refactor, reading the diff isn't enough to know. Graphify checks every function a pull request changes against its previous version. It either proves the two behave the same, or shows you an input where they differ. This recipe makes that check part of how your team merges agent refactors.
+
+<Info>
+**Works with:** Graphify, on GitHub. **Time:** about 10 minutes to set up, then a few minutes per pull request.
+</Info>
+
+## What you'll build
+
+- Refactor pull requests that carry one verification result per changed function.
+- A rule your agent follows: read the result, and turn any differing input into a regression test.
+- A merge habit based on evidence instead of a skim of the diff.
+
+## Before you start
+
+- A [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=cookbooks-prove-refactor-behavior) workspace with a GitHub repository indexed.
+- Code in a language the verifier supports:
+
+| Language | Extensions |
+| --- | --- |
+| Python | `.py` |
+| JavaScript, TypeScript | `.js` `.mjs` `.cjs` `.jsx` `.ts` `.tsx` `.mts` `.cts` |
+| Go | `.go` |
+| Java | `.java` |
+| C, C++, CUDA, Metal | `.c` `.h` `.cc` `.cpp` `.cxx` `.hh` `.hpp` `.hxx` `.cu` `.cuh` `.metal` |
+| Rust | `.rs` |
+| COBOL | `.cbl` `.cob` `.cpy` `.cobol` |
+
+## Set it up
+
+<Steps>
+  <Step title="Check the switch">
+    On **Repositories**, open the repository's **…** options menu. **Formal verification** is on unless someone turned it off.
+  </Step>
+  <Step title="Keep refactors small">
+    Ask the agent for one refactor per pull request, with no behavior change mixed in. Each run checks a limited number of functions within a time limit, and functions over the limit come back as not verified. Smaller pull requests get more functions checked.
+  </Step>
+  <Step title="Add the rule to AGENTS.md">
+    Commit this block, so every agent handles the result the same way:
+
+    ```md AGENTS.md
+    ## Refactors and formal verification
+
+    - A refactor pull request changes no behavior. Keep feature work out of it.
+    - After you push, wait for the "Graphify Formal Verification" check:
+      gh pr checks <number> --watch
+    - Read the check. For every function marked "Behavior changed", show me
+      the input, the old result and the new result. Ask me whether the
+      change was intended before you touch the code.
+    - If it was not intended, fix the code and push again.
+    - If it was intended, it isn't a refactor. Add a regression test for that
+      input and say so in the pull request description.
+    - Never call a "No change found" or "Not checked" function proven.
+    ```
+  </Step>
+  <Step title="Open the pull request">
+    Formal verification runs on every push to the pull request, separately from the review. It posts a check run named **Graphify Formal Verification**. The check is advisory: `success` only when every changed function is **Proven same**, otherwise `neutral`, never `failure`.
+  </Step>
+  <Step title="Read the result">
+    The check title tells you the outcome before you open it:
+
+    | Check title | Do this |
+    | --- | --- |
+    | **Proven: N/N PR-changed function(s) behavior-preserving** | Every changed function behaves as before. Merge on your usual review. |
+    | **Behavior change detected in N function(s)** | Open the check, find the input and decide if the change was intended. |
+    | **Distinguishing input found (unconfirmed)** | Run both versions on that input before acting. It may be a false alarm. |
+    | **X/Y verified · no divergence found (sampled, not a proof)** | Good evidence, not proof. Add tests that cover more inputs. |
+    | **X/Y verified · Z not verified (reasons)** | Review or test the unverified functions as usual. |
+    | **Formal verification did not run** | No supported files changed, or only test files did. |
+
+    Every title is decoded in [Read a verification check](/platform/verification-check-results).
+  </Step>
+  <Step title="Follow the evidence">
+    The check's **View evidence** link opens the run on **Formal Verification** in Graphify. Expand it for the per-function results. A behavior change can include the input and the old and new values. **Technical details** shows the raw verdict. Use **Re-run check** once a run has finished if one result says **Couldn't run**.
+  </Step>
+</Steps>
+
+## What a pass means
+
+A pass means every changed function is **Proven same** within the bounds the proof covers. "Same as before" isn't "correct". If the old version had a bug, an equivalent new version has the same bug. Keep your tests and your usual review.
+
+Unchanged functions checked alongside the change are listed as **context functions**. They never count toward X/Y, but a behavior change in one still keeps the check `neutral`.
+
+## Troubleshooting
+
+| What you see | What to do |
+| --- | --- |
+| No **Graphify Formal Verification** check | Check that **Formal verification** is on for the repository. |
+| **Formal verification did not run** | The pull request changed no supported files, or only test files. Expected. |
+| Many functions **Not checked** with `over cap` or `budget` | The run hit its function or time limit. Split the refactor into smaller pull requests. |
+| **No PR-changed functions were verified** | This isn't a pass. Check the function list for reasons. |
+| **No changed functions to compare** | Functions were only added, deleted or renamed. There's no old version to compare. |
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Formal verification" icon="shield-check" href="/platform/verification">
+    How the check works, its languages and its limits.
+  </Card>
+  <Card title="Fix review findings" icon="wrench" href="/cookbooks/fix-review-findings">
+    Have the agent fix what the review found, then ask for a fresh review.
+  </Card>
+</Columns>
+
+<StartFreeCta campaign="cookbooks-prove-refactor-behavior" content="end-cta-prove-refactor-behavior" title="Check your next refactor">Connect a repository and Graphify checks the functions each pull request changes against their previous version.</StartFreeCta>
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent [body:has(&)_#footer_a[href*='linkedin.com']_svg]:!bg-[#0a66c2] [body:has(&)_#footer_a[href*='discord.gg']_svg]:!bg-[#5865f2] [body:has(&)_#footer_a[href*='github.com']_svg]:!bg-[#181717] [body:has(&)_#footer_a[href*='x.com']_svg]:!bg-[#000000]" />
+</Visibility>

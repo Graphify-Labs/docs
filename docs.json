@@ -499,7 +499,8 @@
       "weight": 600
     },
     "body": {
-      "family": "Inter"
+      "family": "Inter",
+      "weight": 400
     }
   },
   "icons": {

@@ -11,7 +11,7 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 import WorksWith from '/snippets/works-with.mdx';
 import { StartFreeCta } from '/snippets/start-free-cta.mdx';
 
-**Reviews** brings pull requests, findings, and code-graph context together in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-reviews). Use it to understand a change and the code it can affect. Your coding agents can read the same review status over [MCP](/platform/graphify-mcp).
+Reviews brings pull requests, findings, and code-graph context together in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-reviews). Use it to understand a change and the code it can affect. Your coding agents can read the same review status over [MCP](/platform/graphify-mcp).
 
 <WorksWith />
 
@@ -50,8 +50,8 @@ A pull request can break code in a repository it never touches: a service that c
 
 A combined graph keeps each repository's own graph and adds edges across the boundary in two deterministic passes. No model is involved.
 
-- **Calls across repositories.** A call whose receiver type is declared in another repository, and resolves to exactly one declaration there, gets a `calls` edge.
-- **Shared types.** Two repositories that declare a type with the same namespace and name, such as an event contract, get a `same_type_as` edge.
+- Calls across repositories. A call whose receiver type is declared in another repository, and resolves to exactly one declaration there, gets a `calls` edge.
+- Shared types. Two repositories that declare a type with the same namespace and name, such as an event contract, get a `same_type_as` edge.
 
 The review then walks from the changed code across those edges into the other repositories. For the details, see [How Graphify finds dependencies](/concepts/how-graphify-finds-dependencies#step-4-link-repositories).
 

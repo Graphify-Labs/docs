@@ -1,38 +1,4 @@
-/* Sidebar: separate groups with a thin rule, more space, and quiet section labels. */
-div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
-  border-top: 1px solid #e5e5e5;
-  padding-top: 1.25rem;
-  margin-top: 1.25rem;
-}
-html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
-  border-top-color: #262626;
-}
-.sidebar-group-header {
-  font-size: 0.75rem;
-}
-
-/* Mobile nav drawer (390px, 768px): 44px tap targets, tighter group rhythm. */
-#mobile-nav .sidebar-group a,
-#mobile-nav #navigation-items li > a,
-#mobile-nav #navigation-items li > button {
-  min-height: 44px;
-  align-items: center;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-#mobile-nav .sidebar-group-header {
-  min-height: 32px;
-  align-items: center;
-}
-#mobile-nav div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
-  padding-top: 1rem;
-  margin-top: 1rem;
-}
-#mobile-nav a.nav-anchor {
-  min-height: 44px;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
+/* Mobile nav drawer: 44px hit areas on the menu buttons. */
 #mobile-nav button[aria-haspopup],
 #mobile-nav button[aria-label*="lose" i] {
   min-height: 44px;
@@ -48,21 +14,18 @@ html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
   inset: -7px 0;
 }
 
-/* Sidebar page and group icons (Lucide, 16px masks): neutral ink.
-   The active page icon matches its text. Scoped to nav icons only. */
-:is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header) svg {
-  background-color: #3f3f46 !important;
-  color: #3f3f46 !important;
+/* Sidebar anchors (Try Graphify, Blog, Community, Changelog): the icons
+   are hosted SVG masks, which Mintlify paints in the link colour. Paint them
+   the same quiet gray as page icons, darker on hover. */
+#navigation-items a.nav-anchor svg {
+  background-color: rgb(var(--gray-400)) !important;
 }
-html.dark :is(#sidebar, #mobile-nav) :is(.sidebar-group a, .sidebar-group-header) svg {
-  background-color: #d4d4d4 !important;
-  color: #d4d4d4 !important;
+#navigation-items a.nav-anchor:hover svg {
+  background-color: rgb(var(--gray-900)) !important;
 }
-:is(#sidebar, #mobile-nav) .sidebar-group a:is([aria-current="page"], .active) svg {
-  background-color: #0a0a0a !important;
-  color: #0a0a0a !important;
+html.dark #navigation-items a.nav-anchor svg {
+  background-color: rgb(var(--gray-500)) !important;
 }
-html.dark :is(#sidebar, #mobile-nav) .sidebar-group a:is([aria-current="page"], .active) svg {
-  background-color: #ffffff !important;
-  color: #ffffff !important;
+html.dark #navigation-items a.nav-anchor:hover svg {
+  background-color: rgb(var(--gray-300)) !important;
 }

@@ -88,7 +88,7 @@ surface: "cloud"
 
 ## Page icons
 
-Concept, guide, and Overview pages have an icon, so a new page of that kind needs an `icon:` in its frontmatter. Pages named after a product, tool, or integration (everything under `integrations/` except its Overview, such as Claude Code, Cursor, GitHub, or GitLab) have no icon: the name already identifies the page, and a generic glyph next to a brand name reads as noise. You don't need Mintlify access for this; it's one line in the `.mdx` file.
+Concept and guide pages have an icon, so a new page of that kind needs an `icon:` in its frontmatter. The Introduction or Overview page at the top of a section has none, and sidebar group headings have none either, so the eye lands on the pages. Pages named after a product, tool, or integration (everything under `integrations/` except its Overview, such as Claude Code, Cursor, GitHub, or GitLab) have no icon: the name already identifies the page, and a generic glyph next to a brand name reads as noise. You don't need Mintlify access for this; it's one line in the `.mdx` file.
 
 ```yaml
 ---
@@ -101,8 +101,8 @@ icon: "flask-conical"
 
 - Use a [Lucide](https://lucide.dev/icons) icon name (the site sets `icons.library: "lucide"`). Use the name exactly as Lucide lists it, in kebab-case.
 - Pick by topic. Examples from our pages: `zap` (Quickstart), `gauge` (Rate limits), `lock` (Security and data), `git-pull-request` (Pull request reviews), `database` (Databases), `square-terminal` (CLI reference).
-- Don't repeat an icon within the same sidebar group (a `group` in `docs.json`); the PR check fails if you do. Reusing an icon in a different group is fine, such as `house` on each tab's Overview.
-- Don't add colours or `iconType`. `sidebar-groups.css` makes icons neutral grey (off-white in dark mode) and green only on the active page.
+- Don't repeat an icon within the same sidebar group (a `group` in `docs.json`); the PR check fails if you do. Reusing an icon in a different group is fine.
+- Don't add colours or `iconType`. Mintlify draws page icons in a quiet grey, and the active page icon in the text colour.
 - Check it renders: run `npx mint@latest dev` and open the page. If the icon is missing from the sidebar, the name is wrong or Lucide renamed it (for example `circle-help` is now `circle-question-mark`). If you edit frontmatter while `mint dev` is running and the sidebar doesn't update, restart `mint dev`.
 - The "Page icons" PR check warns about any other nav page without an icon, fails on a duplicate icon within one sidebar group, and fails if a product-name page under `integrations/` has an `icon:`.
 

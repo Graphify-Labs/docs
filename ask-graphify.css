@@ -990,7 +990,7 @@ html.dark .graphify-ask-avatar img {
   width: 12px;
   height: 14px;
   display: block;
-  background: var(--g-accent);
+  background: var(--g-brand);
   -webkit-mask: url("https://graphify.com/assets/logo-icon.svg") center / contain no-repeat;
   mask: url("https://graphify.com/assets/logo-icon.svg") center / contain no-repeat;
 }

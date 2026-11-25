@@ -39,28 +39,28 @@
 /* Built-in page feedback (thumbs + form): neutral, brand-aligned */
 #feedback-thumbs-up,
 #feedback-thumbs-down {
-  border: 1px solid #d6e5dc;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
   background: transparent;
-  color: #586b60;
+  color: #5c5c5c;
   transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
 #feedback-thumbs-up:hover,
 #feedback-thumbs-down:hover {
-  border-color: #94b6a2;
-  background: #edf6f0;
-  color: #062314;
+  border-color: #a3a3a3;
+  background: #f5f5f5;
+  color: #171717;
 }
 #feedback-thumbs-up:focus-visible,
 #feedback-thumbs-down:focus-visible {
-  outline: 2px solid #118d4f;
+  outline: 2px solid #737373;
   outline-offset: 2px;
 }
 #feedback-form {
-  border: 1px solid #d6e5dc;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
   background: #ffffff;
-  color: #062314;
+  color: #171717;
 }
 :is(.dark) #feedback-thumbs-up,
 :is(.dark) #feedback-thumbs-down {
@@ -75,7 +75,7 @@
 }
 :is(.dark) #feedback-thumbs-up:focus-visible,
 :is(.dark) #feedback-thumbs-down:focus-visible {
-  outline-color: #4dea9c;
+  outline-color: #a3a3a3;
 }
 :is(.dark) #feedback-form {
   border-color: #262626;
@@ -90,53 +90,69 @@
 }
 
 /* Home hero snippet: custom tablist, wrapped code, copy button */
-.gfy-snippet { border: 1px solid #d6e5dc; border-radius: 12px; background: #ffffff; overflow: hidden; }
-.gfy-snippet-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 8px 0 4px; border-bottom: 1px solid #d6e5dc; background: #f6faf7; }
+.gfy-snippet { border: 1px solid #e5e5e5; border-radius: 12px; background: #ffffff; overflow: hidden; }
+.gfy-snippet-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 8px 0 4px; border-bottom: 1px solid #e5e5e5; background: #fafafa; }
 .gfy-tablist { display: flex; flex-wrap: wrap; }
-.gfy-tab { padding: 10px 10px; font-size: 12px; font-weight: 500; color: #586b60; background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
-.gfy-tab[aria-selected="true"] { color: #118d4f; border-bottom-color: #118d4f; }
-.gfy-tab:hover { color: #062314; }
-.gfy-tab:focus-visible, .gfy-copy:focus-visible, .gfy-panel:focus-visible { outline: 2px solid #118d4f; outline-offset: -2px; border-radius: 6px; }
-.gfy-snippet-title { padding: 10px 8px; font-size: 12px; font-weight: 500; color: #586b60; }
-.gfy-copy { font-size: 12px; font-weight: 500; color: #254d37; background: transparent; border: 1px solid #c7dbd0; border-radius: 6px; padding: 3px 10px; cursor: pointer; }
-.gfy-copy:hover { background: #edf6f0; }
+.gfy-tab { padding: 10px 10px; font-size: 12px; font-weight: 500; color: #5c5c5c; background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
+.gfy-tab[aria-selected="true"] { color: #171717; border-bottom-color: #171717; }
+.gfy-tab:hover { color: #171717; }
+.gfy-tab:focus-visible, .gfy-copy:focus-visible, .gfy-panel:focus-visible { outline: 2px solid #737373; outline-offset: -2px; border-radius: 6px; }
+.gfy-snippet-title { padding: 10px 8px; font-size: 12px; font-weight: 500; color: #5c5c5c; }
+.gfy-copy { font-size: 12px; font-weight: 500; color: #262626; background: transparent; border: 1px solid #d4d4d4; border-radius: 6px; padding: 3px 10px; cursor: pointer; }
+.gfy-copy:hover { background: #f5f5f5; }
 .gfy-panel { padding: 14px 16px; }
 .gfy-bar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 4px 0; }
 .gfy-agents { display: flex; align-items: center; gap: 4px; }
-.gfy-agent { box-sizing: border-box; position: relative; display: inline-flex; flex: 0 0 28px; align-items: center; justify-content: center; width: 28px; height: 28px; min-width: 28px; min-height: 28px; padding: 0; color: #586b60; background: transparent; border: 1px solid transparent; border-radius: 6px; box-shadow: none; transform: none; cursor: pointer; text-decoration: none !important; border-bottom-width: 1px !important; }
-.gfy-agent:hover { background: #edf6f0; color: #062314; }
-.gfy-agent[aria-pressed="true"] { background: #edf6f0; border-color: #c7dbd0; box-shadow: none; transform: none; }
-.gfy-agent:focus-visible { outline: 2px solid #118d4f; outline-offset: 1px; }
+.gfy-agent { box-sizing: border-box; position: relative; display: inline-flex; flex: 0 0 28px; align-items: center; justify-content: center; width: 28px; height: 28px; min-width: 28px; min-height: 28px; padding: 0; color: #5c5c5c; background: transparent; border: 1px solid transparent; border-radius: 6px; box-shadow: none; transform: none; cursor: pointer; text-decoration: none !important; border-bottom-width: 1px !important; }
+.gfy-agent:hover { background: #f5f5f5; color: #171717; }
+.gfy-agent[aria-pressed="true"] { background: #f5f5f5; border-color: #d4d4d4; box-shadow: none; transform: none; }
+.gfy-agent:focus-visible { outline: 2px solid #737373; outline-offset: 1px; }
 .gfy-agent-logo { display: block; box-sizing: content-box; flex: none; width: 18px; height: 18px; min-width: 18px; min-height: 18px; max-width: 18px; max-height: 18px; margin: 0; object-fit: contain; transform: none; }
 .gfy-logo-dark { display: none; }
-.gfy-agent-more { margin-left: 2px; border-color: #c7dbd0 !important; border-style: dashed; }
-.gfy-agent[data-tip]::after { content: attr(data-tip); position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); z-index: 5; padding: 3px 7px; border-radius: 5px; background: #062314; color: #ffffff; font-size: 11px; font-weight: 500; line-height: 1.4; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .12s; }
+.gfy-agent-more { margin-left: 2px; border-color: #d4d4d4 !important; border-style: dashed; }
+.gfy-agent[data-tip]::after { content: attr(data-tip); position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); z-index: 5; padding: 3px 7px; border-radius: 5px; background: #171717; color: #ffffff; font-size: 11px; font-weight: 500; line-height: 1.4; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .12s; }
 .gfy-agent:nth-last-child(-n+2)[data-tip]::after { left: auto; right: 0; transform: none; }
 .gfy-agent[data-tip]:focus-visible::after { opacity: 1; }
 @media (hover: hover) { .gfy-agent[data-tip]:hover::after { opacity: 1; } }
 .gfy-line { display: block; }
 .gfy-line + .gfy-line { margin-top: 8px; }
-.gfy-pre { margin: 0; padding: 0; background: none; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 13px; line-height: 1.65; color: #062314; }
-.gfy-link { color: #118d4f !important; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(17,141,79,.45); border-bottom: 0 !important; }
+.gfy-pre { margin: 0; padding: 0; background: none; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 13px; line-height: 1.65; color: #171717; }
+.gfy-link { color: #171717 !important; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(23,23,23,.4); border-bottom: 0 !important; }
 .gfy-link:hover { text-decoration-color: currentColor; }
 :is(.dark) .gfy-snippet { border-color: #262626; background: #141515; }
 :is(.dark) .gfy-snippet-bar { border-bottom-color: #262626; background: #101111; }
 :is(.dark) .gfy-tab, :is(.dark) .gfy-snippet-title { color: #a3a3a3; }
 :is(.dark) .gfy-tab:hover { color: #ededed; }
-:is(.dark) .gfy-tab[aria-selected="true"] { color: #4dea9c; border-bottom-color: #4dea9c; }
-:is(.dark) .gfy-tab:focus-visible, :is(.dark) .gfy-copy:focus-visible, :is(.dark) .gfy-panel:focus-visible { outline-color: #4dea9c; }
+:is(.dark) .gfy-tab[aria-selected="true"] { color: #ffffff; border-bottom-color: #ffffff; }
+:is(.dark) .gfy-tab:focus-visible, :is(.dark) .gfy-copy:focus-visible, :is(.dark) .gfy-panel:focus-visible { outline-color: #a3a3a3; }
 :is(.dark) .gfy-copy { color: #d4d4d4; border-color: #262626; }
 :is(.dark) .gfy-copy:hover { background: #1c1d1d; }
 :is(.dark) .gfy-pre { color: #ededed; }
 :is(.dark) .gfy-agent { color: #a3a3a3; }
 :is(.dark) .gfy-agent:hover { background: #1c1d1d; color: #ededed; }
 :is(.dark) .gfy-agent[aria-pressed="true"] { background: #1c1d1d; border-color: #3a3a3a; box-shadow: none; transform: none; }
-:is(.dark) .gfy-agent:focus-visible { outline-color: #4dea9c; }
+:is(.dark) .gfy-agent:focus-visible { outline-color: #a3a3a3; }
 :is(.dark) .gfy-logo-light { display: none; }
 :is(.dark) .gfy-logo-dark { display: block; }
 :is(.dark) .gfy-agent-more { border-color: #3a3a3a !important; }
-:is(.dark) .gfy-agent[data-tip]::after { background: #ededed; color: #062314; }
-:is(.dark) .gfy-link { color: #4dea9c !important; text-decoration-color: rgba(77,234,156,.45); }
+:is(.dark) .gfy-agent[data-tip]::after { background: #ededed; color: #171717; }
+:is(.dark) .gfy-link { color: #ffffff !important; text-decoration-color: rgba(255,255,255,.45); }
+
+/* Tip callouts: neutral, like Note and Info, instead of the default green. */
+.callout[data-callout-type="tip"] {
+  border-color: var(--g-border) !important;
+  background-color: var(--g-surface-subtle) !important;
+}
+.callout[data-callout-type="tip"] * {
+  color: var(--g-ink);
+}
+.callout[data-callout-type="tip"] [data-component-part="callout-icon"] svg {
+  color: var(--g-text-subtle);
+}
+.callout[data-callout-type="tip"] a {
+  border-bottom-color: currentColor;
+}
+
 
 
 /* Introduction: Set up Graphify MCP box. Neutral ink only, no brand color. */

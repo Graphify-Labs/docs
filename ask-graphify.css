@@ -27,7 +27,7 @@ div:has(> #chat-assistant-sheet),
   --ask-green: var(--g-accent);
   --ask-focus: var(--g-focus);
   color: var(--ask-ink);
-  font-family: Geist, ui-sans-serif, system-ui, sans-serif;
+  font-family: inherit;
 }
 
 .graphify-ask-launcher {
@@ -202,7 +202,7 @@ div:has(> #chat-assistant-sheet),
 
 .graphify-ask-eyebrow {
   margin: 0;
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -301,7 +301,7 @@ div:has(> #chat-assistant-sheet),
   align-items: center;
   gap: 8px;
   margin: 0 0 10px;
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -335,7 +335,7 @@ div:has(> #chat-assistant-sheet),
   gap: 8px;
   margin: 0;
   color: var(--ask-quiet);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 12px;
 }
 
@@ -465,7 +465,7 @@ div:has(> #chat-assistant-sheet),
   border-radius: var(--g-radius-sm);
   background: var(--g-surface-subtle);
   color: var(--ask-ink);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.86em;
 }
 
@@ -494,7 +494,7 @@ div:has(> #chat-assistant-sheet),
   border-radius: var(--g-radius-sm);
   background: var(--ask-mint);
   color: var(--ask-ink);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 10.5px;
   font-weight: 600;
   line-height: 1;
@@ -530,7 +530,7 @@ a.graphify-ask-cite:hover {
   padding: 3px 3px 3px 12px;
   border-bottom: 1px solid var(--g-border-subtle);
   color: var(--ask-quiet);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -565,7 +565,7 @@ a.graphify-ask-cite:hover {
   border-radius: var(--g-radius-sm);
   background: transparent;
   color: var(--ask-quiet);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0;
@@ -619,7 +619,7 @@ a.graphify-ask-cite:hover {
 .graphify-ask-sources-label {
   margin: 0 0 8px;
   color: var(--ask-quiet);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -660,7 +660,7 @@ a.graphify-ask-source:hover {
   border: 1px solid var(--g-border-strong);
   border-radius: var(--g-radius-sm);
   background: var(--ask-mint);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
   font-weight: 600;
 }
@@ -687,7 +687,7 @@ a.graphify-ask-source:hover {
 
 .graphify-ask-source-host {
   color: var(--ask-quiet);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
 }
 
@@ -812,7 +812,7 @@ a.graphify-ask-source:hover .graphify-ask-source-arrow {
   border-radius: var(--g-radius-sm);
   background: var(--g-surface);
   color: var(--ask-ink);
-  font-family: "Geist Mono", ui-monospace, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 11px;
   font-weight: 500;
   line-height: 1;
@@ -962,7 +962,7 @@ html.dark .graphify-ask-avatar img {
   border-radius: 12px;
   background: var(--g-surface);
   color: var(--g-ink);
-  font-family: Geist, ui-sans-serif, system-ui, sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;

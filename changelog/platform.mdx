@@ -12,7 +12,7 @@ icon: "cloud"
 <Update label="2026-11-24" description="Combined graphs re-merge when you remove a repository">
 
 **Fixed:**
-- **Combined graphs:** When you remove a repository from a combined graph, the graph stops serving that repository's code and re-merges the remaining repositories on its own. This also happens when a repository leaves because you disconnected its code host. Before, the graph kept serving the old build with the removed repository in it until another repository in the group was indexed again. On the Free plan, the graph keeps its slot while it re-merges.
+- **Combined graphs:** When you remove a repository from a combined graph, the graph stops serving that repository's code and re-merges the remaining repositories on its own. This also happens when a repository leaves because you disconnected its code host. Before, the graph kept serving the old build with the removed repository in it until another repository in the group was indexed again. On the Free plan, this doesn't use an extra graph while it re-merges.
 
 </Update>
 

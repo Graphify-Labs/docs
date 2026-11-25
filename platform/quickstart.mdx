@@ -18,6 +18,28 @@ You need a GitHub account with access to the repository and a coding agent that 
 If you are an agent, read [Notes for agents](/for-agents) before these steps.
 </Note>
 
+Add Graphify to your coding agent with one command. You sign in with OAuth, with no API key to paste, and the steps below index a repository for it to query.
+
+<Tabs>
+  <Tab title="Cursor">
+    ```text Cursor agent chat
+    /add-plugin graphify
+    ```
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash Terminal
+    claude mcp add --transport http graphify https://api.graphify.com/mcp
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash Terminal
+    codex mcp add graphify --url https://api.graphify.com/mcp
+    ```
+  </Tab>
+</Tabs>
+
+Other agents and one-click plugins are in [Connect your agent](/platform/graphify-mcp).
+
 <Steps>
   <Step title="Sign in" titleSize="h2">
     Open the Graphify app at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-quickstart) and sign in. You land on **Overview**. It may ask **What would you like to do first?** You can pick an option or skip it, since the steps below cover the same ground.

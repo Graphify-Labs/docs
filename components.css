@@ -196,3 +196,6 @@
   .gfy-mcp-prompt, .gfy-mcp-scroll code { font-size: 12px; }
   .gfy-mcp-foot { padding: 14px 20px 18px; }
 }
+.gfy-mcp .gfy-logo-dark { display: none; }
+:is(.dark) .gfy-mcp .gfy-logo-light { display: none; }
+:is(.dark) .gfy-mcp .gfy-logo-dark { display: block; }

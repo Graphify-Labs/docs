@@ -254,12 +254,10 @@ export const SetupBox = () => {
     if (i % 2 === 1) return <code key={i}>{part}</code>;
     return part.split("**").map((bit, j) => (j % 2 === 1 ? <strong key={i + "-" + j}>{bit}</strong> : bit));
   });
-  const logoImgs = (src, dark, size, cls) => (
-    <>
-      <img src={src} alt="" width={size} height={size} className={dark ? cls + " gfy-logo-light" : cls} noZoom />
-      {dark ? <img src={dark} alt="" width={size} height={size} className={cls + " gfy-logo-dark"} noZoom /> : null}
-    </>
-  );
+  const logoImgs = (src, dark, size, cls) => [
+    <img key="l" src={src} alt="" width={size} height={size} className={dark ? cls + " gfy-logo-light" : cls} noZoom />,
+    dark ? <img key="d" src={dark} alt="" width={size} height={size} className={cls + " gfy-logo-dark"} noZoom /> : null,
+  ];
   const arrow = (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4.5 12h15" /><path d="M13.5 6l6 6-6 6" /></svg>);
   const corner = (pos) => (<svg key={pos} className={"gfy-mcp-corner gfy-mcp-corner-" + pos} viewBox="0 0 11 11" aria-hidden="true"><path d="M0 0H11V1H7A6 6 0 0 0 1 7V11H0Z" /></svg>);
   const c = clients[active];

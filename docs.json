@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "aspen",
   "name": "Graphify",
   "colors": {
     "primary": "#000000",
@@ -21,7 +21,6 @@
         "groups": [
           {
             "group": "Get started",
-            "icon": "rocket",
             "pages": [
               "platform/overview",
               "platform/quickstart",
@@ -32,7 +31,6 @@
           },
           {
             "group": "Core concepts",
-            "icon": "brain",
             "pages": [
               "platform/how-it-works",
               "concepts/architecture",
@@ -50,7 +48,6 @@
           },
           {
             "group": "Features",
-            "icon": "sparkles",
             "pages": [
               "platform/console",
               "platform/ask",
@@ -71,7 +68,6 @@
           },
           {
             "group": "Workspace",
-            "icon": "building-2",
             "pages": [
               "platform/workspaces-and-members",
               "platform/repositories",
@@ -82,7 +78,6 @@
           },
           {
             "group": "Support",
-            "icon": "life-buoy",
             "pages": [
               "platform/support/faqs",
               "platform/support/troubleshooting",
@@ -100,7 +95,6 @@
         "groups": [
           {
             "group": "Get started",
-            "icon": "rocket",
             "pages": [
               "open-source/overview",
               "open-source/quickstart",
@@ -111,7 +105,6 @@
           },
           {
             "group": "Features",
-            "icon": "sparkles",
             "pages": [
               "open-source/vibe-coding",
               "platform/trace",
@@ -135,7 +128,6 @@
           },
           {
             "group": "Configuration",
-            "icon": "settings",
             "pages": [
               "open-source/configuration/graphifyrc",
               "open-source/configuration/environment-variables",
@@ -146,7 +138,6 @@
           },
           {
             "group": "Support",
-            "icon": "life-buoy",
             "pages": [
               "open-source/troubleshooting"
             ]
@@ -158,7 +149,6 @@
         "groups": [
           {
             "group": "Coding agents",
-            "icon": "code",
             "pages": [
               "integrations/overview",
               "integrations/claude-ai",
@@ -172,7 +162,6 @@
           },
           {
             "group": "Assistants",
-            "icon": "bot",
             "pages": [
               "integrations/chatgpt",
               "integrations/grok-bot",
@@ -184,7 +173,6 @@
           },
           {
             "group": "Source control",
-            "icon": "git-branch",
             "pages": [
               "integrations/github",
               "integrations/gitlab"
@@ -192,7 +180,6 @@
           },
           {
             "group": "CI and deploy",
-            "icon": "workflow",
             "pages": [
               "integrations/buildkite",
               "integrations/vercel"
@@ -200,14 +187,12 @@
           },
           {
             "group": "Knowledge sources",
-            "icon": "folder",
             "pages": [
               "integrations/google-drive"
             ]
           },
           {
             "group": "For agents",
-            "icon": "bot",
             "pages": [
               "mcp/docs-search",
               "for-agents",
@@ -224,7 +209,6 @@
         "groups": [
           {
             "group": "Essentials",
-            "icon": "book-open",
             "pages": [
               "cookbooks/overview",
               "cookbooks/onboard-to-a-codebase",
@@ -237,7 +221,6 @@
           },
           {
             "group": "Team",
-            "icon": "users",
             "pages": [
               "cookbooks/team-setup",
               "cookbooks/codebase-qa-for-non-engineers",
@@ -253,7 +236,6 @@
           },
           {
             "group": "Memory",
-            "icon": "brain",
             "pages": [
               "cookbooks/review-team-memory",
               "cookbooks/decision-log",
@@ -262,7 +244,6 @@
           },
           {
             "group": "Reviews",
-            "icon": "git-pull-request",
             "pages": [
               "cookbooks/prove-refactor-behavior",
               "cookbooks/catch-stale-docs"
@@ -270,7 +251,6 @@
           },
           {
             "group": "Agents",
-            "icon": "bot",
             "pages": [
               "cookbooks/claude-code-monorepo",
               "cookbooks/opencode",
@@ -286,7 +266,6 @@
           },
           {
             "group": "Data",
-            "icon": "database",
             "pages": [
               "cookbooks/postgres-schema-graph",
               "cookbooks/neo4j-export",
@@ -296,7 +275,6 @@
           },
           {
             "group": "CI and Ops",
-            "icon": "server",
             "pages": [
               "cookbooks/pr-impact-comment-ci",
               "cookbooks/self-host-shared-mcp"
@@ -309,7 +287,6 @@
         "groups": [
           {
             "group": "Changelog",
-            "icon": "history",
             "pages": [
               "changelog/highlights",
               "changelog/console",
@@ -323,9 +300,24 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Help on Discord",
+          "anchor": "Try Graphify",
+          "href": "https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=sidebar",
+          "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/solid/play.svg"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://graphify.com/blog?utm_source=docs&utm_medium=link&utm_campaign=sidebar",
+          "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/solid/newspaper.svg"
+        },
+        {
+          "anchor": "Community",
           "href": "https://discord.gg/graphify",
-          "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/brands/discord.svg"
+          "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/solid/comment-dots.svg"
+        },
+        {
+          "anchor": "Changelog",
+          "href": "/changelog/highlights",
+          "icon": "https://d3gk2c5xim1je2.cloudfront.net/fontawesome/v7.2.0/solid/list.svg"
         }
       ]
     }

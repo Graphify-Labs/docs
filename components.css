@@ -86,7 +86,7 @@
 /* Home hero: two columns on wide screens */
 @media (min-width: 1024px) {
   .gfy-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
-  .gfy-agent-grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; }
+  .gfy-agent-grid { grid-template-columns: minmax(220px, 0.62fr) minmax(0, 1.38fr); align-items: center; }
 }
 
 /* Home hero snippet: custom tablist, wrapped code, copy button */
@@ -119,6 +119,9 @@
 .gfy-line { display: block; }
 .gfy-line + .gfy-line { margin-top: 8px; }
 .gfy-pre { margin: 0; padding: 0; background: none; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 13px; line-height: 1.65; color: #171717; }
+.gfy-snippet-mcp .gfy-panel { overflow-x: auto; }
+.gfy-snippet-mcp .gfy-pre { white-space: pre; overflow-wrap: normal; font-size: 14px; line-height: 1.7; }
+.gfy-snippet-mcp .gfy-line { white-space: pre; }
 .gfy-link { color: #171717 !important; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(23,23,23,.4); border-bottom: 0 !important; }
 .gfy-link:hover { text-decoration-color: currentColor; }
 :is(.dark) .gfy-snippet { border-color: #262626; background: #141515; }

@@ -399,6 +399,10 @@
   "navbar": {
     "links": [
       {
+        "type": "github",
+        "href": "https://github.com/Graphify-Labs/graphify"
+      },
+      {
         "label": "Support",
         "href": "https://discord.gg/graphify"
       }

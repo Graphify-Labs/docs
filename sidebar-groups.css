@@ -9,8 +9,6 @@ html.dark div:has(> .sidebar-group-header) ~ div:has(> .sidebar-group-header) {
 }
 .sidebar-group-header {
   font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 /* Mobile nav drawer (390px, 768px): 44px tap targets, tighter group rhythm. */

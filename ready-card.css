@@ -1,15 +1,5 @@
 /* "Ready to build?" card under "On this page" (ready-card.js).
    A light brand green tint, the logo, one line and two buttons. */
-#table-of-contents-content > li.graphify-ready-item {
-  list-style: none;
-  margin-top: 24px;
-  padding: 0;
-  border: 0;
-}
-#table-of-contents-content > li.graphify-ready-item::before {
-  content: none;
-}
-
 .graphify-ready-card {
   padding: 20px;
   border: 1px solid rgb(17 141 79 / 18%);
@@ -117,18 +107,70 @@ html.dark .graphify-ready-card a.graphify-ready-button-secondary:hover {
   background-color: rgb(255 255 255 / 10%);
 }
 
-/* Where the card shows, it takes the place of the community pop-up, so the
-   column carries one invitation at a time. Pages without the card keep it. */
+/* Outline and card share the right column. The column stops above the
+   community card and the Ask Graphify button (see ask-graphify.css); the
+   outline scrolls inside what is left, and the card keeps its full height.
+   On a very short window the whole column scrolls instead. */
 @media (min-width: 1280px) {
-  body:has(#graphify-ready-card) #graphify-community-card {
-    display: none !important;
-  }
-  /* Stop the column above the Ask Graphify button in the corner; a long
-     outline scrolls inside it, with the card at the end. */
-  body:has(#graphify-ready-card) #table-of-contents-layout {
-    max-height: min(100%, calc(100vh - 232px));
+  #table-of-contents-layout:has(> .graphify-ready-item) {
+    flex-direction: column;
+    max-height: min(100%, calc(var(--graphify-overlay-top, 100vh) - 168px), calc(100vh - 232px));
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+  #table-of-contents-layout:has(> .graphify-ready-item) > #table-of-contents {
+    flex: 0 1 auto;
+    min-height: 160px;
+  }
+  #table-of-contents-layout > .graphify-ready-item {
+    flex: none;
+    width: 16.5rem;
+    margin-top: 24px;
+  }
+}
+
+/* While the community card is open in the corner, or on a short window,
+   the card drops its blurb and puts the buttons side by side, so the
+   outline keeps most of the column and nothing has to stack tightly. */
+body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .graphify-ready-card {
+  padding: 16px;
+}
+body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .graphify-ready-card .graphify-ready-text {
+  display: none;
+}
+body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .graphify-ready-card .graphify-ready-title {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .graphify-ready-actions {
+  flex-direction: row;
+}
+body:has(#graphify-community-card[data-placement="desktop"]:not([hidden])) .graphify-ready-card a.graphify-ready-button {
+  flex: 1 1 0;
+  padding: 8px 10px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+@media (max-height: 860px) {
+  .graphify-ready-card {
+    padding: 16px;
+  }
+  .graphify-ready-card .graphify-ready-text {
+    display: none;
+  }
+  .graphify-ready-card .graphify-ready-title {
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+  .graphify-ready-actions {
+    flex-direction: row;
+  }
+  .graphify-ready-card a.graphify-ready-button {
+    flex: 1 1 0;
+    padding: 8px 10px;
+    font-size: 13px;
+    white-space: nowrap;
   }
 }
 

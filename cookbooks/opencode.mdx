@@ -184,7 +184,7 @@ OpenCode answers from the saved graph, not the files on disk, so an old graph gi
 graphify hook install
 ```
 
-This adds `post-commit`, `post-checkout`, `post-merge` and `post-rewrite` hooks that rebuild the code graph in the background, so it follows you across branches. Hook rebuilds are code-only, so they never call a model. To refresh by hand, run `graphify update .`. See [Keep your code graph up to date](/open-source/keep-the-graph-fresh) for what each hook does and the cases it skips on purpose.
+This adds `post-commit`, `post-checkout`, `post-merge` and `post-rewrite` hooks that rebuild the code graph in the background, so it follows you across branches. Hook rebuilds are code-only, so they never call a model. To refresh by hand, run `graphify update .`. See [Keep your code graph up to date](/open-source/features/keep-the-graph-fresh) for what each hook does and the cases it skips on purpose.
 
 Keep vendored and generated folders out of the graph with a `.graphifyignore`. See [Ignoring files](/open-source/configuration/ignoring-files).
 

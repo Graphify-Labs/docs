@@ -32,18 +32,23 @@
           {
             "group": "Core concepts",
             "pages": [
-              "platform/how-it-works",
+              "concepts/how-it-works",
               "concepts/architecture",
-              "platform/keep-the-graph-fresh",
+              "concepts/keep-the-graph-fresh",
               "concepts/how-graphify-is-different",
               "concepts/ask-about-your-code",
-              "concepts/follow-calls",
-              "concepts/check-impact",
-              "concepts/provenance",
-              "concepts/how-graphify-finds-dependencies",
-              "concepts/outputs",
-              "concepts/what-is-formal-verification",
-              "concepts/bring-your-stack"
+              {
+                "group": "View more",
+                "pages": [
+                  "concepts/follow-calls",
+                  "concepts/check-impact",
+                  "concepts/provenance",
+                  "concepts/how-graphify-finds-dependencies",
+                  "concepts/outputs",
+                  "concepts/what-is-formal-verification",
+                  "concepts/bring-your-stack"
+                ]
+              }
             ]
           },
           {
@@ -52,13 +57,25 @@
               "platform/console",
               "platform/ask",
               "platform/graphs",
-              "platform/reviews",
-              "concepts/review-a-pull-request",
-              "platform/read-a-result",
-              "concepts/colliding-pull-requests",
+              {
+                "group": "Pull request reviews",
+                "icon": "git-pull-request",
+                "root": "platform/reviews",
+                "pages": [
+                  "platform/reviews/review-a-pull-request",
+                  "platform/reviews/read-a-result",
+                  "platform/reviews/colliding-pull-requests"
+                ]
+              },
               "platform/test-impact",
-              "platform/verification",
-              "platform/verification-check-results",
+              {
+                "group": "Formal verification",
+                "icon": "shield-check",
+                "root": "platform/verification",
+                "pages": [
+                  "platform/verification/check-results"
+                ]
+              },
               "platform/insights",
               "platform/wiki",
               "platform/memory",
@@ -81,11 +98,23 @@
             "pages": [
               "platform/support/faqs",
               "platform/support/troubleshooting",
-              "platform/support/pricing",
-              "platform/support/rate-limits",
+              {
+                "group": "Plans and pricing",
+                "icon": "credit-card",
+                "root": "platform/support/pricing",
+                "pages": [
+                  "platform/support/rate-limits"
+                ]
+              },
               "platform/support/security",
-              "platform/support/move-from-local",
-              "platform/migrate-from-cody"
+              {
+                "group": "Migrate to Graphify",
+                "icon": "arrow-right-left",
+                "pages": [
+                  "platform/support/move-from-local",
+                  "platform/support/migrate-from-cody"
+                ]
+              }
             ]
           }
         ]
@@ -107,23 +136,53 @@
             "group": "Features",
             "pages": [
               "open-source/vibe-coding",
-              "platform/trace",
-              "open-source/features/languages",
-              "open-source/features/documents-and-media",
-              "open-source/features/databases",
-              "open-source/features/deduplication",
-              "open-source/features/community-detection",
-              "open-source/features/querying",
-              "open-source/features/incremental-updates",
-              "open-source/keep-the-graph-fresh",
-              "open-source/features/work-memory",
-              "open-source/features/pr-impact",
-              "open-source/features/multi-repo",
-              "open-source/features/exports",
-              "open-source/features/headless-extraction",
-              "open-source/features/mcp-tools",
-              "open-source/features/token-benchmark",
-              "open-source/features/honest-token-savings"
+              {
+                "group": "Inputs",
+                "icon": "file-input",
+                "pages": [
+                  "open-source/features/languages",
+                  "open-source/features/documents-and-media",
+                  "open-source/features/databases"
+                ]
+              },
+              {
+                "group": "Build the graph",
+                "icon": "hammer",
+                "pages": [
+                  "open-source/features/deduplication",
+                  "open-source/features/community-detection",
+                  "open-source/features/incremental-updates",
+                  "open-source/features/keep-the-graph-fresh"
+                ]
+              },
+              {
+                "group": "Query the graph",
+                "icon": "telescope",
+                "pages": [
+                  "open-source/features/querying",
+                  "open-source/features/trace",
+                  "open-source/features/work-memory",
+                  "open-source/features/pr-impact",
+                  "open-source/features/multi-repo"
+                ]
+              },
+              {
+                "group": "Export and automate",
+                "icon": "package",
+                "pages": [
+                  "open-source/features/exports",
+                  "open-source/features/headless-extraction",
+                  "open-source/features/mcp-tools"
+                ]
+              },
+              {
+                "group": "Benchmarks",
+                "icon": "gauge",
+                "pages": [
+                  "open-source/features/token-benchmark",
+                  "open-source/features/honest-token-savings"
+                ]
+              }
             ]
           },
           {
@@ -227,11 +286,16 @@
               "cookbooks/pr-blast-radius",
               "cookbooks/automated-pr-review",
               "cookbooks/onboard-with-the-wiki",
-              "cookbooks/review-as-a-team",
-              "cookbooks/shared-team-graph",
-              "cookbooks/cross-repo-dependencies",
-              "cookbooks/slack-on-call-answers",
-              "cookbooks/multiple-client-workspaces"
+              {
+                "group": "View more",
+                "pages": [
+                  "cookbooks/review-as-a-team",
+                  "cookbooks/shared-team-graph",
+                  "cookbooks/cross-repo-dependencies",
+                  "cookbooks/slack-on-call-answers",
+                  "cookbooks/multiple-client-workspaces"
+                ]
+              }
             ]
           },
           {
@@ -257,11 +321,16 @@
               "cookbooks/cloud-coding-agents",
               "cookbooks/make-agents-use-the-graph",
               "cookbooks/fix-review-findings",
-              "cookbooks/reuse-existing-code",
-              "cookbooks/document-the-why",
-              "cookbooks/remember-incident-lessons",
-              "cookbooks/agent-team-one-graph",
-              "cookbooks/local-with-ollama"
+              {
+                "group": "View more",
+                "pages": [
+                  "cookbooks/reuse-existing-code",
+                  "cookbooks/document-the-why",
+                  "cookbooks/remember-incident-lessons",
+                  "cookbooks/agent-team-one-graph",
+                  "cookbooks/local-with-ollama"
+                ]
+              }
             ]
           },
           {
@@ -805,7 +874,7 @@
     },
     {
       "source": "/how-it-works",
-      "destination": "/platform/how-it-works"
+      "destination": "/concepts/how-it-works"
     },
     {
       "source": "/platform/console-tour",
@@ -882,6 +951,42 @@
     {
       "source": "/open-source/local-development",
       "destination": "/open-source/quickstart#keep-everything-on-your-machine"
+    },
+    {
+      "source": "/platform/how-it-works",
+      "destination": "/concepts/how-it-works"
+    },
+    {
+      "source": "/platform/keep-the-graph-fresh",
+      "destination": "/concepts/keep-the-graph-fresh"
+    },
+    {
+      "source": "/concepts/review-a-pull-request",
+      "destination": "/platform/reviews/review-a-pull-request"
+    },
+    {
+      "source": "/platform/read-a-result",
+      "destination": "/platform/reviews/read-a-result"
+    },
+    {
+      "source": "/concepts/colliding-pull-requests",
+      "destination": "/platform/reviews/colliding-pull-requests"
+    },
+    {
+      "source": "/platform/verification-check-results",
+      "destination": "/platform/verification/check-results"
+    },
+    {
+      "source": "/platform/migrate-from-cody",
+      "destination": "/platform/support/migrate-from-cody"
+    },
+    {
+      "source": "/platform/trace",
+      "destination": "/open-source/features/trace"
+    },
+    {
+      "source": "/open-source/keep-the-graph-fresh",
+      "destination": "/open-source/features/keep-the-graph-fresh"
     }
   ]
 }

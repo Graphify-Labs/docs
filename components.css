@@ -96,10 +96,12 @@
 .gfy-tab { padding: 10px 10px; font-size: 12px; font-weight: 500; color: #5c5c5c; background: none; border: 0; border-bottom: 2px solid transparent; cursor: pointer; }
 .gfy-tab[aria-selected="true"] { color: #171717; border-bottom-color: #171717; }
 .gfy-tab:hover { color: #171717; }
-.gfy-tab:focus-visible, .gfy-copy:focus-visible, .gfy-panel:focus-visible { outline: 2px solid #737373; outline-offset: -2px; border-radius: 6px; }
+.gfy-tab:focus-visible, .gfy-panel:focus-visible { outline: 2px solid #737373; outline-offset: -2px; border-radius: 6px; }
 .gfy-snippet-title { padding: 10px 8px; font-size: 12px; font-weight: 500; color: #5c5c5c; }
 .gfy-copy { font-size: 12px; font-weight: 500; color: #262626; background: transparent; border: 1px solid #d4d4d4; border-radius: 6px; padding: 3px 10px; cursor: pointer; }
 .gfy-copy:hover { background: #f5f5f5; }
+.gfy-copy:focus-visible { outline: 2px solid var(--g-brand-accent); outline-offset: -2px; border-radius: 6px; }
+.gfy-copy.is-copied, :is(.dark) .gfy-copy.is-copied { color: var(--g-brand-accent); background: var(--g-brand-accent-soft); border-color: transparent; }
 .gfy-panel { padding: 14px 16px; }
 .gfy-bar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 4px 0; }
 .gfy-agents { display: flex; align-items: center; gap: 4px; }
@@ -124,7 +126,7 @@
 :is(.dark) .gfy-tab, :is(.dark) .gfy-snippet-title { color: #a3a3a3; }
 :is(.dark) .gfy-tab:hover { color: #ededed; }
 :is(.dark) .gfy-tab[aria-selected="true"] { color: #ffffff; border-bottom-color: #ffffff; }
-:is(.dark) .gfy-tab:focus-visible, :is(.dark) .gfy-copy:focus-visible, :is(.dark) .gfy-panel:focus-visible { outline-color: #a3a3a3; }
+:is(.dark) .gfy-tab:focus-visible, :is(.dark) .gfy-panel:focus-visible { outline-color: #a3a3a3; }
 :is(.dark) .gfy-copy { color: #d4d4d4; border-color: #262626; }
 :is(.dark) .gfy-copy:hover { background: #1c1d1d; }
 :is(.dark) .gfy-pre { color: #ededed; }
@@ -156,8 +158,8 @@
 
 
 /* Introduction: Set up Graphify MCP box. Neutral ink only, no brand color. */
-.gfy-mcp { --mcp-ink: #262626; --mcp-muted: rgba(38, 38, 38, 0.56); --mcp-line: #ededed; --mcp-soft: rgba(0, 0, 0, 0.02); --mcp-chip: rgba(0, 0, 0, 0.06); --mcp-active: rgba(0, 0, 0, 0.035); position: relative; margin: 20px 0 32px; border: 1px solid var(--mcp-line); background: #ffffff; color: var(--mcp-ink); font-size: 16px; line-height: 28px; }
-:is(.dark) .gfy-mcp { --mcp-ink: #f5f5f5; --mcp-muted: rgba(255, 255, 255, 0.56); --mcp-line: #2a2a2a; --mcp-soft: rgba(255, 255, 255, 0.02); --mcp-chip: rgba(255, 255, 255, 0.08); --mcp-active: rgba(255, 255, 255, 0.05); background: #171717; }
+.gfy-mcp { --mcp-ink: #262626; --mcp-muted: rgba(38, 38, 38, 0.56); --mcp-line: #ededed; --mcp-soft: rgba(0, 0, 0, 0.02); --mcp-chip: rgba(0, 0, 0, 0.06); position: relative; margin: 20px 0 32px; border: 1px solid var(--mcp-line); background: #ffffff; color: var(--mcp-ink); font-size: 16px; line-height: 28px; }
+:is(.dark) .gfy-mcp { --mcp-ink: #f5f5f5; --mcp-muted: rgba(255, 255, 255, 0.56); --mcp-line: #2a2a2a; --mcp-soft: rgba(255, 255, 255, 0.02); --mcp-chip: rgba(255, 255, 255, 0.08); background: #171717; }
 .gfy-mcp p, .gfy-mcp h3 { margin: 0; }
 .gfy-mcp-corner { position: absolute; z-index: 1; width: 11px; height: 11px; fill: var(--mcp-line); pointer-events: none; }
 .gfy-mcp-corner-tl { top: -1px; left: -1px; }
@@ -168,13 +170,13 @@
 .gfy-mcp-head h3 { font-size: 20px; font-weight: 600; line-height: 28px; color: var(--mcp-ink); }
 .gfy-mcp-head p { margin-top: 6px; font-size: 14px; line-height: 20px; color: var(--mcp-muted); }
 .gfy-mcp-all { display: inline-flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 13px; font-weight: 500; line-height: 22.75px; white-space: nowrap; color: var(--mcp-muted) !important; text-decoration: none !important; border-bottom: 0 !important; transition: color .15s; }
-.gfy-mcp-all:hover { color: var(--mcp-ink) !important; }
+.gfy-mcp-all:hover { color: var(--g-brand-accent) !important; }
 .gfy-mcp-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--mcp-line); border-bottom: 1px solid var(--mcp-line); }
 .gfy-mcp-tab { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; padding: 14px 10px; color: var(--mcp-ink); background: transparent; border: 0; border-right: 1px solid var(--mcp-line); border-radius: 0; cursor: pointer; overflow: hidden; transition: background-color .15s; }
 .gfy-mcp-tab:last-child { border-right: 0; }
 .gfy-mcp-tab:hover { background: var(--mcp-soft); }
-.gfy-mcp-tab[aria-selected="true"] { background: var(--mcp-active); box-shadow: inset 0 2px 0 0 var(--mcp-ink); }
-.gfy-mcp-tab:focus-visible, .gfy-mcp-all:focus-visible, .gfy-mcp-button:focus-visible, .gfy-mcp-copy:focus-visible, .gfy-mcp-scroll:focus-visible { outline: 2px solid var(--mcp-ink); outline-offset: -2px; }
+.gfy-mcp-tab[aria-selected="true"] { background: var(--g-brand-accent-soft); box-shadow: inset 0 2px 0 0 var(--g-brand-accent); }
+.gfy-mcp-tab:focus-visible, .gfy-mcp-all:focus-visible, .gfy-mcp-button:focus-visible, .gfy-mcp-copy:focus-visible, .gfy-mcp-scroll:focus-visible { outline: 2px solid var(--g-brand-accent); outline-offset: -2px; }
 .gfy-mcp-icon { display: block; width: 26px; height: 26px; margin: 0; object-fit: contain; }
 .gfy-mcp-tabtext { display: flex; flex-direction: column; gap: 2px; max-width: 100%; text-align: center; }
 .gfy-mcp-tabtext strong { overflow: hidden; font-size: 14px; font-weight: 700; line-height: 20px; white-space: nowrap; text-overflow: ellipsis; }
@@ -182,7 +184,7 @@
 .gfy-mcp-panel { display: flex; flex-direction: column; gap: 14px; padding: 20px 24px 24px; }
 .gfy-mcp-desc { font-size: 14px; line-height: 21px; color: var(--mcp-muted); }
 .gfy-mcp-button { display: inline-flex; align-self: flex-start; align-items: center; justify-content: center; gap: 7px; min-height: 34px; padding: 0 12px; font-size: 13px; font-weight: 600; line-height: 22.75px; color: var(--mcp-ink) !important; background: var(--mcp-chip); border-radius: 6px; text-decoration: none !important; border-bottom: 0 !important; transition: background-color .15s; }
-.gfy-mcp-button:hover { background: var(--mcp-active); box-shadow: inset 0 0 0 1px var(--mcp-line); }
+.gfy-mcp-button:hover { background: var(--g-brand-accent-soft); }
 .gfy-mcp-button-icon { display: block; width: 18px; height: 18px; margin: 0; object-fit: contain; }
 .gfy-mcp-row { display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--mcp-line); border-radius: 8px; background: var(--mcp-soft); }
 .gfy-mcp-scroll { display: flex; flex: 1 1 auto; align-items: center; gap: 10px; min-width: 0; padding: 7px 6px 7px 12px; overflow-x: auto; scrollbar-width: none; border-radius: 4px; }
@@ -191,6 +193,7 @@
 .gfy-mcp-scroll code { padding: 0 20px 0 0; font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 13px; line-height: 20px; white-space: nowrap; color: var(--mcp-ink); background: none; border: 0; }
 .gfy-mcp-copy { display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 6px; height: 28px; padding: 0 9px; font-size: 12px; font-weight: 500; line-height: 21px; color: var(--mcp-muted); background: transparent; border: 0; border-radius: 6px; cursor: pointer; transition: background-color .15s, color .15s; }
 .gfy-mcp-copy:hover { color: var(--mcp-ink); background: var(--mcp-chip); }
+.gfy-mcp-copy.is-copied { color: var(--g-brand-accent); background: var(--g-brand-accent-soft); }
 .gfy-mcp-file { overflow: hidden; border: 1px solid var(--mcp-line); border-radius: 6px; background: var(--mcp-soft); }
 .gfy-mcp-file-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 38px; padding: 5px 8px 5px 14px; font-size: 12px; font-weight: 500; line-height: 21px; color: var(--mcp-muted); border-bottom: 1px solid var(--mcp-line); }
 .gfy-mcp-file pre { margin: 0; padding: 14px 16px; background: none; border: 0; border-radius: 0; white-space: pre-wrap; }

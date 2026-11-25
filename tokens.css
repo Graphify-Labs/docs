@@ -1,6 +1,7 @@
 /* Graphify design tokens. Custom components read these, never raw hex.
    The docs chrome is neutral: black and white shades for the current mode.
-   Brand green is kept for the main call to action and the logo only. */
+   Brand green is kept for the main call to action, the logo, the Ready to
+   build card and a few small interactive accents (see --g-brand-accent). */
 :root {
   /* Colour */
   --g-ink: #171717;
@@ -8,10 +9,15 @@
   --g-text-subtle: #5c5c5c;
   /* Neutral accent for links, selected states and hover borders. */
   --g-accent: #171717;
-  /* Brand green, for the Start free button and the logo only. White text
+  /* Brand green, for the Start free button and the logo. White text
      on it is 5.4:1. */
   --g-brand: #0e7a43;
   --g-accent-strong: var(--g-brand);
+  /* Green accent for a few small interactive spots: the selected setup
+     tab, Copied states, focus rings in the setup box and its link hover.
+     Text on the soft tint is 5.2:1. */
+  --g-brand-accent: #0e7a43;
+  --g-brand-accent-soft: rgb(17 141 79 / 4%);
   --g-focus: #737373;
   --g-surface: #ffffff;
   --g-surface-subtle: #fafafa;
@@ -44,6 +50,9 @@ html.dark {
   --g-text-subtle: #a3a3a3;
   --g-accent: #ffffff;
   --g-focus: #a3a3a3;
+  /* Mint on the dark tint is 9.9:1. */
+  --g-brand-accent: #4dea9c;
+  --g-brand-accent-soft: rgb(77 234 156 / 8%);
   --g-surface: #141515;
   --g-surface-subtle: #101111;
   --g-surface-hover: #1c1d1d;

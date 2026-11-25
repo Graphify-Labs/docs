@@ -1,0 +1,140 @@
+/* "Ready to build?" card under "On this page" (ready-card.js).
+   A light brand green tint, the logo, one line and two buttons. */
+#table-of-contents-content > li.graphify-ready-item {
+  list-style: none;
+  margin-top: 24px;
+  padding: 0;
+  border: 0;
+}
+#table-of-contents-content > li.graphify-ready-item::before {
+  content: none;
+}
+
+.graphify-ready-card {
+  padding: 20px;
+  border: 1px solid rgb(17 141 79 / 18%);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgb(17 141 79 / 5%) 0%, rgb(17 141 79 / 2%) 100%);
+}
+
+.graphify-ready-logo {
+  display: block;
+  width: auto;
+  height: 20px;
+  margin: 0 0 12px;
+}
+.graphify-ready-logo-dark {
+  display: none;
+}
+html.dark .graphify-ready-logo-light {
+  display: none;
+}
+html.dark .graphify-ready-logo-dark {
+  display: block;
+}
+
+.graphify-ready-card p {
+  margin: 0;
+}
+.graphify-ready-card .graphify-ready-title {
+  margin-bottom: 8px;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.graphify-ready-card .graphify-ready-text {
+  margin-bottom: 16px;
+  color: #666666;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.graphify-ready-text strong {
+  color: #333333;
+  font-weight: 600;
+}
+
+.graphify-ready-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.graphify-ready-card a.graphify-ready-button {
+  display: block;
+  padding: 10px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.graphify-ready-card a.graphify-ready-button-primary {
+  border: 1px solid transparent;
+  background-color: var(--g-brand, #0e7a43);
+  color: #ffffff;
+}
+.graphify-ready-card a.graphify-ready-button-primary:hover {
+  background-color: #0b6637;
+}
+.graphify-ready-card a.graphify-ready-button-secondary {
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  color: #333333;
+}
+.graphify-ready-card a.graphify-ready-button-secondary:hover {
+  border-color: #d1d5db;
+  background-color: #f9fafb;
+}
+.graphify-ready-card a.graphify-ready-button:focus-visible {
+  outline: 2px solid var(--g-focus, #737373);
+  outline-offset: 2px;
+}
+
+html.dark .graphify-ready-card {
+  border-color: rgb(77 234 156 / 18%);
+  background: linear-gradient(180deg, rgb(17 141 79 / 12%) 0%, rgb(17 141 79 / 5%) 100%);
+}
+html.dark .graphify-ready-card .graphify-ready-title {
+  color: #ffffff;
+}
+html.dark .graphify-ready-card .graphify-ready-text {
+  color: #aaaaaa;
+}
+html.dark .graphify-ready-text strong {
+  color: #dddddd;
+}
+html.dark .graphify-ready-card a.graphify-ready-button-secondary {
+  border-color: rgb(255 255 255 / 10%);
+  background-color: rgb(255 255 255 / 5%);
+  color: #dddddd;
+}
+html.dark .graphify-ready-card a.graphify-ready-button-secondary:hover {
+  border-color: rgb(255 255 255 / 20%);
+  background-color: rgb(255 255 255 / 10%);
+}
+
+/* Where the card shows, it takes the place of the community pop-up, so the
+   column carries one invitation at a time. Pages without the card keep it. */
+@media (min-width: 1280px) {
+  body:has(#graphify-ready-card) #graphify-community-card {
+    display: none !important;
+  }
+  /* Stop the column above the Ask Graphify button in the corner; a long
+     outline scrolls inside it, with the card at the end. */
+  body:has(#graphify-ready-card) #table-of-contents-layout {
+    max-height: min(100%, calc(100vh - 232px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* The "On this page" column is hidden on smaller screens; so is the card. */
+@media (max-width: 1024px) {
+  .graphify-ready-item {
+    display: none;
+  }
+}

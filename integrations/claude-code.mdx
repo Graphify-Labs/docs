@@ -10,6 +10,7 @@ keywords: ["claude code mcp", "claude mcp", "claude code mcp server", "claude mc
 
 import { AddPill } from '/snippets/add-pill.jsx';
 import { StartFreeCta } from '/snippets/start-free-cta.mdx';
+import WhatYouCanDo from '/snippets/what-you-can-do.mdx';
 
 Connect Claude Code to the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-code) workspace. You sign in in the browser. There is no API key.
 
@@ -44,40 +45,44 @@ claude mcp add --transport http --scope user graphify https://api.graphify.com/m
 
 If a local entry and a claude.ai connector point at the same URL, Claude Code keeps the local entry and lists the connector as hidden. Use one path.
 
-To share the server with everyone who clones a repository, commit this `.mcp.json` at the repository root instead:
+<Accordion title="Prefer to commit a project config?">
+  To share the server with everyone who clones a repository, commit this `.mcp.json` at the repository root instead:
 
-```json .mcp.json
-{
-  "mcpServers": {
-    "graphify": {
-      "type": "http",
-      "url": "https://api.graphify.com/mcp"
+  ```json .mcp.json
+  {
+    "mcpServers": {
+      "graphify": {
+        "type": "http",
+        "url": "https://api.graphify.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-Each teammate approves the project server once, then signs in from `/mcp`.
+  Each teammate approves the project server once, then signs in from `/mcp`.
+</Accordion>
 
 ### No `claude` command? Edit the config file
 
-The Claude desktop app's **Code** tab and the IDE extensions run their own copy of Claude Code, so a terminal may answer `command not found: claude`. You don't need to install the CLI. The desktop app and the CLI read the same `~/.claude.json`, so add the server there:
+<Accordion title="Prefer to edit the config file?">
+  The Claude desktop app's **Code** tab and the IDE extensions run their own copy of Claude Code, so a terminal may answer `command not found: claude`. You don't need to install the CLI. The desktop app and the CLI read the same `~/.claude.json`, so add the server there:
 
-1. Quit the desktop app or close the Claude Code session.
-2. Back up the file: `cp ~/.claude.json ~/.claude.json.bak`.
-3. Add `graphify` under the top-level `mcpServers` key. Create the key if it is missing, and leave every other key as it is:
+  1. Quit the desktop app or close the Claude Code session.
+  2. Back up the file: `cp ~/.claude.json ~/.claude.json.bak`.
+  3. Add `graphify` under the top-level `mcpServers` key. Create the key if it is missing, and leave every other key as it is:
 
-```json ~/.claude.json
-{
-  "mcpServers": {
-    "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
+  ```json ~/.claude.json
+  {
+    "mcpServers": {
+      "graphify": { "type": "http", "url": "https://api.graphify.com/mcp" }
+    }
   }
-}
-```
+  ```
 
-An entry at the top level is user scope, the same as `--scope user`. Keep `"type": "http"`: without it, Claude Code treats the entry as a local command and skips it.
+  An entry at the top level is user scope, the same as `--scope user`. Keep `"type": "http"`: without it, Claude Code treats the entry as a local command and skips it.
 
-Claude Code loads servers only when a session starts, so open a **new** session before you sign in.
+  Claude Code loads servers only when a session starts, so open a **new** session before you sign in.
+</Accordion>
 
 ## 2. Sign in
 
@@ -123,6 +128,8 @@ Pick a repository from the list and name the symbol, file, or area you care abou
 - `Summarize how requests reach the billing service.`
 
 Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
+
+<WhatYouCanDo />
 
 ## Troubleshooting
 

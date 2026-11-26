@@ -9,6 +9,7 @@ hideFooterPagination: true
 ---
 
 import { AddPill } from '/snippets/add-pill.jsx';
+import WhatYouCanDo from '/snippets/what-you-can-do.mdx';
 
 Install the Graphify extension so Copilot in VS Code can search the repositories you have indexed in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-vscode). VS Code handles sign-in. There is no API key. If you use Cursor, see [Graphify for Cursor](/integrations/cursor).
 
@@ -31,24 +32,22 @@ Install [Graphify MCP](https://marketplace.visualstudio.com/items?itemName=graph
 
 The extension registers `https://api.graphify.com/mcp` over Streamable HTTP. It does not read or upload your local files, and it stores no credentials of its own.
 
-### Manual setup
+<Accordion title="Prefer to add the server yourself?">
+  Open the Command Palette (`Ctrl + Shift + P`, or `Cmd + Shift + P` on macOS) and run **MCP: Open User Configuration**. Add the server to `mcp.json`:
 
-**Add the endpoint by hand**
-
-Open the Command Palette (`Ctrl + Shift + P`, or `Cmd + Shift + P` on macOS) and run **MCP: Open User Configuration**. Add the server to `mcp.json`:
-
-```json theme={null}
-{
-  "servers": {
-    "graphify": {
-      "type": "http",
-      "url": "https://api.graphify.com/mcp"
+  ```json theme={null}
+  {
+    "servers": {
+      "graphify": {
+        "type": "http",
+        "url": "https://api.graphify.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-Use one path or the other. If you keep this entry and also install the extension, the same tools appear twice.
+  Use one path or the other. If you keep this entry and also install the extension, the same tools appear twice.
+</Accordion>
 
 ## 2. Start the server and sign in
 
@@ -83,6 +82,8 @@ Then pick a repository from the answer and ask about its code:
 Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it.
 
 Some tools write workspace memory or switch the selected workspace. Read each tool request and approve it only when that is what you meant.
+
+<WhatYouCanDo />
 
 ## Commands
 

@@ -69,6 +69,20 @@ Name the repository and the symbol, file, or area you care about.
 | Find the tests to run | `Which tests are linked to the checkout flow?` |
 | Recall a team decision | `What did the team decide about retries in the payments service?` |
 
+### Example from a real run
+
+Tested with Grok Bot and the hosted Graphify MCP server on 26 Nov 2026, on the public [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) repository (indexed commit `02c27dc`).
+
+```text
+In Graphify-Labs/graphify, who calls the function that loads .graphifyignore?
+```
+
+Grok Bot used `graphify_find` to locate `_load_graphifyignore()` in `graphify/detect.py`, then `graphify_callers` to list its callers, and answered:
+
+> `_load_graphifyignore()` has 21 callers. Five are in the package: `detect()` and `ignored_predicate()` in `graphify/detect.py`, `collect_files()` and `_xaml_csharp_class_nodes()` in `graphify/extract.py`, and `watch()` in `graphify/watch.py`. The other 16 are tests: 15 in `tests/test_detect.py` and 1 in `tests/test_extract.py`.
+
+The counts change as the repository changes.
+
 Answers are graph evidence from the files Graphify indexed. Open the source lines an answer cites before you rely on it. Some tools save workspace memory, so read what a tool will do before you approve it.
 
 ## Troubleshooting

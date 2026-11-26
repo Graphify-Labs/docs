@@ -151,8 +151,8 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | A Claude chat doesn't use Graphify | Select **+**, then **Connectors**, and turn Graphify on for that chat. Approve the tool call if Claude asks. |
 | `/mcp` doesn't list the claude.ai connector | Run `/status`. Connectors from claude.ai load only with a Claude account login, not with `ANTHROPIC_API_KEY`, Bedrock, or another provider. Use `claude mcp add`, or `/login` with your Claude account. |
 | The claude.ai connector is hidden | A local entry points at the same URL. Claude Code keeps the local entry. Remove it with `claude mcp remove graphify` if you want the directory connector. |
-| Only a `graphify_setup` tool appears, or tools say **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-code): create a workspace, connect GitHub, enable a repository, wait until it is **Indexed**, then start a new Claude Code session. If tools still fail, disconnect and reconnect Graphify under `/mcp`. |
-| Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories** in Graphify, wait for the first index to finish, then ask again. |
+| Only a `graphify_setup` tool appears, or tools say **Graphify isn't set up for this account yet** | Ask Claude Code to call `setup_status` and open the link it gives. Finish that step, then ask it to call the tool again. Wait until a repository is **Indexed**, then start a new Claude Code session. If tools still fail, disconnect and reconnect Graphify under `/mcp`. |
+| Tools say **This workspace has no repositories enabled for agents yet.** | Ask Claude Code to call `setup_status` and open the link it gives to enable a repository. Wait for the first index to finish, then ask again. |
 
 ## FAQ
 

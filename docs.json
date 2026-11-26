@@ -272,11 +272,21 @@
         "groups": [
           {
             "group": "Start",
-            "pages": []
+            "pages": [
+              "enterprise/overview",
+              "enterprise/getting-started"
+            ]
           },
           {
             "group": "Set up",
-            "pages": []
+            "pages": [
+              "enterprise/workspace",
+              "enterprise/sign-in",
+              "enterprise/members",
+              "enterprise/repositories",
+              "enterprise/review-policy",
+              "enterprise/models"
+            ]
           },
           {
             "group": "Reference",

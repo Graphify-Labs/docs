@@ -1,0 +1,62 @@
+---
+title: "Review and verification policy"
+sidebarTitle: "Reviews"
+description: "How Graphify decides what a pull request comment shows, how to set review options, and what a formal verification result means."
+keywords: ["pr review policy", "formal verification", "graphify rules", "test impact"]
+surface: "cloud"
+icon: "git-pull-request"
+---
+
+Graphify reviews pull requests using the code graph, and shows developers what it can back with evidence.
+
+Reviews compare the pull request's changes against the indexed default branch. Nothing from the pull request's branch is saved as an index. A review runs when a pull request is opened, reopened, or marked ready. `@graphify review` runs it again. `review_status` reads a review. It does not start one.
+
+## What the comment shows
+
+Each finding is checked against the code before it is published.
+
+- **Confirmed** findings, where the code supports the claim, are shown in full.
+- **Unconfirmed** findings are capped and labeled, so they do not crowd out confirmed ones.
+
+The comment includes a verdict, a short summary, and a **View in Graphify** link. Pushing new commits starts another review. Dismissed findings stay dismissed.
+
+The same review appears as a check run named **Graphify** on the reviewed commit. Formal verification posts its own check, **Graphify Formal Verification**.
+
+## Settings per repository
+
+Open **Repositories**, then **Options**.
+
+| Setting | What it controls |
+| --- | --- |
+| **PR reviews** | Whether Graphify reviews pull requests on this repository |
+| **Suggest fixes** | Whether findings include a suggested change |
+| **Inline health** | Health notes on changed code |
+| **Formal verification** | Whether changed functions are behavior-checked, base against head |
+| **Risky patterns** | Flags for known risky constructs |
+| **Doc drift** | Flags when a change leaves linked docs out of date |
+
+**PR reviews** is on unless someone turned it off. Turning it off stops automatic reviews and `@graphify review`. Indexing stays on. Formal verification stays on until its own switch is turned off.
+
+## Custom rules
+
+Commit `.graphify/rules.json` to the repository. Graphify reads the rules from the pull request's base commit, so the pull request cannot change the rules it is judged by. You can export the rules as a Claude Code skill or a `CLAUDE.md` fragment, so agents follow them while writing code.
+
+## Learning
+
+When developers dismiss findings, Graphify learns which kinds of findings the team does not want and suppresses those later. The **Learning** page shows what it learned. You can undo any of it.
+
+## Formal verification
+
+For each pull request, Graphify checks whether changed functions still behave as they did on the base branch, using property-based testing, SMT solving, and captured real inputs.
+
+| Result | Meaning |
+| --- | --- |
+| **Behavior changed** | A concrete input gives a different result on head than on base. The input is shown. |
+| **No difference found (bounded)** | No difference was found within the checked bounds. This is evidence, not a proof. |
+| **Not checked** | The function could not be checked. The reason is shown. |
+
+Runs are listed on **Verifications**. How to read a result is on [Formal verification](/platform/verification).
+
+## Test impact
+
+CI can ask which tests a diff can affect. An owner or admin creates a CI token under **Integrations**, on **BuildKite (Test Impact)**. The token starts with `gfy_ci_` and only works on the test impact endpoint. Setup, the request body, and the 60-calls-a-minute cap are on [Test impact analysis](/platform/test-impact).

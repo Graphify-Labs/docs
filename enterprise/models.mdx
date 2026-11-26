@@ -1,0 +1,36 @@
+---
+title: "Models and data"
+sidebarTitle: "Models and data"
+description: "Which providers see which data on hosted Graphify, and how a private deployment keeps every model call in your AWS account."
+keywords: ["graphify models", "amazon bedrock", "training", "wiki model", "data sent to models"]
+surface: "cloud"
+icon: "cpu"
+---
+
+Building the graph does not use a model. Source code is parsed into the graph. Models are used for review, wiki pages, suggested fixes, and digest summaries.
+
+Graphify does not train models on your code.
+
+## Private deployment
+
+Every model call goes to Amazon Bedrock in your AWS account, through a VPC endpoint. You choose the model IDs. No code, prompt, or output is sent to Graphify or to any other model provider.
+
+## Hosted Graphify
+
+| Purpose | Provider | What is sent |
+| --- | --- | --- |
+| Pull request review | Anthropic (Claude), OpenAI (GPT) | The diff, and the related code and graph context the review needs |
+| Documentation extraction at index time | OpenAI, then Anthropic if needed | Documentation files. Source code is not sent for this step |
+| Wiki prose | Google (Gemini via Vertex AI) | Graph summaries and the code excerpts for the page being written |
+| Suggested fix drafts | Anthropic (Claude) | The finding or ticket, and the code needed to draft the fix |
+| Digest summaries | Anthropic (Claude Haiku) | Pull request titles, descriptions, and review signals |
+
+Those providers process the data under their API terms, which exclude training on API data. The public list of subprocessors is on [graphify.com/subprocessors](https://graphify.com/subprocessors?utm_source=docs&utm_medium=link&utm_campaign=enterprise-models).
+
+## Code insights use no model
+
+Unused code, dead code, duplication, divergent twins, hotspots, dependency inventory, architecture drift, and verified change share are computed from the graph and Git history. No model sees your code for them. See [Code insights](/enterprise/insights).
+
+## Shared memory
+
+Agents write shared memory with `remember` and read it with `recall`. On hosted Graphify, raw agent transcripts are not ingested. A memory entry can be reviewed, reverted, or deleted. See [Memory](/platform/memory).

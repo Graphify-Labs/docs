@@ -1,0 +1,57 @@
+---
+title: "Create your workspace"
+sidebarTitle: "Workspace"
+description: "What a Graphify workspace holds, how to create one on Enterprise, and how a private deployment admin manages several."
+keywords: ["graphify workspace", "enterprise workspace", "admin console", "switch workspace"]
+surface: "cloud"
+icon: "house"
+---
+
+A workspace holds the repositories, members, settings, graphs, wikis, memory, and bill for one organization. A person can belong to more than one workspace.
+
+| In the workspace | What it is |
+| --- | --- |
+| Repositories | The Git repositories Graphify indexes |
+| Members and roles | Who can invite, manage, review, and open billing |
+| Graphs and wikis | The knowledge graph and the pages written from it |
+| Memory | Decisions and incidents agents can recall |
+| Settings | Reviews, connectors, and tokens |
+| Bill | Seats on hosted Graphify. A private deployment has no seat limit |
+
+Switch workspaces from the switcher at the top of the sidebar. An agent can list them with `list_workspaces` and select one with `set_workspace`.
+
+## Hosted Graphify
+
+<Steps>
+  <Step title="Sign in">
+    Open [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=enterprise-workspace).
+  </Step>
+  <Step title="Create a team workspace">
+    Create it during onboarding, or from the workspace switcher if you already have an account.
+  </Step>
+  <Step title="Move it to Enterprise">
+    Ask your account team to switch the workspace to Enterprise. That removes hosted plan caps. There is no self-serve Enterprise checkout.
+  </Step>
+</Steps>
+
+Hosted roles, invites, and the 48-hour invite window are on [Workspaces and members](/platform/workspaces-and-members).
+
+## Private deployment
+
+Signing in with Okta joins the deployment's default workspace.
+
+Deployment admins use the **Admin console** to:
+
+- create, rename, and archive workspaces
+- set the owner of a workspace
+- manage members and invitations
+- assign GitHub organizations
+- see builds and reviews across workspaces
+
+Every Admin console action is written to the audit log.
+
+<Warning>
+Archiving a workspace stops builds and reviews for every member of that workspace.
+</Warning>
+
+On hosted Graphify, ownership of a workspace cannot be transferred by changing roles. See [Workspaces and members](/platform/workspaces-and-members).

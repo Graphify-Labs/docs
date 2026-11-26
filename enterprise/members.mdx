@@ -1,0 +1,37 @@
+---
+title: "Members, roles, and teams"
+sidebarTitle: "Members and roles"
+description: "Who can invite, manage repositories, read the audit log, and open billing, plus repository teams on a private deployment."
+keywords: ["graphify roles", "enterprise members", "repository teams", "audit log access"]
+surface: "cloud"
+icon: "users"
+---
+
+Invite people from **Members**. Choose **Invite**, enter their email, and pick a role. On hosted Graphify they get an email or a one-time accept link. Invites expire after 48 hours. **Resend** issues a new link. The full roster, including who can approve an access request, is on [Workspaces and members](/platform/workspaces-and-members).
+
+A private deployment does not send that email. The person joins at their next Okta sign-in, or you copy the invite link and send it yourself.
+
+## Roles
+
+| Role | What they can do |
+| --- | --- |
+| **Owner** | Full control, including invites, access requests, seats, and the billing portal. One Owner per workspace. On hosted Graphify, ownership cannot be transferred by changing a role. |
+| **Admin** | Invite people, manage members, and view pending access requests. Can see what the workspace is charged. Cannot approve or deny requests, open the billing portal, or see invoices. |
+| **Member** | Use repositories, graphs, reviews, Ask, and agents. Cannot invite or manage members. |
+| **Billing** | Open the billing portal, manage payment, buy seats, and change how often you pay. Cannot manage members. |
+
+Owners, admins, and billing members can read the audit log. Members cannot. See [Usage and audit](/enterprise/usage).
+
+Owners and admins mint and revoke API tokens. When a member leaves, Graphify revokes the workspace API tokens that member created.
+
+Hosted Teams and Enterprise bill a seat when an invitation is accepted. Seat prices are on [Plans and pricing](/platform/support/pricing). A private deployment has no seat limit.
+
+## Repository teams
+
+Repository teams exist on a private deployment. A team is a group of people with leads. You assign repositories and cross-repo groups to a team. A member sees the repositories, graphs, wikis, insights, and memory of their teams, and not the rest.
+
+Leads add and remove members. An invitation or an API token can be limited to a team.
+
+Postgres row-level security enforces this. A request that has no team scope sees nothing.
+
+Hosted Graphify does not use repository teams. On hosted Graphify, members of the workspace can open the repositories in that workspace.

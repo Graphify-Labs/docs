@@ -1,0 +1,86 @@
+---
+title: "Graphify Enterprise"
+sidebarTitle: "Overview"
+description: "Enterprise for organizations that need a private AWS deployment, cross-repo graphs, code insights, and audit controls."
+keywords: ["graphify enterprise", "private deployment", "vpc", "okta", "enterprise security"]
+surface: "cloud"
+---
+
+Graphify Enterprise is everything in Teams, plus a private deployment in your AWS account, one graph across your repositories, code insights, and the access and audit controls a security review asks for.
+
+<Note>
+Enterprise is provisioned by the Graphify team. There is no checkout. [Talk to us](https://graphify.com/enterprise?utm_source=docs&utm_medium=link&utm_campaign=enterprise-overview) to scope a pilot. Prices and hosted plan caps stay on [Plans and pricing](/platform/support/pricing).
+</Note>
+
+## What you get
+
+- **A private deployment** in your AWS account, on private subnets, with your Okta, GitHub Enterprise Server, and Amazon Bedrock. Hosted Graphify at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=enterprise-overview) remains available in AWS us-east-1.
+- **One graph for many repositories.** Groups follow HTTP routes, gRPC and contracts, and shared symbols, and a group can have its own wiki.
+- **Code insights** computed from the graph and Git history, with the evidence behind each number. No model reads your code to produce them.
+- **Access, data, and audit controls.** Roles, repository teams on a private deployment, encrypted connector tokens, and an audit log owners, admins, and billing members can read.
+
+This list is not every switch in the product. The pages in this section are.
+
+## Where to start
+
+You do not have to configure everything before the first review. Most teams connect one service, run reviews for a week, then widen.
+
+<CardGroup cols={2}>
+  <Card title="Create your workspace" icon="house" href="/enterprise/workspace">
+    One place for repositories, people, graphs, and the bill.
+  </Card>
+  <Card title="Sign in" icon="circle-user" href="/enterprise/sign-in">
+    GitHub, Google, GitLab, or email on hosted Graphify. Okta on a private deployment.
+  </Card>
+  <Card title="Invite people" icon="users" href="/enterprise/members">
+    Owner, Admin, Member, and Billing. Repository teams on a private deployment.
+  </Card>
+  <Card title="Connect repositories" icon="folder-git" href="/enterprise/repositories">
+    GitHub, GitLab, or Azure DevOps on hosted Graphify. GitHub Enterprise Server in your VPC.
+  </Card>
+  <Card title="Reviews and verification" icon="git-pull-request" href="/enterprise/review-policy">
+    What a pull request comment shows, and how formal verification labels a result.
+  </Card>
+  <Card title="Usage and the audit log" icon="chart-bar" href="/enterprise/usage">
+    Builds, reviews, and who changed a setting.
+  </Card>
+</CardGroup>
+
+Deployment, security, cross-repo groups, code insights, agents, and API tokens are in **Reference**.
+
+## Deployment
+
+| | Hosted Graphify | Private deployment |
+| --- | --- | --- |
+| Where it runs | Our AWS, us-east-1 | Your AWS account, private subnets |
+| Sign-in | GitHub, Google, GitLab, email | Your Okta (OIDC) |
+| Git | GitHub, GitLab, Azure DevOps | GitHub Enterprise Server |
+| Models | Our providers | Your Amazon Bedrock, through a VPC endpoint |
+| Network | Public endpoints behind a WAF | Internal load balancer. No internet gateway or NAT required |
+
+See [Deployment options](/enterprise/deployment).
+
+## Security
+
+- TLS 1.3 with a FIPS cipher policy at the edge and on internal load balancers.
+- RDS storage encrypted with AWS KMS. Graph artifacts use a KMS key per workspace. Connector and OAuth tokens are encrypted and can be rotated.
+- Secret files are never indexed. Tokens are scrubbed from logs, job errors, and connector payloads.
+- SOC 2 Type II audit is in progress. An independent penetration test was completed in October 2026. Reports are in the [Trust Center](https://trust.graphify.com). A DPA is available on request.
+
+See [Security and data handling](/enterprise/security). Share that page with your reviewer.
+
+## Identity
+
+Hosted Graphify signs people in with GitHub, Google, GitLab, or email and password. Multi-factor authentication follows that identity provider.
+
+A private deployment signs people in with Okta (OIDC). There are two Okta applications: one for the web app and one for MCP clients. Each token is checked against Okta's signing keys on every request. Repository access is still roles, and repository teams, not the SSO login itself.
+
+See [Sign in and SSO](/enterprise/sign-in) and [Members, roles, and teams](/enterprise/members).
+
+## Get started
+
+1. [Talk to us](https://graphify.com/enterprise?utm_source=docs&utm_medium=link&utm_campaign=enterprise-overview).
+2. Follow [Getting started](/enterprise/getting-started) once the agreement is in place.
+3. Send [Security and data handling](/enterprise/security) to the person running your review.
+
+Support for Enterprise is a dedicated Slack channel with the engineers who build Graphify, plus [support@graphify.com](mailto:support@graphify.com).

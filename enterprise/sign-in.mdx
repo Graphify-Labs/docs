@@ -1,0 +1,57 @@
+---
+title: "Sign in and SSO"
+sidebarTitle: "Sign in"
+description: "How people sign in to hosted Graphify, and how a private deployment uses Okta for the web app and for MCP clients."
+keywords: ["graphify sso", "okta oidc", "enterprise sign-in", "mfa"]
+surface: "cloud"
+icon: "circle-user"
+---
+
+Sign-in proves who someone is. It does not decide which repositories they can open. That is roles, and on a private deployment, repository teams.
+
+## Hosted Graphify
+
+People sign in at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=enterprise-sign-in) with GitHub, Google, GitLab, or email and password. Email sign-in includes verification and password reset.
+
+Multi-factor authentication follows the identity provider. GitHub, Google, and GitLab enforce their own MFA. Graphify does not add a second factor on top.
+
+## Private deployment: Okta
+
+A private deployment uses two Okta OIDC applications. One is the web app. One is for MCP clients. Graphify checks each token against Okta's signing keys on every request.
+
+<Steps>
+  <Step title="Create an authorization server">
+    In Okta, create or choose an authorization server and note the issuer URL.
+  </Step>
+  <Step title="Create the web application">
+    Create an OIDC web application. Set the redirect URL to the value in the Terraform output for the deployment.
+  </Step>
+  <Step title="Create the MCP application">
+    Create a second OIDC application for MCP clients, using the redirect URL from the same Terraform output.
+  </Step>
+  <Step title="Assign groups">
+    Assign the Okta groups that should be allowed to sign in.
+  </Step>
+  <Step title="Apply Terraform">
+    Set the issuer URL and both client IDs in the Terraform variables, then apply.
+  </Step>
+  <Step title="Test">
+    Sign in as a test user. They join the default workspace.
+  </Step>
+</Steps>
+
+MFA, session lifetime, and conditional access are Okta policies. Graphify does not override them.
+
+## End someone's access
+
+<Steps>
+  <Step title="Remove them in Graphify">
+    On **Members**, remove the person. Their access ends immediately. Graphify also revokes the workspace API tokens that person created. Remint any CI or MCP token they owned before you reconnect a pipeline or an agent.
+  </Step>
+  <Step title="Unassign them in Okta">
+    On a private deployment, unassign the person in Okta so they cannot start a new sign-in.
+  </Step>
+  <Step title="Revoke leftover tokens">
+    Revoke any remaining workspace token from the **MCP** tab of **Connectors**. CI tokens are under **Integrations**, on **BuildKite (Test Impact)**.
+  </Step>
+</Steps>

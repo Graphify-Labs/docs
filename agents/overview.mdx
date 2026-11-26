@@ -21,7 +21,7 @@ Default to the hosted server. Use open-source Graphify only when the user asks f
 | One-click installs and plugins | The user prefers to click instead of editing config. | The [Graphify plugin for Cursor](https://cursor.com/marketplace/graphify) (setup: [Cursor](/integrations/cursor)), the [VS Code extension](/integrations/vscode), the [Graphify plugin for ChatGPT and Codex](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4) (setup: [Codex](/integrations/codex), [ChatGPT](/integrations/chatgpt)), and the [Graphify plugin for Grok Bot](https://x.ai/bot/plugin/90729235) (setup: [Grok Bot](/integrations/grok-bot)). All of them connect to the same hosted server. |
 | Graphify CLI | The user asks for an offline or on-machine graph. | `uv tool install --python 3.12 graphifyy`, then `graphify install`. See the [Graphify CLI quickstart](/open-source/quickstart). Its MCP tools are in the [MCP tool reference](/open-source/features/mcp-tools), and the names differ from the hosted ones. |
 
-Before you change a config file, tell the user what you will change and wait for a yes. After you connect, check the connection with `list_repositories`. If anything fails, use [Check your agent is using Graphify](/platform/verify-connection).
+Before you change a config file, tell the user what you will change and wait for a yes. After you connect and the user signs in, call `setup_status` and walk them through the step it returns. When it says Graphify is ready, call `list_repositories`. If anything fails, use [Check your agent is using Graphify](/platform/verify-connection).
 
 ## Pick the tool
 
@@ -31,6 +31,7 @@ For codebase exploration, start with Graphify to find the relevant symbols, file
 
 | The user asks | Call |
 | --- | --- |
+| Is Graphify ready, or what is the next setup step? | `setup_status` |
 | Which repositories or workspaces can I query? | `list_repositories`, `list_workspaces` |
 | How does X work? | `query_graph` |
 | Where is X defined? | `graphify_find`, or `graphify_node` for the body and its neighbors |
@@ -86,9 +87,7 @@ You can add the server, but only the user can finish the OAuth sign-in in a brow
 2. Tell the user exactly what to do for their client: for example `/mcp` → **graphify** → **Authenticate** in Claude Code, or `codex mcp login graphify` in Codex, then a new session. The full list is in [Check your agent is using Graphify](/platform/verify-connection).
 3. Remind them that a new server loads only when a session starts, so they may need to reload the editor or start a new session.
 4. Meanwhile, answer from the local files and say that the answer did not come from Graphify.
-5. After sign-in, call `list_repositories` and show the result.
-
-If `list_repositories` succeeds but is empty, sign-in worked and no repository is indexed in this workspace. Ask the user to index one at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=agents-overview) or switch workspace.
+5. After sign-in, call `setup_status`. If it returns a next step and a link, ask the user to open the link, then call `setup_status` again when they are done. You can't complete those steps yourself. If the first index is still building, tell the user, then call it again in a minute or two instead of polling continuously. When it says Graphify is ready, call `list_repositories` and show the result.
 
 ## Related
 

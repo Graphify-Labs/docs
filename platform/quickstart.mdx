@@ -18,6 +18,21 @@ You need a GitHub account with access to the repository and a coding agent that 
 If you are an agent, read [Notes for agents](/for-agents) before these steps.
 </Note>
 
+## Start from your agent
+
+You can also set Graphify up from your coding agent, and sign in when it asks. If you are in the Graphify app and the page says **Set up Graphify with your agent**, click **Copy setup prompt** and paste it into the agent. You can paste this prompt yourself:
+
+```text
+Set up Graphify for me.
+Add the Graphify MCP server at https://api.graphify.com/mcp and sign in when it asks.
+Most agents only load new MCP tools after a restart. If Graphify's tools don't show up yet, ask me to restart you; I'll then say "continue Graphify setup".
+Then call its setup_status tool and walk me through any step it lists.
+```
+
+Most agents need a restart after adding Graphify. Then say "continue Graphify setup". The agent walks you through any step `setup_status` lists, such as connecting GitHub. On that page you can pick up to 3 repositories to index.
+
+The steps below are the same setup in the Graphify app, if you would rather click through it yourself.
+
 <Steps>
   <Step title="Sign in" titleSize="h2">
     Open the Graphify app at [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-quickstart) and sign in. You land on **Overview**. It may ask **What would you like to do first?** You can pick an option or skip it, since the steps below cover the same ground.

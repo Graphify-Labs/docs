@@ -3,35 +3,21 @@ title: "Graphify for Claude Code"
 sidebarTitle: "Claude Code"
 icon: "/images/logos/claude-code.svg"
 description: "Connect Claude Code to Graphify with your Claude account or claude mcp add. Create your Graphify account for free while connecting."
-surface: "both"
+surface: "cloud"
 hideFooterPagination: true
 keywords: ["claude code mcp", "claude mcp", "claude code mcp server", "claude mcp server", "graphify claude", "mcp oauth"]
 ---
 
-import { InstallButton } from '/snippets/install-button.mdx';
+import { AddPill } from '/snippets/add-pill.jsx';
 import { StartFreeCta } from '/snippets/start-free-cta.mdx';
 
-There are two ways to use Graphify in Claude Code:
+Connect Claude Code to the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-code) workspace. You sign in in the browser. There is no API key.
 
-- **Graphify** connects Claude Code to the graph we build and host for your indexed repositories. Use the Claude connector or `claude mcp add`. Nothing to install.
-- **Graphify CLI** installs the open-source local skill and builds the graph on your machine.
+<AddPill href="https://claude.ai/directory/graphify" label="Add to Claude" logo="/images/logos/claude-code.svg" />
 
-Pick the matching tab below. To compare the two, see [Graphify vs Graphify CLI](/platform/graphify-vs-local).
+The same Claude account then shows Graphify in Claude Code under `/mcp`. For Claude.ai, the desktop app, and mobile, use [Graphify for Claude](/integrations/claude-ai).
 
-New to MCP in Claude Code? Read [how to add MCP servers to Claude Code](https://graphify.com/blog/best-mcp-servers-for-claude-code).
-
-<Tabs>
-<Tab title="Graphify">
-
-Connect [Claude Code](https://code.claude.com/docs/en/overview) to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Claude Code can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-code) workspace, follow callers and dependencies, and check what a change reaches.
-
-The server uses Streamable HTTP and OAuth. There is no API key to paste.
-
-For Claude.ai, the desktop chat app, and mobile, use [Graphify for Claude](/integrations/claude-ai). Connecting there with the same Claude account can also show Graphify in Claude Code under `/mcp`.
-
-<InstallButton href="https://claude.ai/directory/graphify" label="Connect in Claude">
-One click: connect the official **Graphify** connector by Graphify Labs with your Claude account. It then shows up in Claude Code under `/mcp`.
-</InstallButton>
+Building the graph on your machine instead? Use [Graphify CLI for Claude Code](/open-source/agents/claude-code).
 
 ## Before you start
 
@@ -124,7 +110,7 @@ Use Graphify's list_repositories tool and show the repositories I can access. If
 
 This is the same test prompt the console shows on **Connectors → MCP → Try a query**. Check that the list matches the workspace you chose when you signed in.
 
-### Optional: set a default repository
+### Set a default repository
 
 Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
 
@@ -162,7 +148,7 @@ No. The directory connector and `claude mcp add` both sign in with OAuth in your
 
 ### Does Graphify read my local files from Claude Code?
 
-No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine instead, use the open-source package and its local skill.
+No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine, use [Graphify CLI for Claude Code](/open-source/agents/claude-code).
 
 ### Is the Graphify MCP server free?
 
@@ -172,59 +158,7 @@ The Free plan needs no card. See [Plans and pricing](/platform/support/pricing) 
 
 Yes, but they answer from different graphs. The hosted server reads your indexed workspace. The local skill reads `graphify-out/` in the repository. Pick one per question so answers stay consistent.
 
-</Tab>
-<Tab title="Graphify CLI">
 
-## 1. Install and register
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform claude
-```
-
-The integration writes Claude instructions and PreToolUse hooks that suggest consulting the graph for codebase questions. Exact destinations depend on whether you use a personal or project installation; the installer reports the files it writes.
-
-For a repository-local setup, run this from the project root:
-
-```bash
-graphify install --project --platform claude
-```
-
-## 2. Build the graph
-
-Open your project in Claude Code. Select the Graphify skill and enter:
-
-```text
-/graphify .
-```
-
-The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
-
-## 3. Ask with context
-
-After the graph is built, ask:
-
-> Use Graphify to explain the authentication flow. Cite the source files and distinguish explicit relationships from inferred ones.
-
-You can also query from a terminal:
-
-```bash
-graphify query "authentication flow"
-```
-
-## Keep it current
-
-```bash
-uv tool upgrade graphifyy
-graphify install --platform claude
-```
-
-If the skill is missing, refresh the assistant and confirm that the registration was installed in the intended user or project scope. See [troubleshooting](/open-source/troubleshooting).
-
-<Card title="Connect native MCP tools" icon="plug" href="/open-source/mcp-server">Use the same graph through structured tool calls.</Card>
-
-</Tab>
-</Tabs>
 
 ## Next steps
 

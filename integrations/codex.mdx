@@ -2,28 +2,19 @@
 title: "Graphify for Codex"
 sidebarTitle: "Codex"
 icon: "/images/logos/codex.png"
-description: "Install the Graphify plugin for Codex or add Graphify's MCP server with OAuth, or use the open-source Graphify skill. Create an account for free."
-surface: "both"
+description: "Install the Graphify plugin for Codex, or add the MCP server, then sign in. No API key."
+surface: "cloud"
 hideFooterPagination: true
 keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", "how to use graphify with codex", "graphify plugin for codex", "install graphify plugin codex", "codex ide extension graphify", "codex plugin marketplace add graphify", "codex no-daemon windows", "codex cli install graphify plugin"]
 ---
 
-import { InstallButton } from '/snippets/install-button.mdx';
+import { AddPill } from '/snippets/add-pill.jsx';
 
-import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+Install the Graphify plugin so Codex can search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) workspace. You sign in once in the browser. There is no API key. The same install works in ChatGPT.
 
-<HostedOrLocal />
+<AddPill href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Add to Codex" logo="/images/logos/codex.png" />
 
-<Tabs>
-<Tab title="Graphify">
-
-Connect Codex to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Codex can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
-
-The server uses Streamable HTTP and OAuth. You sign in once in the browser, so there is no API key to paste and no local process to run.
-
-<InstallButton href="https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4" label="Install in Codex">
-One click: install the official **Graphify** plugin by Graphify Labs from the OpenAI plugin directory, then select **Connect** and sign in. The same install works in ChatGPT.
-</InstallButton>
+Building the graph on your machine instead? Use [Graphify CLI for Codex](/open-source/agents/codex).
 
 ## How do I use Graphify with Codex?
 
@@ -97,7 +88,7 @@ Use Graphify's list_repositories tool and show the repositories I can access. If
 
 This is the same test prompt the console shows on **Connectors → MCP → Try a query**. Check that the list matches the workspace you chose when you signed in.
 
-### Optional: set a default repository
+### Set a default repository
 
 Add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
 
@@ -148,7 +139,7 @@ No. Codex signs in with OAuth in your browser the first time it connects. There 
 
 ### Does Graphify read my local files from Codex?
 
-No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine instead, use the open-source package and its local skill.
+No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine, use [Graphify CLI for Codex](/open-source/agents/codex).
 
 ### Is the Graphify MCP server free?
 
@@ -158,71 +149,13 @@ The Free plan needs no card. See [Plans and pricing](/platform/support/pricing) 
 
 Either works and both sign in with OAuth. The plugin is the quickest path. `codex mcp add` keeps the setup in your own `config.toml`.
 
-</Tab>
-<Tab title="Graphify CLI">
 
-This page installs the local skill. Codex builds the graph on your machine. To query a repository already indexed in Graphify, use [ChatGPT, Codex, and Dots](/integrations/chatgpt).
-
-## 1. Install and register
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform codex
-```
-
-The integration installs the Graphify skill and AGENTS.md instructions. The current installer also supports Codex hook integration. Exact destinations depend on whether you use a personal or project installation; the installer reports the files it writes.
-
-For a repository-local setup, run this from the project root:
-
-```bash
-graphify install --project --platform codex
-```
-
-## 2. Build the graph
-
-Open your project in Codex. Select the Graphify skill and enter:
-
-```text
-$graphify map the current repository
-```
-
-In the Codex desktop app, local skills live in the `@` menu, not the `/` menu. Type `@graphify`, select the skill, then add your request.
-
-The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
-
-## 3. Ask with context
-
-After the graph is built, ask:
-
-> Use Graphify to explain the authentication flow. Cite the source files and distinguish explicit relationships from inferred ones.
-
-You can also query from a terminal:
-
-```bash
-graphify query "authentication flow"
-```
-
-## Keep it current
-
-Upgrade the Graphify CLI with `uv tool upgrade graphifyy`, then rerun `graphify install --platform codex`.
-
-```bash
-uv tool upgrade graphifyy
-graphify install --platform codex
-```
-
-If the skill is missing, refresh the assistant and confirm that the registration was installed in the intended user or project scope. See [troubleshooting](/open-source/troubleshooting).
-
-<Card title="Connect native MCP tools" icon="plug" href="/open-source/mcp-server">Use the same graph through structured tool calls.</Card>
-
-</Tab>
-</Tabs>
 
 ## Related
 
 <Columns cols={2}>
-  <Card title="Graphify with Codex (local skill)" icon="terminal" href="/integrations/codex">
-    Build the graph on your machine with the open-source local skill instead.
+  <Card title="Graphify CLI for Codex" icon="terminal" href="/open-source/agents/codex">
+    Build the graph on your machine with the open-source skill.
   </Card>
   <Card title="How Graphify builds a code knowledge graph" icon="share-2" href="/concepts/architecture">
     What the graph contains and where its relationships come from.

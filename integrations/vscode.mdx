@@ -2,32 +2,19 @@
 title: "Connect Graphify to VS Code and GitHub Copilot"
 sidebarTitle: "VS Code and GitHub Copilot"
 icon: "/images/logos/vscode.svg"
-description: "Install the Graphify MCP extension for VS Code, or add https://api.graphify.com/mcp. You can also run the open-source Graphify skill on a local graph."
+description: "Install the Graphify extension in VS Code, then sign in. Copilot can search the repositories you have indexed."
 keywords: ["vs code mcp", "github copilot", "graphify mcp extension", "vs code marketplace"]
-surface: "both"
+surface: "cloud"
 hideFooterPagination: true
 ---
 
-import { InstallButton } from '/snippets/install-button.mdx';
+import { AddPill } from '/snippets/add-pill.jsx';
 
-import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+Install the Graphify extension so Copilot in VS Code can search the repositories you have indexed in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-vscode). VS Code handles sign-in. There is no API key. If you use Cursor, see [Graphify for Cursor](/integrations/cursor).
 
-<HostedOrLocal />
+<AddPill href="https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp" label="Add to VS Code" logo="/images/logos/vscode.svg" />
 
-<Note>
-This page is for VS Code and GitHub Copilot. Install the [Graphify MCP](https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp) extension for Copilot Chat, or use the Graphify CLI tab for Copilot CLI and a local graph. If you use Cursor, see [Graphify for Cursor](/integrations/cursor).
-</Note>
-
-<Tabs>
-<Tab title="Graphify">
-
-The **Graphify MCP** extension registers Graphify's hosted MCP server in VS Code. Your agent can then search the repositories you have indexed in [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-vscode), follow callers and dependencies, and judge what a change reaches.
-
-VS Code handles the sign-in, the server trust prompt, and every tool approval. There is no API key to paste and no local process to run.
-
-<InstallButton href="https://marketplace.visualstudio.com/items?itemName=graphify-labs.graphify-mcp" label="Install in VS Code">
-One click: install the official **Graphify MCP** extension by Graphify Labs from the Visual Studio Marketplace. VS Code handles the sign-in.
-</InstallButton>
+Building the graph on your machine, or using Copilot CLI, is on [Graphify CLI for VS Code](/open-source/agents/vscode).
 
 ## Before you start
 
@@ -122,49 +109,13 @@ No. VS Code signs in with OAuth in your browser the first time the server starts
 
 ### Does the extension upload my local files?
 
-No. It registers `https://api.graphify.com/mcp` and stores no credentials of its own. Answers come from repositories already indexed in your Graphify workspace.
+No. It registers `https://api.graphify.com/mcp` and stores no credentials of its own. Answers come from repositories already indexed in your Graphify workspace. A graph of local files is [Graphify CLI for VS Code](/open-source/agents/vscode).
 
 ### Is the Graphify MCP server free?
 
 The Free plan needs no card. See [Plans and pricing](/platform/support/pricing).
 
-</Tab>
-<Tab title="Graphify CLI">
 
-Copilot CLI and Copilot Chat in VS Code use different integration paths. Choose the environment you actually run.
-
-## 1. Install and register
-
-**Copilot CLI**
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform copilot
-```
-
-The installer registers the Graphify skill for Copilot CLI. Ask your assistant to use that skill to map the repository, then query the saved graph for codebase questions.
-
-**VS Code**
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify vscode install
-```
-
-This uses the VS Code integration and instructions supported by the Graphify installer. You can also configure a [graph MCP server](/open-source/mcp-server) in VS Code for structured tool access.
-
-To query repositories indexed in Graphify instead of a local graph, install the [Graphify MCP extension](/integrations/vscode).
-
-## 2. Check the graph
-
-```bash
-graphify query "application entry points"
-```
-
-If `graphify-out/graph.json` does not exist yet, run the [quickstart](/open-source/quickstart) or build with `graphify extract . --code-only`.
-
-</Tab>
-</Tabs>
 
 ## Related
 

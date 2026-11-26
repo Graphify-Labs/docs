@@ -2,51 +2,52 @@
 title: "Graphify for Cursor"
 sidebarTitle: "Cursor"
 icon: "/images/logos/cursor-light.svg"
-description: "Install the official Graphify plugin from the Cursor Marketplace, or add the hosted MCP server yourself with OAuth. Or use the open-source skill."
+description: "Install the Graphify plugin in Cursor, then sign in. Cursor can search the repositories you have indexed."
 keywords: ["graphify cursor plugin", "cursor marketplace graphify", "cursor plugin", "cursor mcp", "cursor oauth", "graphify skill for cursor", "cursor background agents"]
-surface: "both"
+surface: "cloud"
 hideFooterPagination: true
 ---
 
-import { InstallButton } from '/snippets/install-button.mdx';
+import { AddPill } from '/snippets/add-pill.jsx';
 
-import HostedOrLocal from '/snippets/hosted-or-local.mdx';
+Install the Graphify plugin so Cursor can search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-cursor) workspace, follow callers, and check what a change reaches. You sign in once in the browser. There is no API key.
 
-<HostedOrLocal />
+<AddPill href="https://cursor.com/marketplace/graphify" label="Add to Cursor" logo="/images/logos/cursor-light.svg" logoDark="/images/logos/cursor-dark.svg" />
 
-New to MCP in Cursor? Read [how to add MCP servers to Cursor](https://graphify.com/blog/best-mcp-servers-for-cursor).
-
-<Tabs>
-<Tab title="Graphify">
-
-Install the official [Graphify plugin from the Cursor Marketplace](https://cursor.com/marketplace/graphify), or connect Cursor to Graphify's hosted MCP server at `https://api.graphify.com/mcp` yourself. Either way, Cursor can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-cursor) workspace, follow callers and dependencies, and check what a change reaches, without re-reading every file.
-
-The server uses Streamable HTTP and OAuth. You sign in once in the browser, so there is no API key to paste and no local process to run.
+Building the graph on your machine instead? Use [Graphify CLI for Cursor](/open-source/agents/cursor).
 
 ## Before you start
 
 - A Graphify account. If you don't have one yet, you can create one for free while connecting. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing).
 - At least one repository with the status **Indexed**. The [quickstart](/platform/quickstart) connects GitHub and starts indexing. Indexing status is on [Repositories and builds](/platform/repositories).
 
-## 1. Install the Graphify plugin
+## Install Graphify
 
-<InstallButton href="https://cursor.com/marketplace/graphify" label="Get the Cursor plugin">
-The official Graphify plugin for Cursor. It adds the hosted MCP server and a rule that tells the agent when to use Graphify and how to cite what it finds.
-</InstallButton>
+<Steps>
+  <Step title="Add the plugin">
+    Select **Add to Cursor** above. In Cursor, open **Customize**, search for **Graphify**, select **Install**, and choose user or project scope. Or type `/add-plugin graphify` in an agent chat. Team admins can open the listing, select **Add to Cursor**, then **Add to Team**.
+  </Step>
+  <Step title="Sign in">
+    Cursor shows **Needs login** next to `graphify` until you finish sign-in. Open Cursor's MCP settings, select **graphify**, and complete the sign-in in your browser. Pick the workspace that holds your repositories. Background Agents on cursor.com use Cursor's hosted callback, which Graphify allows.
+  </Step>
+  <Step title="Check the connection">
+    Open an agent chat and paste:
 
-In Cursor, open **Customize** in the sidebar, search for **Graphify**, select **Install**, and choose user or project scope. Or type `/add-plugin graphify` in an agent chat, the install command shown on the listing. Team admins can open the [Marketplace listing](https://cursor.com/marketplace/graphify), select **Add to Cursor**, then **Add to Team** to roll it out to a team marketplace.
+    ```text
+    Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
+    ```
 
-The plugin source is public at [Graphify-Labs/graphify-cursor-plugin](https://github.com/Graphify-Labs/graphify-cursor-plugin). For what the plugin does and why it helps, read [The Graphify Cursor plugin is now in the Cursor Marketplace](https://graphify.com/blog/graphify-cursor-plugin).
+    The list should match the workspace you chose. This is the same prompt on **Connectors → MCP** in the Graphify app.
+  </Step>
+</Steps>
+
+The plugin adds `https://api.graphify.com/mcp` and a rule for when to use Graphify. Source: [Graphify-Labs/graphify-cursor-plugin](https://github.com/Graphify-Labs/graphify-cursor-plugin).
 
 ### Or add the MCP server yourself
 
 Use this if you want the server without the plugin, or your team blocks marketplace plugins. Pick one route: the plugin and a manual entry together show every tool twice.
 
-<InstallButton href="cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D" label="Install in Cursor">
-One click: Cursor opens and asks you to confirm the `graphify` server at `https://api.graphify.com/mcp`. Requires the Cursor desktop app.
-</InstallButton>
-
-Or, in the console, open **Connectors → MCP**, choose **Cursor**, and select **Install in Cursor**. Cursor opens and asks you to confirm the `graphify` server.
+[Install in Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D) opens the desktop app and asks you to confirm the `graphify` server. Or, in the Graphify app, open **Connectors → MCP**, choose **Cursor**, and select **Install in Cursor**.
 
 **Edit mcp.json**
 
@@ -64,27 +65,11 @@ Or add Graphify to `~/.cursor/mcp.json` to use it in every project:
 
 To scope it to one repository, put the same entry in `.cursor/mcp.json` at the repository root. Keep any other servers already in the file.
 
-## 2. Sign in
-
-Cursor shows **Needs login** next to `graphify` until you finish the one-time sign-in. Open Cursor's MCP settings, select **graphify**, and complete the sign-in in your browser. Pick the workspace that holds your repositories.
-
-The desktop app signs in through a local callback. Cursor's web Background Agents on cursor.com use their own hosted callback, which Graphify also allows.
-
-## 3. Check the connection
-
-Open an agent chat in Cursor and paste:
-
-```text
-Use Graphify's list_repositories tool and show the repositories I can access. If the tool fails, report the error instead of guessing.
-```
-
-This is the same test prompt the console shows on **Connectors → MCP → Try a query**. Check that the list matches the workspace you chose when you signed in.
-
-### Set a default repository
+## Set a default repository
 
 If you added the server yourself, add `?repo=owner/name` to the endpoint, for example `https://api.graphify.com/mcp?repo=Graphify-Labs/graphify`. Graphify uses that repository when a tool call names none. A repository named in the call still wins.
 
-## 4. Ask a question
+## Ask a question
 
 Pick a repository from the list and name the symbol, file, or area you care about:
 
@@ -116,7 +101,7 @@ No. Cursor signs in with OAuth in your browser the first time it connects. There
 
 ### Does Graphify read my local files from Cursor?
 
-No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine instead, use the open-source package and its local skill.
+No. The hosted server answers from repositories already indexed in your Graphify workspace. To build a graph from files on your machine, use [Graphify CLI for Cursor](/open-source/agents/cursor).
 
 ### Is the Graphify MCP server free?
 
@@ -126,65 +111,13 @@ The Free plan needs no card. See [Plans and pricing](/platform/support/pricing) 
 
 Yes. Background Agents on cursor.com sign in through Cursor's hosted callback, which Graphify allows.
 
-</Tab>
-<Tab title="Graphify CLI">
 
-## 1. Install and register
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform cursor
-```
-
-The integration installs the skill and a `.cursor/rules/graphify.mdc` rule for repository context. Exact destinations depend on whether you use a personal or project installation; the installer reports the files it writes.
-
-For a repository-local setup, run this from the project root:
-
-```bash
-graphify install --project --platform cursor
-```
-
-## 2. Build the graph
-
-Open your project in Cursor. Select the Graphify skill and enter:
-
-```text
-/graphify .
-```
-
-The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
-
-## 3. Ask with context
-
-After the graph is built, ask:
-
-> Use Graphify to explain the authentication flow. Cite the source files and distinguish explicit relationships from inferred ones.
-
-You can also query from a terminal:
-
-```bash
-graphify query "authentication flow"
-```
-
-## Keep it current
-
-```bash
-uv tool upgrade graphifyy
-graphify install --platform cursor
-```
-
-If the skill is missing, refresh the assistant and confirm that the registration was installed in the intended user or project scope. See [troubleshooting](/open-source/troubleshooting).
-
-<Card title="Connect native MCP tools" icon="plug" href="/open-source/mcp-server">Use the same graph through structured tool calls.</Card>
-
-</Tab>
-</Tabs>
 
 ## Related
 
 <Columns cols={2}>
-  <Card title="Graphify with Cursor (local skill)" icon="terminal" href="/integrations/cursor">
-    Build the graph on your machine with the open-source local skill instead.
+  <Card title="Graphify CLI for Cursor" icon="terminal" href="/open-source/agents/cursor">
+    Build the graph on your machine with the open-source skill.
   </Card>
   <Card title="How Graphify builds a code knowledge graph" icon="share-2" href="/concepts/architecture">
     What the graph contains and where its relationships come from.

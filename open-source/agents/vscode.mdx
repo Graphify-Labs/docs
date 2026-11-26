@@ -1,0 +1,51 @@
+---
+title: "Graphify CLI for VS Code and Copilot"
+sidebarTitle: "VS Code and Copilot"
+description: "Install the open-source Graphify skill for Copilot CLI, or the VS Code integration, and query a local graph."
+keywords: ["graphify vscode install", "graphify copilot skill", "copilot cli graphify"]
+surface: "local"
+icon: "/images/logos/vscode.svg"
+hideFooterPagination: true
+---
+
+Copilot CLI and Copilot Chat in VS Code use different installs. Pick the one you run. To query a repository already indexed in Graphify, install the [Graphify MCP extension](/integrations/vscode).
+
+## 1. Install and register
+
+**Copilot CLI**
+
+```bash
+uv tool install --python 3.12 graphifyy
+graphify install --platform copilot
+```
+
+The installer registers the Graphify skill for Copilot CLI. Ask the assistant to use that skill to map the repository, then query the saved graph.
+
+**VS Code**
+
+```bash
+uv tool install --python 3.12 graphifyy
+graphify vscode install
+```
+
+This uses the VS Code integration the installer supports. You can also connect the [local MCP server](/open-source/mcp-server) for structured tool calls.
+
+## 2. Check the graph
+
+```bash
+graphify query "application entry points"
+```
+
+If `graphify-out/graph.json` does not exist yet, follow the [quickstart](/open-source/quickstart) or build with `graphify extract . --code-only`.
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent" />
+</Visibility>
+
+<Visibility for="humans">
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/agents/codex" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#d4d4d4] dark:border-[#262626] !border-b-[#d4d4d4] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#171717] dark:text-[#ededed] no-underline transition-colors hover:border-[#a3a3a3] dark:hover:border-[#404040] hover:!border-b-[#a3a3a3] dark:hover:!border-b-[#404040] hover:bg-[#f5f5f5] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#737373]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#5c5c5c] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Codex</span></a>
+  <a href="/open-source/agents/gemini-cli" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#d4d4d4] dark:border-[#262626] !border-b-[#d4d4d4] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#171717] dark:text-[#ededed] no-underline transition-colors hover:border-[#a3a3a3] dark:hover:border-[#404040] hover:!border-b-[#a3a3a3] dark:hover:!border-b-[#404040] hover:bg-[#f5f5f5] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#737373] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#5c5c5c] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Gemini CLI</span></a>
+</div>
+</Visibility>
+

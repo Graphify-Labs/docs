@@ -133,6 +133,19 @@
             ]
           },
           {
+            "group": "Connect an agent",
+            "pages": [
+              "open-source/agents/overview",
+              "open-source/agents/claude-code",
+              "open-source/agents/cursor",
+              "open-source/agents/codex",
+              "open-source/agents/vscode",
+              "open-source/agents/gemini-cli",
+              "open-source/agents/hermes",
+              "open-source/agents/other"
+            ]
+          },
+          {
             "group": "Features",
             "pages": [
               "open-source/vibe-coding",

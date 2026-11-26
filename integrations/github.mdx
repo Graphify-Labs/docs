@@ -55,6 +55,10 @@ If you uninstall and reinstall the Graphify GitHub App on the same GitHub accoun
 
 Graphify reads repository contents to build the graph. Indexing tokens are short-lived and limited to the repositories you selected. They are never sent to your browser or stored. See [Security and data handling](/platform/support/security).
 
+## How accurate are Graphify reviews?
+
+Graphify caught 71% of real bugs on 50 real pull requests, against 56% for the top published reviewer scored by the same rule. A bug counts as caught only when a finding points at the faulty code and explains its impact. The 71% is the mean of 3 runs in November 2026, on public benchmark pull requests from 5 production repositories. Results vary by codebase. The method, limits, and comparisons are on the [code review benchmark](https://graphify.com/benchmarks).
+
 ## Edge cases
 
 - Pushes to other branches and branch deletions are ignored.

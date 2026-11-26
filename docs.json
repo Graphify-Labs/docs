@@ -11,6 +11,66 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "Coding agents",
+            "pages": [
+              "integrations/overview",
+              "integrations/claude-ai",
+              "integrations/claude-code",
+              "integrations/cursor",
+              "integrations/codex",
+              "integrations/vscode",
+              "integrations/gemini-cli",
+              "integrations/jetbrains"
+            ]
+          },
+          {
+            "group": "Assistants",
+            "pages": [
+              "integrations/chatgpt",
+              "integrations/grok-bot",
+              "integrations/openclaw",
+              "integrations/hermes",
+              "integrations/other-agents",
+              "integrations/slack"
+            ]
+          },
+          {
+            "group": "Source control",
+            "pages": [
+              "integrations/github",
+              "integrations/gitlab"
+            ]
+          },
+          {
+            "group": "CI and deploy",
+            "pages": [
+              "integrations/buildkite",
+              "integrations/vercel"
+            ]
+          },
+          {
+            "group": "Knowledge sources",
+            "pages": [
+              "integrations/google-drive"
+            ]
+          },
+          {
+            "group": "For agents",
+            "pages": [
+              "mcp/docs-search",
+              "for-agents",
+              "agents/overview",
+              "agents/headless",
+              "agents/recipes",
+              "agents/capabilities"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Get Started",
         "pages": [
           "index"
@@ -212,66 +272,6 @@
             "group": "Support",
             "pages": [
               "open-source/troubleshooting"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Integrations",
-        "groups": [
-          {
-            "group": "Coding agents",
-            "pages": [
-              "integrations/overview",
-              "integrations/claude-ai",
-              "integrations/claude-code",
-              "integrations/cursor",
-              "integrations/codex",
-              "integrations/vscode",
-              "integrations/gemini-cli",
-              "integrations/jetbrains"
-            ]
-          },
-          {
-            "group": "Assistants",
-            "pages": [
-              "integrations/chatgpt",
-              "integrations/grok-bot",
-              "integrations/openclaw",
-              "integrations/hermes",
-              "integrations/other-agents",
-              "integrations/slack"
-            ]
-          },
-          {
-            "group": "Source control",
-            "pages": [
-              "integrations/github",
-              "integrations/gitlab"
-            ]
-          },
-          {
-            "group": "CI and deploy",
-            "pages": [
-              "integrations/buildkite",
-              "integrations/vercel"
-            ]
-          },
-          {
-            "group": "Knowledge sources",
-            "pages": [
-              "integrations/google-drive"
-            ]
-          },
-          {
-            "group": "For agents",
-            "pages": [
-              "mcp/docs-search",
-              "for-agents",
-              "agents/overview",
-              "agents/headless",
-              "agents/recipes",
-              "agents/capabilities"
             ]
           }
         ]

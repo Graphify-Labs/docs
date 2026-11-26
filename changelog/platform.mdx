@@ -12,21 +12,21 @@ icon: "cloud"
 <Update label="2026-11-24" description="Combined graphs re-merge when you remove a repository">
 
 **Fixed:**
-- **Combined graphs:** When you remove a repository from a combined graph, the graph stops serving that repository's code and re-merges the remaining repositories on its own. This also happens when a repository leaves because you disconnected its code host. Before, the graph kept serving the old build with the removed repository in it until another repository in the group was indexed again. On the Free plan, this doesn't use an extra graph while it re-merges.
+- **Combined graphs:** When you remove a repository from a combined graph, or disconnect its code host, that repository's code no longer appears in the combined graph. Before, it could still show up until another repository in the group was updated. On the Free plan, this update doesn't count as an extra graph.
 
 </Update>
 
 <Update label="2026-11-23" description="Finished reviews show as complete">
 
 **Fixed:**
-- **Reviews:** A finished review of a pull request that also changes files Graphify doesn't review, like docs, config or data files, now shows as complete. Before, it was marked incomplete with "Earlier findings are retained because this check did not report complete changed-file coverage", even though every file Graphify reviews was checked. Reviews that really skipped files still show as incomplete.
+- **Reviews:** A finished review of a pull request that also changes files outside the review, such as documentation, now shows as complete. Before, it was marked incomplete with "Earlier findings are retained because this check did not report complete changed-file coverage", even though every reviewed file was checked. Reviews that really skipped files still show as incomplete.
 
 </Update>
 
 <Update label="2026-11-20" description="Fairer scores, and reviews that finish after a merge">
 
 **Improved:**
-- **Reviews:** A review whose only confirmed bug is a single P2 with limited reach now scores 4/5 instead of 3/5. The verdict still says **Review before merging**, because there is a real bug to look at. Several P2 bugs, or a P2 that ordinary use can hit, still score 3/5. Older reviews keep their score. See [Merge confidence score](/platform/reviews#merge-confidence-score).
+- **Reviews:** Some reviews with a modest confirmed bug now show a higher merge confidence score. The verdict still says **Review before merging** when there's a bug to look at. Older reviews keep their score. See [Merge confidence score](/platform/reviews#merge-confidence-score).
 - **Reviews:** A review that has already started now finishes even if the pull request is merged or closed in the meantime, so you get all of its findings. Reviews that haven't started yet are still canceled on merge.
 
 **Fixed:**
@@ -37,7 +37,7 @@ icon: "cloud"
 <Update label="2026-11-19" description="Clearer review verdicts">
 
 **Improved:**
-- **Reviews:** Possible issues that a review couldn't confirm no longer lower the merge confidence score. If a review has any, its verdict reads **Nothing blocking · N possible issues to check** instead of **Looks safe to merge**, so you still know to take a look. Bug counts now include confirmed bugs only.
+- **Reviews:** If a review has possible issues it couldn't confirm, the verdict now reads **Nothing blocking · N possible issues to check** instead of **Looks safe to merge**, so you still know to take a look.
 
 </Update>
 
@@ -72,7 +72,7 @@ icon: "cloud"
 <Update label="2026-11-10" description="Memory reliability">
 
 **Fixed:**
-- **Memory:** Fewer "Memory is not available right now" errors. If one server is busy, Graphify now tries another. While memory is still loading, the API answers with a `Retry-After` header, so a quick retry gets your results.
+- **Memory:** Fewer "Memory is not available right now" errors. While memory is still loading, the API answers with a `Retry-After` header, so a quick retry gets your results.
 
 </Update>
 
@@ -107,7 +107,7 @@ icon: "cloud"
 
 ### Fixed
 - **GitLab:** When GitLab revokes Graphify's access, Graphify stops retrying and asks you to reconnect GitLab instead of failing over and over in the background.
-- **GitHub:** If you uninstall and reinstall the Graphify GitHub App on the same account, your repositories move over to the new install, even when GitHub's uninstall event never reached us.
+- **GitHub:** If you uninstall and reinstall the Graphify GitHub App on the same account, your repositories move over to the new install.
 </Update>
 
 <Update label="2026-10-25" description="Pin a default repository over MCP">
@@ -116,11 +116,11 @@ icon: "cloud"
 Agents can sign in with an MCP URL that pins a default repository, such as `https://api.graphify.com/mcp?repo=acme/api`.
 
 ### Improved
-- **Indexing:** Rebuilding the same commit keeps your published graph available while it runs.
+- **Indexing:** Rebuilding a repository keeps the current graph available while the rebuild runs.
 
 ### Fixed
 - **Indexing:** Repositories whose build was interrupted recover on their own.
-- **GitLab:** A slow GitLab webhook no longer holds up the ones behind it.
+- **GitLab:** A slow GitLab update no longer delays the ones behind it.
 </Update>
 
 <Update label="2026-10-18" description="Know when a rebuild was skipped">
@@ -129,7 +129,7 @@ Agents can sign in with an MCP URL that pins a default repository, such as `http
 When you rebuild a repository that has not changed, Graphify now tells you the rebuild was skipped instead of quietly returning the previous build.
 
 ### Improved
-- **Reviews:** When a review is skipped because you reached a limit, the skip is visible. Reviews over the concurrency limit wait in line instead of being dropped.
+- **Reviews:** When a review is skipped because you reached a limit, the skip is visible. Reviews that used to be dropped when Graphify was busy now wait and still run.
 - **Plans:** Builds held back by the Free plan's graph limit publish after you upgrade.
 
 ### Fixed
@@ -155,7 +155,7 @@ Reviews run when a pull request is opened, reopened or marked ready, not on ever
 
 ### Improved
 - **Memory:** Automatic memories are written in plain language, without run IDs or commit hashes.
-- **Verification:** Verification compares against the merge base, and reports which changed code it covered.
+- **Verification:** Verification compares the pull request with the branch it merges into, and reports which changed code it covered.
 
 ### Fixed
 - **Ask:** Ask uses your published memories again.
@@ -170,7 +170,7 @@ Reviews run when a pull request is opened, reopened or marked ready, not on ever
 Developer Memory is on by default for every repository you authorize.
 
 ### New
-- **Reviews:** Findings are ranked by how likely they are to need a fix, with advisory notes on risky patterns and stale documentation.
+- **Reviews:** Findings now appear in priority order, with advisory notes on risky patterns and stale documentation.
 - **Repositories:** Graphify tracks code that nothing references, so you can find candidates to delete.
 
 ### Improved

@@ -54,10 +54,10 @@ icon: "layout-dashboard"
 <Update label="2026-11-16" description="Wiki answers in Ask">
 
 **New:**
-- **Ask:** Questions about the whole repository, like "What is this repo about?", are now answered from the repository's wiki **Overview** instead of loosely related code. These answers are labeled **From the repo wiki** and list the **Wiki pages** they used. Questions that name a function, file or feature still get their answer from the code.
+- **Ask:** Some questions about a repository, like "What is this repo about?", are now answered from the wiki and labeled **From the repo wiki**, with the **Wiki pages** they used listed. Other answers still come from the code.
 
 **Fixed:**
-- **Ask:** Answers no longer end with leftover tags such as `]]>`, `</prose>` or `<citations>`.
+- **Ask:** Answers no longer end with leftover markup or tags.
 
 </Update>
 
@@ -84,7 +84,7 @@ icon: "layout-dashboard"
 - **Wiki:** Architecture diagrams are easier to read. Boxes show full names, you can zoom and drag to pan a large diagram, and wiki search results show plain text instead of raw links.
 
 **Fixed:**
-- **Graph:** Very large repositories now show a precomputed map of their structure instead of **This graph is too large to display**. Ask and MCP still answer from the full graph. If you still see the old message, re-index the repository.
+- **Graph:** Very large repositories now show a map of their structure instead of **This graph is too large to display**. You can still ask questions about the repository in Ask and over MCP. If you still see the old message, re-index the repository.
 
 </Update>
 
@@ -99,7 +99,7 @@ icon: "layout-dashboard"
 **Fixed:**
 - **Billing:** If your team's Teams subscription has ended, Billing now offers **Resubscribe to Teams**. Before, it only pointed you to a billing portal that can't start a new subscription.
 - **Billing:** A canceled or Free plan no longer shows a **Next renewal** date. A canceled plan shows **Canceled. Does not renew**. A Free plan leaves the renewal line off.
-- **Overview:** **Recent activity** shows your real totals for the 7, 14 or 30 day range, instead of stopping at 20, and appears sooner on a cold load.
+- **Overview:** **Recent activity** shows your real totals for the 7, 14 or 30 day range, and appears sooner on a cold load.
 - **Graph:** **Show on canvas** on a code area now highlights what a change there could affect. Before, the click did nothing on the code-area map.
 
 </Update>
@@ -108,7 +108,7 @@ icon: "layout-dashboard"
 
 **Improved:**
 - **Memory:** Reindexing a repository no longer hides its saved memories. You can keep browsing in Simple and Advanced, and the list refreshes when the build finishes.
-- **MCP:** If your agent made a Graphify tool call in this workspace in the last 30 days, setup on **Connectors** > **Agents (MCP)** now says **Connected** with the time of the last call, and shows **Try a repository task** right away, with no manual check.
+- **MCP:** If your agent made a Graphify tool call in this workspace recently, setup on **Connectors** > **Agents (MCP)** now says **Connected** with the time of the last call, and shows **Try a repository task** right away, with no manual check.
 - **Workspace:** **Members** and **Billing** open without waiting for your repository list. If that list times out, those pages stay up and the others show **Couldn't load repositories** with **Retry**.
 
 **Fixed:**

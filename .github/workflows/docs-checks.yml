@@ -112,7 +112,8 @@ jobs:
               i = m and re.search(r"^icon:\s*[\"']?([^\"'\s]+)", m.group(1), re.M)
               return f, (i.group(1) if i else None)
           # Product-name pages (integrations/*, except the Overview) carry no icon.
-          def product(p): return p.startswith("integrations/") and p != "integrations/overview"
+          def product(p):
+              return (p.startswith("integrations/") and p != "integrations/overview") or (p.startswith("open-source/agents/") and p != "open-source/agents/overview")
           total = missing = 0; dupes = []
           for label, pages in groups:
               seen = {}

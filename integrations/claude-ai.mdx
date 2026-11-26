@@ -8,15 +8,11 @@ hideFooterPagination: true
 keywords: ["claude connectors", "claude connector", "claude desktop mcp", "claude mcp", "graphify claude", "mcp connector", "mcp oauth"]
 ---
 
-import { InstallButton } from '/snippets/install-button.mdx';
+import { AddPill } from '/snippets/add-pill.jsx';
 
-Connect [Claude.ai](https://claude.ai) and the Claude desktop app to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Claude can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-ai) workspace, follow callers and dependencies, and check what a change reaches.
+Connect Claude so it can search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-claude-ai) workspace. You sign in in the browser. There is no API key.
 
-Graphify is listed in Anthropic's [Connectors directory](https://claude.ai/directory/graphify). It is a connector. The server uses Streamable HTTP and OAuth. There is no API key to paste.
-
-<InstallButton href="https://claude.ai/directory/graphify" label="Connect in Claude">
-One click: open Graphify in Anthropic's Connectors directory, connect, then turn it on in the chat.
-</InstallButton>
+<AddPill href="https://claude.ai/directory/graphify" label="Add to Claude" logo="/images/logos/claude.svg" />
 
 For Claude Code (CLI, IDE, or the desktop Code tab), see [Graphify for Claude Code](/integrations/claude-code).
 

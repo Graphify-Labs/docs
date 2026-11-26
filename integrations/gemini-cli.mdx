@@ -2,20 +2,17 @@
 title: "Graphify for Gemini CLI"
 sidebarTitle: "Gemini CLI"
 icon: "/images/logos/gemini-cli.svg"
-description: "Connect Gemini CLI to Graphify's hosted MCP server with OAuth, or install the open-source Graphify skill and query a graph built on your machine."
-surface: "both"
+description: "Connect Gemini CLI to Graphify, then sign in. Gemini can search the repositories you have indexed."
+surface: "cloud"
 hideFooterPagination: true
 keywords: ["Gemini CLI MCP", "codebase context"]
 ---
 
-import HostedOrLocal from '/snippets/hosted-or-local.mdx';
 
-<HostedOrLocal />
 
-<Tabs>
-<Tab title="Graphify">
+Connect Gemini CLI to Graphify so it can search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-gemini-cli) workspace. You sign in in the browser. There is no API key.
 
-Connect Gemini CLI to Graphify's hosted MCP server at `https://api.graphify.com/mcp`. Gemini CLI can then search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-gemini-cli) workspace, follow callers and dependencies, and check what a change reaches.
+Building the graph on your machine instead? Use [Graphify CLI for Gemini CLI](/open-source/agents/gemini-cli).
 
 ## Before you start
 
@@ -60,59 +57,7 @@ Use Graphify's list_repositories tool and show the repositories I can access. If
 
 Name the symbol, file, or area you care about, for example `Who calls the function that validates a session token?` Open the source lines an answer cites before you rely on it.
 
-</Tab>
-<Tab title="Graphify CLI">
 
-## 1. Install and register
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform gemini
-```
-
-The integration uses GEMINI.md instructions and a BeforeTool hook to suggest graph queries. Exact destinations depend on whether you use a personal or project installation; the installer reports the files it writes.
-
-For a repository-local setup, run this from the project root:
-
-```bash
-graphify install --project --platform gemini
-```
-
-## 2. Build the graph
-
-Open your project in Gemini CLI. Select the Graphify skill and enter:
-
-```text
-/graphify .
-```
-
-The assistant runs the Graphify workflow and writes `graphify-out/`. Code extraction runs locally; semantic extraction can use your assistant’s model for documents and media.
-
-## 3. Ask with context
-
-After the graph is built, ask:
-
-> Use Graphify to explain the authentication flow. Cite the source files and distinguish explicit relationships from inferred ones.
-
-You can also query from a terminal:
-
-```bash
-graphify query "authentication flow"
-```
-
-## Keep it current
-
-```bash
-uv tool upgrade graphifyy
-graphify install --platform gemini
-```
-
-If the skill is missing, refresh the assistant and confirm that the registration was installed in the intended user or project scope. See [troubleshooting](/open-source/troubleshooting).
-
-<Card title="Connect native MCP tools" icon="plug" href="/open-source/mcp-server">Use the same graph through structured tool calls.</Card>
-
-</Tab>
-</Tabs>
 
 <Visibility for="humans">
 <div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent" />

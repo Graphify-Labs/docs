@@ -2,16 +2,14 @@
 title: "Graphify for other MCP clients"
 sidebarTitle: "Other MCP clients"
 icon: "/images/logos/mcp-light.svg"
-description: "Connect any MCP client to Graphify over Streamable HTTP, or run the open-source Graphify MCP server with a generic mcpServers entry."
+description: "Connect any MCP client to Graphify over Streamable HTTP, then sign in. No API key."
 keywords: ["other mcp clients", "windsurf cline zed", "streamable http mcp", "graphify install platform", "pi coding agent", "pi guard", "oh my pi", "omp", "antigravity", "google antigravity", "opencode", "open code", "open cod", "openc", "opencode mcp", "how to use graphify with opencode", "anti", "antigr", "antigra", "antigrav", "anty", "antigravity install", "opencod", "graphify install opencode", "cline", "cline mcp", "zed", "zed mcp", "kilo", "kilo code", "kilo code mcp", "kimi", "kimi code", "windsurf", "windsurf mcp", "how to use graphify with windsurf", "winds", "windsur", "devin desktop", "devin local", "cascade mcp", "mcp_config.json"]
-surface: "both"
+surface: "cloud"
 hideFooterPagination: true
 ---
 import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 
-import HostedOrLocal from '/snippets/hosted-or-local.mdx';
-
-<HostedOrLocal />
+These steps connect an agent to hosted Graphify. To install the open-source skill instead, use [Graphify CLI for other agents](/open-source/agents/other).
 
 ## How do I use Graphify with Antigravity?
 
@@ -113,9 +111,6 @@ The Windsurf plugin for JetBrains is in maintenance mode and newer JetBrains rel
 
 For a local graph with the open-source Graphify CLI, run `graphify install --platform devin`. It installs the Graphify skill in `~/.config/devin/skills/graphify`. To set up one project instead, run `graphify devin install --project`. It writes the skill to `.devin/skills/graphify` and an always-on rule to `.windsurf/rules/graphify.md`, which Devin Desktop still reads.
 
-<Tabs>
-<Tab title="Graphify">
-
 The [VS Code](/integrations/vscode), [JetBrains](/integrations/jetbrains), [ChatGPT, Codex, and Dots](/integrations/chatgpt), [OpenClaw](/integrations/openclaw), and [Vercel](/integrations/vercel) pages are install packages for one product. They are not the only way to use Graphify.
 
 Any coding assistant or IDE that can add a remote MCP server can use the same hosted server. That includes Antigravity, Windsurf (now Devin Desktop), Cline, Continue, Zed, and clients that are not listed yet.
@@ -193,68 +188,7 @@ The skill is the same [skill.md](https://docs.graphify.com/skill.md) these docs 
 | The tools are the local ones | That connection reads a graph on your machine. This page uses the hosted server. See the [MCP tool reference](/open-source/features/mcp-tools). Your client shows the hosted list from `tools/list`. |
 | The same tools appear twice | A dedicated plugin and a manual server are both configured. Keep one. |
 
-</Tab>
-<Tab title="Graphify CLI">
 
-## 1. Install and register
-
-Install the package once, then select your platform:
-
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform opencode
-```
-
-| Assistant | Platform value |
-| --- | --- |
-| OpenCode | `opencode` |
-| Kilo Code | `kilo` |
-| CodeBuddy | `codebuddy` |
-| Aider | `aider` |
-| Amp | `amp` |
-| OpenClaw | `claw` |
-| Factory Droid | `droid` |
-| Trae | `trae` |
-| Trae CN | `trae-cn` |
-| Hermes | `hermes` |
-| Kiro | `kiro` |
-| Pi | `pi` |
-| Devin CLI and Devin Desktop (formerly Windsurf) | `devin` |
-| Google Antigravity | `antigravity` |
-| Kimi Code | `kimi` |
-| Shared agent skill convention | `agents` |
-
-For example, run `graphify install --platform antigravity` for Google Antigravity.
-
-Some integrations use skills plus instructions; others also install native rules or hooks. Review the files reported by the installer. Use the assistant’s skill picker or ask it directly to use Graphify if it has no slash-command UI.
-
-### Pi and Oh My Pi
-
-Pi has no `PreToolUse` hook, so Graphify CLI ships a native Pi extension instead. It runs the same graph check before Pi's `read`, `grep`, `find` and search-style `bash` calls. It needs Pi 0.58.4 or newer, and Graphify installed persistently with `uv tool install --python 3.12 graphifyy` or `pipx install graphifyy`, not `uvx`.
-
-```bash
-graphify install --platform pi
-graphify pi guard install
-```
-
-Restart Pi after you install or upgrade. Remove the extension with `graphify pi guard uninstall`.
-
-The same package also loads in [Oh My Pi](https://github.com/can1357/oh-my-pi):
-
-```bash
-omp plugin install "$(graphify pi guard path)"
-```
-
-The registered path includes your Python version and virtual environment. If either changes, run `graphify pi guard install` again.
-
-The OpenClaw row installs the local skill. To query repositories indexed in Graphify, use [Graphify MCP for OpenClaw](/integrations/openclaw).
-
-## Use any MCP client
-
-An assistant does not need a dedicated skill installer to read an existing graph. If it supports MCP, connect the [Graphify MCP server](/open-source/mcp-server). Build the graph separately with the CLI or a supported assistant.
-
-</Tab>
-</Tabs>
 
 ## Related
 

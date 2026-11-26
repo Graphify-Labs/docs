@@ -7,11 +7,22 @@ surface: "cloud"
 icon: "plug"
 ---
 
-import { InstallButton } from '/snippets/install-button.mdx';
+import { AddPill } from '/snippets/add-pill.jsx';
 import OfficialMcpSource from '/snippets/official-mcp-source.mdx';
 import { StartFreeCta } from '/snippets/start-free-cta.mdx';
 
-Graphify MCP is the hosted Model Context Protocol server for your indexed repositories. Your coding agent queries the same code graph you see in the console: find symbols, follow callers, check impact, recall team Memory (decisions, incidents and lessons), and read PR review status. Nothing runs on your machine. Sign in with OAuth. There is no API key to paste. For a short overview and one-click installs, see the [Graphify MCP server page](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=platform-graphify-mcp). This page is the full setup and reference.
+Graphify MCP is the hosted server for your indexed repositories. Your coding agent queries the same code graph you see in the Graphify app: find symbols, follow callers, check impact, recall team Memory, and read pull request review status. Nothing runs on your machine. You sign in in the browser. There is no API key.
+
+<CardGroup cols={2}>
+  <Card title="For agents" icon="bot" href="/for-agents">
+    Read the agent guide and connect Graphify yourself. Ask the person only to sign in and to index a repository.
+  </Card>
+  <Card title="For humans" icon="user" href="/integrations/overview">
+    Pick your coding agent, add Graphify, and sign in. Each integration page is one path.
+  </Card>
+</CardGroup>
+
+This page is the full setup and reference. A short overview also lives on the [Graphify MCP server page](https://graphify.com/mcp?utm_source=docs&utm_medium=link&utm_campaign=platform-graphify-mcp).
 
 ```text
 https://api.graphify.com/mcp
@@ -40,9 +51,9 @@ One-click installs: [Connect Graphify in Claude](https://claude.ai/directory/gra
   <Tab title="Claude">
     Graphify is a connector in Anthropic's Connectors directory. Full setup is on two pages.
 
-    <InstallButton href="https://claude.ai/directory/graphify" label="Connect in Claude">
-    One click: connect the official **Graphify** connector by Graphify Labs in Anthropic's Connectors directory, then turn it on in the chat.
-    </InstallButton>
+    <AddPill href="https://claude.ai/directory/graphify" label="Add to Claude" logo="/images/logos/claude.svg" />
+
+    Open the directory, connect Graphify, then turn it on in the chat.
 
     | Surface | Guide |
     | --- | --- |

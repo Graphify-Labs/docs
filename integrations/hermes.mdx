@@ -2,16 +2,15 @@
 title: "Graphify for Hermes Agent"
 sidebarTitle: "Hermes"
 icon: "/images/logos/hermes-light.png"
-description: "Connect Nous Research's Hermes Agent to Graphify's hosted MCP server with browser OAuth, or install the open-source Graphify skill for Hermes."
+description: "Connect Hermes to Graphify with browser sign-in. Hermes can search the repositories you have indexed."
 keywords: ["hermes agent", "hermes mcp", "nous research hermes", "hermes oauth"]
-surface: "both"
+surface: "cloud"
 hideFooterPagination: true
 ---
 
-Connect [Hermes Agent](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp/) to Graphify in one of two ways. **Graphify** uses Hermes's native remote MCP and OAuth support. No API key, wrapper, or local server is needed. **Graphify CLI** installs the open-source skill. See [Graphify vs Graphify CLI](/platform/graphify-vs-local) to choose.
+Connect [Hermes](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp/) to Graphify. Hermes speaks remote MCP and signs you in in the browser. There is no API key.
 
-<Tabs>
-<Tab title="Graphify">
+Building the graph on your machine instead? Use [Graphify CLI for Hermes](/open-source/agents/hermes).
 
 ## Before you start
 
@@ -56,23 +55,12 @@ Ask Hermes to list your Graphify workspaces and repositories, select a repositor
 - **No repositories.** Wait until the repository shows **Indexed** in **Repositories**, and check that you signed in to the right workspace.
 - **An answer looks stale.** The graph follows the default branch. Results can lag behind a push until the next index finishes.
 
-</Tab>
-<Tab title="Graphify CLI">
 
-```bash
-uv tool install --python 3.12 graphifyy
-graphify install --platform hermes
-```
-
-The installer copies the Graphify skill and adds a Graphify section to `AGENTS.md`, so Hermes checks the graph before it reads source. Add `--project` to install into the current repository instead of your profile. Then ask Hermes to map the repository with the Graphify skill.
-
-</Tab>
-</Tabs>
 
 ## Related
 
 <Columns cols={2}>
-  <Card title="Integrations overview" icon="layout-grid" href="/integrations/overview">Every agent, hosted and local, at a glance.</Card>
+  <Card title="Integrations overview" icon="layout-grid" href="/integrations/overview">Every hosted agent, at a glance.</Card>
   <Card title="Other MCP clients" icon="plug" href="/integrations/other-agents">Generic setup for any MCP client.</Card>
 </Columns>
 

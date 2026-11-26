@@ -1,0 +1,71 @@
+---
+title: "Graphify CLI for Cursor"
+sidebarTitle: "Cursor"
+description: "Install the open-source Graphify skill in Cursor and build the graph on your machine."
+keywords: ["graphify skill for cursor", "graphify install cursor", "cursor rules graphify"]
+surface: "local"
+icon: "/images/logos/cursor-light.svg"
+hideFooterPagination: true
+---
+
+This page installs the open-source skill. Cursor builds the graph from the project on your machine. To query a repository already indexed in Graphify, use [Graphify for Cursor](/integrations/cursor).
+
+## 1. Install and register
+
+```bash
+uv tool install --python 3.12 graphifyy
+graphify install --platform cursor
+```
+
+The installer writes the skill and a `.cursor/rules/graphify.mdc` rule. It reports the files it writes. Destinations depend on whether the install is for your user or for one project.
+
+For a repository-local setup, run this from the project root:
+
+```bash
+graphify install --project --platform cursor
+```
+
+## 2. Build the graph
+
+Open the project in Cursor. Select the Graphify skill and enter:
+
+```text
+/graphify .
+```
+
+The assistant runs the workflow and writes `graphify-out/`. Code extraction runs locally. Semantic extraction can use your assistant's model for documents and media.
+
+## 3. Ask with context
+
+After the graph is built, ask:
+
+> Use Graphify to explain the authentication flow. Cite the source files and distinguish explicit relationships from inferred ones.
+
+You can also query from a terminal:
+
+```bash
+graphify query "authentication flow"
+```
+
+## Keep it current
+
+```bash
+uv tool upgrade graphifyy
+graphify install --platform cursor
+```
+
+If the skill is missing, refresh Cursor and confirm the install is in the scope you intended. See [troubleshooting](/open-source/troubleshooting).
+
+To call the same graph as tools, connect the [local MCP server](/open-source/mcp-server).
+
+<Visibility for="humans">
+<div aria-hidden="true" data-graphify-site-styles="true" className="hidden [body:has(&)_.chat-assistant-floating-input::before]:!bg-transparent" />
+</Visibility>
+
+<Visibility for="humans">
+<div role="navigation" aria-label="Documentation pages" className="not-prose mt-10 flex flex-wrap items-center justify-between gap-3">
+  <a href="/open-source/agents/claude-code" rel="prev" className="group inline-flex items-center gap-2 rounded-md border border-[#d4d4d4] dark:border-[#262626] !border-b-[#d4d4d4] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#171717] dark:text-[#ededed] no-underline transition-colors hover:border-[#a3a3a3] dark:hover:border-[#404040] hover:!border-b-[#a3a3a3] dark:hover:!border-b-[#404040] hover:bg-[#f5f5f5] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#737373]"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#5c5c5c] dark:text-[#a3a3a3]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>Previous</span><span className="text-[15px] font-semibold leading-6">Claude Code</span></a>
+  <a href="/open-source/agents/codex" rel="next" className="group inline-flex items-center gap-2 rounded-md border border-[#d4d4d4] dark:border-[#262626] !border-b-[#d4d4d4] dark:!border-b-[#262626] bg-[#ffffff] dark:bg-[#141515] px-3 py-2 text-sm font-medium text-[#171717] dark:text-[#ededed] no-underline transition-colors hover:border-[#a3a3a3] dark:hover:border-[#404040] hover:!border-b-[#a3a3a3] dark:hover:!border-b-[#404040] hover:bg-[#f5f5f5] dark:hover:bg-[#1c1d1d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#737373] ml-auto"><span className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[#5c5c5c] dark:text-[#a3a3a3]">Next<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span><span className="text-[15px] font-semibold leading-6">Codex</span></a>
+</div>
+</Visibility>
+

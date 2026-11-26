@@ -17,66 +17,6 @@
         ]
       },
       {
-        "tab": "Integrations",
-        "groups": [
-          {
-            "group": "Coding agents",
-            "pages": [
-              "integrations/overview",
-              "integrations/claude-ai",
-              "integrations/claude-code",
-              "integrations/cursor",
-              "integrations/codex",
-              "integrations/vscode",
-              "integrations/gemini-cli",
-              "integrations/jetbrains"
-            ]
-          },
-          {
-            "group": "Assistants",
-            "pages": [
-              "integrations/chatgpt",
-              "integrations/grok-bot",
-              "integrations/openclaw",
-              "integrations/hermes",
-              "integrations/other-agents",
-              "integrations/slack"
-            ]
-          },
-          {
-            "group": "Source control",
-            "pages": [
-              "integrations/github",
-              "integrations/gitlab"
-            ]
-          },
-          {
-            "group": "CI and deploy",
-            "pages": [
-              "integrations/buildkite",
-              "integrations/vercel"
-            ]
-          },
-          {
-            "group": "Knowledge sources",
-            "pages": [
-              "integrations/google-drive"
-            ]
-          },
-          {
-            "group": "For agents",
-            "pages": [
-              "mcp/docs-search",
-              "for-agents",
-              "agents/overview",
-              "agents/headless",
-              "agents/recipes",
-              "agents/capabilities"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Graphify",
         "groups": [
           {
@@ -180,6 +120,171 @@
         ]
       },
       {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "Coding agents",
+            "pages": [
+              "integrations/overview",
+              "integrations/claude-ai",
+              "integrations/claude-code",
+              "integrations/cursor",
+              "integrations/codex",
+              "integrations/vscode",
+              "integrations/gemini-cli",
+              "integrations/jetbrains"
+            ]
+          },
+          {
+            "group": "Assistants",
+            "pages": [
+              "integrations/chatgpt",
+              "integrations/grok-bot",
+              "integrations/openclaw",
+              "integrations/hermes",
+              "integrations/other-agents",
+              "integrations/slack"
+            ]
+          },
+          {
+            "group": "Source control",
+            "pages": [
+              "integrations/github",
+              "integrations/gitlab"
+            ]
+          },
+          {
+            "group": "CI and deploy",
+            "pages": [
+              "integrations/buildkite",
+              "integrations/vercel"
+            ]
+          },
+          {
+            "group": "Knowledge sources",
+            "pages": [
+              "integrations/google-drive"
+            ]
+          },
+          {
+            "group": "For agents",
+            "pages": [
+              "mcp/docs-search",
+              "for-agents",
+              "agents/overview",
+              "agents/headless",
+              "agents/recipes",
+              "agents/capabilities"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Cookbooks",
+        "groups": [
+          {
+            "group": "Essentials",
+            "pages": [
+              "cookbooks/overview",
+              "cookbooks/onboard-to-a-codebase",
+              "cookbooks/fastapi-and-django",
+              "cookbooks/plan-a-refactor",
+              "cookbooks/read-your-graph",
+              "cookbooks/govern-codebase-non-engineer",
+              "cookbooks/keep-docs-in-sync"
+            ]
+          },
+          {
+            "group": "Team",
+            "pages": [
+              "cookbooks/team-setup",
+              "cookbooks/codebase-qa-for-non-engineers",
+              "cookbooks/pr-blast-radius",
+              "cookbooks/automated-pr-review",
+              "cookbooks/onboard-with-the-wiki",
+              {
+                "group": "View more",
+                "pages": [
+                  "cookbooks/review-as-a-team",
+                  "cookbooks/shared-team-graph",
+                  "cookbooks/cross-repo-dependencies",
+                  "cookbooks/slack-on-call-answers",
+                  "cookbooks/multiple-client-workspaces"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Memory",
+            "pages": [
+              "cookbooks/review-team-memory",
+              "cookbooks/decision-log",
+              "cookbooks/incident-postmortem"
+            ]
+          },
+          {
+            "group": "Reviews",
+            "pages": [
+              "cookbooks/prove-refactor-behavior",
+              "cookbooks/catch-stale-docs"
+            ]
+          },
+          {
+            "group": "Agents",
+            "pages": [
+              "cookbooks/claude-code-monorepo",
+              "cookbooks/opencode",
+              "cookbooks/cloud-coding-agents",
+              "cookbooks/make-agents-use-the-graph",
+              "cookbooks/fix-review-findings",
+              {
+                "group": "View more",
+                "pages": [
+                  "cookbooks/reuse-existing-code",
+                  "cookbooks/document-the-why",
+                  "cookbooks/remember-incident-lessons",
+                  "cookbooks/agent-team-one-graph",
+                  "cookbooks/local-with-ollama"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Data",
+            "pages": [
+              "cookbooks/postgres-schema-graph",
+              "cookbooks/neo4j-export",
+              "cookbooks/meetings-and-videos",
+              "cookbooks/policy-docs-next-to-code"
+            ]
+          },
+          {
+            "group": "CI and Ops",
+            "pages": [
+              "cookbooks/pr-impact-comment-ci",
+              "cookbooks/self-host-shared-mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Enterprise",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": []
+          },
+          {
+            "group": "Set up",
+            "pages": []
+          },
+          {
+            "group": "Reference",
+            "pages": []
+          }
+        ]
+      },
+      {
         "tab": "Open Source",
         "groups": [
           {
@@ -272,94 +377,6 @@
             "group": "Support",
             "pages": [
               "open-source/troubleshooting"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Cookbooks",
-        "groups": [
-          {
-            "group": "Essentials",
-            "pages": [
-              "cookbooks/overview",
-              "cookbooks/onboard-to-a-codebase",
-              "cookbooks/fastapi-and-django",
-              "cookbooks/plan-a-refactor",
-              "cookbooks/read-your-graph",
-              "cookbooks/govern-codebase-non-engineer",
-              "cookbooks/keep-docs-in-sync"
-            ]
-          },
-          {
-            "group": "Team",
-            "pages": [
-              "cookbooks/team-setup",
-              "cookbooks/codebase-qa-for-non-engineers",
-              "cookbooks/pr-blast-radius",
-              "cookbooks/automated-pr-review",
-              "cookbooks/onboard-with-the-wiki",
-              {
-                "group": "View more",
-                "pages": [
-                  "cookbooks/review-as-a-team",
-                  "cookbooks/shared-team-graph",
-                  "cookbooks/cross-repo-dependencies",
-                  "cookbooks/slack-on-call-answers",
-                  "cookbooks/multiple-client-workspaces"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Memory",
-            "pages": [
-              "cookbooks/review-team-memory",
-              "cookbooks/decision-log",
-              "cookbooks/incident-postmortem"
-            ]
-          },
-          {
-            "group": "Reviews",
-            "pages": [
-              "cookbooks/prove-refactor-behavior",
-              "cookbooks/catch-stale-docs"
-            ]
-          },
-          {
-            "group": "Agents",
-            "pages": [
-              "cookbooks/claude-code-monorepo",
-              "cookbooks/opencode",
-              "cookbooks/cloud-coding-agents",
-              "cookbooks/make-agents-use-the-graph",
-              "cookbooks/fix-review-findings",
-              {
-                "group": "View more",
-                "pages": [
-                  "cookbooks/reuse-existing-code",
-                  "cookbooks/document-the-why",
-                  "cookbooks/remember-incident-lessons",
-                  "cookbooks/agent-team-one-graph",
-                  "cookbooks/local-with-ollama"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Data",
-            "pages": [
-              "cookbooks/postgres-schema-graph",
-              "cookbooks/neo4j-export",
-              "cookbooks/meetings-and-videos",
-              "cookbooks/policy-docs-next-to-code"
-            ]
-          },
-          {
-            "group": "CI and Ops",
-            "pages": [
-              "cookbooks/pr-impact-comment-ci",
-              "cookbooks/self-host-shared-mcp"
             ]
           }
         ]

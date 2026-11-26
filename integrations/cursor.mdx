@@ -9,6 +9,7 @@ hideFooterPagination: true
 ---
 
 import { AddPill } from '/snippets/add-pill.jsx';
+import WhatYouCanDo from '/snippets/what-you-can-do.mdx';
 
 Install the Graphify plugin so Cursor can search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-cursor) workspace, follow callers, and check what a change reaches. You sign in once in the browser. There is no API key.
 
@@ -43,27 +44,27 @@ Building the graph on your machine instead? Use [Graphify CLI for Cursor](/open-
 
 The plugin adds `https://api.graphify.com/mcp` and a rule for when to use Graphify. Source: [Graphify-Labs/graphify-cursor-plugin](https://github.com/Graphify-Labs/graphify-cursor-plugin).
 
-### Or add the MCP server yourself
+<Accordion title="Prefer to add the MCP server yourself?">
+  Use this if you want the server without the plugin, or your team blocks marketplace plugins. Pick one route: the plugin and a manual entry together show every tool twice.
 
-Use this if you want the server without the plugin, or your team blocks marketplace plugins. Pick one route: the plugin and a manual entry together show every tool twice.
+  [Install in Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D) opens the desktop app and asks you to confirm the `graphify` server. Or, in the Graphify app, open **Connectors → MCP**, choose **Cursor**, and select **Install in Cursor**.
 
-[Install in Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=graphify&config=eyJ1cmwiOiJodHRwczovL2FwaS5ncmFwaGlmeS5jb20vbWNwIn0%3D) opens the desktop app and asks you to confirm the `graphify` server. Or, in the Graphify app, open **Connectors → MCP**, choose **Cursor**, and select **Install in Cursor**.
+  **Edit mcp.json**
 
-**Edit mcp.json**
+  Or add Graphify to `~/.cursor/mcp.json` to use it in every project:
 
-Or add Graphify to `~/.cursor/mcp.json` to use it in every project:
-
-```json ~/.cursor/mcp.json
-{
-  "mcpServers": {
-    "graphify": {
-      "url": "https://api.graphify.com/mcp"
+  ```json ~/.cursor/mcp.json
+  {
+    "mcpServers": {
+      "graphify": {
+        "url": "https://api.graphify.com/mcp"
+      }
     }
   }
-}
-```
+  ```
 
-To scope it to one repository, put the same entry in `.cursor/mcp.json` at the repository root. Keep any other servers already in the file.
+  To scope it to one repository, put the same entry in `.cursor/mcp.json` at the repository root. Keep any other servers already in the file.
+</Accordion>
 
 ## Set a default repository
 
@@ -78,6 +79,8 @@ Pick a repository from the list and name the symbol, file, or area you care abou
 - `Summarize how requests reach the billing service.`
 
 Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
+
+<WhatYouCanDo />
 
 ## Troubleshooting
 

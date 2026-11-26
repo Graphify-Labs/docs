@@ -9,6 +9,7 @@ keywords: ["codex mcp", "mcp oauth", "graphify codex", "graphify codex plugin", 
 ---
 
 import { AddPill } from '/snippets/add-pill.jsx';
+import WhatYouCanDo from '/snippets/what-you-can-do.mdx';
 
 Install the Graphify plugin so Codex can search the repositories indexed in your [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex) workspace. You sign in once in the browser. There is no API key. The same install works in ChatGPT.
 
@@ -53,30 +54,32 @@ The last command opens the browser sign-in, since installing the plugin from the
 
 ### Manual setup
 
-Prefer to keep the setup in your own config? Add the server by hand instead. For a full walkthrough, read [How to add an MCP server to Codex](https://graphify.com/blog/how-to-add-an-mcp-server-to-codex).
+<Accordion title="Prefer to add the server yourself?">
+  Prefer to keep the setup in your own config? Add the server by hand instead. For a full walkthrough, read [How to add an MCP server to Codex](https://graphify.com/blog/how-to-add-an-mcp-server-to-codex).
 
-**Terminal**
+  **Terminal**
 
-```bash
-codex mcp add graphify --url https://api.graphify.com/mcp
-codex mcp login graphify
-```
+  ```bash
+  codex mcp add graphify --url https://api.graphify.com/mcp
+  codex mcp login graphify
+  ```
 
-The second command opens the browser sign-in. Without it the connection is unauthenticated and Graphify rejects it.
+  The second command opens the browser sign-in. Without it the connection is unauthenticated and Graphify rejects it.
 
-**config.toml**
+  **config.toml**
 
-Add this to `~/.codex/config.toml` for your user, or to `.codex/config.toml` for one project:
+  Add this to `~/.codex/config.toml` for your user, or to `.codex/config.toml` for one project:
 
-```toml ~/.codex/config.toml
-[mcp_servers.graphify]
-url = "https://api.graphify.com/mcp"
-auth = "oauth"
-```
+  ```toml ~/.codex/config.toml
+  [mcp_servers.graphify]
+  url = "https://api.graphify.com/mcp"
+  auth = "oauth"
+  ```
 
-Then run `codex mcp login graphify` to sign in.
+  Then run `codex mcp login graphify` to sign in.
 
-Use one path. Two connections show every Graphify tool twice.
+  Use one path. Two connections show every Graphify tool twice.
+</Accordion>
 
 ## 2. Check the connection
 
@@ -117,6 +120,8 @@ For pull request 123 in owner/name, list the symbols it changes. Then use Graphi
 Cross-repository answers need a [combined graph](/platform/graphify-mcp#query-a-repository-group) that includes those repositories. To read the result of Graphify's own review of a pull request, ask Codex to run `review_status`. For a full walkthrough, read [How to set up Codex code review with Graphify](https://graphify.com/blog/codex-code-review).
 
 Answers are graph evidence from the files Graphify indexed, not a verified result. Open the source lines an answer cites before you rely on it. Some tools write workspace memory, so read each tool request before you approve it.
+
+<WhatYouCanDo />
 
 ## Troubleshooting
 

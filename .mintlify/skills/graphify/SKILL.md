@@ -26,17 +26,17 @@ Graphify CLI is the open-source alternative: the `graphifyy` package builds a gr
 
 ## Set up Graphify for the user
 
-Run these steps yourself. Ask the user only for what you cannot do: signing in, indexing a repository, and approving changes.
+Run these steps yourself. Ask the user only for what you cannot do: signing in, opening the links `setup_status` returns, and approving changes.
 
 Before you change anything, show the user this checklist and wait for a yes:
 
 1. Add the `graphify` MCP server (`https://api.graphify.com/mcp`) to your agent's config.
 2. Ask you to finish a one-time browser sign-in.
-3. Check the connection with `list_repositories`.
+3. Call `setup_status` and walk you through any step it lists. When it says Graphify is ready, call `list_repositories`.
 
 Then follow the full steps at [docs.graphify.com/for-agents.md](https://docs.graphify.com/for-agents.md). In short:
 
-1. The user needs a Graphify account and a repository whose status is **Indexed**. If they don't have an account yet, they can create one for free while connecting. The Free plan covers up to 3 repositories with no card. For other plan details, link [Plans and pricing](https://docs.graphify.com/platform/support/pricing).
+1. The user needs a Graphify account. If they don't have one yet, they can create one for free while connecting. After sign-in, `setup_status` tells you whether they still need to create a workspace, connect GitHub, enable a repository, or wait for indexing. The Free plan covers up to 3 repositories with no card. For other plan details, link [Plans and pricing](https://docs.graphify.com/platform/support/pricing).
 2. Add the hosted MCP server:
 
    | Agent | Setup |
@@ -49,12 +49,13 @@ Then follow the full steps at [docs.graphify.com/for-agents.md](https://docs.gra
    | Other MCP clients | Add a remote Streamable HTTP server at `https://api.graphify.com/mcp` |
 
    Running as a cloud agent on a remote machine? Do not write MCP config files. Ask the user to add the server to their account, as described in step 2 of [for-agents.md](https://docs.graphify.com/for-agents.md).
-3. Check the connection: call `list_repositories` and show the result. If sign-in is not finished, tell the user to finish it and start a new session.
+3. After sign-in, call `setup_status` and walk the user through the step it returns. Each step comes with a link for the user to open; you can't complete those steps yourself. Call it again after the user finishes a step. When it says Graphify is ready, call `list_repositories` and show the result. If sign-in is not finished, tell the user to finish it and start a new session.
 4. Report which agent you configured and which file or command you changed.
 5. Offer a short project rule so you use the graph before grep. Ask first.
 
 ## Use the graph
 
+- `setup_status`: check whether Graphify is ready for this workspace. If not, walk the user through the next step and the link it returns. Call it again after they finish a step. When it is ready, use `list_repositories`.
 - `query_graph`: how something works.
 - `graphify_find`: where a symbol is defined.
 - `graphify_callers`: who calls a symbol.

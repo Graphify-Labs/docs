@@ -52,6 +52,12 @@ Shortest path (2 hops):
 
 A path needs both nodes and a chain of edges between them. No path is not proof that the two are independent. Add `--undirected` when you want connectivity rather than a directional path.
 
+## Does Graphify CLI cite a file and line for every hop?
+
+Yes for `graphify query`. Each `EDGE` line ends with where the relationship happens, such as `at=app.py:L10`, and each `NODE` line shows its source file and line, as in the output above.
+
+`graphify path` prints the route with each hop's relation and confidence, but no file and line. To find where a hop happens, run `graphify query "what calls find_user?" --context call` on that hop's target and read its `EDGE` line.
+
 ## What a change can affect
 
 In [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=platform-trace), open **Graphs**, search for the name, and inspect its neighbors. On a pull request, open **Reviews** and read the findings and the code the change can affect. A graph connection is evidence to investigate. It is not proof that behavior stayed the same.

@@ -23,8 +23,12 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 Run the tests affected by a pull request. Graphify uses your repository graph to map changed code to tests, then returns a dynamic pipeline that Buildkite executes.
 
 <Note>
-  This integration is available in enabled Graphify workspaces. Open **Integrations → BuildKite (Test Impact)** in [the console](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-buildkite). If the tile says **Coming soon**, contact your workspace owner about availability.
+  This integration is available in enabled Graphify workspaces. In [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-buildkite), open **Connectors**, then **Integrations**, and choose **Buildkite (Test Impact)**. If the tile says **Coming soon**, contact your workspace owner about availability.
 </Note>
+
+## How do I run only the affected tests in Buildkite?
+
+Create a CI token on the **Buildkite (Test Impact)** tile in Graphify, add the Graphify step to `.buildkite/pipeline.yml`, and Buildkite runs only the tests Graphify maps to the pull request's changes. When Graphify cannot map a change to tests with confidence, it asks for a full run.
 
 ## Before you start
 
@@ -35,7 +39,7 @@ Run the tests affected by a pull request. Graphify uses your repository graph to
 
 ## 1. Create the CI token
 
-1. In Graphify, open **Integrations → BuildKite (Test Impact)**.
+1. In Graphify, open **Connectors**, then **Integrations**, and choose **Buildkite (Test Impact)**.
 2. Under **Generate a token**, enter a name such as `buildkite-main` and select **Generate token**.
 3. Copy the token immediately. It is shown only once.
 4. Store it as a [Buildkite secret](https://buildkite.com/docs/pipelines/security/secrets/buildkite-secrets) named `GRAPHIFY_CI_TOKEN`, with access granted to this pipeline. The script below retrieves it at job runtime. If you use another secret manager, inject the same environment variable through your agent's secret hook instead.
@@ -129,6 +133,8 @@ The generated steps need the same dependencies, queue, and environment as your n
 When trialing the integration, keep your existing full-suite job and compare its results with the selected run. If later jobs must wait for dynamically uploaded tests, configure Buildkite dependencies or a wait step accordingly; see [dynamic pipelines](https://buildkite.com/docs/pipelines/configure/dynamic-pipelines).
 
 ## What the request does
+
+The step sends the pull request's base and head commits to Graphify and gets back a Buildkite pipeline with the test steps to run.
 
 `POST https://api.graphify.com/v1/repos/{GRAPHIFY_REPO_ID}/test-impact`
 

@@ -1,0 +1,65 @@
+---
+title: "Deployment options"
+sidebarTitle: "Deployment"
+description: "Hosted Graphify in us-east-1, or a private deployment in your AWS account with Okta, GitHub Enterprise Server, and Bedrock."
+keywords: ["private deployment", "vpc", "terraform", "github enterprise server", "bedrock"]
+surface: "cloud"
+icon: "container"
+---
+
+Run Graphify as the hosted product, or inside your own AWS account so code and model calls stay on your network.
+
+| | Hosted Graphify | Private deployment |
+| --- | --- | --- |
+| Where it runs | Our AWS, us-east-1 | Your AWS account, your private subnets |
+| Sign-in | GitHub, Google, GitLab, email | Your Okta (OIDC) |
+| Git | GitHub, GitLab, Azure DevOps | GitHub Enterprise Server |
+| Models | Our providers. See [Models and data](/enterprise/models) | Your Amazon Bedrock, through a VPC endpoint |
+| Network | Public endpoints behind a WAF | Internal load balancer. No internet gateway or NAT required |
+| Workspaces | One or more | Several, from the Admin console |
+| Repository teams | No | Yes, with row-level security |
+| Logs | Ours | Your Splunk or CloudWatch |
+| Upgrades | Continuous | A versioned release you apply |
+| Limits | No plan caps on Enterprise | Sized with you. A reference size is 200 repositories and 100 users |
+
+## What runs in your account
+
+- **Compute.** Containers on Amazon ECS (Fargate), in private subnets.
+- **Data.** Amazon RDS for PostgreSQL, encrypted with your KMS key. Amazon S3 for graph artifacts. Amazon SQS for jobs.
+- **Ingress.** An internal Application Load Balancer, reachable only from your network.
+- **Models.** Amazon Bedrock through a VPC interface endpoint.
+- **Egress.** None required for models. If GitHub Enterprise Server or Confluence is outside the VPC, traffic can use your egress proxy. Internal certificate authorities are trusted.
+- **Images.** Each release is published to Amazon ECR in your account. The running services do not pull from the public internet.
+
+## Install
+
+<Steps>
+  <Step title="Prerequisites">
+    An AWS account and region where the Bedrock models you want are enabled, an Okta tenant, a GitHub Enterprise Server, and a VPC with private subnets.
+  </Step>
+  <Step title="Receive the release">
+    Each release is versioned and includes a changelog.
+  </Step>
+  <Step title="Fill in Terraform">
+    VPC and subnets, Okta issuer and client IDs, GitHub Enterprise Server URL and app credentials, Bedrock model IDs, and optional Confluence Data Center and Splunk settings.
+  </Step>
+  <Step title="Apply">
+    Terraform creates the database, storage, queues, services, and load balancer.
+  </Step>
+  <Step title="Create the GitHub App">
+    Create it on your GitHub Enterprise Server and install it on your organizations.
+  </Step>
+  <Step title="Sign in">
+    Sign in as the first deployment admin and open the Admin console.
+  </Step>
+</Steps>
+
+## Upgrades
+
+Apply the next versioned bundle with Terraform. The changelog lists every change and any migration step.
+
+Graphify has no access to your environment. When you want help, the log-sharing runbook shows which logs to export. You choose what to send.
+
+## On a developer machine
+
+The open-source Graphify CLI runs on a developer machine, with no account, for an offline graph. Install it with `uv tool install --python 3.12 graphifyy`. See [Install Graphify CLI](/open-source/installation). Use hosted Graphify or a private deployment when the graph should be shared.

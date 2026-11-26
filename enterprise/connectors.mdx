@@ -1,0 +1,45 @@
+---
+title: "Connectors"
+sidebarTitle: "Connectors"
+description: "Connect Slack, Confluence, Google Drive, Jira, Linear, and Sentry so tickets, docs, and errors sit next to the code they describe."
+keywords: ["graphify connectors", "jira", "linear", "confluence", "sentry", "slack"]
+surface: "cloud"
+icon: "cable"
+---
+
+Connectors link the reason for a change (a ticket, a doc, an incident) to the code that changed.
+
+| Connector | What it adds | Hosted Graphify | Private deployment |
+| --- | --- | --- | --- |
+| **Slack** | Questions about your code, answered from the graph | Yes | No |
+| **Confluence Cloud** | Pages from the spaces you choose, linked to the code they describe | Yes | No |
+| **Confluence Data Center** | The same, for self-managed Confluence, via an application link or a personal access token | No | Yes |
+| **Google Drive** | Design docs and specs from the folders you choose | Yes | No |
+| **Jira** | Tickets linked to the pull requests and code that implement them | Yes | No |
+| **Linear** | Issues linked to pull requests and code | Yes | No |
+| **Sentry** | Errors linked to the code that raised them, and draft pull requests that fix an error | Yes | No |
+
+## How connector data is handled
+
+- Connector tokens are encrypted at rest and can be rotated.
+- Payloads from Jira and Sentry are redacted for secrets before they are stored.
+- Restricted Confluence pages are skipped.
+- Disconnecting a connector stops sync and deletes its access token.
+
+Google Drive uses a read-only permission. Graphify does not modify or delete Drive files. See [Google Drive](/integrations/google-drive).
+
+## Connect
+
+<Steps>
+  <Step title="Open Integrations">
+    Go to **Connectors**, then **Integrations**, and choose the connector.
+  </Step>
+  <Step title="Authorize">
+    Sign in with that product. You need permission to install the connection there.
+  </Step>
+  <Step title="Choose the scope">
+    Pick the Confluence spaces, Drive folders, or projects the connector may read.
+  </Step>
+</Steps>
+
+Hosted connector setup for the products that already have a page is on [Connectors](/platform/connectors).

@@ -1,0 +1,49 @@
+---
+title: "Code insights"
+sidebarTitle: "Code insights"
+description: "Engineering health computed from your graph and Git history: dead code, duplication, hotspots, dependencies, drift, and verified change share."
+keywords: ["code insights", "dead code", "hotspots", "architecture drift", "metric history"]
+surface: "cloud"
+icon: "chart-line"
+---
+
+Code insights are computed from your graph and Git history. No model reads your code to produce them, so the same code gives the same result. Each item shown to a developer includes the evidence behind it.
+
+**Insights** is also where review findings are triaged. That workflow, with priority and status, is on [Insights](/platform/insights). The metrics below are the repository-wide measures.
+
+## Insights
+
+| Insight | What it finds | Evidence shown |
+| --- | --- | --- |
+| **Unused code** | Private functions, methods, and classes that nothing references | No references in the graph, and how long it has been unused |
+| **Graph-proven dead code** | Code with no references anywhere it could be reached from: calls, routes, framework conventions, and other repositories in the group | The checks it passed, and the commit where its last reference was removed |
+| **Duplicate code** | Groups of identical function bodies across files | The matching locations |
+| **Divergent twins** | Copies of the same code where one copy changed and the other did not, such as a bug fixed in one place only | The pair, the change, and the commit |
+| **Load-bearing hotspots** | Files that change and get fixed often, and that much of the system depends on | Change and fix history, plus dependents in the graph |
+| **Dependency inventory and version skew** | Every declared dependency and its version, and the same library pinned at different versions across repositories | The manifest and lockfile lines |
+| **Architecture drift** | How coupling between modules and layers changes from build to build, and breaks of your declared layering rules | The dependencies between modules that were added or removed |
+| **Verified change share** | The share of merged changes backed by evidence: behavior-checked by formal verification, covered by selected tests, or reviewed with confirmed findings. Split by AI-written and human-written changes | The evidence for each pull request |
+
+## Metric history
+
+Every build records a snapshot, so you can see a trend:
+
+- graph size, files, and lines of code
+- coupling between modules
+- unused and duplicate code
+- dependency counts and skew
+
+Metrics roll up from a repository to a repository team, a cross-repo group, and the workspace. You choose the date range and download the series as CSV or JSON.
+
+History starts when a repository is first indexed. A repository with only a few builds shows that there is not enough history yet, rather than a trend.
+
+## Act on an insight
+
+- **Copy as an agent task.** Hand the insight to a coding agent with the evidence attached.
+- **Hide it, with a reason.** Mark it intentional, not useful, or incorrect. That feedback changes what Graphify shows the team.
+
+## How to read the numbers
+
+**Verified change share** counts only pull requests Graphify reviewed or verified, and it shows that denominator. Verification results are bounded checks, not proofs.
+
+**Hotspots and drift** need history. They get more useful as repositories accumulate builds.

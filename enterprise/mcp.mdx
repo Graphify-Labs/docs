@@ -1,0 +1,43 @@
+---
+title: "MCP and agents"
+sidebarTitle: "MCP and agents"
+description: "Connect coding agents to your organization's graph with the hosted MCP server, a personal sign-in, or a workspace token."
+keywords: ["graphify mcp", "enterprise agents", "workspace token", "claude code", "cursor"]
+surface: "cloud"
+icon: "bot"
+---
+
+One MCP server gives every coding agent in the organization the same view of the indexed graph. The server is `https://api.graphify.com/mcp`. There is no API key to paste for a person at their desk. The agent opens a browser and the person signs in. On a private deployment, that sign-in is Okta.
+
+Client setup for Claude Code, Cursor, Codex, VS Code, JetBrains, and the others is on [Integrations](/integrations/overview). Use one install path. A plugin and a hand-written config together register the server twice.
+
+## What an agent can ask
+
+The client's tool list is the current set. Trust that list over this table. These are the hosted tools the product documents today:
+
+| Tool | What it answers |
+| --- | --- |
+| `graphify_find` | Where is this defined? |
+| `graphify_callers` | What calls this? |
+| `graphify_impact` | What can this change affect? `include_risk` ranks hotspot files by linked tests |
+| `graphify_tests_for` | Which tests are linked to this symbol or file? Linked tests are not a runtime-coverage proof |
+| `recall`, `remember` | What has the team already recorded, and save a new note |
+| `review_status` | What did review find on this pull request? It reads a review. It does not start one |
+| `list_workspaces`, `set_workspace` | Which workspace is this session using? |
+| `save_wiki_page` | Save a page the agent wrote to the wiki |
+
+When a cross-repo group is selected, callers, impact, and tests-for run across that group. `list_repositories` returns the group with `kind: "workspace"`. Query tools take that id. See [Query a repository group](/platform/graphify-mcp#query-a-repository-group).
+
+Graphify adds no hidden instructions to tool results.
+
+## Authentication
+
+- **A person.** OAuth in the browser. On a private deployment, the MCP client uses the Okta application you created for MCP. See [Sign in and SSO](/enterprise/sign-in).
+- **A shared or headless agent.** An owner or admin mints a token on the **MCP** tab of **Connectors**. It starts with `gfy_mcp_`. Store it in a secret manager, not in the repository. On a private deployment, a token can be limited to repository teams.
+- **CI.** A different token, `gfy_ci_`, is only for test impact. See [API tokens](/enterprise/plans).
+
+Removing a member revokes the workspace API tokens that member created. Remint any token a pipeline still needs.
+
+## Rules
+
+Export `.graphify/rules.json` as a Claude Code skill or a `CLAUDE.md` fragment so agents follow the same rules review enforces. See [Review and verification policy](/enterprise/review-policy).

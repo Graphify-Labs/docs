@@ -1,0 +1,87 @@
+---
+title: "Security and data handling"
+sidebarTitle: "Security"
+description: "Encryption, isolation, retention, and deletion for Enterprise, plus the reports a security review usually asks for."
+keywords: ["graphify security", "soc 2", "encryption", "data retention", "subprocessors"]
+surface: "cloud"
+icon: "lock"
+---
+
+Share this page with your security reviewer. GitHub App permissions, Google Drive's read-only scope, and how to close a hosted account are on [Security and data](/platform/support/security).
+
+## Reports
+
+- **SOC 2 Type II.** The audit is in progress with an independent auditor. The engagement letter is in the [Trust Center](https://trust.graphify.com). This is not a completed report.
+- **Penetration test.** An independent test was completed in October 2026. The report is in the Trust Center.
+- **DPA.** Available on request.
+- **Questionnaires.** The account team completes them. Ask in your Enterprise Slack channel or email [support@graphify.com](mailto:support@graphify.com).
+
+## Encryption
+
+| Layer | How |
+| --- | --- |
+| In transit | TLS 1.3 with a FIPS cipher policy at the edge and on internal load balancers. Database connections verify TLS certificates |
+| Database at rest | Amazon RDS storage encrypted with AWS KMS |
+| Graph artifacts at rest | A dedicated KMS key per workspace |
+| Connector and OAuth tokens | Encrypted in the application, with keys that can be rotated |
+
+## Isolation
+
+On hosted Graphify, each workspace gets its own IAM role, KMS key, and storage prefix when the workspace is provisioned. Query services check the workspace on every request, from the signed token.
+
+A private deployment is a separate installation in your account. Repository teams are enforced with Postgres row-level security.
+
+A web application firewall with managed rule sets and per-IP rate limits sits in front of hosted Graphify. Services also apply per-workspace rate limits.
+
+## Secrets
+
+Secret and credential files are never indexed. See [Connect repositories](/enterprise/repositories). Tokens are scrubbed from logs, job errors, and connector payloads.
+
+## Retention and deletion
+
+| Data | What happens |
+| --- | --- |
+| Graph artifact versions | Older versions move to archive storage after 30 days and expire after 365 days |
+| Database backups | Kept for 7 days, Multi-AZ |
+| A removed repository | Every stored version of its graph, artifacts, and memory is deleted |
+| A disconnected connector | Sync stops and the access token is deleted |
+| A memory entry | Can be reverted or deleted on its own |
+| A workspace or account | Email [support@graphify.com](mailto:support@graphify.com). We confirm when deletion is complete. Backups age out within 7 days |
+
+Closing a hosted account follows [Security and data](/platform/support/security).
+
+## Subprocessors
+
+The current list is on [graphify.com/subprocessors](https://graphify.com/subprocessors?utm_source=docs&utm_medium=link&utm_campaign=enterprise-security). Hosted Graphify uses AWS for hosting, Anthropic, OpenAI, and Google Cloud for models, and other providers for sign-in, billing, monitoring, and email.
+
+A private deployment does not send your code to those model providers. Models run in your Amazon Bedrock.
+
+## Questions reviewers ask
+
+### Do you train on our code?
+
+No. Graphify does not train models on customer code. Hosted model providers process API data under terms that exclude training.
+
+### Where is data stored?
+
+Hosted Graphify stores data in AWS us-east-1. A private deployment stores it in your AWS account and region.
+
+### Is source code sent to a model to build the graph?
+
+No. Source code is parsed into the graph without a model. Models see code during pull request review, wiki writing, and suggested fixes, and only the parts those tasks need.
+
+### Can we keep traffic on our network?
+
+Yes, with a private deployment. It runs in your private subnets, calls your Bedrock through a VPC endpoint, and does not need an internet gateway.
+
+### Can Graphify see our code in a private deployment?
+
+No. We have no access to your environment. You choose which logs to share.
+
+### Who can open a repository?
+
+Members of the workspace. On a private deployment, only members of that repository's team.
+
+### What happens when we leave?
+
+Remove your repositories, then ask us to delete the workspace. Backups age out within 7 days.

@@ -285,12 +285,21 @@
               "enterprise/members",
               "enterprise/repositories",
               "enterprise/review-policy",
-              "enterprise/models"
+              "enterprise/models",
+              "enterprise/connectors",
+              "enterprise/usage"
             ]
           },
           {
             "group": "Reference",
-            "pages": []
+            "pages": [
+              "enterprise/deployment",
+              "enterprise/security",
+              "enterprise/cross-repo",
+              "enterprise/insights",
+              "enterprise/plans",
+              "enterprise/mcp"
+            ]
           }
         ]
       },

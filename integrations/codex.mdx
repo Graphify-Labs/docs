@@ -132,8 +132,8 @@ Answers are graph evidence from the files Graphify indexed, not a verified resul
 | `graphify` is missing from `/mcp` | Start a new Codex session after adding it, and check the `[mcp_servers.graphify]` entry in `config.toml`. |
 | The tools return no repositories | The repository is not indexed yet, or it is in a different workspace. Check [Repositories and builds](/platform/repositories). |
 | Every Graphify tool appears twice | You have both the plugin and a manual server entry. Remove one. |
-| Only a `graphify_setup` tool appears, or tools say **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-codex), enable a repository, wait until it is **Indexed**, start a new Codex session, and run `codex mcp login graphify` again if needed. |
-| Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories** in Graphify, wait for the first index to finish, then ask again. |
+| Only a `graphify_setup` tool appears, or tools say **Graphify isn't set up for this account yet** | Ask Codex to call `setup_status` and open the link it gives. Finish that step, then ask it to call the tool again. Wait until a repository is **Indexed**, start a new Codex session, and run `codex mcp login graphify` again if needed. |
+| Tools say **This workspace has no repositories enabled for agents yet.** | Ask Codex to call `setup_status` and open the link it gives to enable a repository. Wait for the first index to finish, then ask again. |
 | Codex CLI on Windows stops with `failed to open daemon process: Access is denied. (os error 5)` | This is a Codex CLI issue ([openai/codex #51283](https://github.com/openai/codex/issues/51283)), not Graphify. Run `codex --no-daemon`. The plugin stays installed. If that fails too, use Codex in the ChatGPT desktop app with the [Graphify listing](https://chatgpt.com/plugins/plugin_asdk_app_6abe89f7f5d88191b9422522bb8562a4). |
 
 ## FAQ

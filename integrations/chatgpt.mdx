@@ -91,8 +91,8 @@ These tools read the indexed graph. They do not edit source files. An empty resu
 | In Codex CLI, `/mcp` lists `graphify` as **authentication required** (common after installing the plugin from the terminal) | Installing from the terminal does not sign you in. Quit Codex, run `codex mcp login graphify`, finish the browser sign-in, then start a new session. |
 | No repositories, or empty answers | That repository is not indexed yet, or it is in a different workspace. Check its status in [Repositories and builds](/platform/repositories), then ask Graphify to list repositories again. |
 | ChatGPT never asked you to sign in | Open **Settings → Plugins**, select Graphify, and choose **Connect**. Finish the Graphify sign-in in the browser. |
-| Only a `graphify_setup` tool appears, or ChatGPT shows **Graphify isn't set up for this account yet** | Finish setup at [app.graphify.com/onboarding](https://app.graphify.com/onboarding?utm_source=docs&utm_medium=link&utm_campaign=integrations-chatgpt), enable a repository, wait until it is **Indexed**, start a new chat, and reconnect Graphify under **Settings → Plugins** if tools still don't appear. |
-| Tools say **This workspace has no repositories enabled for agents yet.** | Enable a repository under **Repositories** in Graphify, wait for the first index to finish, then ask again. |
+| Only a `graphify_setup` tool appears, or ChatGPT shows **Graphify isn't set up for this account yet** | Ask ChatGPT to call `setup_status` and open the link it gives. Finish that step, then ask it to call the tool again. Wait until a repository is **Indexed**, start a new chat, and reconnect Graphify under **Settings → Plugins** if tools still don't appear. |
+| Tools say **This workspace has no repositories enabled for agents yet.** | Ask ChatGPT to call `setup_status` and open the link it gives to enable a repository. Wait for the first index to finish, then ask again. |
 
 ## Related
 

@@ -23,7 +23,7 @@ import HostedMcpCard from '/snippets/hosted-mcp-card.mdx';
 Run the tests affected by a pull request. Graphify uses your repository graph to map changed code to tests, then returns a dynamic pipeline that Buildkite executes.
 
 <Note>
-  This integration is available in enabled Graphify workspaces. In [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-buildkite), open **Connectors**, then **Integrations**, and choose **Buildkite (Test Impact)**. If the tile says **Coming soon**, contact your workspace owner about availability.
+  In [Graphify](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=integrations-buildkite), open **Connectors**, then **Integrations**, and choose **Buildkite (Test Impact)**.
 </Note>
 
 ## How do I run only the affected tests in Buildkite?
@@ -171,7 +171,7 @@ Open a pull request against the connected GitHub repository. In Buildkite, confi
 
 | Symptom | Check |
 | --- | --- |
-| Token controls are unavailable | Ask a workspace owner or admin. If the integration says **Coming soon**, it is not enabled for that workspace. |
+| Token controls are unavailable | Ask a workspace owner or admin. |
 | Secret retrieval fails | Grant the pipeline access to `GRAPHIFY_CI_TOKEN`, or inject it through your configured secret manager. |
 | Authentication or scope error | Use the active Graphify CI token for this workspace, with `test-impact` scope. Replacing a token revokes the old one. |
 | Repository not found | Use the Graphify repository ID belonging to the token's workspace. |

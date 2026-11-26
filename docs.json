@@ -297,8 +297,8 @@
               "enterprise/security",
               "enterprise/cross-repo",
               "enterprise/insights",
-              "enterprise/plans",
-              "enterprise/mcp"
+              "enterprise/mcp",
+              "enterprise/plans"
             ]
           }
         ]
@@ -804,10 +804,6 @@
       "destination": "/open-source/configuration/cli"
     },
     {
-      "source": "/platform/support/enterprise",
-      "destination": "/platform/support/pricing#enterprise"
-    },
-    {
       "source": "/platform/local-to-cloud",
       "destination": "/platform/graphify-vs-local"
     },
@@ -1002,6 +998,10 @@
     {
       "source": "/open-source/keep-the-graph-fresh",
       "destination": "/open-source/features/keep-the-graph-fresh"
+    },
+    {
+      "source": "/platform/support/enterprise",
+      "destination": "/enterprise/overview"
     }
   ]
 }

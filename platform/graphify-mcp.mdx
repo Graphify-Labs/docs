@@ -29,7 +29,7 @@ https://api.graphify.com/mcp
 Main setup lives in the console under **Connectors → MCP**. That page fills in the endpoint, shows **Agent connection status**, and offers starter tasks under **Try it on your repository** once a repository is indexed.
 
 <Note>
-You need a Graphify account, at least one repository with the status **Indexed**, and an MCP client that supports remote HTTP servers. If you don't have an account yet, you can create one for free while connecting from Claude, ChatGPT, Codex, or another OAuth client, then enable a repository and wait for indexing. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing). Hosted Graphify lists 63 grammars.
+You need a Graphify account, at least one repository with the status **Indexed**, and an MCP client that supports remote HTTP servers. If you don't have an account yet, you can start from your coding agent: add the server, sign in when it asks, then call `setup_status` and open the links it returns to create a workspace, connect GitHub, enable a repository, and wait for indexing. The Free plan needs no card. See [Plans and pricing](/platform/support/pricing). Hosted Graphify lists 63 grammars.
 </Note>
 
 ## Connect your client
@@ -171,6 +171,7 @@ Graphify also adds these workspace and review tools to every session:
 | `list_workspaces` | Lists the workspaces you belong to and marks the active one. No arguments. Read-only. |
 | `set_workspace` | `handle` (required) switches the session to that workspace. `make_default` (optional) also saves it as your default. State-changing, so most clients ask before running it. |
 | `review_status` | `repository` (owner/name or id) is optional when the workspace has one repository, or when you are listing recent reviews. Pass `pr_number` for one pull request, or omit it to list recent reviews. Read-only. Does not start or re-run a review. |
+| `setup_status` | Checks whether Graphify is ready for this workspace. If not, it returns the next setup step and a link for the user to open, such as creating a workspace, connecting GitHub, or enabling a repository. No arguments. Call it again after the user finishes a step. When it says Graphify is ready, use `list_repositories`. |
 
 Changing workspace changes which repositories the session can see. It doesn't change your code or the graph.
 

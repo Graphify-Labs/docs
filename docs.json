@@ -588,6 +588,14 @@
       "destination": "/platform/quickstart"
     },
     {
+      "source": "/docs/getting-started",
+      "destination": "/platform/quickstart"
+    },
+    {
+      "source": "/introduction",
+      "destination": "/platform/overview"
+    },
+    {
       "source": "/tutorial",
       "destination": "/platform/quickstart"
     },

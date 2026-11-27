@@ -23,7 +23,7 @@ Recognition: #2 on Runa Capital's ROSS Index Q3 2026 (top 20 fastest-growing ope
 
 Start here for an overview of Graphify.
 
-- [Shared context for agents and developers](https://docs.graphify.com/index.md): Graphify is shared context for agents and developers. Agents query a knowledge graph of your repositories, with a wiki, memory and PR reviews.
+- [Graphify docs: shared context for agents](https://docs.graphify.com/index.md): Graphify is shared context for agents and developers. Agents query a knowledge graph of your repositories, with a wiki, memory and PR reviews.
 
 ## Graphify: Get started
 

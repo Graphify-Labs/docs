@@ -23,7 +23,7 @@ Recognition: #2 on Runa Capital's ROSS Index Q3 2026 (top 20 fastest-growing ope
 
 Start here for an overview of Graphify.
 
-- [Docs: code knowledge graph for AI coding agents](https://docs.graphify.com/index.md): Shared codebase context for Claude Code, Codex, Cursor and other agents: a code knowledge graph over hosted MCP and cross-repo PR review, or run locally.
+- [Shared context for agents and developers](https://docs.graphify.com/index.md): Graphify is shared context for agents and developers. Agents query a knowledge graph of your repositories, with a wiki, memory and PR reviews.
 
 ## Graphify: Get started
 
@@ -148,7 +148,7 @@ Use for Graphify CLI settings: .graphifyrc, environment variables, model provide
 - [Environment variables for Graphify CLI](https://docs.graphify.com/open-source/configuration/environment-variables.md): Every GRAPHIFY_ environment variable that changes where open-source Graphify writes, how it calls models, how hooks behave, and what it logs.
 - [LLM providers for semantic extraction](https://docs.graphify.com/open-source/configuration/llm-providers.md): Pick the model open-source Graphify uses for docs, papers and images: Claude, Gemini, OpenAI, Ollama, Kimi, DeepSeek, Azure, Bedrock or your own endpoint.
 - [Ignore files and set size limits in Graphify CLI](https://docs.graphify.com/open-source/configuration/ignoring-files.md): Control what open-source Graphify scans with .gitignore, .graphifyignore and --exclude, and see which folders, secrets and oversized files it skips.
-- [Graphify CLI reference](https://docs.graphify.com/open-source/configuration/cli.md): Every graphify command and flag in open-source Graphify: build, query, explain, path, affected, clustering, memory, exports, hooks, and agent installs.
+- [Graphify CLI commands](https://docs.graphify.com/open-source/configuration/cli.md): Every Graphify CLI command and flag, including extract, update, query, explain, path and agent skill installs.
 
 ## Graphify CLI: Support
 

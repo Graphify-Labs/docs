@@ -37,7 +37,7 @@ You use OpenCode every day, sometimes with a hosted model, sometimes with a loca
 ## Step 1: Install Graphify CLI
 
 ```bash
-uv tool install --python 3.12 graphifyy    # or: pipx install graphifyy
+uv tool install graphifyy    # or: pipx install graphifyy
 graphify --version
 ```
 
@@ -193,7 +193,7 @@ Keep vendored and generated folders out of the graph with a `.graphifyignore`. S
 OpenCode can run on a local model, and so can Graphify CLI. Code parsing never needs one. For docs, papers and community names, point Graphify at Ollama:
 
 ```bash
-uv tool install --python 3.12 "graphifyy[ollama]"
+uv tool install "graphifyy[ollama]"
 graphify extract . --backend ollama
 graphify label . --backend ollama
 ```
@@ -205,7 +205,7 @@ Then no source file leaves your machine at any step. Tuning for a laptop GPU is 
 The skill and plugin have OpenCode run `graphify` commands in its shell. If you'd rather give it graph tools directly, serve the same `graph.json` as a local MCP server:
 
 ```bash
-uv tool install --python 3.12 "graphifyy[mcp]"
+uv tool install "graphifyy[mcp]"
 opencode mcp add graphify-local -- graphify-mcp /absolute/path/to/your-repo/graphify-out/graph.json
 opencode mcp list
 ```
@@ -282,7 +282,7 @@ This removes the skill, the plugin and the `## graphify` section from `AGENTS.md
 ## Complete example
 
 ```bash
-uv tool install --python 3.12 graphifyy
+uv tool install graphifyy
 cd your-repo
 graphify opencode install --project
 graphify extract . --code-only

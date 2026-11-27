@@ -23,7 +23,7 @@ A diff shows which lines changed. The graph shows what those lines touch. This r
 You need a GitHub repository and permission to add workflows. Try the command locally first:
 
 ```bash
-uv tool install --python 3.12 graphifyy
+uv tool install graphifyy
 graphify extract . --code-only
 graphify prs            # list open pull requests
 graphify prs 123        # detail for one, use a real number
@@ -78,7 +78,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - name: Build the code graph
         run: |
-          uv tool install --python 3.12 graphifyy
+          uv tool install graphifyy
           graphify extract . --code-only
       - name: Write the impact report
         env:

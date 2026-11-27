@@ -23,7 +23,7 @@ The open-source MCP server usually runs on your machine over stdio, one per deve
 ```bash
 git clone https://github.com/Graphify-Labs/graphify
 cd your-repo
-uv tool install --python 3.12 graphifyy
+uv tool install graphifyy
 graphify extract . --code-only
 ```
 
@@ -36,7 +36,7 @@ export GRAPHIFY_API_KEY="$(openssl rand -hex 32)"
 ## Step 1: Run it locally over HTTP
 
 ```bash
-uv tool install --python 3.12 "graphifyy[mcp]"
+uv tool install "graphifyy[mcp]"
 graphify-mcp graphify-out/graph.json --transport http --port 8765
 ```
 

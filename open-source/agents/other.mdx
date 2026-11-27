@@ -11,7 +11,7 @@ hideFooterPagination: true
 Install the package once, then name the agent. To query a repository already indexed in Graphify, use [Other MCP clients](/integrations/other-agents).
 
 ```bash
-uv tool install --python 3.12 graphifyy
+uv tool install graphifyy
 graphify install --platform opencode
 ```
 
@@ -44,7 +44,7 @@ The OpenClaw row installs the local skill. To query repositories indexed in Grap
 
 ## Pi and Oh My Pi
 
-Pi has no `PreToolUse` hook, so Graphify CLI ships a native Pi extension. It runs the same graph check before Pi's `read`, `grep`, `find`, and search-style `bash` calls. It needs Pi 0.58.4 or newer, and Graphify installed with `uv tool install --python 3.12 graphifyy` or `pipx install graphifyy`, not `uvx`.
+Pi has no `PreToolUse` hook, so Graphify CLI ships a native Pi extension. It runs the same graph check before Pi's `read`, `grep`, `find`, and search-style `bash` calls. It needs Pi 0.58.4 or newer, and Graphify installed with `uv tool install graphifyy` or `pipx install graphifyy`, not `uvx`.
 
 ```bash
 graphify install --platform pi

@@ -43,7 +43,7 @@ Pick the path that matches how you run Graphify. Graphify builds and hosts the g
       Then run `/mcp` in Claude Code, select **graphify** and choose **Authenticate**. For Codex, Cursor and others, see [Connect cloud coding agents](/cookbooks/cloud-coding-agents).
   </Tab>
   <Tab title="Graphify CLI">
-    - Open-source Graphify installed: `uv tool install --python 3.12 graphifyy`. See [Installation](/open-source/installation).
+    - Open-source Graphify installed: `uv tool install graphifyy`. See [Installation](/open-source/installation).
     - A graph built in the repository root:
 
       ```bash
@@ -75,7 +75,7 @@ Start a new agent session and paste:
     Run `graphify query "where are invoices created"` and show me the output. Do not read any files first.
     ```
 
-    You should see a short list of nodes with file paths. If the agent says `graphify` isn't found, the command isn't on the agent's `PATH`. Open a new terminal after installing, or install with `uv tool install --python 3.12 graphifyy`.
+    You should see a short list of nodes with file paths. If the agent says `graphify` isn't found, the command isn't on the agent's `PATH`. Open a new terminal after installing, or install with `uv tool install graphifyy`.
   </Tab>
 </Tabs>
 

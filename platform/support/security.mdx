@@ -63,6 +63,7 @@ Assistants reach Graphify through the hosted MCP server at `https://api.graphify
 
 The open-source `graphifyy` package runs on your machine, with no account.
 
+- `graphify install` writes local skill, hook and editor config files. It reads no API keys or tokens and makes no network calls.
 - Code is parsed locally with tree-sitter. Source files are never executed.
 - The MCP server uses stdio by default. The HTTP transport is opt-in and binds to `127.0.0.1` unless you pass `--host 0.0.0.0`.
 - Semantic extraction sends content only to the model backend you configure.

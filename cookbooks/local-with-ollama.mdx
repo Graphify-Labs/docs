@@ -24,7 +24,7 @@ Install Ollama from [ollama.com](https://ollama.com), then pull a model. Graphif
 
 ```bash
 ollama pull qwen2.5-coder:7b
-uv tool install --python 3.12 "graphifyy[ollama]"
+uv tool install "graphifyy[ollama]"
 ```
 
 The `ollama` extra installs the OpenAI-compatible client Graphify uses to talk to Ollama.
@@ -108,7 +108,7 @@ graphify extract . --backend ollama
 
 ```bash
 ollama pull qwen2.5-coder:7b
-uv tool install --python 3.12 "graphifyy[ollama]"
+uv tool install "graphifyy[ollama]"
 cd your-repo
 graphify extract . --code-only
 export GRAPHIFY_OLLAMA_NUM_CTX=16384

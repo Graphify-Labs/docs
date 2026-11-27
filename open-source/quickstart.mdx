@@ -16,7 +16,7 @@ Graphify CLI builds a knowledge graph of your repository on your machine. You ca
 **The short version.** Install the package and add the skill:
 
 ```bash
-uv tool install --python 3.12 graphifyy
+uv tool install graphifyy
 graphify install
 ```
 
@@ -24,7 +24,7 @@ Then open your coding agent in the repository and type `/graphify .`. The steps 
 
 ## Before you start
 
-- Python 3.11.5 or later. uv installs it for you.
+- Python 3.11.5 to 3.14. uv fetches a compatible version if you need it.
 - For the skill: a coding agent that `graphify install` supports. Claude Code is the default.
 - For the terminal: nothing else. Code extraction needs no agent and no API key.
 
@@ -36,10 +36,10 @@ Pick how you want to work. The **Skill** tab lets your agent build and query the
   <Tab title="Skill">
     <Steps>
       <Step title="Install the package">
-        Run one of these. uv is recommended: it installs Python 3.11.5 or later for you and keeps Graphify in its own environment.
+        Run one of these. uv is recommended: it fetches Python 3.11.5 to 3.14 if you need it and keeps Graphify in its own environment.
 
         ```bash
-        uv tool install --python 3.12 graphifyy
+        uv tool install graphifyy
         ```
 
         If you already install command line tools with pipx, use it instead. It also gives Graphify its own environment.
@@ -87,7 +87,7 @@ Pick how you want to work. The **Skill** tab lets your agent build and query the
     <Steps>
       <Step title="Install the package">
         ```bash
-        uv tool install --python 3.12 graphifyy    # or: pipx install graphifyy / pip install graphifyy
+        uv tool install graphifyy    # or: pipx install graphifyy / pip install graphifyy
         graphify --help
         ```
       </Step>
@@ -260,7 +260,7 @@ graphify query "entry points"
 To include documents with a local model, install the Ollama extra, run an Ollama model suitable for your content, and select it in `OLLAMA_MODEL`:
 
 ```bash
-uv tool install --python 3.12 "graphifyy[ollama]"
+uv tool install "graphifyy[ollama]"
 graphify extract ./docs --backend ollama
 ```
 

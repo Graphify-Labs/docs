@@ -90,6 +90,8 @@ The first completed index makes code context available in [Graphs](/platform/gra
 
 **Sync** refreshes the list of repositories your GitHub or GitLab connection can see. **Reindex** rebuilds one repository's graph from its default-branch head. You need permission to manage repositories in the workspace.
 
+On **Repositories**, open the repository's **Options**. An indexed, enabled repository that is not **No longer on GitHub** has **Reindex now**. A failed repository has **Retry indexing**. Neither item appears while the repository is paused, queued, or building, or when it is too large for the plan. Both are disabled while the workspace is paused.
+
 These events never start an index: a push to a non-default branch, a branch deletion, and any push to a repository whose indexing is off.
 
 ### When a rebuild is skipped

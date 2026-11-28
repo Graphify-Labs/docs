@@ -1,0 +1,64 @@
+---
+title: "Cross-repo groups and wikis"
+sidebarTitle: "Cross-repo and wikis"
+description: "Combine repositories into one graph and one wiki that follow calls, routes, and contracts between services."
+keywords: ["cross-repo", "combined graph", "group wiki", "wiki steering"]
+surface: "cloud"
+icon: "share-2"
+---
+
+Most systems span many repositories. A cross-repo group is one graph, and one wiki, for all of them.
+
+## Create a group
+
+Graphify links repositories where they actually connect:
+
+- **HTTP routes.** A frontend `fetch("/api/orders")` linked to the handler that serves it.
+- **gRPC and contracts.** Clients linked to the services and schemas they use.
+- **Shared symbols.** Code in one repository that references code in another.
+
+<Steps>
+  <Step title="Open the cross-repository view">
+    Select **Combine repositories**. If you already have a group, use **Combine graphs** in the right panel of the graph view.
+  </Step>
+  <Step title="Pick repositories">
+    Each one must already be indexed. Pick at least two.
+  </Step>
+  <Step title="Build">
+    The group is listed under **Combined graphs**. It moves through `not_started`, `queued`, `running`, then `ready` or `failed`. If it fails, select **Retry build**. The group updates when any member repository changes.
+  </Step>
+</Steps>
+
+On a private deployment, a group can be assigned to a repository team the same way a repository can.
+
+How to read a node, share a `?group=` link, and query the group from an agent are on [Graphs](/platform/graphs). An agent targets the group by the id `list_repositories` returns with `kind: "workspace"`.
+
+## What a group is for
+
+- **Impact across services.** See which services a change can affect before it merges. A review comment can include a **Cross-repo impact** section. See [Reviews](/platform/reviews).
+- **Agent context.** Callers, impact, and tests-for run across the group when that group is selected.
+- **A group wiki.** One wiki for the whole system.
+
+Enterprise does not apply a plan cap on group size. How a group is built is the same procedure as on [Graphs](/platform/graphs).
+
+## Wikis
+
+Every repository gets a generated wiki: architecture, areas, key flows, and how-tos, linked to the code they describe and refreshed as the code changes.
+
+A group wiki covers the whole system: how services talk to each other, which repository owns which capability, and the flows that cross a repository boundary.
+
+### Steering
+
+Tell the wiki what matters. Pick the areas to cover, rename and reorder them, and add a note such as "explain the billing flow for new engineers." The next refresh follows that steering.
+
+### A page on demand
+
+Ask for a page on a specific topic, for example how a webhook becomes a review. Graphify writes it from the graph.
+
+### From an agent
+
+An agent can save a page it wrote with the `save_wiki_page` tool. The client's tool list is the current set. See [Graphify MCP](/platform/graphify-mcp).
+
+<Note>
+A model writes wiki pages from your graph. Each page links to the code it describes, so a reader can check it. See [Models and data](/enterprise/models).
+</Note>

@@ -1,0 +1,49 @@
+---
+title: "Usage and audit"
+sidebarTitle: "Usage and audit"
+description: "Where to see builds, reviews, and verification, and who can read the audit log of administrative actions."
+keywords: ["graphify audit log", "usage dashboard", "enterprise audit", "splunk"]
+surface: "cloud"
+icon: "chart-bar"
+---
+
+Dashboards show what Graphify is doing. The audit log shows who changed a setting.
+
+## Dashboards
+
+| Page | What it shows |
+| --- | --- |
+| **Overview** | Repositories, recent builds, reviews, and verification |
+| **Activity** | Usage by person and by repository |
+| **Builds** | Each index build, its status, and how long it took |
+| **Reviews** | Review runs, findings, and outcomes |
+| **Verifications** | Formal verification runs and results |
+| **System health** | Build and integration health |
+| **Team Digest** | What shipped, with review and verification signals and owners |
+| **Insights** | Code insights and metric history. See [Code insights](/enterprise/insights) |
+
+On hosted Graphify, **Usage** on **Billing** shows reviews, verification runs, index builds, and group builds against the workspace's plan. Enterprise has no hosted plan cap. Prices and the caps on other plans are on [Plans and pricing](/platform/support/pricing).
+
+## Audit log
+
+Graphify records an audit event for each administrative action, with the actor, the action, the target, and the result.
+
+Events cover:
+
+- membership changes and invitations
+- API token creation and revocation
+- repositories enabled, removed, or reindexed
+- integrations connected or disconnected
+- billing changes
+- memory review actions
+- repository team changes
+- every Admin console action on a private deployment
+
+Owners, admins, and billing members can read the log through the API. Members cannot.
+
+```
+GET https://api.graphify.com/v1/audit
+Authorization: Bearer <token>
+```
+
+On a private deployment, service logs also go to Splunk (HTTP Event Collector) or CloudWatch, inside your account. Graphify has no access to that account. You choose which logs to share when you want help.

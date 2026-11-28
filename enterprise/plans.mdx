@@ -1,0 +1,37 @@
+---
+title: "API tokens and support"
+sidebarTitle: "API tokens"
+description: "Workspace API tokens for agents, CI, and telemetry, and how Enterprise support works."
+keywords: ["graphify api token", "gfy_mcp", "gfy_ci", "enterprise support"]
+surface: "cloud"
+icon: "square-terminal"
+---
+
+Owners and admins mint tokens. A token is shown once. Store it in a secret manager. Creation and revocation are in the audit log. When a member leaves, Graphify revokes the tokens that member created in the workspace.
+
+## Tokens
+
+| Scope | Where to mint it | Prefix | Used for |
+| --- | --- | --- | --- |
+| MCP | **Connectors**, **MCP** tab | `gfy_mcp_` | A shared or headless agent |
+| CI / test impact | **Integrations**, **BuildKite (Test Impact)** | `gfy_ci_` | Test impact from CI. It only works on that endpoint |
+
+Owners and admins can also mint a telemetry token, for agent session telemetry (OpenTelemetry), and a memory-review token, for automating memory review. Those two are shown once, the same way as the tokens above.
+
+On a private deployment, an MCP token can be limited to repository teams.
+
+Revoke an MCP token from the **MCP** tab of **Connectors**. The test impact setup, including the request, is on [Test impact analysis](/platform/test-impact).
+
+## Plans
+
+Enterprise is a custom agreement. It is not bought at checkout. Hosted Enterprise removes plan caps on repositories, graph size, builds, reviews, and verification. A private deployment is sized with you. A reference size is 200 repositories and 100 users.
+
+Free, Pro, and Teams prices and caps are on [Plans and pricing](/platform/support/pricing). The Free plan needs no card.
+
+## Support
+
+- **Email.** [support@graphify.com](mailto:support@graphify.com)
+- **Enterprise Slack.** A dedicated channel with the engineers who build Graphify.
+- **Private deployments.** Each release includes a changelog and upgrade steps, plus a runbook for the logs you can choose to share. Graphify has no access to the deployment unless you grant it.
+
+To scope Enterprise, [talk to us](https://graphify.com/enterprise?utm_source=docs&utm_medium=link&utm_campaign=enterprise-plans).

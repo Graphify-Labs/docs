@@ -1,0 +1,63 @@
+---
+title: "Connect repositories"
+sidebarTitle: "Repositories"
+description: "Connect GitHub, GitLab, Azure DevOps, or GitHub Enterprise Server, choose repositories, and keep each graph current."
+keywords: ["connect github", "github enterprise server", "gitlab", "azure devops", "index repository"]
+surface: "cloud"
+icon: "folder-git"
+---
+
+Graphify indexes each repository into a knowledge graph and updates that graph on every push to the default branch.
+
+## Providers
+
+| Provider | Hosted Graphify | Private deployment |
+| --- | --- | --- |
+| GitHub (github.com) | Yes | No |
+| GitHub Enterprise Server | No | Yes |
+| GitLab (gitlab.com) | Yes | No |
+| Azure DevOps (Entra ID or a PAT) | Yes | No |
+
+## Add repositories
+
+<Steps>
+  <Step title="Open Repositories">
+    In the workspace, open **Repositories**. For GitHub, choose **Add GitHub repositories**. For GitLab, open **Connectors** and choose **Connect** on the GitLab card.
+  </Step>
+  <Step title="Install the app">
+    Install the Graphify app on the GitHub organization, or connect GitLab or Azure DevOps. If you are not an organization admin, Graphify sends that admin a request to approve. On a private deployment, create the GitHub App on your GitHub Enterprise Server and install it on your organizations.
+  </Step>
+  <Step title="Pick repositories">
+    Each selected repository is listed. New ones show **Paused** or **Not indexed** until you turn indexing on.
+  </Step>
+  <Step title="Turn indexing on">
+    Turn **Indexing** on from the repository menu, or choose **Index** on **Overview**. Small repositories are ready in minutes. Very large ones take longer.
+  </Step>
+</Steps>
+
+Day-to-day repository states are on [Repositories and builds](/platform/repositories).
+
+## What gets indexed
+
+Graphify parses source into a graph of files, symbols, and the calls, imports, inheritance, and references between them, plus framework conventions such as Rails routes and models. Documentation is indexed next to the code and linked to it.
+
+Graphify never indexes:
+
+- `.env` files. Templates such as `.env.example` are allowed
+- private keys and certificates
+- `.ssh`, `.aws`, and `.gcloud` directories, `.netrc`, and `.pgpass`
+- files whose names mark them as a secret, token, or password
+
+## Keeping graphs current
+
+A push to the default branch starts an incremental build. A pull request is reviewed against a graph of the pull request head, seeded from the base branch.
+
+## Remove or pause
+
+Turn **Indexing** off to pause a repository. The graph stays, and reviews stop until you turn it back on.
+
+Removing a repository deletes every stored version of its graph, artifacts, and memory. This cannot be undone.
+
+<Warning>
+Removal is permanent. Turn indexing off if you only want to pause the repository.
+</Warning>

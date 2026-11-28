@@ -1,0 +1,62 @@
+---
+title: "Set up Enterprise"
+sidebarTitle: "Getting started"
+description: "The order an admin follows to stand up Graphify Enterprise, and what can wait until the first repositories are in use."
+keywords: ["enterprise setup", "admin checklist", "graphify enterprise onboarding"]
+surface: "cloud"
+icon: "list-checks"
+---
+
+You need an Enterprise agreement and the Owner role. A private deployment also needs an AWS account, an Okta admin, and GitHub Enterprise Server.
+
+You do not have to configure everything at once. Most teams connect one service's repositories, run reviews for a week, then add connectors, cross-repo groups, and the rest.
+
+## Set up in this order
+
+<CardGroup cols={2}>
+  <Card title="Workspace" icon="house" href="/enterprise/workspace">
+    Create the workspace, or join the default one on a private deployment.
+  </Card>
+  <Card title="Sign-in" icon="circle-user" href="/enterprise/sign-in">
+    Confirm people can sign in before you invite the whole organization.
+  </Card>
+  <Card title="People and teams" icon="users" href="/enterprise/members">
+    Invite owners and admins first. Add repository teams when you need to split access.
+  </Card>
+  <Card title="Repositories" icon="folder-git" href="/enterprise/repositories">
+    Install the Git app and index one service before you connect the rest.
+  </Card>
+  <Card title="Review policy" icon="git-pull-request" href="/enterprise/review-policy">
+    Turn reviews on, then commit `.graphify/rules.json` if you want custom rules.
+  </Card>
+  <Card title="Models" icon="cpu" href="/enterprise/models">
+    On a private deployment, point model calls at your Bedrock endpoint.
+  </Card>
+  <Card title="Connectors" icon="cable" href="/enterprise/connectors">
+    Slack, docs, tickets, and errors. Add them after the first graph exists.
+  </Card>
+  <Card title="Usage and audit" icon="chart-bar" href="/enterprise/usage">
+    Check that builds, reviews, and the audit log are visible to the right roles.
+  </Card>
+</CardGroup>
+
+## Admin checklist
+
+| Step | Where | Done when |
+| --- | --- | --- |
+| Workspace exists | [app.graphify.com](https://app.graphify.com?utm_source=docs&utm_medium=link&utm_campaign=enterprise-getting-started), or the Admin console on a private deployment | You can open **Overview** |
+| You can sign in | [Sign in and SSO](/enterprise/sign-in) | A second person can sign in and land in the workspace |
+| Owners and admins are invited | **Members** | They have accepted, or they have the invite link |
+| Repository teams, if you use them | Admin console on a private deployment | A member outside the team cannot see the team's repositories |
+| Git app installed | **Repositories**, then **Add GitHub repositories**. GitLab is **Connect** on the GitLab card in **Connectors** | The repositories you want are listed |
+| Indexing is on | **Repositories**, or **Index** on **Overview** | Status is **Indexed**, not **Paused** or **Not indexed** |
+| Reviews are on | **Repositories**, then **Options** | A pull request on a ready repository gets a review |
+| Custom rules, if you want them | `.graphify/rules.json` on the default branch | A pull request is judged by the base commit's rules |
+| Agents can call the graph | **Connectors**, **MCP** tab | An agent signs in, or a headless agent has an MCP token |
+| Connectors you need | **Connectors**, then **Integrations** | The source is connected and scoped |
+| A cross-repo group, if the system spans repos | Cross-repository view, **Combine repositories** | The combined graph is **ready** |
+| Insights have a baseline | **Insights** | The first build has recorded metrics. Trends need more than one build |
+
+The first index of a large repository can take a while. Reviews start once that first build is ready.
+
+Next, people usually open [Connect repositories](/enterprise/repositories) or send [Security and data handling](/enterprise/security) to their reviewer.

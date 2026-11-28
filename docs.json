@@ -120,103 +120,6 @@
         ]
       },
       {
-        "tab": "Open Source",
-        "groups": [
-          {
-            "group": "Get started",
-            "pages": [
-              "open-source/overview",
-              "open-source/quickstart",
-              "open-source/installation",
-              "open-source/mcp-server",
-              "open-source/self-host"
-            ]
-          },
-          {
-            "group": "Connect an agent",
-            "pages": [
-              "open-source/agents/overview",
-              "open-source/agents/claude-code",
-              "open-source/agents/cursor",
-              "open-source/agents/codex",
-              "open-source/agents/vscode",
-              "open-source/agents/gemini-cli",
-              "open-source/agents/hermes",
-              "open-source/agents/other"
-            ]
-          },
-          {
-            "group": "Features",
-            "pages": [
-              "open-source/vibe-coding",
-              {
-                "group": "Inputs",
-                "icon": "file-input",
-                "pages": [
-                  "open-source/features/languages",
-                  "open-source/features/documents-and-media",
-                  "open-source/features/databases"
-                ]
-              },
-              {
-                "group": "Build the graph",
-                "icon": "hammer",
-                "pages": [
-                  "open-source/features/deduplication",
-                  "open-source/features/community-detection",
-                  "open-source/features/incremental-updates",
-                  "open-source/features/keep-the-graph-fresh"
-                ]
-              },
-              {
-                "group": "Query the graph",
-                "icon": "telescope",
-                "pages": [
-                  "open-source/features/querying",
-                  "open-source/features/trace",
-                  "open-source/features/work-memory",
-                  "open-source/features/pr-impact",
-                  "open-source/features/multi-repo"
-                ]
-              },
-              {
-                "group": "Export and automate",
-                "icon": "package",
-                "pages": [
-                  "open-source/features/exports",
-                  "open-source/features/headless-extraction",
-                  "open-source/features/mcp-tools"
-                ]
-              },
-              {
-                "group": "Benchmarks",
-                "icon": "gauge",
-                "pages": [
-                  "open-source/features/token-benchmark",
-                  "open-source/features/honest-token-savings"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Configuration",
-            "pages": [
-              "open-source/configuration/graphifyrc",
-              "open-source/configuration/environment-variables",
-              "open-source/configuration/llm-providers",
-              "open-source/configuration/ignoring-files",
-              "open-source/configuration/cli"
-            ]
-          },
-          {
-            "group": "Support",
-            "pages": [
-              "open-source/troubleshooting"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Integrations",
         "groups": [
           {
@@ -360,6 +263,139 @@
             "pages": [
               "cookbooks/pr-impact-comment-ci",
               "cookbooks/self-host-shared-mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Enterprise",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": [
+              "enterprise/overview",
+              "enterprise/getting-started"
+            ]
+          },
+          {
+            "group": "Set up",
+            "pages": [
+              "enterprise/workspace",
+              "enterprise/sign-in",
+              "enterprise/members",
+              "enterprise/repositories",
+              "enterprise/review-policy",
+              "enterprise/models",
+              "enterprise/connectors",
+              "enterprise/usage"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "enterprise/deployment",
+              "enterprise/security",
+              "enterprise/cross-repo",
+              "enterprise/insights",
+              "enterprise/mcp",
+              "enterprise/plans"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Open Source",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "open-source/overview",
+              "open-source/quickstart",
+              "open-source/installation",
+              "open-source/mcp-server",
+              "open-source/self-host"
+            ]
+          },
+          {
+            "group": "Connect an agent",
+            "pages": [
+              "open-source/agents/overview",
+              "open-source/agents/claude-code",
+              "open-source/agents/cursor",
+              "open-source/agents/codex",
+              "open-source/agents/vscode",
+              "open-source/agents/gemini-cli",
+              "open-source/agents/hermes",
+              "open-source/agents/other"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "open-source/vibe-coding",
+              {
+                "group": "Inputs",
+                "icon": "file-input",
+                "pages": [
+                  "open-source/features/languages",
+                  "open-source/features/documents-and-media",
+                  "open-source/features/databases"
+                ]
+              },
+              {
+                "group": "Build the graph",
+                "icon": "hammer",
+                "pages": [
+                  "open-source/features/deduplication",
+                  "open-source/features/community-detection",
+                  "open-source/features/incremental-updates",
+                  "open-source/features/keep-the-graph-fresh"
+                ]
+              },
+              {
+                "group": "Query the graph",
+                "icon": "telescope",
+                "pages": [
+                  "open-source/features/querying",
+                  "open-source/features/trace",
+                  "open-source/features/work-memory",
+                  "open-source/features/pr-impact",
+                  "open-source/features/multi-repo"
+                ]
+              },
+              {
+                "group": "Export and automate",
+                "icon": "package",
+                "pages": [
+                  "open-source/features/exports",
+                  "open-source/features/headless-extraction",
+                  "open-source/features/mcp-tools"
+                ]
+              },
+              {
+                "group": "Benchmarks",
+                "icon": "gauge",
+                "pages": [
+                  "open-source/features/token-benchmark",
+                  "open-source/features/honest-token-savings"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "open-source/configuration/graphifyrc",
+              "open-source/configuration/environment-variables",
+              "open-source/configuration/llm-providers",
+              "open-source/configuration/ignoring-files",
+              "open-source/configuration/cli"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "open-source/troubleshooting"
             ]
           }
         ]
@@ -776,10 +812,6 @@
       "destination": "/open-source/configuration/cli"
     },
     {
-      "source": "/platform/support/enterprise",
-      "destination": "/platform/support/pricing#enterprise"
-    },
-    {
       "source": "/platform/local-to-cloud",
       "destination": "/platform/graphify-vs-local"
     },
@@ -974,6 +1006,10 @@
     {
       "source": "/open-source/keep-the-graph-fresh",
       "destination": "/open-source/features/keep-the-graph-fresh"
+    },
+    {
+      "source": "/platform/support/enterprise",
+      "destination": "/enterprise/overview"
     }
   ]
 }
